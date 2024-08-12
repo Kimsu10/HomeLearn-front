@@ -1,0 +1,213 @@
+/* Container ================================== */
+#student_header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10000;
+    width: 100%;
+    height: 80px;
+    border-bottom: 1px solid var(--borderColor-300);
+    background: #fff;
+}
+
+.student_h-inner {
+    position: relative;
+    max-width: 1440px;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.student_h-left {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+.student_h-right {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+/* Logo ===================================== */
+.student_h-logo {
+    width: 100px;
+}
+
+.student_h-logo a {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.student_h-logo a img {
+    width: 100%;
+}
+
+/* Curriculum ================================= */
+.student_h-curriculum_name {
+    font-size: 2.4rem;
+    color: var(--studentMainColor);
+}
+
+/* Curriculum Progress ======================== */
+.student_h-progress-bar {
+    width: 300px;
+    height: 30px;
+    background-color: var(--studentSubColor);
+    border-radius: 2rem;
+    overflow: hidden;
+}
+
+.student_h-progress {
+    height: 90%;
+    background-color: var(--studentMainColor);
+}
+
+/* Global Navigation Bar =============== */
+.student_h-gnb_items {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+.student_h-gnb_items > li > a, .student_h-alarm_btn > li > a {
+    position: relative;
+    font-size: 4rem;
+    color: var(--studentMainColor);
+}
+
+.student_h-gnb_items > li > a:hover, .student_h-alarm_btn > li > a:hover {
+    color: var(--studentSubColor);
+}
+
+/* Alarm ================================= */
+.student_h-alarm_list {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 300px;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: #ffffff;
+    box-shadow: var(--box-shadow__A);
+    border-radius: 1.5rem;
+    padding: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.5s ease, max-height 0.5s ease;
+    transform: translateY(-20px);
+    max-height: 0;
+    overflow: hidden;
+}
+
+.student_h-alarm_list.open {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    max-height: 300px;
+}
+
+.student_h-alarm_count {
+    position: absolute;
+    right: -1.2rem;
+    top: -1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.2rem 0.8rem;
+    background: #ff0000;
+    border-radius: 10rem;
+    font-size: 1rem;
+    color: #fff;
+}
+
+/* Profile ================================= */
+.student_h-profile_box {
+    position: relative;
+}
+
+.student_h-profile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+}
+
+.student_h-profile_img {
+    display: block;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    border: 1px solid var(--studentMainColor);
+}
+
+.student_h-profile span {
+    font-size: 2.8rem;
+    color: var(--studentMainColor);
+}
+
+.student_h-profile i {
+    color: var(--studentMainColor);
+    transition: 0.3s;
+}
+
+.student_h-profile.active i {
+    transform: rotate(180deg);
+}
+
+.student_h-profile:hover {
+    color: var(--studentSubColor);
+    font-weight: 700;
+}
+
+/* Profile Menu ============================= */
+.student_h-profile_menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    padding: 1.6rem;
+    width: 180px;
+    background: #fff;
+    box-shadow: var(--box-shadow__A);
+    border-radius: 1.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.5s ease, max-height 0.5s ease;
+    transform: translateY(-20px);
+    max-height: 0;
+    overflow: hidden;
+}
+
+.student_h-profile_menu.open {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    max-height: 300px;
+}
+
+.student_h-profile_menu > li {
+    margin-bottom: 1.8rem;
+}
+
+.student_h-profile_menu > li:last-child {
+    margin-bottom: 0;
+}
+
+.student_h-profile_menu > li > a {
+    font-size: 1.4rem;
+    color: var(--studentMainColor)
+}
+
+.student_h-profile_menu > li > a:hover {
+    font-weight: 500;
+    color: var(--studentSubColor);
+}

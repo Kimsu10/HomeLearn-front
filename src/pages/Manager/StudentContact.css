@@ -1,0 +1,110 @@
+.student-contact {
+  padding: 20px;
+  max-width: 1200px;
+}
+
+.filter-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 30px;
+}
+
+.filter-logo {
+  width: 50px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.curriculum-filter, .status-filter {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f4f5f7;
+  cursor: pointer;
+}
+
+.inquiries-border {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.inquiries-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.inquiry-card {
+  background-color: #ffffff;
+  border: 3px solid #757575;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  width: calc(50% - 10px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.inquiry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.inquiry-batch {
+  font-size: 16px;
+  background-color: #e0e0e0;
+  border-radius: 20px;
+  padding: 5px 10px;
+  border: 1px solid #757575;
+}
+
+.inquiry-course {
+  font-size: 18px;
+  color: #333;
+  font-weight: bold;
+  flex-grow: 1;
+  margin-left: 20px;
+}
+
+.inquiry-instructor, .inquiry-date {
+  font-size: 14px;
+  color: #757575;
+}
+
+.inquiry-question {
+  font-size: 18px;
+  color: #333;
+  flex-grow: 1;
+}
+
+.inquiry-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inquiry-status {
+  font-size: 14px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: auto;
+}
+
+.status-answered {
+  color: green;
+}
+
+.status-unanswered {
+  color: red;
+}

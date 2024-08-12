@@ -1,0 +1,95 @@
+/* 메인 스타일 */
+.subject_board_main_container {
+  display: flex;
+  flex-direction: column;
+  width: 1120px;
+  padding: 100px 68px;
+}
+
+.subject_board_type_image {
+  width: 250px;
+  height: 250px;
+  border-radius: 20px;
+}
+
+.subject_board_type_container {
+  width: 100%;
+  display: flex;
+  border-bottom: 1px solid black;
+  padding-bottom: 75px;
+}
+
+.subject_board_description_box {
+  padding: 0 75px;
+}
+
+.subject_board_type_name {
+  font-size: 48px;
+  margin-bottom: 75px;
+}
+
+.subject_board_type_description {
+  font-size: 32px;
+}
+
+/* 과목 게시판 스타일  */
+.subject_board_container {
+  justify-content: flex-start;
+  border-bottom: 1px solid gray;
+}
+
+.subject_board_main_body_container {
+  padding: 75px 0;
+}
+
+.subject_board_main_title {
+  font-size: 40px;
+  margin-bottom: 50px;
+}
+
+/* 테이블 */
+.subject_board_list_table {
+  width: 100%;
+  border-bottom: 1px solid gray;
+  border-collapse: collapse;
+}
+
+.subject_board_table_tab_names {
+  font-size: 24px;
+  text-align: center;
+}
+
+.subject_board_table_tab_names th {
+  padding: 10px;
+  border-bottom: 1px solid gray;
+}
+
+.subject_board_table_tab_names th:nth-child(1),
+.subject_board_table_tab_names th:nth-child(5) {
+  width: 10%;
+}
+
+.subject_board_table_tab_names th:nth-child(2) {
+  width: 40%;
+}
+
+.subject_board_table_tab_names th:nth-child(3),
+.subject_board_table_tab_names th:nth-child(4) {
+  width: 15%;
+}
+
+.writed_subject_board_lists {
+  height: 55px;
+  line-height: 55px;
+  font-size: 24px;
+  text-align: center;
+  color: black;
+}
+
+.writed_subject_board_lists td {
+  padding: 20px 0 10px 0;
+}
+
+/* .writed_subject_board_title_one {
+  cursor: pointer !important;
+} */

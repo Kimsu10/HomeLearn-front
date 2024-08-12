@@ -1,0 +1,81 @@
+.main_container {
+  display: flex;
+  flex-direction: column;
+  width: 1120px;
+  padding: 100px 68px;
+  background-color: #fff;
+}
+
+.student_badge_page_title {
+  font-weight: 700;
+  font-size: 48px;
+  margin-bottom: 75px;
+}
+
+.student_badge_filter_box {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.badge_filter_box {
+  width: 140px;
+  height: 48px;
+  border: 1px solid var(--studentSubColor);
+  border-radius: 15px;
+  color: var(--studentMainColor);
+  background-color: #a7d7c52e;
+}
+
+/* 모든 배지들이 있는 컨테이너 */
+.student_badge_list_container {
+  margin: 50px 0;
+  width: 1120px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.student_badge_box {
+  position: absolute;
+  width: 240px;
+  height: 300px;
+  border: 2px solid var(--studentSubColor);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  color: #757575;
+  background-color: #f4f5f7;
+  text-align: center;
+}
+
+.student_badge_image {
+  width: 200px;
+  height: 186px;
+  border-radius: 20px;
+}
+
+.student_badge_name {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.student_badge_description {
+  font-size: 20px;
+}
+
+/* 뒷면? */
+.student_badge_detail_info_box {
+  position: absolute;
+  top: 0;
+  right: -105%;
+  padding: 20px;
+  width: 240px;
+  height: 300px;
+  border: 2px solid var(--studentSubColor);
+  border-radius: 20px;
+}

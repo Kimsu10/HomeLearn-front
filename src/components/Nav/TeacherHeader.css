@@ -1,0 +1,211 @@
+/* Container ================================== */
+#teacher_header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10000;
+    width: 100%;
+    height: 80px;
+    border-bottom: 1px solid var(--borderColor-300);
+    background: #fff;
+}
+
+.teacher_h-inner {
+    position: relative;
+    max-width: 1440px;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.teacher_h-left {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+.teacher_h-right {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+/* Logo ===================================== */
+.teacher_h-logo {
+    width: 100px;
+}
+
+.teacher_h-logo a {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.teacher_h-logo a img {
+    width: 100%;
+}
+
+/* Curriculum ================================= */
+.teacher_h-curriculum_name {
+    font-size: 2.4rem;
+    color: var(--teacherMainColor);
+}
+
+/* Curriculum Progress ======================== */
+.teacher_h-progress-bar {
+    width: 300px;
+    height: 30px;
+    background-color: var(--teacherSubColor);
+    border-radius: 2rem;
+    overflow: hidden;
+}
+
+.teacher_h-progress {
+    height: 90%;
+    background-color: var(--teacherMainColor);
+}
+
+/* Global Navigation Bar =============== */
+.teacher_h-gnb_items {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+.teacher_h-gnb_items > li > a, .teacher_h-alarm_btn > li > a {
+    position: relative;
+    font-size: 4rem;
+    color: var(--teacherMainColor);
+}
+
+.teacher_h-gnb_items > li > a:hover, .teacher_h-alarm_btn > li > a:hover {
+    color: var(--teacherSubColor);
+}
+
+/* Alarm ================================= */
+.teacher_h-alarm_list {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 300px;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: #ffffff;
+    box-shadow: var(--box-shadow__A);
+    border-radius: 1.5rem;
+    padding: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.5s ease, max-height 0.5s ease;
+    transform: translateY(-20px);
+    max-height: 0;
+    overflow: hidden;
+}
+
+.teacher_h-alarm_list.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    max-height: 300px;
+}
+
+.teacher_h-alarm_count {
+    position: absolute;
+    right: -1.2rem;
+    top: -1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.2rem 0.8rem;
+    background: #ff0000;
+    border-radius: 10rem;
+    font-size: 1rem;
+    color: #fff;
+}
+
+/* Profile ================================= */
+.teacher_h-profile_box {
+    position: relative;
+}
+
+.teacher_h-profile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+}
+
+.teacher_h-profile_img {
+    display: block;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    border: 1px solid var(--teacherMainColor);
+}
+
+.teacher_h-profile span {
+    font-size: 2.8rem;
+    color: var(--teacherMainColor);
+}
+
+.teacher_h-profile i {
+    color: var(--teacherMainColor);
+    transition: 0.3s;
+}
+
+.teacher_h-profile.active i {
+    transform: rotate(180deg);
+}
+
+.teacher_h-profile:hover {
+    color: var(--teacherSubColor);
+    font-weight: 700;
+}
+
+/* Profile Menu ============================= */
+.teacher_h-profile_menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    padding: 1.6rem;
+    width: 180px;
+    background: #fff;
+    box-shadow: var(--box-shadow__A);
+    border-radius: 1.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.5s ease, max-height 0.5s ease;
+    transform: translateY(-20px);
+    max-height: 0;
+    overflow: hidden;
+}
+
+.teacher_h-profile_menu.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    max-height: 300px;
+}
+
+.teacher_h-profile_menu > li {
+    margin-bottom: 1.8rem;
+}
+
+.teacher_h-profile_menu > li:last-child {
+    margin-bottom: 0;
+}
+
+.teacher_h-profile_menu > li > a {
+    font-size: 1.4rem;
+    color: var(--teacherMainColor)
+}
+
+.teacher_h-profile_menu > li > a:hover {
+    font-weight: 500;
+    color: var(--teacherSubColor);
+}

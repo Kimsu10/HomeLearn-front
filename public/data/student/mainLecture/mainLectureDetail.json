@@ -1,0 +1,34 @@
+{
+  "subjectId": 1,
+  "subjectName": "JAVA",
+  "lectureId": 1,
+  "title": "JAVA 상속",
+  "content": " JAVA 상속 관련 영상입니다. 시청 바랍니다.",
+  "links": "https://www.youtube.com/watch?v=f0cAmTYo4tQ",
+  "mainLectureVideoList": [
+    {
+      "lectureId": 2,
+      "links": "https://youtu.be/jdTsJzXmgU0?list=PLuHgQVnccGMCeAy-2-llhw3nWoQKUvQck"
+    },
+    {
+      "lectureId": 3,
+      "links": "https://www.youtube.com/watch?v=kj33guVJuso"
+    },
+    {
+      "lectureId": 4,
+      "links": "https://www.youtube.com/watch?v=OxvtGYvVkRU"
+    },
+    {
+      "lectureId": 5,
+      "links": "https://www.youtube.com/watch?v=VvVruEDCSSYk"
+    },
+    {
+      "lectureId": 6,
+      "links": "https://www.youtube.com/watch?v=hy3mji0XuMw"
+    },
+    {
+      "lectureId": 7,
+      "links": "https://www.youtube.com/watch?v=UX2mJAVKeMg"
+    }
+  ]
+}

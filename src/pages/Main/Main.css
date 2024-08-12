@@ -1,0 +1,12 @@
+.main-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login_btn {
+  border: 2px solid black;
+  cursor: pointer;
+  padding: 10px 20px;
+}

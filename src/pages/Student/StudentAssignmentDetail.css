@@ -1,0 +1,209 @@
+/* 공통 클래스명 */
+.student_assignment_detail_main_container {
+  display: flex;
+  flex-direction: column;
+  width: 1120px;
+  padding: 100px 68px;
+  background-color: #fff;
+}
+
+.student_assignment_detail_page_title {
+  font-size: 48px;
+  margin-bottom: 75px;
+  font-weight: 700;
+}
+
+.date_color {
+  color: #5c8d89;
+}
+
+/*  과제  설명 */
+.student_submit_assignment_title_box {
+  display: flex;
+  justify-content: space-between;
+}
+
+.student_submit_assignment_sub_title {
+  font-size: 36px;
+  font-weight: 700;
+  padding: 0 0 0 40px;
+}
+
+.show_modify_box_icon {
+  font-size: 32px;
+  position: relative;
+  cursor: pointer;
+}
+
+.show_modify_box {
+  position: absolute;
+  bottom: 18%;
+  right: 11%;
+  width: 116px;
+  height: 92px;
+  border: 1px solid #5c8d89;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  z-index: 10;
+  background-color: #fff;
+}
+
+.modify_btn {
+  text-align: center;
+  width: 100%;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.modify_btn:hover {
+  color: #5c8d89ac;
+  font-weight: 700;
+}
+
+.student_assignment_detail_notice_box {
+  width: 1050px;
+  height: 320px;
+  border-bottom: 1px solid #5c8d89;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 48px;
+  color: black;
+}
+
+.student_assignment_detail_notice_title_box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.student_assginment_detail_notice_title {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.student_assignment_detail_notice_file {
+  font-size: 28px;
+  border-bottom: 1px solid black;
+}
+
+.student_assignment_detail_notice_content {
+  font-size: 28px;
+}
+
+.student_assignment_detail_notice_date_box {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24px;
+}
+
+/* 학생의 과제 제출 스타일*/
+
+.student_submit_assignment_detail_box {
+  width: 1050px;
+  height: 320px;
+  border-bottom: 1px solid #5c8d89;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 48px;
+  color: black;
+}
+
+.student_submit_assignment_detail_title_box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.student_submit_assignment_detail_title {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.student_submit_assignment_detail_file {
+  font-size: 28px;
+  border-bottom: 1px solid #5c8d89;
+}
+
+.student_submit_assignment_detail_content {
+  font-size: 24px;
+}
+
+.student_submit_assignment_detail_date {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 24px;
+  color: black;
+}
+
+/* 학생의 과제 미제출 */
+
+.student_non_submit_assignment_detail_box {
+  width: 1050px;
+  height: 320px;
+  /* border-bottom: 1px solid #5c8d89; */
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 48px;
+}
+
+.student_non_submit_assignment_detail_title {
+  font-size: 36px;
+  font-weight: 700;
+  color: black;
+}
+
+.assignment_submit_button {
+  width: 120px;
+  height: 48px;
+  background-color: #5c8d89;
+  color: white;
+  border-radius: 20px;
+}
+
+.assignment_submit_button:hover {
+  width: 120px;
+  height: 48px;
+  background-color: rgba(167, 215, 197, 0.85);
+  color: white;
+  border-radius: 20px;
+}
+
+/* 피드백 스타일 */
+.student_submit_assignment_feedback_box {
+  width: 1050px;
+  height: 320px;
+  /* border-top: 1px solid #5c8d89; */
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 48px;
+}
+
+.student_submit_assignment_feedback_content {
+  font-size: 28px;
+  color: black;
+}
+
+.student_submit_assignment_feedback_date_box {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  font-size: 24px;
+  color: black;
+}
+
+.student_submit_assignment_feedback_date {
+  font-size: 24px;
+}

@@ -1,0 +1,98 @@
+.main_container {
+  display: flex;
+  flex-direction: column;
+  width: 1120px;
+  padding: 100px 68px;
+  background-color: #fff;
+}
+
+.student_freeboard_page_title_box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.student_freeboard_page_title {
+  font-weight: 700;
+  font-size: 48px;
+  margin-bottom: 75px;
+  font-weight: 700;
+}
+
+.regist_freeboard_writing {
+  color: #fff;
+  padding: 10px 40px;
+  border-radius: 20px;
+  height: 50px;
+  background-color: var(--studentMainColor);
+}
+
+/* 테이블 */
+.student_freeboard_table {
+  border-collapse: collapse;
+  border-bottom: 1px solid var(--studentSubColor);
+}
+
+.student_freeboard_table th,
+.student_freeboard_table td {
+  padding: 8px;
+  text-align: center;
+}
+
+.student_freeboard_table_header th {
+  color: var(--studentMainColor);
+  padding: 20px 0;
+  border-bottom: 1px solid var(--studentSubColor);
+}
+
+.student_freeboard_table_body th {
+  padding: 20px 0;
+}
+
+.student_freeboard_table_body td:nth-child(2) {
+  cursor: pointer;
+}
+
+.table-header-row th:nth-child(2) {
+  width: 30%;
+}
+
+.table-header-row th:nth-child(4) {
+  width: 20%;
+}
+
+.table-header-row th:nth-child(1),
+.table-header-row th:nth-child(3),
+.table-header-row th:nth-child(5) {
+  width: 10%;
+}
+
+/* 페이지네이션 */
+.freeboard_pagination {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px 0;
+}
+
+.freeboard_pagination button {
+  font-size: 20px;
+}
+
+.freeboard_pagination i {
+  font-size: 20px;
+  color: var(--studentMainColor);
+}
+
+.freeboard_pagination .active {
+  font-weight: bold;
+  color: var(--studentMainColor);
+  font-size: 20px;
+}
+
+.freeboard_pagination button:disabled {
+  color: gray;
+  cursor: not-allowed;
+}

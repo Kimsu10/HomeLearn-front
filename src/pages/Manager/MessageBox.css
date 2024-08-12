@@ -1,0 +1,82 @@
+.message-box-wrapper {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+}
+
+.message-item {
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  position: relative;
+  border: 1px solid #757575;
+  width: 235px;
+}
+
+.message-item h2 {
+  color: #757575;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.message-item h3 {
+  color: #000000;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.message-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.message-icon {
+  position: relative;
+  font-size: 64px;
+  color: #b4b4b8;
+  font-size: 200px;
+}
+.envelope-icon {
+  cursor: pointer;
+}
+
+.message-count {
+  position: absolute;
+  top: 30px;
+  right: 0px;
+  background: #ff0000;
+  color: white;
+  border-radius: 100px;
+  padding: 5px 10px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 20px;
+}
+
+.view-more {
+  font-size: 14px;
+  color: #757575;
+  text-decoration: none;
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+}
+.view-more:hover {
+  color: #000000;
+}
+
+.fa-envelope {
+  cursor: pointer;
+}
+.fa-envelope:hover {
+  color: #000000;
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "type": "alert",
+    "title": "퇴실체크 부탁드려요",
+    "writeDate": "2024-07-28"
+  },
+  {
+    "id": 1,
+    "type": "alert",
+    "title": "가족 사망시 신청할 서류",
+    "writeDate": "2024-07-21"
+  },
+  {
+    "id": 1,
+    "type": "normal",
+    "title": "공휴일 학원 안열어요",
+    "writeDate": "2024-06-24"
+  },
+  {
+    "id": 1,
+    "type": "normal",
+    "title": "자리배치 결과",
+    "writeDate": "2024-04-01"
+  }
+]

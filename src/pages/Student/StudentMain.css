@@ -1,0 +1,48 @@
+.sidebar_title {
+  font-size: 28px;
+  cursor: pointer;
+  padding: 20px 0;
+}
+
+.student_dashboard_list_container > ul {
+  list-style: none;
+  width: 300px;
+  padding: 20px 20px 37.5px 20px;
+  font-size: 28px;
+  position: relative;
+}
+
+.stu_sidebar_toogle_btn {
+  font-size: 20px;
+  position: absolute;
+  top: 30px;
+  right: 60px;
+}
+
+.student_dashboard_section {
+  cursor: pointer;
+}
+
+.student_dashboard_section li {
+  padding: 20px 0 0 0;
+  font-size: 20px;
+  display: none;
+}
+
+.student_dashboard_section.show li {
+  display: list-item;
+}
+
+.student_main_components {
+  flex-grow: 1;
+  padding: 10px;
+}
+
+/* 메인 컴포너느 스타일 */
+.student_subject_main_container {
+  display: flex;
+  flex-direction: column;
+  width: 1120px;
+  padding: 100px 36px 20px 36px;
+  background-color: #fff;
+}

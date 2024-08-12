@@ -1,0 +1,20 @@
+[
+  {
+    "questionId": 1,
+    "type": "JAVA",
+    "lectureName": "JAVA 설치",
+    "questionTitle": "서비스 테스트 하는데 오류가 나요",
+    "watchCount": 123,
+    "commentCount": 198,
+    "writeDate": "2023-08-09 혹시 props로 넘겨줄 일이있을까?"
+  },
+  {
+    "questionId": 2,
+    "type": "MySQL",
+    "lectureName": "MYSQL 설치",
+    "questionTitle": "",
+    "watchCount": 23,
+    "commentCount": 7,
+    "writeDate": "2024-07-09"
+  }
+]

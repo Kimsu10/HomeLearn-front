@@ -1,0 +1,69 @@
+/* Container ================================== */
+#default_header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10000;
+  width: 100%;
+  height: 80px;
+  border-bottom: 1px solid var(--borderColor-300);
+  background: #fff;
+}
+
+.default_h-inner {
+  position: relative;
+  max-width: 1440px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.default_h-left {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.default_h-right {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Logo ===================================== */
+.default_h-logo {
+  width: 100px;
+}
+
+.default_h-logo a {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.default_h-logo a img {
+  width: 100%;
+}
+
+/* Login Btn ================================= */
+.default_h-login_btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 100px;
+  height: 40px;
+  background: var(--studentMainColor);
+  border-radius: 2rem;
+  color: #fff;
+  font-size: 1.6rem;
+  transition: background 0.3s ease;
+}
+
+.default_h-login_btn:hover {
+  background: var(--studentSubColor);
+  font-weight: 700;
+}

@@ -1,0 +1,77 @@
+/* Container ===============================================*/
+#footer {
+    padding: 1.5rem 0;
+    border-top: 1px solid #ddd;
+}
+
+.f-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.navbar-brand img {
+    width: 10rem;
+    height: 7rem;
+}
+
+.f-gnb {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding-top: 0.6rem;
+}
+
+.f-gnb > li > a {
+    font-size: 1.4rem;
+}
+
+.f-gnb > li:nth-child(2) > a {
+    font-weight: 700;
+    color: var(--studentMainColor);
+}
+
+.f-information {
+    font-size: 1.4rem;
+}
+
+.f-copyright {
+    font-size: 1.4rem;
+    padding-top: 0.6rem;
+}
+
+.f-team {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding-top: 0.6rem;
+}
+
+.f-team span {
+    font-size: 1.4rem;
+}
+
+/* MEDIA QUERY START ===============================================*/
+@media screen and (max-width: 1200px) {
+    #footer {
+        padding: 4rem 2rem;
+    }
+}
+@media screen and (max-width: 1024px) {
+}
+@media screen and (max-width: 768px) {
+    .f-gnb {
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+}
+@media screen and (max-width: 500px) {
+    #footer {
+        padding: 4rem 2rem;
+    }
+    .f-gnb {
+        padding-top: 2.4rem;
+    }
+}
+/* MEDIA QUERY END ===============================================*/

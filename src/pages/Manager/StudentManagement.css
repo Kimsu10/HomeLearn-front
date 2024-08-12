@@ -1,0 +1,434 @@
+.student-management h1 {
+  margin-bottom: 20px;
+}
+
+.add_title {
+  display: flex;
+  justify-content: center;
+  margin: 0px auto;
+  font-size: 28px;
+  font-weight: bold;
+  color: #757575;
+}
+
+.student-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.student-program-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.student-program-buttons button {
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.student-program-buttons button.selected {
+  background-color: #757575;
+  color: white;
+}
+
+.student-program-buttons button:hover {
+  background-color: #B4B4B8;
+  color: white;
+}
+
+.student-controls input {
+  padding: 8px;
+  border: 1px solid #757575;
+  border-radius: 20px;
+  background: #F4F5F7;
+}
+
+.student-controls select {
+  width: 200px;
+  border: 1px solid #757575;
+  border-radius: 20px;
+  background: #F4F5F7;
+  margin-left: 10px;
+  padding-left: 10px;
+}
+
+.student-search-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.student-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.student-search-icon {
+  position: absolute;
+  right: 10px;
+  font-size: 16px;
+  color: #757575;
+}
+
+.student-refresh-button {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  background-color: #f4f4f4;
+  cursor: pointer;
+}
+
+.student-refresh-button:hover {
+  background-color: #ddd;
+}
+
+.student-table-container {
+  width: 100%;
+}
+
+.student-table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+}
+
+.student-table-container th{
+    border: 1px solid #ddd;
+   padding: 8px;
+   text-align: center;
+   background-color: #F4F5F7;
+ }
+
+ .student-table-container td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  background-color: #F4F5F7;
+    cursor:pointer;
+}
+
+
+.student-table-container th {
+  background-color: #E3E1D9;
+}
+
+.student-table-container tr:nth-child(even) {
+  background-color: #F4F5F7;
+
+}
+
+.student-table-container th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #757575;
+  color: white;
+}
+
+.student-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: end;
+  width: 100%;
+  gap:20px;
+}
+
+.student-actions button {
+  padding: 10px 20px;
+  border: 1px solid #757575;
+  background-color: #f4f5f7;
+  color: #757575;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.student-actions button:hover {
+  background-color: #B4B4B8;
+}
+
+.status.present {
+  color: #047404;
+  font-weight: bold;
+}
+
+.status.absent {
+  color: #F02121;
+  font-weight: bold;
+}
+
+.student-form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.student-course-selection {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.student-course-button {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.student-course-button.selected {
+  border-color: #757575;
+  color: #fff;
+  background: #757575;
+}
+
+.student-generation-selection {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.student-generation-selection select {
+  width: 200px;
+  border: 1px solid #757575;
+  border-radius: 20px;
+  background: #F4F5F7;
+  padding-left: 10px;
+  font-size: 16px;
+  height: 35px;
+}
+
+.student-gender-selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 15px;
+}
+
+.student-gender-buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.student-gender-button {
+  font-size: 15px;
+  font-weight: bold;
+  background-color: #f4f4f4;
+  border: 1px solid #D9D9D9;
+  border-radius: 8px;
+  padding: 20px 20px;
+  cursor: pointer;
+}
+
+.student-gender-button.selected {
+  background-color: #757575;
+  color: white;
+}
+
+.student-gender-button:hover {
+  background-color: #ddd;
+}
+
+.student-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.student-input-group label {
+  margin-bottom: 5px;
+  margin-left: 60px;
+  align-self: flex-start;
+  font-size: 20px;
+  font-weight: bold;
+  color: #757575;
+}
+
+.student-input-group input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 70%;
+  max-width: 400px;
+}
+
+.student-file-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 120px;
+}
+
+.student-custom-file-upload {
+  display: inline-block;
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #757575;
+  color: white;
+  border-radius: 8px;
+}
+
+.student-custom-file-upload:hover {
+  background-color: #ddd;
+  color: #757575;
+}
+
+.student-file-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.student-file-preview i {
+  font-size: 48px;
+  color: #757575;
+}
+
+.student-file-preview span {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #757575;
+}
+
+.student-file-remove-button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #757575;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.student-file-remove-button:hover {
+  background-color: #ddd;
+  color: #757575;
+}
+
+.student-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.student-modal-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #757575;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.student-modal-button:hover {
+  background-color: #ddd;
+  color: #757575;
+}
+
+.student-gender-label {
+  margin-bottom: 10px;
+  margin-right: 250px;
+  align-self: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #757575;
+}
+
+.student-excel-label {
+  margin-bottom: 10px;
+  margin-right: 150px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #757575;
+}
+
+.student-file-line {
+  border-radius: 10px;
+  height: 5px;
+  background: #000;
+}
+
+.student-modal-file {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.student-modal-file-button {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 10px;
+  width: 120px;
+  background-color: #757575;
+  color: white;
+}
+
+.student-modal-file-button:hover {
+  background-color: #ddd;
+  color: #757575;
+}
+
+.student-upload-progress-container {
+  display: flex;
+  justify-content: center;
+}
+
+/* 테이블 열 너비 조정 */
+.student-table-container th:nth-child(1),
+.student-table-container td:nth-child(1) {
+  width: 5%;
+}
+
+.student-table-container th:nth-child(2),
+.student-table-container td:nth-child(2) {
+  width: 5%;
+}
+
+.student-table-container th:nth-child(3),
+.student-table-container td:nth-child(3) {
+  width: 25%;
+}
+
+.student-table-container th:nth-child(4),
+.student-table-container td:nth-child(4) {
+  width: 5%;
+}
+
+.student-table-container th:nth-child(5),
+.student-table-container td:nth-child(5) {
+  width: 10%;
+}
+
+.student-table-container th:nth-child(6),
+.student-table-container td:nth-child(6) {
+  width: 5%;
+}
+
+.student-table-container th:nth-child(7),
+.student-table-container td:nth-child(7) {
+  width: 25%;
+}
+
+.student-table-container th:nth-child(8),
+.student-table-container td:nth-child(8) {
+  width: 13%;
+}
+
+.student-table-container th:nth-child(9),
+.student-table-container td:nth-child(9) {
+  width: 10%;
+}

@@ -1,0 +1,17 @@
+1. CSRF 토큰
+- 첫 페이지 로딩 시 /csrf-token 엔드포인트를 호출하여 CSRF 토큰을 받아옴 -> state에 저장
+- 서버로 민감한 요청(POST, PUT, DELETE 등)을 보낼 때 state에서 CSRF 토큰을 꺼내어 요청 헤더에 포함
+
+2. JWT
+- 로그인 성공 시 응답 헤더에 Access Token이 쿠키에 Refresh Token이 발급됨
+- 로그인 이후 모든 요청 헤더에 Access Token을 포함시켜야 함
+- 서버로 요청 시 Access Token이 만료되었다면, Refresh Token을 사용하여 /reissue 경로로 새로운 Access Token을 요청해야 함. Axios Interceptor 등을 통해 자동화 필요
+
+3. UX를 위해 클라이언트측 검증 로직 필요
+
+4. 로그인 이후 헤더에 사용자 role 정보 담아줄테니 그에 맞추어 대시보드 보여주세요.
+
+* 응답 설정
+- Access Token -> Header
+- Refresh Token -> Cookie
+- Role -> Header

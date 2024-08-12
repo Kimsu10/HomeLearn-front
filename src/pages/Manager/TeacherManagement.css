@@ -1,0 +1,274 @@
+.teacher-management h1 {
+  margin-bottom: 20px;
+}
+
+.add_title {
+  display: flex;
+  justify-content: center;
+  margin: 30px 40px;
+  font-size: 30px;
+  font-weight: bold;
+  color: #757575;
+}
+
+.teacher-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.teacher-program-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.teacher-program-buttons button {
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.teacher-program-buttons button.selected {
+  background-color: #757575;
+  color: white;
+}
+
+.teacher-program-buttons button:hover {
+  background-color: #B4B4B8;
+  color: white;
+}
+
+.teacher-controls input {
+  padding: 8px;
+  border: 1px solid #757575;
+  border-radius: 20px;
+  background: #F4F5F7;
+}
+
+.teacher-controls select {
+  width: 200px;
+  border: 1px solid #757575;
+  border-radius: 20px;
+  background: #F4F5F7;
+  margin-left: 10px;
+  padding-left: 10px;
+}
+
+.teacher-search-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.teacher-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.teacher-search-icon {
+  position: absolute;
+  right: 10px;
+  font-size: 16px;
+  color: #757575;
+}
+
+.teacher-refresh-button {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  background-color: #f4f4f4;
+  cursor: pointer;
+}
+
+.teacher-refresh-button:hover {
+  background-color: #ddd;
+}
+
+.teacher-table-container {
+  width: 100%;
+}
+
+.teacher-table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+}
+
+.teacher-table-container th, .teacher-table-container td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  background-color: #F4F5F7;
+}
+
+.teacher-table-container th {
+  background-color: #E3E1D9;
+}
+
+.teacher-table-container tr:nth-child(even) {
+  background-color: #F4F5F7;
+}
+
+.teacher-table-container tr:hover {
+  background-color: #B4B4B8;
+}
+
+.teacher-table-container th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #757575;
+  color: white;
+}
+
+.teacher-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: end;
+  width: 100%;
+  gap:20px;
+}
+
+.teacher-actions button {
+  padding: 10px 20px;
+  border: 1px solid #757575;
+  background-color: #f4f5f7;
+  color: #757575;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.teacher-actions button:hover {
+  background-color: #B4B4B8;
+}
+
+.teacher-form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.teacher-course-selection {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.teacher-course-button {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.teacher-course-button.selected {
+  border-color: #757575;
+  color: #fff;
+  background: #757575;
+}
+
+.teacher-generation-selection {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.teacher-generation-selection select {
+  width: 200px;
+  border: 1px solid #757575;
+  border-radius: 20px;
+  background: #F4F5F7;
+  padding-left: 10px;
+  font-size: 16px;
+  height: 35px;
+}
+
+.teacher-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.teacher-input-group label {
+  margin-bottom: 5px;
+  margin-left: 60px;
+  align-self: flex-start;
+  font-size: 20px;
+  font-weight: bold;
+  color: #757575;
+}
+
+.teacher-input-group input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 70%;
+  max-width: 400px;
+}
+
+.teacher-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.add-teacher-modal-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #757575;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.add-teacher-modal-button:hover {
+  background-color: #ddd;
+  color: #757575;
+}
+
+/* 테이블 열 너비 조정 */
+.teacher-table-container th:nth-child(1),
+.teacher-table-container td:nth-child(1) {
+  width: 5%;
+}
+
+.teacher-table-container th:nth-child(2),
+.teacher-table-container td:nth-child(2) {
+  width: 5%;
+}
+
+.teacher-table-container th:nth-child(3),
+.teacher-table-container td:nth-child(3) {
+  width: 10%;
+}
+
+.teacher-table-container th:nth-child(4),
+.teacher-table-container td:nth-child(4) {
+  width: 30%;
+}
+
+.teacher-table-container th:nth-child(5),
+.teacher-table-container td:nth-child(5) {
+  width: 5%;
+}
+
+.teacher-table-container th:nth-child(6),
+.teacher-table-container td:nth-child(6) {
+  width: 20%;
+}
+
+.teacher-table-container th:nth-child(7),
+.teacher-table-container td:nth-child(7) {
+  width: 15%;
+}

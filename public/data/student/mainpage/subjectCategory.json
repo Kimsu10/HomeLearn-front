@@ -1,0 +1,5 @@
+[
+  { "subjectId": 1, "name": "JAVA" },
+  { "subjectId": 2, "name": "SQL" },
+  { "subjectId": 3, "name": "React" }
+]

@@ -1,0 +1,255 @@
+.curriculum-submit {
+  display: flex;
+  justify-content: center;
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  max-width: 1200px;
+}
+
+.curriculum-add-button {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: 1px solid #757575;
+  background-color: #F4F5F7;
+  color: #757575;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.curriculum-add-button:hover {
+  background-color: #757575;
+  color: #fff;
+}
+
+.curriculum-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  max-width: 1200px;
+  padding: 20px;
+}
+
+.curriculum-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.curriculum-card {
+  background-color: #ffffff;
+  border: 3px solid #757575;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-bottom: 10px;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.curriculum-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 20px;
+}
+
+.curriculum-th {
+  font-size: 16px;
+  background-color: #e0e0e0;
+  border-radius: 20px;
+  padding: 5px 10px;
+  border: 1px solid #757575;
+  text-align: center;
+  width: 70px;
+}
+
+.curriculum-type {
+  font-size: 18px;
+  color: #757575;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.curriculum-type:hover {
+  color: #000;
+}
+
+.curriculum-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.curriculum-teacher {
+  font-size: 16px;
+  color: #666;
+}
+
+.curriculum-students {
+  font-size: 16px;
+  color: #666;
+}
+
+.curriculum-students i {
+  margin-right: 5px;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.course-selection {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px 20px;
+}
+
+.course-button {
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.course-button.selected {
+  background-color: #757575;
+  color: white;
+}
+
+.curriculum-input-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.curriculum-input-group label {
+  display: flex;
+  width: 310px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #757575;
+  margin-bottom: 10px;
+}
+
+.color-input-wrapper {
+  position: relative;
+  width: 60%;
+  display: flex;
+  align-items: center;
+}
+
+.color-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: left;
+  pointer-events: none;
+  box-sizing: border-box;
+  padding-right: 40px;
+}
+
+.color-input-select {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.color-box {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 1px solid #000;
+}
+
+.teacher-select {
+  width: 60%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #757575;
+  font-size: 16px;
+}
+
+.teacher-select option {
+  padding: 10px;
+}
+
+.color-picker-modal-overlay {
+  position: fixed;
+  top: 240px;
+  left: 600px;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.color-picker-modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #757575;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.modal-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #757575;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-button:hover {
+  background-color: #555;
+}
+
+.curriculum-start-date-input,
+.curriculum-end-date-input {
+  width: 60%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  color: #757575;
+}

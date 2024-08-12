@@ -1,0 +1,177 @@
+.teacher_sideBar_container {
+    display: flex;
+}
+
+.teacher_sideBar_content {
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+    margin-top: 10rem;
+    gap: 5rem;
+}
+
+.teacher_sideBar_profile_box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 280px;
+    height: 120px;
+    gap: 1rem;
+}
+
+.teacher_sideBar_profile_image {
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    border: 1px solid var(--teacherMainColor);
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.teacher_sideBar_profile_img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.teacher_sideBar_profile_right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    gap: 0.5rem;
+}
+
+.teacher_sideBar_profile_name {
+    display: flex;
+    align-items: start;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--managerMainColor);
+}
+
+.teacher_sideBar_profile_curriculum {
+    display: flex;
+    align-items: start;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--managerMainColor);
+}
+
+.teacher_sideBar_profile_progress_bar {
+    width: 100%;
+    height: 12px;
+    background-color: var(--teacherSubColor);
+    border-radius: 2rem;
+    overflow: hidden;
+}
+
+.teacher_sideBar_profile_progress {
+    height: 95%;
+    background-color: var(--teacherMainColor);
+}
+
+.teacher_sideBar_profile_progress_text {
+    display: block;
+    text-align: right;
+    font-size: 1rem;
+    color: var(--managerMainColor);
+}
+
+.teacher_sideBar_seperate_line {
+    border: 1px solid #dddddd;
+    margin-bottom: 2rem;
+}
+
+.teacher_sideBar_link {
+    display: block;
+    width: 240px;
+    height: 100%;
+    margin: 0 auto;
+    color: inherit;
+    text-decoration: none;
+}
+
+.teacher_sideBar_menu {
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.teacher_sideBar_menu li {
+    width: 100%;
+    padding: 1rem 0;
+    margin-bottom: 5rem;
+    font-size: 2.4rem;
+    color: var(--managerMainColor);
+    cursor: pointer;
+    transition: color 0.3s ease, font-weight 0.3s ease;
+    list-style-type: none;
+}
+
+.teacher_sideBar_menu li:hover,
+.teacher_sideBar_menu li .teacher_sideBar_link.active {
+    color: var(--teacherSubColor);
+    font-weight: 700;
+}
+
+.teacher_sideBar_dropdownHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-size: 2.4rem;
+    color: var(--managerMainColor);
+    padding: 1rem 0;
+    transition: color 0.3s ease, font-weight 0.3s ease;
+    cursor: pointer;
+}
+
+.teacher_sideBar_dropdownHeader:hover,
+.teacher_sideBar_dropdownHeader.active {
+    color: var(--teacherSubColor);
+    font-weight: 700;
+}
+
+.teacher_sideBar_dropdownArrow {
+    font-size: 20px;
+    margin-left: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.teacher_sideBar_dropdownArrow.open {
+    transform: rotate(180deg);
+}
+
+.teacher_sideBar_subMenu {
+    list-style-type: none;
+    padding-left: 20px;
+    margin-top: 10px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.teacher_sideBar_subMenu.open {
+    max-height: 100px;
+}
+
+.teacher_sideBar_subMenu li {
+    margin-bottom: 2rem;
+    cursor: pointer;
+    font-size: 1.6rem;
+    color: var(--managerMainColor);
+    padding: 5px 0;
+}
+
+.teacher_sideBar_subMenu li:hover,
+.teacher_sideBar_subMenu li .teacher_sideBar_link.active {
+    color: var(--teacherSubColor);
+    font-weight: 700;
+}
+
+.teacher_sideBar_line {
+    border: 1px solid #dddddd;
+}

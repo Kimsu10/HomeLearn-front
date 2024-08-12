@@ -1,0 +1,239 @@
+.teacher-calendar-container {
+  border: 1px solid #b1b2ff;
+  background-color: rgba(210, 218, 255, 0.25);
+  border-radius: 10px;
+  box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.15);
+  padding-top: 40px;
+  height: 710px;
+  width: 500px;
+}
+
+.teacher-calendar {
+  width: 100%;
+}
+
+.teacher-calendar-title {
+  text-align: center;
+  font-size: 31px;
+  margin-bottom: 37px;
+  color: #b1b2ff;
+}
+
+.teacher-calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.teacher-calendar-header button {
+  background: none;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.teacher-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 7px;
+  font-size: 15px;
+}
+
+.teacher-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /*1열에 7개씩*/
+  padding: 15px;
+  column-gap: 0px;
+}
+
+.teacher-day {
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+  position: relative;
+  min-width: 45px;
+  min-height: 67px;
+  display: flex;
+  flex-direction: column;
+}
+
+.teacher-day:hover {
+  background-color: #aac4ff;
+}
+
+.teacher-day.selected {
+  background-color: #b4b4b8;
+}
+
+.teacher-other-month {
+  color: #ccc;
+}
+
+.teacher-events-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: auto;
+  position: relative;
+}
+
+.teacher-event-bar {
+  width: 90%;
+  height: 20px;
+  border-radius: 5px;
+  margin: 2px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.teacher-event-title {
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.teacher-event-form input,
+.teacher-event-form textarea {
+  width: 95%;
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 16px;
+  resize: none;
+}
+
+.teacher-event-form button {
+  width: 95%;
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 16px;
+  resize: none;
+  cursor: pointer;
+  background-color: #5c8d89;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.teacher-color-picker {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+.teacher-color-option {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.teacher-color-option.selected {
+  border: 2px solid black;
+}
+
+.teacher-events-list {
+  width: 30%;
+  padding: 20px;
+  border-left: 5px solid #eee;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.teacher-event-item {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.teacher-add-list {
+  display: flex;
+  justify-content: space-between;
+  margin: 30px 15px;
+}
+
+.teacher-add-list button {
+  font-size: 15px;
+  cursor: pointer;
+  background-color: #aac4ff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.teacher-add-list button:hover {
+  background-color: #b1b2ff;
+}
+
+.teacher-calendar-submit {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.teacher-calendar-submit button {
+  font-size: 18px;
+  cursor: pointer;
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease;
+  width: 300px;
+}
+
+.teacher-calendar-submit button:hover {
+  background-color: #b4b4b8;
+}
+
+.teacher-modal-add {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.teacher-day .day-number {
+  display: block;
+  text-align: right;
+  position: absolute;
+  right: 10px;
+}
+
+.teacher-day.current-date .day-number {
+  background-color: #757575;
+  color: white;
+  border-radius: 50%;
+  padding: 5px;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  text-align: center;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.teacher-modal-add {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  font-size: 30px;
+}

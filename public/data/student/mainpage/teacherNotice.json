@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "type": "alert",
+    "title": "선생님 휴가갑니다~",
+    "writeDate": "2024-07-22"
+  },
+  {
+    "id": 1,
+    "type": "alert",
+    "title": "과제 미제출 명단",
+    "writeDate": "2024-07-21"
+  },
+  {
+    "id": 1,
+    "type": "normal",
+    "title": "오프라인 미팀 명단",
+    "writeDate": "2024-06-24"
+  },
+  {
+    "id": 1,
+    "type": "normal",
+    "title": "코로나 조심해요",
+    "writeDate": "2024-04-01"
+  }
+]

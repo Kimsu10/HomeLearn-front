@@ -1,0 +1,134 @@
+.faq-box-wrapper {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  width: 500px;
+  height: 285px;
+}
+
+.faq-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 262px;
+  width: 195px;
+}
+
+.faq-item {
+  background-color: rgba(210, 218, 255, 0.25);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #b1b2ff;
+  box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.15);
+  width: 235px;
+}
+
+.faq-item h2 {
+  color: #b1b2ff;
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.faq-icon {
+  font-size: 150px;
+  display: flex;
+  flex-direction: column;
+}
+
+.faq-count {
+  background: #ff0000;
+  color: white;
+  border-radius: 100px;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-self: end;
+  align-items: center;
+  width: 36px;
+  height: 21px;
+}
+
+.faq-view-more {
+  font-size: 12px;
+  color: #b1b2ff;
+  text-decoration: none;
+  align-self: end;
+}
+.faq-view-more:hover {
+  color: #b1b2ff;
+}
+
+.faq-icon .fa-envelope {
+  color: #aac4ff;
+}
+
+.faq-icon .fa-envelope:hover {
+  color: #b1b2ff;
+}
+
+.faq-notice-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 262px;
+  width: 187px;
+}
+
+.teacher-notice-content {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+}
+
+.teacher-notice {
+  position: relative;
+  height: 37px;
+  width: 187px;
+  border: 3px solid #aac4ff;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 10px;
+  background-color: white;
+}
+
+.teacher-notice a {
+  height: 100%;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-size: 12px;
+  color: black;
+  position: absolute;
+  width: 100%;
+  margin-left: 50px;
+}
+
+.teacher-notice a:hover {
+  cursor: pointer;
+}
+
+.teacher-manager-notice-state {
+  border: 1px solid #d2daff;
+  background-color: #eef1ff;
+  border-radius: 20px;
+  font-size: 12px;
+  width: 37px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.teacher-manager-notice-date {
+  font-size: 10px;
+  color: black;
+}

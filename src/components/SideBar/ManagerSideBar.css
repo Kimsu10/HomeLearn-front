@@ -1,0 +1,116 @@
+.manager_sideBar_container {
+  display: flex;
+}
+
+.manager_sideBar_content {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+  margin-top: 10rem;
+  gap: 5rem;
+}
+
+.manager_sideBar_date_box {
+  margin: 0 auto;
+}
+
+.manager_sideBar_date {
+  width: 220px;
+  height: 50px;
+  background: var(--managerMainColor), var(--mainOpacity);
+  border-radius: 1rem;
+  border: 1px solid var(--managerMainColor);
+  font-size: 2.4rem;
+  padding: 1rem 2rem;
+}
+
+.manager_sideBar_link {
+  display: block;
+  width: 240px;
+  height: 100%;
+  margin: 0 auto;
+  color: inherit;
+  text-decoration: none;
+}
+
+.manager_sideBar_menu {
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.manager_sideBar_menu li {
+  width: 100%;
+  padding: 1rem 0;
+  margin-bottom: 5rem;
+  font-size: 2.4rem;
+  color: var(--managerMainColor);
+  cursor: pointer;
+  transition: color 0.3s ease, font-weight 0.3s ease;
+  list-style-type: none;
+}
+
+.manager_sideBar_menu li:hover,
+.manager_sideBar_menu li .manager_sideBar_link.active {
+  color: #000;
+  font-weight: 700;
+}
+
+.manager_sideBar_dropdownHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-size: 2.4rem;
+  color: var(--managerMainColor);
+  padding: 1rem 0;
+  transition: color 0.3s ease, font-weight 0.3s ease;
+  cursor: pointer;
+}
+
+.manager_sideBar_dropdownHeader:hover,
+.manager_sideBar_dropdownHeader.active {
+  color: #000;
+  font-weight: 700;
+}
+
+.manager_sideBar_dropdownArrow {
+  font-size: 20px;
+  margin-left: 5px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.manager_sideBar_dropdownArrow.open {
+  transform: rotate(180deg);
+}
+
+.manager_sideBar_subMenu {
+  list-style-type: none;
+  padding-left: 20px;
+  margin-top: 10px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.manager_sideBar_subMenu.open {
+  max-height: 100px;
+}
+
+.manager_sideBar_subMenu li {
+  margin-bottom: 2rem;
+  cursor: pointer;
+  font-size: 1.6rem;
+  color: var(--managerMainColor);
+  padding: 5px 0;
+}
+
+.manager_sideBar_subMenu li:hover,
+.manager_sideBar_subMenu li .manager_sideBar_link.active {
+  color: #000;
+  font-weight: 700;
+}
+
+.manager_sideBar_line {
+  border: 1px solid #dddddd;
+}

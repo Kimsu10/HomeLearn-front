@@ -1,0 +1,226 @@
+.main_container {
+  display: flex;
+  flex-direction: column;
+  width: 1120px;
+  padding: 100px 68px;
+  background-color: #fff;
+}
+
+.student_freeboard_detail_page_title_box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 36px;
+  margin-bottom: 75px;
+  position: relative;
+}
+
+.student_freeboard_detail_page_title {
+  font-weight: 700;
+  font-size: 48px;
+}
+
+.freeboard_three_dot {
+  cursor: pointer;
+}
+
+.student_freeboard_detail_box {
+  position: absolute;
+  right: -40px;
+  top: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 120px;
+  height: 120px;
+  border: 1px solid var(--studentMainColor);
+  border-radius: 20px;
+  font-size: 20px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.student_freeboard_detail {
+  height: 40px;
+
+  color: var(--studentMainColor);
+}
+
+.devide_button_border {
+  margin: 0;
+  color: transparent;
+  border-bottom: 2px solid var(--studentMainColor);
+}
+
+/* 조회한 자유 게시판 글 */
+.freeboard_detail_container {
+  color: #000000;
+  border-bottom: 1px solid var(--studentSubColor);
+}
+
+.freeboard_detail_title {
+  margin-bottom: 44px;
+}
+
+.freeboard_detail_content {
+  font-size: 20px;
+}
+
+.freeboard_detail_info_box {
+  margin: 30px 0;
+  color: var(--studentSubColor);
+}
+
+.freeboard_detail_info_box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+}
+
+.freeboard_writer_info_box {
+  color: #000;
+}
+
+.freeboard_writer_date {
+  color: var(--studentSubColor) !important;
+}
+
+/* 댓글 리스트들 */
+.freeboard_writer_comment_box {
+  font-size: 20px;
+  padding: 30px 30px 0 30px;
+}
+
+.freeboard_comment_list_container {
+  padding: 30px;
+  border-bottom: 1px solid var(--studentSubColor);
+}
+
+.freeboard_comment_write_form {
+  padding: 20px;
+  border: 2px solid var(--studentSubColor);
+  border-radius: 10px;
+}
+
+.freeboard_user_info_box {
+  font-size: 20px;
+  color: #000;
+  display: flex;
+  align-items: center;
+}
+
+.freeboard_user_profile {
+  width: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--studentSubColor);
+}
+
+.freeboard_current_write_textarea {
+  margin: 20px 0 4px 0;
+  font-size: 16px;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+}
+
+.freeboard_current_write_setting_box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.textarea_letter_count_box {
+  color: #d9d9d9;
+  padding-right: 20px;
+  margin-bottom: 5px;
+  font-size: 16px;
+}
+
+.student_submit_btn {
+  background-color: var(--studentMainColor);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+/* 댓글 리스트들 */
+.student_freeboard_comment_list {
+  padding: 30px;
+  border-bottom: 1px solid var(--studentSubColor);
+  font-size: 16px;
+}
+
+.freeboard_written_user_info_box {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+  position: relative;
+}
+
+.freeboard_comment_modify_box {
+  position: absolute;
+  right: -40px;
+  top: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100px;
+  height: 80px;
+  border: 1px solid var(--studentMainColor);
+  border-radius: 20px;
+  font-size: 20px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.freeboard_write_textarea {
+  font-size: 16px;
+  margin: 20px 0 4px 0;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+}
+
+.freeboard_writedate_box {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.freeboard_written_date {
+  color: #d9d9d9;
+}
+
+/* 대댓글 리스트 */
+.freeboard_recoment_list {
+  padding: 30px 30px 30px 60px;
+  border-bottom: 1px solid var(--studentSubColor);
+  font-size: 16px;
+  position: relative;
+}
+
+.freeboard_recoment_box {
+  width: 924px;
+  padding: 0 30px;
+}
+
+.freeboard_recomment_modify_box {
+  position: absolute;
+  right: -40px;
+  top: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100px;
+  height: 80px;
+  border: 1px solid var(--studentMainColor);
+  border-radius: 20px;
+  font-size: 20px;
+  overflow: hidden;
+  background-color: #fff;
+}

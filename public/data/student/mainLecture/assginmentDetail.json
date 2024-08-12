@@ -1,0 +1,61 @@
+{
+  "subjectId": "3",
+  "title": "Spring 으로 게시판 생성",
+  "content": "Sprign MVC로 CRUD를 고려하여 게시판 생성",
+  "writeDate": "2024-06-11",
+  "totalStudent": 30,
+  "deadline": "2024-07-31",
+  "fileName": "1주차 수업자료.zip",
+  "participants": [
+    {
+      "studentId": "21",
+      "name": "최시호",
+      "submittedDate": "2024-06-25",
+      "submitTitle": "[데브옵스 10기 최시호]Spring 과제제출",
+      "content": "완벽하게 구현했습니다.",
+      "fileName": "Spring_Project_Kim.zip"
+    },
+    {
+      "studentId": "22",
+      "name": "정성진",
+      "submittedDate": "2024-06-26",
+      "submitTitle": "[데브옵스 10기 정성진]Spring 과제제출",
+      "content": "기본적인 기능을 구현했습니다.",
+      "fileName": "Spring_Project_Lee.zip"
+    },
+    {
+      "studentId": "23",
+      "name": "강보현",
+      "submittedDate": "2024-06-27",
+      "submitTitle": "[데브옵스 10기 강보현]Spring 과제제출",
+      "content": "몇 가지 버그가 있습니다.",
+      "fileName": "Spring_Project_Park.zip"
+    },
+    {
+      "studentId": "24",
+      "name": "최재원",
+      "submittedDate": "2024-06-28",
+      "submitTitle": "[데브옵스 10기 최재원]Spring 과제제출",
+      "content": "추가 기능을 구현했습니다.",
+      "fileName": "Spring_Project_Choi.zip"
+    },
+    {
+      "studentId": "25",
+      "name": "서창호",
+      "submittedDate": "2024-06-29",
+      "submitTitle": "[데브옵스 10기 서창호]Spring 과제제출",
+      "content": "데이터베이스 연동이 원활합니다.",
+      "fileName": "Spring_Project_Jung.zip"
+    }
+  ],
+  "nonParticipants": [
+    {
+      "studentId": "26",
+      "name": "피카츄"
+    },
+    {
+      "studentId": "27",
+      "name": "서지민"
+    }
+  ]
+}

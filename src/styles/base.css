@@ -1,0 +1,79 @@
+/* Color ================================================*/
+:root {
+  /* Student Color */
+  --studentMainColor: #5c8d89;
+  --studentSubColor: #74b49b;
+  --studentPrimaryColor: #a7d7c5;
+  --studentAssistColor: #f4f9f4;
+
+  /* Teacher Color */
+  --teacherMainColor: #b1b2ff;
+  --teacherSubColor: #aac4ff;
+  --teacherPrimaryColor: #d2daff;
+  --teacherAssistColor: #eef1ff;
+
+  /* Manager Color */
+  --managerMainColor: #757575;
+  --managerSubColor: #b4b4b8;
+  --managerPrimaryColor: #c7c8cc;
+  --managerAssistColor: #e3e1d9;
+
+  --titleColor: #1a1a1a;
+  --descColor: #666666;
+  --borderColor-300: #ededed;
+  --borderColor-500: #d1d1d1;
+  --pc_descSize: 1.6rem;
+  --tablet_descSize: 1.4rem;
+  --mobile_descSize: 1.2rem;
+  --box-shadow__A: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+  /* Opacity */
+  --mainOpacity: 0.2;
+  --subOpacity: 0.25;
+  --primaryOpacity: 0.3;
+}
+/* Typography ================================================*/
+body,
+input,
+select,
+textarea,
+button,
+table {
+  font-family: "NanumSquare", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 400; /* 100~900 */
+  color: var(--descColor);
+  line-height: 1.618;
+}
+a {
+  text-decoration: none;
+  color: var(--descColor);
+}
+
+input {
+  background-color: #fff;
+}
+
+#container {
+  /* 색이 보여서 투명하게 바꿈 */
+  background-color: transparent;
+}
+
+.inner_box {
+  position: relative;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.subCommon {
+  padding: 10rem 0 0;
+}
+
+.subTitle {
+  font-size: 3.2rem;
+  color: var(--mainColor);
+}
+
+.contents {
+  max-width: 1120px;
+}

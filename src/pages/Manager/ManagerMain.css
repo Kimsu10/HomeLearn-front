@@ -1,0 +1,44 @@
+.App {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  flex: 0 0 200px;
+}
+
+.content-area {
+  flex: 1;
+  padding: 20px;
+  width: 1120px;
+}
+
+/* grid 설정 */
+.dashboard-grid {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.manager-dashboard-divide-box {
+  display: flex;
+  width: 1120px;
+  height: 750px;
+  gap: 30px;
+}
+
+.manager-dashboard-divide-box2 {
+  display: flex;
+  width: 1120px;
+  gap: 30px;
+}
+
+.dashboard-grid > div {
+  border-radius: 10px;
+  padding: 20px;
+}

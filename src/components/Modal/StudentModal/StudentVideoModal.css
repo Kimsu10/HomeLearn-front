@@ -1,0 +1,32 @@
+.student_video_modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.student_video_modal_content {
+  background: #000;
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+  width: 100vw;
+  height: 80vh;
+}
+
+.student_video_modal_close {
+  position: absolute;
+  top: 0;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #fff;
+}

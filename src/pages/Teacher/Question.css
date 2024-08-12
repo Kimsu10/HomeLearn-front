@@ -1,0 +1,129 @@
+.question {
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  height: 650px;
+  margin: 0 auto;
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.question-header > h2 {
+  color: #b1b2ff;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.question-view {
+  background: transparent;
+  border: none;
+  color: #b1b2ff;
+}
+
+.question-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.question-item {
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 20px;
+  border: 3px solid #aac4ff;
+  padding: 11px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.question-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 22px;
+  justify-content: space-between;
+}
+
+.question-main {
+  display: flex;
+  align-items: center;
+}
+
+.question-id {
+  font-size: 15px;
+  width: 66px;
+  height: 24px;
+  background-color: rgba(210, 218, 255, 0.25);
+  border-radius: 20px;
+  border: 1px solid #b1b2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  color: #b1b2ff;
+}
+
+.question-title {
+  cursor: pointer;
+  color: #757575;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.question-title:hover {
+  color: #000000;
+}
+
+.question-date {
+  align-items: center;
+  color: #b1b2ff;
+  font-size: 12px;
+}
+
+.question-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #757575;
+}
+
+.question-sub {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  gap: 15px;
+}
+
+.question-subject {
+  font-weight: bold;
+  font-size: 15px;
+  color: #aac4ff;
+  max-width: 60px;
+  width: 56px;
+  text-align: left;
+}
+
+.question-content {
+  font-size: 15px;
+}
+
+.question-participants {
+  font-size: 12px;
+  color: #b1b2ff;
+  background: transparent;
+  border: none;
+}

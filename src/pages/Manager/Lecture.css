@@ -1,0 +1,153 @@
+.lecture-progress {
+  background: #f0f0f0;
+  border-radius: 20px;
+  padding: 20px;
+  border: 1px solid var(--managerMainColor);
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  margin: 0 auto;
+}
+
+.lecture-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.lecture-progress-title {
+  color: #757575;
+  font-size: 32px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.lecture-progress-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.lecture-progress-buttons button {
+  padding: 5px 15px;
+  border: 1px solid #757575;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 20px;
+  position: relative;
+  width: 88px;
+  height: 32px;
+  transition: background-color 0.3s ease;
+}
+
+.lecture-progress-buttons button.active {
+  background-color: #757575;
+  color: white;
+}
+
+.lecture-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 20px;
+}
+
+/* 스크롤바 */
+.lecture-list::-webkit-scrollbar {
+  width: 15px;
+}
+
+.lecture-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 20px;
+}
+/*내리는바 css*/
+.lecture-list::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+  border: 3px solid #f1f1f1;
+}
+
+.lecture-list::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.lecture-item {
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 20px;
+  border: 3px solid #757575;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.lecture-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.lecture-id {
+  font-size: 20px;
+  width: 88px;
+  height: 32px;
+  background-color: #e0e0e0;
+  border-radius: 20px;
+  border: 3px solid #757575;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.lecture-title {
+  cursor: pointer;
+  color: #757575;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.lecture-title:hover {
+  color: #000000;
+}
+
+.lecture-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #666;
+}
+
+.lecture-teacher {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+.lecture-teacher-name {
+  font-weight: bold;
+  font-size: 20px;
+  color: #666;
+}
+
+.lecture-duration {
+  font-size: 20px;
+}
+
+.lecture-participants {
+  font-size: 18px;
+}
+
+.lecture-participants i {
+  margin-right: 5px;
+}

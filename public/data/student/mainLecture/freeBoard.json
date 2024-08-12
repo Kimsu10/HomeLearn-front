@@ -1,0 +1,49 @@
+{
+  "totalPages": 1,
+  "totalElements": 4,
+  "first": true,
+  "last": true,
+  "size": 15,
+  "content": [
+    {
+      "boardId": 9,
+      "title": "ㄴㅇㄹㄴㅇㄹ",
+      "author": "김수정",
+      "createDate": "2024-08-11T18:13:06.163941",
+      "commentCount": 0
+    },
+    {
+      "boardId": 8,
+      "title": "sdfdsf",
+      "author": "김수정",
+      "createDate": "2024-08-11T18:10:03.500811",
+      "commentCount": 0
+    },
+    {
+      "boardId": 7,
+      "title": "학생 자유게시판 제목",
+      "author": "김수정",
+      "createDate": "2024-08-11T17:46:38.247579",
+      "commentCount": 0
+    },
+    {
+      "boardId": 6,
+      "title": "ㄴㅇㄹ",
+      "author": "김수정",
+      "createDate": "2024-08-11T17:45:22.626858",
+      "commentCount": 0
+    }
+  ],
+  "number": 0,
+  "sort": { "empty": true, "sorted": false, "unsorted": true },
+  "numberOfElements": 4,
+  "pageable": {
+    "pageNumber": 0,
+    "pageSize": 15,
+    "sort": { "empty": true, "sorted": false, "unsorted": true },
+    "offset": 0,
+    "paged": true,
+    "unpaged": false
+  },
+  "empty": false
+}
