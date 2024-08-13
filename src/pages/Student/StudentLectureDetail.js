@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useGetFetch from "../../hooks/useGetFetch";
 import "./StudentLectureDetail.css";
-import LectureVideo from "../Teacher/play";
+import LectureVideo from "./StudentPlayer";
 import { useEffect } from "react";
 
 const StudentLectureDetail = () => {

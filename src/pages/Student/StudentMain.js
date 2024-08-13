@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, Routes, Route } from "react-router-dom";
+import { useNavigate, Routes, Route, useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import "./StudentDashBoard.css";
 import StudentLecture from "./StudentLecture";
@@ -21,6 +21,7 @@ const StudentMain = () => {
   // const [showSection, setShowSection] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [username, setUsername] = useState("");
+  const location = useLocation();
 
   const navigate = useNavigate();
 
@@ -36,6 +37,8 @@ const StudentMain = () => {
   }, []);
 
   console.log(username); // 잘들어옴
+
+  const isLecturePage = location.pathname === "/students/lecture";
 
   // const toggleOpen = (section) => {
   //   setShowSection(showSection === section ? null : section);
@@ -58,7 +61,7 @@ const StudentMain = () => {
 
   return (
     <div className="student_dashboard_body" id="container">
-      <StudentHeader />
+      {!isLecturePage && <StudentHeader />}
       <StudentSideBar />
       <div className="contents">
         <Routes>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./StudentLectureList.css";
-import LectureVideo from "../Teacher/play";
+import LectureVideo from "./StudentPlayer";
 import StudentVideoModal from "../../components/Modal/StudentModal/StudentVideoModal";
 
 const StudentLectureList = () => {

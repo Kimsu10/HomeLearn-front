@@ -9,7 +9,7 @@ import LoginEmail from "./components/Login/Login_email";
 import ManagerMain from "./pages/Manager/ManagerMain";
 import StudentMain from "./pages/Student/StudentMain";
 import TeacherMain from "./pages/Teacher/TeacherMain";
-import YouTubePlayer from "./pages/Teacher/play";
+import YouTubePlayer from "./pages/Student/StudentPlayer";
 
 const Router = () => {
   return (
