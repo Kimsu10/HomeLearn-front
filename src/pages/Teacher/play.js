@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import useGetFetch from "../../hooks/useGetFetch";
 import axios from "axios";
 
-const LectureVideo = ({ url }) => {
+const LectureVideo = ({ url, subjectVideos }) => {
   console.log(url);
   const [player, setPlayer] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -61,28 +61,30 @@ const LectureVideo = ({ url }) => {
 
   const navigate = useNavigate();
 
-  const { data: subjectVideos, error: subjectVideosError } = useGetFetch(
-    "/data/student/mainLecture/lectureList.json",
-    []
-  );
+  // useGetFetch
+  // const { data: subjectVideos, error: subjectVideosError } = useGetFetch(
+  //   "/data/student/mainLecture/lectureList.json",
+  //   []
+  // );
 
-  const { data: subjectName, error: subjectNameError } = useGetFetch(
-    "/data/student/mainpage/subjectCategory.json",
-    []
-  );
+  // const { data: subjectName, error: subjectNameError } = useGetFetch(
+  //   "/data/student/mainpage/subjectCategory.json",
+  //   []
+  // );
 
   const handleMouseEnter = () => setIsHovering(true);
   const handleMouseLeave = () => setIsHovering(false);
 
   // 값은 잘 들어오는데 영상이 바로 뜨지 않음 ->
   console.log(url);
-
+  console.log(subjectVideos); // 빈배열 -> props 로 넘겨줌 아직 썸네일 미포함
   useEffect(() => {
     if (url) {
       const videoId = extractVideoId(url);
       console.log(videoId);
       if (videoId) {
         loadYouTubeAPI(videoId);
+        setLinks(url); //link를 추가하지 않아서 잘못된 링크라고 떴던것
       } else {
         setError(new Error("Invalid video URL"));
       }
@@ -344,8 +346,8 @@ const LectureVideo = ({ url }) => {
             <p className="player_category">다른 강의</p>
             <div className="player_line"></div>
             <div className="player_lecture_list_container">
-              {subjectVideos.content.slice(0, 2).map((el, idx) => (
-                <div className="player_lecture_list_content" key={idx}>
+              {subjectVideos.map((el, idx) => (
+                <div className="player_lecture_list_content" key={el.lectureId}>
                   <img
                     className="player_lecture_list_image"
                     alt="과목이미지"
@@ -405,9 +407,9 @@ const LectureVideo = ({ url }) => {
     }
   };
 
-  if (subjectNameError || subjectVideosError) {
-    return <div>데이터 로딩에 실패하였습니다.</div>;
-  }
+  // if (subjectNameError || subjectVideosError) {
+  //   return <div>데이터 로딩에 실패하였습니다.</div>;
+  // }
 
   if (loading) {
     return <p>비디오 로딩 중...</p>;
@@ -418,6 +420,7 @@ const LectureVideo = ({ url }) => {
   }
 
   if (!links) {
+    console.log(links);
     return <p>잘못된 링크로 비디오를 찾을 수 없습니다.</p>;
   }
 
