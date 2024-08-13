@@ -103,27 +103,27 @@ const CurriculumDetail = () => {
         setSchedules(calendarResponse.data);
 
         const surveyResponse = await axios.get(
-          `/managers/curriculum/${id}/survey-status`,
-          config
+         `/managers/curriculum/${id}/survey-status/progress`,
+         config
         );
-        console.log("Survey Response:", surveyResponse.data);
-        if (surveyResponse.data) {
-          setSurvey({
-            id: surveyResponse.data.id,
-            title: surveyResponse.data.title,
-            th: surveyResponse.data.th,
-            completed: surveyResponse.data.completed,
-            total: surveyResponse.data.total,
-            status: surveyResponse.data.status || "대기 중",
-          });
-        }
-      } catch (error) {
-        console.error("데이터 가져오기 오류:", error.response);
-      }
-    };
+       console.log("설문조사 정보 응답:", surveyResponse.data);
+             if (surveyResponse.data) {
+               setSurvey({
+                 id: surveyResponse.data.id,
+                 title: surveyResponse.data.title,
+                 th: surveyResponse.data.th,
+                 completed: surveyResponse.data.completed,
+                 total: surveyResponse.data.total,
+                 status: surveyResponse.data.status || "대기 중",
+               });
+             }
+           } catch (error) {
+             console.error("데이터 가져오기 오류:", error.response);
+           }
+         };
 
-    fetchData();
-  }, [id]);
+         fetchData();
+       }, [id]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -374,13 +374,13 @@ const CurriculumDetail = () => {
             </div>
             <div className="curriculum-detail-info-box curriculum-detail-survey-box">
               <div className="curriculum-detail-survey-header">
-                <span className="curriculum-detail-subtitle">설문 조사</span>
-                {survey.status === "완료" && (
-                  <Link to={`/managers/survey/${survey.id}/detail`} className="survey-link">
-                    자세히 보기
-                  </Link>
-                )}
-              </div>
+                    <span className="curriculum-detail-subtitle">설문 조사</span>
+                    {survey.id && (
+                      <Link to={`/managers/curriculum/${id}/survey/${survey.id}/basic`} className="survey-link">
+                        자세히 보기
+                      </Link>
+                    )}
+                  </div>
               {survey.id ? (
                 <div className="curriculum-detail-survey-content">
                   <div className="curriculum-detail-survey-info">
