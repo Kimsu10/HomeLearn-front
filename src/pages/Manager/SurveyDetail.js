@@ -39,19 +39,19 @@ const SurveyDetail = () => {
         };
 
         const basicResponse = await axios.get(
-          `/managers/curriculum/${curriculumId}/survey/${surveyId}/basic`,
+          `/managers/manage-curriculums/${curriculumId}/survey/${surveyId}/basic`,
           config
         );
         setCurriculumAndSurvey(basicResponse.data);
 
         const choiceResponse = await axios.get(
-          `/managers/curriculum/${curriculumId}/survey/${surveyId}/choice-response`,
+          `/managers/manage-curriculums/${curriculumId}/survey/${surveyId}/choice-response`,
           config
         );
         setChoiceStatistics(choiceResponse.data);
 
         const textResponse = await axios.get(
-          `/managers/curriculum/${curriculumId}/survey/${surveyId}/text-response?page=${currentPage}`,
+          `/managers/manage-curriculums/${curriculumId}/survey/${surveyId}/text-response?page=${currentPage}`,
           config
         );
         setTextResponses(textResponse.data.content);

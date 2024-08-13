@@ -47,6 +47,7 @@ const StudentManagement = () => {
   const fetchStudents = async () => {
     try {
       const response = await axios.get("/managers/manage-students");
+      console.log("학생 데이터 응답:", response.data);  // 데이터 확인
       if (response.data && response.data.content) {
         setStudents(response.data.content);
       } else {
@@ -76,7 +77,7 @@ const StudentManagement = () => {
 
   const handleCourseChange = (course) => {
     const fullCourseName =
-      course === "NCP" ? "네이버 클라우드 데브옵스 과정" : "AWS 데브옵스 과정";
+      course === "NCP" ? "네이버 클라우드 데브옵스 과정" : "AWS 클라우드 자바 웹 개발자 과정";
     setSelectedCourse(fullCourseName);
     setSelectedGeneration("전체");
     setNewStudent({ ...newStudent, curriculum: fullCourseName });
@@ -260,7 +261,7 @@ const StudentManagement = () => {
                 NCP
               </button>
               <button
-                className={selectedCourse === "AWS 데브옵스 과정" ? "selected" : ""}
+                className={selectedCourse === "AWS 클라우드 자바 웹 개발자 과정" ? "selected" : ""}
                 onClick={() => handleCourseChange("AWS")}
               >
                 AWS
@@ -330,7 +331,8 @@ const StudentManagement = () => {
                       <td>{student.email}</td>
                       <td>{student.phone}</td>
                       <td>
-                        {student.isAttend ? (
+                        {/* attend 필드로 수정 */}
+                        {student.attend === true ? (
                           <span className="status present">✔</span>
                         ) : (
                           <span className="status absent">✘</span>
@@ -418,12 +420,12 @@ const StudentManagement = () => {
             </button>
             <button
               className={`student-course-button ${
-                newStudent.curriculum === "AWS 데브옵스 과정" ? "selected" : ""
+                newStudent.curriculum === "AWS 클라우드 자바 웹 개발자 과정" ? "selected" : ""
               }`}
               onClick={() =>
                 setNewStudent({
                   ...newStudent,
-                  curriculum: "AWS 데브옵스 과정",
+                  curriculum: "AWS 클라우드 자바 웹 개발자 과정",
                 })
               }
             >

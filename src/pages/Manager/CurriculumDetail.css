@@ -290,3 +290,8 @@
 .CircularProgressbar .CircularProgressbar-text {
   fill: #757575;
 }
+.curriculum-modal-title{
+    display:flex;
+    justify-content:center;
+    font-size:28px;
+}
