@@ -106,10 +106,20 @@ const CurriculumDetail = () => {
           `/managers/curriculum/${id}/survey-status/progress`,
           config
         );
-              console.log('Survey Response:', surveyResponse.data);
+        console.log('Survey Response:', surveyResponse.data);
         if (surveyResponse.data) {
           setSurvey({
-            id: surveyResponse.data.id,
+            id: surveyResponse.data.surveyId,  // 여기서 surveyId를 id로 설정
+            title: surveyResponse.data.title,
+            th: surveyResponse.data.th,
+            completed: surveyResponse.data.completed,
+            total: surveyResponse.data.total,
+            status: surveyResponse.data.status || "대기 중",
+          });
+
+          // 확인용 로그
+          console.log('Survey State after setting:', {
+            id: surveyResponse.data.surveyId,  // 여기서도 surveyId로 로그 확인
             title: surveyResponse.data.title,
             th: surveyResponse.data.th,
             completed: surveyResponse.data.completed,
@@ -117,6 +127,7 @@ const CurriculumDetail = () => {
             status: surveyResponse.data.status || "대기 중",
           });
         }
+
       } catch (error) {
         console.error("데이터 가져오기 오류:", error.response);
       }
@@ -369,6 +380,7 @@ const CurriculumDetail = () => {
             <div className="curriculum-detail-info-box curriculum-detail-survey-box">
               <div className="curriculum-detail-survey-header">
                 <span className="curriculum-detail-subtitle">설문 조사</span>
+                {console.log('Survey ID during link rendering:', survey.id)}
                 {survey.id && (
                   <Link
                     to={`/managers/curriculum/${id}/survey/${survey.id}/basic`}
