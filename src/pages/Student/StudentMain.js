@@ -98,7 +98,7 @@ const StudentMain = () => {
             element={<StudentQuestionBoard username={username} />}
           />
           <Route
-            path="/assignmentDetail/:id"
+            path="/assignmentDetail/:homeworkId"
             element={<StudentAssignmentDetail username={username} />}
           />
           <Route
