@@ -1,24 +1,24 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useParams, NavLink } from "react-router-dom";
-import axios from "axios";
+import { useParams, NavLink, useNavigate } from "react-router-dom";
+import axios from "../../utils/axios";
 import "./StudentHeader.css";
 
 const StudentHeader = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [curriculum, setCurriculum] = useState({
     name: "",
     th: 0,
     progress: 0,
   });
 
-  {
-    /* =================수정 예정================= */
-  }
   const [student, setStudent] = useState({
     name: "",
     email: "",
     phone: "",
   });
+
+  const [notifications, setNotifications] = useState([]);
 
   const getToken = () => localStorage.getItem("access-token");
   const deleteToken = () => localStorage.removeItem("access-token");
@@ -32,26 +32,21 @@ const StudentHeader = () => {
     const fetchData = async () => {
       try {
         const token = getToken();
-        console.log("Token:", token);
         const config = {
           headers: { access: token },
         };
-
-        console.log("ID 값:", id);
 
         const basicResponse = await axios.get(
           `/students/curriculum/${id}/basic`,
           config
         );
-        console.log("Basic:", basicResponse);
         setCurriculum(basicResponse.data);
 
-        {
-          /* =================수정 예정================= */
-        }
         const studentResponse = await axios.get(`/students/info`, config);
-        console.log("학생:", studentResponse);
         setStudent(studentResponse.data);
+
+        const notificationResponse = await axios.get("/header/notifications", config);
+        setNotifications(notificationResponse.data.notifications || []);
       } catch (error) {
         console.error("response 오류", error.response);
       }
@@ -69,6 +64,12 @@ const StudentHeader = () => {
       event.preventDefault();
     }
     setOpenDropdown((prevState) => (prevState === dropdown ? null : dropdown));
+  };
+
+  const handleNotificationClick = (notification) => {
+    if (notification.url) {
+      navigate(notification.url);
+    }
   };
 
   useEffect(() => {
@@ -132,7 +133,9 @@ const StudentHeader = () => {
                     <span>
                       <i className="fa-solid fa-bell"></i>
                     </span>
-                    <span className="student_h-alarm_count"></span>
+                    <span className="student_h-alarm_count">
+                      {notifications.length}
+                    </span>
                   </a>
                 </li>
               </div>
@@ -142,17 +145,20 @@ const StudentHeader = () => {
                   openDropdown === "student_alarm" ? "open" : ""
                 }`}
               >
-                <div id="student_h-alarm_list">
+                {notifications.length > 0 ? (
+                  notifications.map((notification, index) => (
+                    <li
+                      key={index}
+                      onClick={() => handleNotificationClick(notification)}
+                    >
+                      <span>{notification.message}</span>
+                    </li>
+                  ))
+                ) : (
                   <li>
-                    <span>알림 예시입니다.</span>
+                    <span>알림이 없습니다.</span>
                   </li>
-                  <li>
-                    <span>알림 예시입니다.</span>
-                  </li>
-                  <li>
-                    <span>알림 예시입니다.</span>
-                  </li>
-                </div>
+                )}
               </ul>
             </div>
           </ul>
@@ -168,7 +174,7 @@ const StudentHeader = () => {
                 <img className="student_h-profile_img" src="/" alt="프로필" />
               </div>
               <span className="student_h-profile_name">
-                {student.name}대성진
+                {student.name}
               </span>
               <i className="fa-solid fa-caret-down"></i>
             </div>

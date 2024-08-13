@@ -24,10 +24,12 @@ const CurriculumDetail = () => {
   const [teacher, setTeacher] = useState(null);
   const [schedules, setSchedules] = useState([]);
   const [survey, setSurvey] = useState({
+    id: null,
     title: "",
     th: "",
     completed: 0,
     total: 0,
+    status: "대기 중",
   });
   const [isWeekend, setIsWeekend] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -101,9 +103,10 @@ const CurriculumDetail = () => {
         setSchedules(calendarResponse.data);
 
         const surveyResponse = await axios.get(
-          `/managers/curriculum/${id}/survey-status/progress`,
+          `/managers/curriculum/${id}/survey-status`,
           config
         );
+        console.log("Survey Response:", surveyResponse.data);
         if (surveyResponse.data) {
           setSurvey({
             id: surveyResponse.data.id,
@@ -111,6 +114,7 @@ const CurriculumDetail = () => {
             th: surveyResponse.data.th,
             completed: surveyResponse.data.completed,
             total: surveyResponse.data.total,
+            status: surveyResponse.data.status || "대기 중",
           });
         }
       } catch (error) {
@@ -225,6 +229,70 @@ const CurriculumDetail = () => {
     }
   };
 
+  const handleSurveyAction = async () => {
+    try {
+      const token = getToken();
+      let response;
+
+      console.log("Current survey status:", survey.status);
+
+      if (survey.status === "대기 중" || !survey.id) {
+        console.log("Starting new survey");
+        response = await axios.post(
+          `/managers/manage-curriculums/survey-start/${id}`,
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              access: token,
+            },
+          }
+        );
+      } else if (survey.status === "진행 중") {
+        console.log("Stopping ongoing survey");
+        response = await axios.post(
+          `/managers/manage-curriculums/survey-stop/${survey.id}`,
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              access: token,
+            },
+          }
+        );
+      }
+
+      console.log("Survey action response:", response);
+
+      if (response.status === 200) {
+        const newStatus = survey.status === "대기 중" ? "진행 중" : "완료";
+        swal(
+          survey.status === "대기 중" ? "설문 시작" : "설문 종료",
+          `설문 조사가 ${newStatus}되었습니다.`,
+          "success"
+        );
+        setSurvey((prevSurvey) => ({
+          ...prevSurvey,
+          status: newStatus,
+          id: response.data.id || prevSurvey.id,
+        }));
+      } else {
+        swal(
+          "설문 작업 실패",
+          `설문 조사 ${survey.status === "대기 중" ? "시작" : "종료"}에 실패했습니다. 다시 시도해주세요.`,
+          "error"
+        );
+      }
+    } catch (error) {
+      console.error("설문 조사 작업 중 오류 발생:", error);
+      swal(
+        "설문 작업 실패",
+        `설문 조사 ${survey.status === "대기 중" ? "시작" : "종료"} 중 오류가 발생했습니다. 다시 시도해주세요.`,
+        "error"
+      );
+    }
+  };
+
   return (
     <div className="curriculum-detail">
       <div className="curriculum-detail-header">
@@ -307,11 +375,13 @@ const CurriculumDetail = () => {
             <div className="curriculum-detail-info-box curriculum-detail-survey-box">
               <div className="curriculum-detail-survey-header">
                 <span className="curriculum-detail-subtitle">설문 조사</span>
-                <Link to={`/managers/survey/${id}`} className="survey-link"> {/* 여기에서 경로 수정 */}
-                  자세히 보기{" "}
-                </Link>
+                {survey.status === "완료" && (
+                  <Link to={`/managers/survey/${survey.id}/detail`} className="survey-link">
+                    자세히 보기
+                  </Link>
+                )}
               </div>
-              {survey.title ? (
+              {survey.id ? (
                 <div className="curriculum-detail-survey-content">
                   <div className="curriculum-detail-survey-info">
                     <span className="curriculum-detail-survey-th">
@@ -326,14 +396,16 @@ const CurriculumDetail = () => {
                   </p>
                   <div className="curriculum-detail-survey-status">
                     <span className="curriculum-detail-survey-status-text">
-                      진행 중
+                      {survey.status}
                     </span>
-                    <button
-                      className="curriculum-detail-survey-button"
-                      onClick={() => navigate(`/managers/survey/${survey.id}/detail`)}  // 여기에서 경로 수정
-                    >
-                      설문 등록
-                    </button>
+                    {survey.status !== "완료" && (
+                      <button
+                        className="curriculum-detail-survey-button"
+                        onClick={handleSurveyAction}
+                      >
+                        {survey.status === "대기 중" ? "설문 시작" : "설문 종료"}
+                      </button>
+                    )}
                   </div>
                 </div>
               ) : (
@@ -341,7 +413,7 @@ const CurriculumDetail = () => {
                   <p>진행중인 설문 조사가 없습니다.</p>
                   <button
                     className="curriculum-detail-survey-button"
-                    onClick={() => navigate(`/managers/survey/${id}/detail`)}  // 여기에서 경로 수정
+                    onClick={handleSurveyAction}
                   >
                     설문 등록
                   </button>
