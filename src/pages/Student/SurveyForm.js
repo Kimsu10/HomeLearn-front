@@ -130,7 +130,7 @@ const SurveyForm = () => {
             </div>
           </div>
         ))}
-        <button type="submit" className="submit-button">설문 제출</button>
+        <button type="submit-survey" className="survey-submit-button">설문 제출</button>
       </form>
     </div>
   );

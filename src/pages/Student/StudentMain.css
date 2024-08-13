@@ -1,53 +1,48 @@
-.survey-form {
-  max-width: 600px;
-  margin: 0 auto;
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+.sidebar_title {
+  font-size: 28px;
+  cursor: pointer;
+  padding: 20px 0;
 }
 
-.survey-form h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 24px;
+.student_dashboard_list_container > ul {
+  list-style: none;
+  width: 300px;
+  padding: 20px 20px 37.5px 20px;
+  font-size: 28px;
+  position: relative;
 }
 
-.survey-question {
-  margin-bottom: 20px;
+.stu_sidebar_toogle_btn {
+  font-size: 20px;
+  position: absolute;
+  top: 30px;
+  right: 60px;
 }
 
-.survey-question p {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.survey-options label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-textarea {
-  width: 100%;
-  height: 100px;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-button[type="submit"] {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
+.student_dashboard_section {
   cursor: pointer;
 }
 
-button[type="submit"]:hover {
-  background-color: #45a049;
+.student_dashboard_section li {
+  padding: 20px 0 0 0;
+  font-size: 20px;
+  display: none;
+}
+
+.student_dashboard_section.show li {
+  display: list-item;
+}
+
+.student_main_components {
+  flex-grow: 1;
+  padding: 10px;
+}
+
+/* 메인 컴포너느 스타일 */
+.student_subject_main_container {
+  display: flex;
+  flex-direction: column;
+  width: 1120px;
+  padding: 100px 36px 20px 36px;
+  background-color: #fff;
 }

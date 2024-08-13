@@ -42,7 +42,7 @@
   margin-top: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  resize: vertical;
+  resize: none;
 }
 
 .survey-submit-button {
