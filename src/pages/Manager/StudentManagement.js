@@ -76,7 +76,7 @@ const StudentManagement = () => {
 
   const handleCourseChange = (course) => {
     const fullCourseName =
-      course === "NCP" ? "네이버 클라우드 데브옵스 과정" : "AWS 데브옵스 과정";
+      course === "NCP" ? "네이버 클라우드 데브옵스 과정" : "AWS 클라우드 자바 웹 개발자 과정";
     setSelectedCourse(fullCourseName);
     setSelectedGeneration("전체");
     setNewStudent({ ...newStudent, curriculum: fullCourseName });
@@ -260,7 +260,7 @@ const StudentManagement = () => {
                 NCP
               </button>
               <button
-                className={selectedCourse === "AWS 데브옵스 과정" ? "selected" : ""}
+                className={selectedCourse === "AWS 클라우드 자바 웹 개발자 과정" ? "selected" : ""}
                 onClick={() => handleCourseChange("AWS")}
               >
                 AWS
@@ -418,12 +418,12 @@ const StudentManagement = () => {
             </button>
             <button
               className={`student-course-button ${
-                newStudent.curriculum === "AWS 데브옵스 과정" ? "selected" : ""
+                newStudent.curriculum === "AWS 클라우드 자바 웹 개발자 과정" ? "selected" : ""
               }`}
               onClick={() =>
                 setNewStudent({
                   ...newStudent,
-                  curriculum: "AWS 데브옵스 과정",
+                  curriculum: "AWS 클라우드 자바 웹 개발자 과정",
                 })
               }
             >
