@@ -63,10 +63,12 @@ const StudentDashBoard = () => {
 
   // 과제
   const {
-    data: subject,
-    loading: subjectLoading,
-    error: subjectError,
+    data: assignment,
+    loading: assignmentLoading,
+    error: assignmentError,
   } = useGetFetch("/data/student/mainpage/assignment.json", []);
+
+  console.log(assignment);
 
   const {
     data: badge,
@@ -89,7 +91,7 @@ const StudentDashBoard = () => {
   if (
     recentLectureLoading ||
     questionLoading ||
-    subjectLoading ||
+    assignmentLoading ||
     badgeLoading ||
     adminNoticeLoading ||
     teacherNoticeLoading
@@ -100,7 +102,7 @@ const StudentDashBoard = () => {
   if (
     recentLectureError ||
     questionError ||
-    subjectError ||
+    assignmentError ||
     badgeError ||
     adminNoticeError ||
     teacherNoticeError
@@ -245,7 +247,7 @@ const StudentDashBoard = () => {
                 </span>
               </div>
               <div className="dashboard_student_assignment_list_container">
-                {subject?.map((el, idx) => (
+                {assignment?.map((el, idx) => (
                   <div
                     className="dashboard_student_assignment_list_box"
                     key={idx}
