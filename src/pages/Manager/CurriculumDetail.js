@@ -374,14 +374,17 @@ const CurriculumDetail = () => {
             </div>
             <div className="curriculum-detail-info-box curriculum-detail-survey-box">
               <div className="curriculum-detail-survey-header">
-                    <span className="curriculum-detail-subtitle">설문 조사</span>
-                    {survey.id && (
-                      <Link to={`/managers/curriculum/${id}/survey/${survey.id}/basic`} className="survey-link">
-                        자세히 보기
-                      </Link>
-                    )}
-                  </div>
-              {survey.id ? (
+                <span className="curriculum-detail-subtitle">설문 조사</span>
+                {survey.id ? (
+                  <Link
+                    to={`/managers/curriculum/${id}/survey/${survey.id}/basic`}
+                    className="survey-link"
+                  >
+                    자세히 보기
+                  </Link>
+                ) : null}
+              </div>
+              {survey.title ? (
                 <div className="curriculum-detail-survey-content">
                   <div className="curriculum-detail-survey-info">
                     <span className="curriculum-detail-survey-th">
@@ -391,9 +394,7 @@ const CurriculumDetail = () => {
                       {survey.completed} / {survey.total}
                     </span>
                   </div>
-                  <p className="curriculum-detail-survey-name">
-                    {survey.title}
-                  </p>
+                  <p className="curriculum-detail-survey-name">{survey.title}</p>
                   <div className="curriculum-detail-survey-status">
                     <span className="curriculum-detail-survey-status-text">
                       {survey.status}
