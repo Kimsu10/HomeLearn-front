@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "../../utils/axios";
 import "./SurveyForm.css";
+import swal from "sweetalert";
 
 const SurveyForm = () => {
   const { surveyId } = useParams();
@@ -46,7 +47,7 @@ const SurveyForm = () => {
         headers: { access: token },
       };
       await axios.post(`/students/survey/${surveyId}`, responses, config);
-      alert("설문조사가 제출되었습니다.");
+      swal("제출 성공", "설문 조사 제출 완료", "success");
     } catch (error) {
       console.error("설문조사 제출 오류:", error.response);
     }
