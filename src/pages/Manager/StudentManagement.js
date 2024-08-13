@@ -47,6 +47,7 @@ const StudentManagement = () => {
   const fetchStudents = async () => {
     try {
       const response = await axios.get("/managers/manage-students");
+      console.log("학생 데이터 응답:", response.data);  // 데이터 확인
       if (response.data && response.data.content) {
         setStudents(response.data.content);
       } else {
@@ -330,7 +331,8 @@ const StudentManagement = () => {
                       <td>{student.email}</td>
                       <td>{student.phone}</td>
                       <td>
-                        {student.isAttend ? (
+                        {/* attend 필드로 수정 */}
+                        {student.attend === true ? (
                           <span className="status present">✔</span>
                         ) : (
                           <span className="status absent">✘</span>
