@@ -4,6 +4,7 @@ import useGetFetch from "../../hooks/useGetFetch";
 import { useNavigate } from "react-router-dom";
 import LectureVideo from "../../components/Lectures/LectureVideo";
 
+// 과목 게시판상세
 const StudentSubjectBoardDetail = () => {
   const navigate = useNavigate();
 

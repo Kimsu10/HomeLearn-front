@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import useGetFetch from "../../hooks/useGetFetch";
 import { useNavigate } from "react-router-dom";
 
+// 과목 게시판
 const StudentSubjectBoardList = () => {
   const navigate = useNavigate();
 
