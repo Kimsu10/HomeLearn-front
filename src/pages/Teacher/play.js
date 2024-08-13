@@ -350,7 +350,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
                 <div className="player_lecture_list_content" key={el.lectureId}>
                   <img
                     className="player_lecture_list_image"
-                    alt="과목이미지"
+                    alt="썸네일 이미지"
                     src={el.link}
                   />
                   <h1

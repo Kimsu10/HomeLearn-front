@@ -14,10 +14,9 @@
 .student_video_modal_content {
   background: #000;
   border-radius: 8px;
-  padding: 20px;
   position: relative;
   width: 100vw;
-  height: 80vh;
+  height: 100vh;
 }
 
 .student_video_modal_close {
