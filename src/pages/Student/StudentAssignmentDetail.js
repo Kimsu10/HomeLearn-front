@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import StudentModal from "../../components/Modal/StudentModal/StudentModal";
 import "./StudentAssignmentDetail.css";
 import useAxiosGet from "../../hooks/useAxiosGet";
+
 import { useParams } from "react-router-dom";
 
 const StudentAssignmentDetail = () => {
@@ -58,6 +59,12 @@ const StudentAssignmentDetail = () => {
     `/students/homeworks/${homeworkId}/my-submit`,
     []
   );
+
+  console.log(homeworkId);
+  console.log(assignment);
+  console.log(assignment.mySubmitId);
+
+  // 피드백  과제  수정 요청
 
   const splitDate = (date) => {
     return date ? date.slice(0, 10) : "no deadline";
@@ -137,9 +144,6 @@ const StudentAssignmentDetail = () => {
               </span>
             </a>
           </div>
-          <p className="student_submit_assignment_detail_content">
-            {assignment.description}
-          </p>
           <span className="student_submit_assignment_detail_date">
             <span className="date_color">{assignment.createDate}</span>
             &nbsp;제출
@@ -167,7 +171,7 @@ const StudentAssignmentDetail = () => {
             <span className="student_submit_assignment_feedback_date date_color">
               {assignment.responseDate}
             </span>
-            &nbsp;까지
+            &nbsp; 작성
           </div>
         </div>
       ) : null}
