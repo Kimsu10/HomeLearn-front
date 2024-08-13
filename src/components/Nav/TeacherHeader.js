@@ -1,65 +1,53 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useParams, NavLink } from "react-router-dom";
-import axios from "axios";
+import { useParams, NavLink, useNavigate } from "react-router-dom";
+import axios from "../../utils/axios";
 import "./TeacherHeader.css";
 
 const TeacherHeader = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [curriculum, setCurriculum] = useState({
-    name: "",
-    th: 0,
-    progress: 0,
+    curriculumFullName: "",
+    progressRate: 0, // Progress in percentage
   });
 
   const [teacher, setTeacher] = useState({
     name: "",
-    email: "",
-    phone: "",
+    imagePath: "", // Assume you have teacher's profile image path
   });
 
+  const [notifications, setNotifications] = useState([]);
+
   const getToken = () => localStorage.getItem("access-token");
-  const deleteToken = () => localStorage.removeItem("access-token");
+
+  const deleteToken = () => {
+    localStorage.removeItem("access-token");
+    navigate("/login");
+  };
 
   useEffect(() => {
-    if (!id) {
-      console.error("Invalid curriculum ID");
-      return;
-    }
-
     const fetchData = async () => {
       try {
         const token = getToken();
-        console.log("Token:", token);
         const config = {
           headers: { access: token },
         };
 
-        console.log("ID 값:", id);
+        const commonResponse = await axios.get("/header/common", config);
+        setCurriculum(commonResponse.data);
 
-        const basicResponse = await axios.get(
-          `/managers/curriculum/${id}/basic`,
-          config
-        );
-        console.log("Basic:", basicResponse);
-        setCurriculum(basicResponse.data);
+        const notificationResponse = await axios.get("/header/notifications", config);
+        setNotifications(notificationResponse.data.notifications || []);
 
-        const teacherResponse = await axios.get(
-          `/managers/curriculum/${id}/teacher`,
-          config
-        );
-        console.log("강사:", teacherResponse);
-        setTeacher(teacherResponse.data);
+        console.log("알림 정보:", notificationResponse.data.notifications);
       } catch (error) {
-        console.error("response 오류", error.response);
+        console.error("데이터 가져오기 오류:", error.response);
       }
     };
 
     fetchData();
   }, [id]);
 
-  {
-    /* DropDown (Alarm & Profile) */
-  }
   const [openDropdown, setOpenDropdown] = useState(null);
   const alarmRef = useRef(null);
   const profileRef = useRef(null);
@@ -69,6 +57,12 @@ const TeacherHeader = () => {
       event.preventDefault();
     }
     setOpenDropdown((prevState) => (prevState === dropdown ? null : dropdown));
+  };
+
+  const handleNotificationClick = (notification) => {
+    if (notification.url) {
+      navigate(notification.url);
+    }
   };
 
   useEffect(() => {
@@ -102,7 +96,7 @@ const TeacherHeader = () => {
             </a>
           </h1>
           <span className="teacher_h-curriculum_name">
-            {curriculum.name} {curriculum.th}기
+            {curriculum.curriculumFullName}
           </span>
         </div>
 
@@ -110,8 +104,11 @@ const TeacherHeader = () => {
           <div className="teacher_h-progress-bar">
             <div
               className="teacher_h-progress"
-              style={{ width: `${curriculum.progress}%` }}
+              style={{ width: `${curriculum.progressRate}%` }}
             ></div>
+            <span className="teacher_h-progress-text">
+              {curriculum.progressRate.toFixed(1)} / 100%
+            </span>
           </div>
 
           <ul className="teacher_h-gnb_items">
@@ -132,7 +129,9 @@ const TeacherHeader = () => {
                     <span>
                       <i className="fa-solid fa-bell"></i>
                     </span>
-                    <span className="teacher_h-alarm_count"></span>
+                    <span className="teacher_h-alarm_count">
+                      {notifications.length}
+                    </span>
                   </a>
                 </li>
               </div>
@@ -142,17 +141,20 @@ const TeacherHeader = () => {
                   openDropdown === "teacher_alarm" ? "open" : ""
                 }`}
               >
-                <div id="teacher_h-alarm_list">
+                {notifications.length > 0 ? (
+                  notifications.map((notification, index) => (
+                    <li
+                      key={index}
+                      onClick={() => handleNotificationClick(notification)}
+                    >
+                      <span>{notification.message}</span>
+                    </li>
+                  ))
+                ) : (
                   <li>
-                    <span>알림 예시입니다.</span>
+                    <span>알림이 없습니다.</span>
                   </li>
-                  <li>
-                    <span>알림 예시입니다.</span>
-                  </li>
-                  <li>
-                    <span>알림 예시입니다.</span>
-                  </li>
-                </div>
+                )}
               </ul>
             </div>
           </ul>
@@ -165,11 +167,13 @@ const TeacherHeader = () => {
               onClick={(e) => toggleDropdown("teacher_profile", e)}
             >
               <div>
-                <img className="teacher_h-profile_img" src="/" alt="프로필" />
+                <img
+                  className="teacher_h-profile_img"
+                  src={teacher.imagePath || "/default-profile.png"}
+                  alt="프로필"
+                />
               </div>
-              <span className="teacher_h-profile_name">
-                {teacher.name}신지원
-              </span>
+              <span className="teacher_h-profile_name">{teacher.name}</span>
               <i className="fa-solid fa-caret-down"></i>
             </div>
             <ul
