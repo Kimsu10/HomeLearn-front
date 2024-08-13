@@ -16,6 +16,7 @@ import StudentSideBar from "../../components/SideBar/StudentSideBar";
 import StudentHeader from "../../components/Nav/StudentHeader";
 import StudentBadge from "./StudentBadge";
 import StudentFreeBoardDetail from "./StudentFreeBoardDetail";
+import SurveyForm from "./SurveyForm";
 
 const StudentMain = () => {
   // const [showSection, setShowSection] = useState(null);
@@ -116,6 +117,7 @@ const StudentMain = () => {
           {/* <Route path="/teacherNotice" element={< />} /> */}
           {/* 언젠가 들어올 투표 페이지 */}
           {/* <Route path="/teacherNotice" element={< />} /> */}
+          <Route path="/survey/:surveyId" element={<SurveyForm />} /> {/* 설문조사 */}
         </Routes>
       </div>
     </div>
