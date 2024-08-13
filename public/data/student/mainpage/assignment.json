@@ -1,16 +1,36 @@
-[
-  {
-    "homeworkId": 2,
-    "title": "Spring Boot 테스트 코드 작성",
-    "description": "게시판 테스트 코드 작성해오세요게시판 테스트 코드 작성해오세요  안하면 혼날 줄 아세요",
-    "deadLine": "2024-01-04",
-    "isSubmit": false
+{
+  "totalPages": 3,
+  "totalElements": 3,
+  "first": true,
+  "last": false,
+  "size": 1,
+  "content": [
+    {
+      "homeworkId": 3,
+      "title": "title",
+      "description": "description",
+      "deadLine": "2024-08-27 02:13",
+      "submitCount": 0
+    }
+  ],
+  "number": 0,
+  "sort": {
+    "empty": true,
+    "unsorted": true,
+    "sorted": false
   },
-  {
-    "homeworkId": 5,
-    "title": "제목",
-    "description": "학생용 게시판 테스트 코드 작성해오세요용",
-    "deadLine": "2024-01-04",
-    "isSubmit": true
-  }
-]
+  "pageable": {
+    "pageNumber": 0,
+    "pageSize": 1,
+    "sort": {
+      "empty": true,
+      "unsorted": true,
+      "sorted": false
+    },
+    "offset": 0,
+    "unpaged": false,
+    "paged": true
+  },
+  "numberOfElements": 1,
+  "empty": false
+}
