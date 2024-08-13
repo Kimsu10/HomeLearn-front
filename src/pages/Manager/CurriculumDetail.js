@@ -109,7 +109,7 @@ const CurriculumDetail = () => {
         console.log('Survey Response:', surveyResponse.data);
         if (surveyResponse.data) {
           setSurvey({
-            id: surveyResponse.data.surveyId,  // 여기서 surveyId를 id로 설정
+            id: surveyResponse.data.surveyId,
             title: surveyResponse.data.title,
             th: surveyResponse.data.th,
             completed: surveyResponse.data.completed,
@@ -119,7 +119,7 @@ const CurriculumDetail = () => {
 
           // 확인용 로그
           console.log('Survey State after setting:', {
-            id: surveyResponse.data.surveyId,  // 여기서도 surveyId로 로그 확인
+            id: surveyResponse.data.surveyId,
             title: surveyResponse.data.title,
             th: surveyResponse.data.th,
             completed: surveyResponse.data.completed,
@@ -347,7 +347,7 @@ const CurriculumDetail = () => {
                 to={`/attendance/${id}`}
                 className="curriculum-detail-link attendance-link"
               >
-                자세히 보기{" "}
+                자세히 보기{""}
               </Link>
             </div>
             <div className="curriculum-detail-info-box">
