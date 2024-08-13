@@ -8,7 +8,7 @@ const StudentHeader = () => {
   const navigate = useNavigate();
   const [curriculum, setCurriculum] = useState({
     curriculumFullName: "",
-    progressRate: 0,  // progressRate는 이미 0~100 범위의 값으로 가정
+    progressRate: 0,
   });
 
   const [student, setStudent] = useState({
