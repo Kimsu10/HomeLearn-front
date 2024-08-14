@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import useGetFetch from "../../hooks/useGetFetch";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAxiosGet from "../../hooks/useAxiosGet";
-import LectureVideo from "../../components/Lectures/LectureVideo";
 
 // 과목 게시판상세
 const StudentSubjectBoardDetail = () => {
@@ -22,18 +21,19 @@ const StudentSubjectBoardDetail = () => {
 
   console.log(mainLectures);
 
+  const { data: subjectBoardDetail } = useAxiosGet(
+    `/students/subjects/1/boards/19`
+  );
+
+  console.log(subjectBoardDetail);
+
+  // 아래는  백통신으로 고쳐야해 => 왜 얘만 유효하지않은 토큰인지 물어보자
   const { data: subjectBoards } = useGetFetch(
     "/data/student/mainLecture/subjectBoard.json",
     []
   );
 
   console.log(subjectBoards);
-
-  const { data: subjectBoardDetail } = useAxiosGet(
-    `/students/subjects/1/boards/19`
-  );
-
-  console.log(subjectBoardDetail);
 
   return (
     <div className="subject_board_detail_main_container">
