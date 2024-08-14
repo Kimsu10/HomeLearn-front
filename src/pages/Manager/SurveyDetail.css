@@ -81,7 +81,7 @@
   background-color: #f9f9f9;
   border-radius: 5px;
   padding: 15px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .survey-count {
@@ -156,4 +156,8 @@
   justify-content:space-between;
   justify-items: center;
   gap:40px;
+}
+
+.survey-info-title{
+    font-size:20px;
 }

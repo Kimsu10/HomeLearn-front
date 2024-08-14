@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "../../utils/axios";
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
@@ -10,6 +10,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const SurveyDetail = () => {
   const { curriculumId } = useParams();
+  const navigate = useNavigate(); // navigate 함수 추가
   const [surveyDetails, setSurveyDetails] = useState(null);
   const [curriculumSimple, setCurriculumSimple] = useState(null);
   const [endedSurveys, setEndedSurveys] = useState([]);
@@ -66,6 +67,8 @@ const SurveyDetail = () => {
 
         setSurveyDetails(null);
         swal("설문 마감", "설문 조사가 성공적으로 마감되었습니다.", "success");
+
+        navigate(-1); // 이전 페이지로 이동
       } else {
         swal("설문 마감 오류", "설문 마감 중 오류가 발생했습니다.", "error");
       }
@@ -74,7 +77,6 @@ const SurveyDetail = () => {
       swal("등록 실패", "설문 마감 중 오류가 발생했습니다.", "warning");
     }
   };
-
 
   if (isLoading) return <div>로딩 중...</div>;
   if (error) return <div>오류 발생: {error}</div>;
@@ -112,8 +114,8 @@ const SurveyDetail = () => {
             <div className="survey-info">
               <p className="survey-info-title">{surveyDetails.title}</p>
               <div className="survey-info-title-right-title">
-              <p className="survey-count"> <i class="fa-solid fa-user"></i>{surveyDetails.completed}/{surveyDetails.total}</p>
-              <button className="survey-end-button" onClick={handleSurveyEnd}>설문 마감</button>
+                <p className="survey-count"> <i className="fa-solid fa-user"></i>{surveyDetails.completed}/{surveyDetails.total}</p>
+                <button className="survey-end-button" onClick={handleSurveyEnd}>설문 마감</button>
               </div>
             </div>
           </div>
@@ -130,7 +132,7 @@ const SurveyDetail = () => {
                 <div key={index} className="completed-survey-item">
                   <p>{survey.title}</p>
                   <p className="survey-count">
-                  <i class="fa-solid fa-user"></i>{survey.completed}/{survey.total}</p>
+                    <i className="fa-solid fa-user"></i>{survey.completed}/{survey.total}</p>
                 </div>
               ))}
             </div>
