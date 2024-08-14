@@ -54,8 +54,8 @@ function ManagerMain() {
             <Route path="contact-students" element={<StudentContact />} />
             <Route path="contact-teachers" element={<TeacherContact />} />
             <Route path="calendar/:eventId" element={<CalendarDetail />} />
-            <Route path="curriculum/:curriculumId/survey/:surveyId/detail" element={<SurveyDetail />}
-            />
+            <Route path="curriculum/:curriculumId/survey/:surveyId/detail" element={<SurveyDetail />} />
+            <Route path="curriculum/:curriculumId/survey" element={<SettingList />} />
           </Routes>
         </div>
       </div>

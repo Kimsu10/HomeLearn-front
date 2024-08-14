@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "../../utils/axios";
-import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { Bar, Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
 import './SurveyDetail.css';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+// 필요한 요소들 모두 등록
+ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend);
 
 const SurveyDetail = () => {
   const { curriculumId } = useParams();
@@ -49,14 +50,26 @@ const SurveyDetail = () => {
   if (error) return <div>오류 발생: {error}</div>;
   if (!surveyDetails || !curriculumSimple) return <div>설문조사 정보를 불러올 수 없습니다.</div>;
 
-  const chartData = {
+  const barChartData = {
     labels: Object.keys(surveyTrend),
     datasets: [{
-      label: '설문 조사 추이',
+      label: '설문 조사 응답 수',
       data: Object.values(surveyTrend),
       backgroundColor: 'rgba(75, 192, 192, 0.6)',
       borderColor: 'rgba(75, 192, 192, 1)',
       borderWidth: 1
+    }]
+  };
+
+  const lineChartData = {
+    labels: Object.keys(surveyTrend),
+    datasets: [{
+      label: '설문 조사 추이',
+      data: Object.values(surveyTrend),
+      fill: false,
+      backgroundColor: 'rgba(54, 162, 235, 0.6)',
+      borderColor: 'rgba(54, 162, 235, 1)',
+      tension: 0.1
     }]
   };
 
@@ -71,9 +84,11 @@ const SurveyDetail = () => {
 
   return (
     <div className="survey-detail">
-      <h2 className="survey-detail-title">설문 조사 현황</h2>
+      <div className="survey-detail-title">설문 조사 현황</div>
+      <div className="survey-curriculum-title">
+        <h3>{curriculumSimple.name} <span>{curriculumSimple.th}기</span></h3>
+      </div>
       <div className="survey-card">
-        <h3>{curriculumSimple.name} {curriculumSimple.th}기</h3>
         <div className="survey-progress">
           <h4>진행 중인 설문 조사</h4>
           <p>{surveyDetails.title}</p>
@@ -82,7 +97,11 @@ const SurveyDetail = () => {
         </div>
         <div className="survey-chart">
           <h4>설문 조사 추이</h4>
-          <Bar data={chartData} options={chartOptions} />
+          <Bar data={barChartData} options={chartOptions} />
+        </div>
+        <div className="survey-chart">
+          <h4>설문 조사 응답 추이</h4>
+          <Line data={lineChartData} options={chartOptions} />
         </div>
       </div>
       <div className="completed-surveys">
