@@ -85,7 +85,9 @@ const StudentLecture = () => {
               <span
                 className="go_to_show_more_page"
                 onClick={() =>
-                  navigate(`/students/${mainLectures.title}/boardList`)
+                  navigate(`/students/${mainLectures.name}/board/list`, {
+                    state: { mainLectures },
+                  })
                 }
               >
                 더보기 ⟩
@@ -103,8 +105,7 @@ const StudentLecture = () => {
                     key={idx}
                     onClick={() =>
                       navigate(
-                        `/students/${mainLectures.title}/boardDetail/${el.boardId}`,
-                        { state: { subjectBoards } }
+                        `/students/${mainLectures.name}/boardDetail/${el.boardId}`
                       )
                     }
                   >
@@ -136,7 +137,11 @@ const StudentLecture = () => {
                 <div
                   className="inquiry_list"
                   key={idx}
-                  onClick={() => navigate(`/students/inquiryDetail/${el.id}`)}
+                  onClick={() =>
+                    navigate(`/students/inquiryDetail/${el.id}`, {
+                      state: { mainLectures },
+                    })
+                  }
                 >
                   <div className="inquiry_title_box">
                     <div className="inquiry_type">{el.type}</div>

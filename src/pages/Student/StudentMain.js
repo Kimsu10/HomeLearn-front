@@ -55,7 +55,7 @@ const StudentMain = () => {
             element={<StudentAssignment username={username} />}
           />
           <Route
-            path="/:subjectName/boardList"
+            path="/:subjectName/board/list"
             element={<StudentSubjectBoardList username={username} />}
           />
           <Route
