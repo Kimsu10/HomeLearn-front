@@ -1,0 +1,143 @@
+/* 메인 스타일 */
+.question_board_main_container {
+  display: flex;
+  flex-direction: column;
+  width: 1120px;
+  padding: 100px 68px;
+}
+
+.question_board_type_image {
+  width: 250px;
+  height: 250px;
+  border-radius: 20px;
+}
+
+.question_board_type_container {
+  width: 100%;
+  display: flex;
+  border-bottom: 1px solid black;
+  padding-bottom: 20px;
+}
+
+.question_board_description_box {
+  padding: 0 75px;
+}
+
+.question_board_type_name {
+  font-size: 48px;
+  margin-bottom: 75px;
+}
+
+.question_board_type_description {
+  font-size: 32px;
+}
+
+/* 질문 게시판 스타일  */
+.question_board_container {
+  justify-content: flex-start;
+  border-bottom: 1px solid gray;
+}
+
+.question_board_main_body_container {
+  padding: 48px 0;
+}
+
+.question_board_main_title {
+  font-size: 40px;
+  margin-bottom: 50px;
+}
+
+/* 테이블 */
+.question_board_list_table {
+  width: 100%;
+  border-bottom: 1px solid gray;
+  border-collapse: collapse;
+}
+
+.question_board_table_tab_names {
+  font-size: 24px;
+  text-align: center;
+}
+
+.question_board_table_tab_names th {
+  padding: 10px;
+  border-bottom: 1px solid gray;
+}
+
+.question_board_table_tab_names th:nth-child(1),
+.question_board_table_tab_names th:nth-child(5) {
+  width: 10%;
+}
+
+.question_board_table_tab_names th:nth-child(2) {
+  width: 40%;
+}
+
+.question_board_table_tab_names th:nth-child(3),
+.question_board_table_tab_names th:nth-child(4) {
+  width: 15%;
+}
+
+.writed_question_board_lists {
+  height: 55px;
+  line-height: 55px;
+  font-size: 24px;
+  text-align: center;
+  color: black;
+}
+
+.writed_question_board_lists td {
+  padding: 20px 0 10px 0;
+}
+
+/* 페이지 네이션  */
+.pagination_container {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pagination_button {
+  font-size: 1.5rem;
+  width: 36px;
+  height: 36px;
+  padding: 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination_button.active {
+  background-color: var(--studentMainColor);
+  color: white;
+  border-radius: 50%;
+}
+
+.pagination_button:hover:not(:disabled) {
+  background-color: var(--studentMainColor);
+  color: white;
+  border-radius: 50%;
+}
+
+.pagination_button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  color: #d9d9d9;
+}
+
+.pagenation_btn {
+  font-size: 24px;
+}
+
+.pagination_button.disabled-icon .pagenation_btn {
+  color: #d9d9d9;
+}
+
+.pagination_button:not(.disabled-icon) .pagenation_btn {
+  color: var(--studentMainColor);
+}

@@ -112,14 +112,28 @@
   white-space: pre-wrap;
 }
 
-/* 질문 게시판  */
+.no_subject_boards {
+  width: 100%;
+  height: 120px;
+  border: 2px solid #74b49b;
+  border-radius: 20px;
+  padding: 16px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  gap: 16px;
+  cursor: auto;
+}
 
+/* 질문 게시판  */
 .inquiry_list {
   width: 100%;
   height: 120px;
   border: 2px solid #74b49b;
   border-radius: 20px;
-  padding: 15px 10px;
+  padding: 20px 28px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -173,6 +187,31 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.no_inquiry_container {
+  margin-top: 50px;
+  width: 100%;
+  height: 120px;
+  border: 2px solid #74b49b;
+  border-radius: 20px;
+  padding: 16px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  gap: 16px;
+  cursor: auto;
+}
+
+/* 질문버튼 주석처리 */
+.inquiry_submit_button {
+  background-color: var(--studentMainColor);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 16px;
+  display: none;
 }
 
 /* 강의 영상  */
