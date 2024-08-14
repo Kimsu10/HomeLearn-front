@@ -6,25 +6,16 @@
 }
 
 .survey-detail-title {
-  font-size: 24px;
   margin-bottom: 20px;
+}
+
+.survey-detail-title h2 {
+  font-size: 20px;
+  font-weight: normal;
   color: #333;
 }
 
-.survey-curriculum-title {
-  background-color: #fff;
-  padding: 10px 15px;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.survey-curriculum-title h3 {
-  font-size: 18px;
-  margin: 0;
-}
-
-.survey-curriculum-title span {
+.survey-detail-title span {
   background-color: #e0e0e0;
   padding: 2px 8px;
   border-radius: 10px;
@@ -32,35 +23,44 @@
   margin-left: 10px;
 }
 
+.survey-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-container, .right-container {
+  width: 48%;
+}
+
 .survey-card {
   background-color: #fff;
   border-radius: 8px;
   padding: 20px;
-  margin-bottom: 20px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
 }
 
-.survey-progress, .survey-chart, .completed-surveys {
+.survey-card h3 {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.survey-info, .completed-survey-item {
   background-color: #f9f9f9;
   border-radius: 5px;
   padding: 15px;
-  margin-bottom: 15px;
-}
-
-.survey-progress h4, .survey-chart h4, .completed-surveys h3 {
-  font-size: 16px;
   margin-bottom: 10px;
-  color: #555;
 }
 
 .survey-count {
   font-weight: bold;
-  margin-bottom: 10px;
-  font-size: 14px;
-  color: #666;
+  font-size: 16px;
+  color: #333;
+  margin-top: 5px;
 }
 
-.survey-button {
+.iclass {
   background-color: #4a90e2;
   color: white;
   border: none;
@@ -68,29 +68,37 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+  margin-top: 10px;
 }
 
-.completed-survey-item {
+.survey-chart {
   background-color: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  padding: 15px;
-  margin-bottom: 10px;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
 }
 
-.completed-survey-item h4 {
-  font-size: 14px;
-  margin-bottom: 5px;
-  color: #444;
-}
-
-.completed-survey-item p {
-  font-weight: bold;
-  font-size: 14px;
-  color: #666;
+.survey-chart h3 {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #555;
 }
 
 .survey-chart canvas {
-  max-height: 200px;
-  margin-top: 20px;
+  max-height: 300px;
+}
+
+.completed-surveys {
+  overflow-y: auto;
+  max-height: 510px;
+}
+
+.completed-survey-item {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.completed-survey-item:last-child {
+  border-bottom: none;
 }

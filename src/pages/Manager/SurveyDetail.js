@@ -5,7 +5,6 @@ import { Bar, Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
 import './SurveyDetail.css';
 
-// 필요한 요소들 모두 등록
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend);
 
 const SurveyDetail = () => {
@@ -50,7 +49,7 @@ const SurveyDetail = () => {
   if (error) return <div>오류 발생: {error}</div>;
   if (!surveyDetails || !curriculumSimple) return <div>설문조사 정보를 불러올 수 없습니다.</div>;
 
-  const barChartData = {
+  const chartData = {
     labels: Object.keys(surveyTrend),
     datasets: [{
       label: '설문 조사 응답 수',
@@ -58,18 +57,6 @@ const SurveyDetail = () => {
       backgroundColor: 'rgba(75, 192, 192, 0.6)',
       borderColor: 'rgba(75, 192, 192, 1)',
       borderWidth: 1
-    }]
-  };
-
-  const lineChartData = {
-    labels: Object.keys(surveyTrend),
-    datasets: [{
-      label: '설문 조사 추이',
-      data: Object.values(surveyTrend),
-      fill: false,
-      backgroundColor: 'rgba(54, 162, 235, 0.6)',
-      borderColor: 'rgba(54, 162, 235, 1)',
-      tension: 0.1
     }]
   };
 
@@ -84,34 +71,35 @@ const SurveyDetail = () => {
 
   return (
     <div className="survey-detail">
-      <div className="survey-detail-title">설문 조사 현황</div>
-      <div className="survey-curriculum-title">
-        <h3>{curriculumSimple.name} <span>{curriculumSimple.th}기</span></h3>
+      <div className="survey-detail-title">
+        <h2>{curriculumSimple.name} <span>{curriculumSimple.th}기</span></h2>
       </div>
-      <div className="survey-card">
-        <div className="survey-progress">
-          <h4>진행 중인 설문 조사</h4>
-          <p>{surveyDetails.title}</p>
-          <p className="survey-count">{surveyDetails.completed}/{surveyDetails.total}</p>
-          <button className="survey-button">설문 마감</button>
-        </div>
-        <div className="survey-chart">
-          <h4>설문 조사 추이</h4>
-          <Bar data={barChartData} options={chartOptions} />
-        </div>
-        <div className="survey-chart">
-          <h4>설문 조사 응답 추이</h4>
-          <Line data={lineChartData} options={chartOptions} />
-        </div>
-      </div>
-      <div className="completed-surveys">
-        <h3>종료된 설문 조사</h3>
-        {endedSurveys.map((survey, index) => (
-          <div key={index} className="completed-survey-item">
-            <h4>{survey.title}</h4>
-            <p>{survey.completed}/{survey.total}</p>
+      <div className="survey-content">
+        <div className="left-container">
+          <div className="survey-card active-survey">
+            <h3>진행 중인 설문 조사</h3>
+            <div className="survey-info">
+              <p>{surveyDetails.title}</p>
+              <p className="survey-count">{surveyDetails.completed}/{surveyDetails.total}</p>
+              <button className="iclass">설문 마감</button>
+            </div>
           </div>
-        ))}
+          <div className="survey-chart">
+            <h3>설문 조사 추이</h3>
+            <Bar data={chartData} options={chartOptions} />
+          </div>
+        </div>
+        <div className="right-container">
+          <div className="survey-card completed-surveys">
+            <h3>종료된 설문 조사</h3>
+            {endedSurveys.map((survey, index) => (
+              <div key={index} className="completed-survey-item">
+                <p>{survey.title}</p>
+                <p className="survey-count">{survey.completed}/{survey.total}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
