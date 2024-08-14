@@ -129,7 +129,7 @@ const TeacherSideBar = () => {
                             </div>
                             <ul className={`teacher_sideBar_subMenu ${dropdownOpen === 'notice' ? 'open' : ''}`}>
                                 <li>
-                                    <NavLink to="/teahcers/notice/teacherNotice"
+                                    <NavLink to="/teachers/notice/teacherNotice"
                                              className={({isActive}) => isActive ? 'teacher_sideBar_link active' : 'teacher_sideBar_link'}>
                                         강사 공지사항
                                     </NavLink>

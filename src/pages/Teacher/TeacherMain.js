@@ -15,6 +15,7 @@ import Notice from "../Manager/Notice";
 import CurriculumManagement from "../Manager/CurriculumManagement";
 import TeacherManagement from "../Manager/TeacherManagement";
 import TeacherHeader from "../../components/Nav/TeacherHeader";
+import TeacherNotice from "./TeacherNotice";
 
 function Dashboard() {
   return (
@@ -52,6 +53,7 @@ function TeacherMain() {
             />
             <Route path="manage-teachers" element={<TeacherManagement />} />
             <Route path="notice" element={<Notice />} />
+            <Route path="teacherNotice" element={<TeacherNotice />} />
             <Route path="contact-students" element={<StudentContact />} />
             <Route path="contact-teachers" element={<TeacherContact />} />
           </Routes>

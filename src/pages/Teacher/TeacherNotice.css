@@ -1,0 +1,47 @@
+.teacher-notice-container {
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+}
+
+.teacher-notice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.teacher-notice-actions {
+    display: flex;
+}
+
+.notice-action-button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #F4F5F7;
+    color: #757575;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.test-list {
+    margin-top: 30px;
+    text-align: left;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.notice-footer {
+    margin-top: 40px;
+    margin-right: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.notice-pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    flex-grow: 0;
+}
