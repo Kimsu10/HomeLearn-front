@@ -103,27 +103,27 @@ const CurriculumDetail = () => {
         setSchedules(calendarResponse.data);
 
         const surveyResponse = await axios.get(
-         `/managers/curriculum/${id}/survey-status/progress`,
-         config
+          `/managers/curriculum/${id}/survey-status/progress`,
+          config
         );
-       console.log("설문조사 정보 응답:", surveyResponse.data);
-             if (surveyResponse.data) {
-               setSurvey({
-                 id: surveyResponse.data.id,
-                 title: surveyResponse.data.title,
-                 th: surveyResponse.data.th,
-                 completed: surveyResponse.data.completed,
-                 total: surveyResponse.data.total,
-                 status: surveyResponse.data.status || "대기 중",
-               });
-             }
-           } catch (error) {
-             console.error("데이터 가져오기 오류:", error.response);
-           }
-         };
+              console.log('Survey Response:', surveyResponse.data);
+        if (surveyResponse.data) {
+          setSurvey({
+            id: surveyResponse.data.id,
+            title: surveyResponse.data.title,
+            th: surveyResponse.data.th,
+            completed: surveyResponse.data.completed,
+            total: surveyResponse.data.total,
+            status: surveyResponse.data.status || "대기 중",
+          });
+        }
+      } catch (error) {
+        console.error("데이터 가져오기 오류:", error.response);
+      }
+    };
 
-         fetchData();
-       }, [id]);
+    fetchData();
+  }, [id]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -234,10 +234,7 @@ const CurriculumDetail = () => {
       const token = getToken();
       let response;
 
-      console.log("Current survey status:", survey.status);
-
       if (survey.status === "대기 중" || !survey.id) {
-        console.log("Starting new survey");
         response = await axios.post(
           `/managers/manage-curriculums/survey-start/${id}`,
           {},
@@ -249,7 +246,6 @@ const CurriculumDetail = () => {
           }
         );
       } else if (survey.status === "진행 중") {
-        console.log("Stopping ongoing survey");
         response = await axios.post(
           `/managers/manage-curriculums/survey-stop/${survey.id}`,
           {},
@@ -262,12 +258,10 @@ const CurriculumDetail = () => {
         );
       }
 
-      console.log("Survey action response:", response);
-
       if (response.status === 200) {
         const newStatus = survey.status === "대기 중" ? "진행 중" : "완료";
         swal(
-          survey.status === "대기 중" ? "설문 시작" : "설문 종료",
+          survey.status === "대기 중" ? "설문 등록" : "설문 마감",
           `설문 조사가 ${newStatus}되었습니다.`,
           "success"
         );
@@ -375,14 +369,14 @@ const CurriculumDetail = () => {
             <div className="curriculum-detail-info-box curriculum-detail-survey-box">
               <div className="curriculum-detail-survey-header">
                 <span className="curriculum-detail-subtitle">설문 조사</span>
-                {survey.id ? (
+                {survey.id && (
                   <Link
                     to={`/managers/curriculum/${id}/survey/${survey.id}/basic`}
                     className="survey-link"
                   >
                     자세히 보기
                   </Link>
-                ) : null}
+                )}
               </div>
               {survey.title ? (
                 <div className="curriculum-detail-survey-content">
@@ -404,7 +398,7 @@ const CurriculumDetail = () => {
                         className="curriculum-detail-survey-button"
                         onClick={handleSurveyAction}
                       >
-                        {survey.status === "대기 중" ? "설문 시작" : "설문 종료"}
+                        {survey.status === "대기 중" ? "설문 등록" : "설문 마감"}
                       </button>
                     )}
                   </div>

@@ -1,44 +1,36 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./StudentLecture.css";
 import useGetFetch from "../../hooks/useGetFetch";
 import { useEffect } from "react";
+import useAxiosGet from "../../hooks/useAxiosGet";
 
+// 과목 상세페이지
 const StudentLecture = () => {
   const navigate = useNavigate();
+  const subjectId = useParams();
+  console.log(subjectId);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   // 강의 영상
-  const {
-    data: mainLectures,
-    loading: mainLecturesLoading,
-    error: mainLecturesError,
-  } = useGetFetch("/data/student/mainLecture/mainLecture.json", "");
+  const { data: mainLectures } = useAxiosGet("/students/subjects/1", "");
+
+  console.log(mainLectures);
+  //"imagePath": "curriculum/ncp/1/subject/37126063-8f24-4aad-b4f9-68f72e0976cc.png" 이걸 못 불러온다.
 
   // 과목 게시판
-  const {
-    data: subjectBoards,
-    loading: subjectBoardsLoading,
-    error: subjectBoardsError,
-  } = useGetFetch("/data/student/mainLecture/subjectBoard.json", []);
+  const { data: subjectBoards } = useAxiosGet(
+    "/students/subjects/1/boards-recent",
+    []
+  );
 
   // 질문 게시판
-
-  const {
-    data: inquiryBoards,
-    loading: inquiryBoardsLoading,
-    error: inquiryBoardsError,
-  } = useGetFetch("/data/student/mainLecture/inquiryBoard.json", []);
-
-  if (mainLecturesLoading || subjectBoardsLoading || inquiryBoardsLoading) {
-    return <div>데이터를 불러오는 중입니다.</div>;
-  }
-
-  if (mainLecturesError || subjectBoardsError || inquiryBoardsError) {
-    return <div>데이터를 불러오는데 오류가 발생했습니다.</div>;
-  }
+  const { data: inquiryBoards } = useGetFetch(
+    "/data/student/mainLecture/inquiryBoard.json",
+    []
+  );
 
   const getYoutubeEmbedUrl = (url) => {
     const videoId = url.split("v=")[1]?.split("&")[0];
@@ -76,10 +68,10 @@ const StudentLecture = () => {
           <img
             className="lecture_type_image"
             alt="과목이미지"
-            src={mainLectures.imgPath}
+            src={mainLectures?.imagePath}
           />
           <div className="lecture_description_box">
-            <h1 className="lecture_type_name">{mainLectures.title}</h1>
+            <h1 className="lecture_type_name">{mainLectures?.name}</h1>
             <p className="lecture_type_description">
               {mainLectures.description}
             </p>
@@ -100,26 +92,33 @@ const StudentLecture = () => {
               </span>
             </div>
             <div className="subject_list_container">
-              {subjectBoards.slice(0, 4).map((el, idx) => (
-                <div
-                  className="subject_list"
-                  key={idx}
-                  onClick={() =>
-                    navigate(
-                      `/students/${mainLectures.title}/boardDetail/${el.id}`
-                    )
-                  }
-                >
-                  <div className="subject_title_box">
-                    <h4 className="subject_title">{el.title}</h4>
-                    <span className="subject_write_date">{el.writeDate}</span>
-                  </div>
-                  <div className="subject_content_box">
-                    <span className="subject_text_content">{el.content}</span>
-                    <span className="subject_file_name">{el.filePath}</span>
-                  </div>
+              {subjectBoards.length === 0 ? (
+                <div className="no_subject_boards">
+                  작성된 게시글이 없습니다
                 </div>
-              ))}
+              ) : (
+                subjectBoards.slice(0, 4).map((el, idx) => (
+                  <div
+                    className="subject_list"
+                    key={idx}
+                    onClick={() =>
+                      navigate(
+                        `/students/${mainLectures.title}/boardDetail/${el.boardId}`,
+                        { state: { subjectBoards } }
+                      )
+                    }
+                  >
+                    <div className="subject_title_box">
+                      <h4 className="subject_title">{el.title}</h4>
+                      <span className="subject_write_date">{el.writeDate}</span>
+                    </div>
+                    <div className="subject_content_box">
+                      <span className="subject_text_content">{el.content}</span>
+                      <span className="subject_file_name">{el.fileName}</span>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
           <div className="inquiry_board_container">
@@ -171,7 +170,6 @@ const StudentLecture = () => {
               mainLectures.lectures &&
               mainLectures.lectures.map((el, idx) => {
                 const isOpen = isOpend(el.date);
-                const daysRemaining = checkDatesUntilOpen(el.date);
 
                 return (
                   <div className="lecture_video" key={idx}>
@@ -180,14 +178,6 @@ const StudentLecture = () => {
                         !isOpen ? "not-released" : ""
                       }`}
                     >
-                      {/* {!isOpen && (
-                        <>
-                          <div className="show_not_open">
-                            {daysRemaining}일 후 시청 가능합니다.
-                          </div>
-                          <div className="not-released-overlay"></div>
-                        </>
-                      )} */}
                       <iframe
                         width="100%"
                         height="100%"

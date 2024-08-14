@@ -9,7 +9,7 @@ import axios from "axios";
 
 const StudentFreeBoardDetail = ({ username }) => {
   const { boardId } = useParams();
-
+  console.log(username);
   // GET 요청
   const { data: freeboardDetail } = useAxiosGet(`/students/boards/${boardId}`);
   console.log(freeboardDetail);

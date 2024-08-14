@@ -16,9 +16,9 @@ import StudentSideBar from "../../components/SideBar/StudentSideBar";
 import StudentHeader from "../../components/Nav/StudentHeader";
 import StudentBadge from "./StudentBadge";
 import StudentFreeBoardDetail from "./StudentFreeBoardDetail";
+import SurveyForm from "./SurveyForm";
 
 const StudentMain = () => {
-  // const [showSection, setShowSection] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [username, setUsername] = useState("");
 
@@ -36,25 +36,6 @@ const StudentMain = () => {
   }, []);
 
   console.log(username); // 잘들어옴
-
-  // const toggleOpen = (section) => {
-  //   setShowSection(showSection === section ? null : section);
-  // };
-
-  // const handleSubjectClick = (subjectName) => {
-  //   setSelectedSubject(subjectName);
-  //   navigate(`/students/${subjectName}/board`);
-  // };
-
-  // const handleSectionClick = (section) => {
-  //   navigate(`/students/${section}`);
-  //   setShowSection(null);
-  // };
-
-  // const { data: subject, error: subjectError } = useGetFetch(
-  //   "/data/student/mainpage/sidebar.json",
-  //   []
-  // );
 
   return (
     <div className="student_dashboard_body" id="container">
@@ -98,7 +79,7 @@ const StudentMain = () => {
             element={<StudentQuestionBoard username={username} />}
           />
           <Route
-            path="/assignmentDetail/:id"
+            path="/assignmentDetail/:homeworkId"
             element={<StudentAssignmentDetail username={username} />}
           />
           <Route
@@ -116,6 +97,8 @@ const StudentMain = () => {
           {/* <Route path="/teacherNotice" element={< />} /> */}
           {/* 언젠가 들어올 투표 페이지 */}
           {/* <Route path="/teacherNotice" element={< />} /> */}
+          <Route path="/survey/:surveyId" element={<SurveyForm />} />{" "}
+          {/* 설문조사 */}
         </Routes>
       </div>
     </div>
