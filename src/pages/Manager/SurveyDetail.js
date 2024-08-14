@@ -110,9 +110,11 @@ const SurveyDetail = () => {
           <div className="survey-card active-survey">
             <h3>진행 중인 설문 조사</h3>
             <div className="survey-info">
-              <p>{surveyDetails.title}</p>
-              <p className="survey-count">{surveyDetails.completed}/{surveyDetails.total}</p>
+              <p className="survey-info-title">{surveyDetails.title}</p>
+              <div className="survey-info-title-right-title">
+              <p className="survey-count"> <i class="fa-solid fa-user"></i>{surveyDetails.completed}/{surveyDetails.total}</p>
               <button className="survey-end-button" onClick={handleSurveyEnd}>설문 마감</button>
+              </div>
             </div>
           </div>
           <div className="survey-chart">
@@ -121,13 +123,14 @@ const SurveyDetail = () => {
           </div>
         </div>
         <div className="right-container">
-          <div className="survey-card completed-surveys">
+          <div className="survey-card-end completed-surveys">
             <h3>종료된 설문 조사</h3>
             <div className="completed-surveys-list">
               {endedSurveys.map((survey, index) => (
                 <div key={index} className="completed-survey-item">
                   <p>{survey.title}</p>
-                  <p className="survey-count">{survey.completed}/{survey.total}</p>
+                  <p className="survey-count">
+                  <i class="fa-solid fa-user"></i>{survey.completed}/{survey.total}</p>
                 </div>
               ))}
             </div>
