@@ -1,64 +1,52 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useParams, NavLink } from "react-router-dom";
-import axios from "axios";
+import { useParams, NavLink, useNavigate } from "react-router-dom";
+import axios from "../../utils/axios";
 import "./StudentHeader.css";
 
 const StudentHeader = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [curriculum, setCurriculum] = useState({
-    name: "",
-    th: 0,
-    progress: 0,
+    curriculumFullName: "",
+    progressRate: 0,
   });
 
-  {
-    /* =================수정 예정================= */
-  }
   const [student, setStudent] = useState({
     name: "",
-    email: "",
-    phone: "",
+    imagePath: "",
   });
 
+  const [notifications, setNotifications] = useState([]);
+
   const getToken = () => localStorage.getItem("access-token");
-  const deleteToken = () => localStorage.removeItem("access-token");
+
+  const deleteToken = () => {
+    localStorage.removeItem("access-token");
+    navigate("/login");
+  };
 
   useEffect(() => {
-    if (!id) {
-      console.error("Invalid curriculum ID");
-      return;
-    }
-
     const fetchData = async () => {
       try {
         const token = getToken();
-        console.log("Token:", token);
         const config = {
           headers: { access: token },
         };
+        const commonResponse = await axios.get("/header/common", config);
+        setCurriculum(commonResponse.data);
 
-        console.log("ID 값:", id);
+        // 알림 정보 가져오기
+        const notificationResponse = await axios.get("/header/notifications", config);
+        setNotifications(notificationResponse.data.notifications || []);
 
-        const basicResponse = await axios.get(
-          `/students/curriculum/${id}/basic`,
-          config
-        );
-        console.log("Basic:", basicResponse);
-        setCurriculum(basicResponse.data);
-
-        {
-          /* =================수정 예정================= */
-        }
-        const studentResponse = await axios.get(`/students/info`, config);
-        console.log("학생:", studentResponse);
-        setStudent(studentResponse.data);
+        console.log("알림 정보:", notificationResponse.data.notifications);
       } catch (error) {
-        console.error("response 오류", error.response);
+        console.error("데이터 가져오기 오류:", error.response);
       }
     };
 
     fetchData();
-  }, [id]);
+  }, []);
 
   const [openDropdown, setOpenDropdown] = useState(null);
   const alarmRef = useRef(null);
@@ -69,6 +57,12 @@ const StudentHeader = () => {
       event.preventDefault();
     }
     setOpenDropdown((prevState) => (prevState === dropdown ? null : dropdown));
+  };
+
+  const handleNotificationClick = (notification) => {
+    if (notification.url) {
+      navigate(notification.url);
+    }
   };
 
   useEffect(() => {
@@ -102,7 +96,7 @@ const StudentHeader = () => {
             </a>
           </h1>
           <span className="student_h-curriculum_name">
-            {curriculum.name} {curriculum.th}기
+            {curriculum.curriculumFullName}
           </span>
         </div>
 
@@ -110,8 +104,11 @@ const StudentHeader = () => {
           <div className="student_h-progress-bar">
             <div
               className="student_h-progress"
-              style={{ width: `${curriculum.progress}%` }}
+              style={{ width: `${curriculum.progressRate}%` }}
             ></div>
+            <span className="student_h-progress-text">
+              {curriculum.progressRate.toFixed(1)} / 100%
+            </span>
           </div>
 
           <ul className="student_h-gnb_items">
@@ -132,7 +129,9 @@ const StudentHeader = () => {
                     <span>
                       <i className="fa-solid fa-bell"></i>
                     </span>
-                    <span className="student_h-alarm_count"></span>
+                    <span className="student_h-alarm_count">
+                      {notifications.length}
+                    </span>
                   </a>
                 </li>
               </div>
@@ -142,17 +141,20 @@ const StudentHeader = () => {
                   openDropdown === "student_alarm" ? "open" : ""
                 }`}
               >
-                <div id="student_h-alarm_list">
+                {notifications.length > 0 ? (
+                  notifications.map((notification, index) => (
+                    <li
+                      key={index}
+                      onClick={() => handleNotificationClick(notification)}
+                    >
+                      <span>{notification.message}</span>
+                    </li>
+                  ))
+                ) : (
                   <li>
-                    <span>알림 예시입니다.</span>
+                    <span>알림이 없습니다.</span>
                   </li>
-                  <li>
-                    <span>알림 예시입니다.</span>
-                  </li>
-                  <li>
-                    <span>알림 예시입니다.</span>
-                  </li>
-                </div>
+                )}
               </ul>
             </div>
           </ul>
@@ -165,11 +167,13 @@ const StudentHeader = () => {
               onClick={(e) => toggleDropdown("student_profile", e)}
             >
               <div>
-                <img className="student_h-profile_img" src="/" alt="프로필" />
+                <img
+                  className="student_h-profile_img"
+                  src={student.imagePath || "/default-profile.png"}
+                  alt="프로필"
+                />
               </div>
-              <span className="student_h-profile_name">
-                {student.name}대성진
-              </span>
+              <span className="student_h-profile_name">{student.name}</span>
               <i className="fa-solid fa-caret-down"></i>
             </div>
             <ul

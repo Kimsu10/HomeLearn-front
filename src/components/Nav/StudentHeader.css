@@ -66,8 +66,21 @@
 }
 
 .student_h-progress {
-    height: 90%;
-    background-color: var(--studentMainColor);
+  height: 100%;
+  background-color: var(--studentMainColor);
+  transition: width 0.4s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.student_h-progress-text {
+  position: absolute;
+  right: 260px;
+  top: 70px;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: #000;
+  font-weight: bold;
 }
 
 /* Global Navigation Bar =============== */
