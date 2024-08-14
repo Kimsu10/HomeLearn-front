@@ -26,10 +26,7 @@ const StudentLecture = () => {
     []
   );
 
-  console.log(subjectBoards);
-
   // 질문 게시판
-
   const { data: inquiryBoards } = useGetFetch(
     "/data/student/mainLecture/inquiryBoard.json",
     []
@@ -106,7 +103,8 @@ const StudentLecture = () => {
                     key={idx}
                     onClick={() =>
                       navigate(
-                        `/students/${mainLectures.title}/boardDetail/${el.boardId}`
+                        `/students/${mainLectures.title}/boardDetail/${el.boardId}`,
+                        { state: { subjectBoards } }
                       )
                     }
                   >
