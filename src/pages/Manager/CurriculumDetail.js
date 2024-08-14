@@ -9,7 +9,7 @@ import "./CurriculumDetail.css";
 import swal from "sweetalert";
 
 const CurriculumDetail = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // curriculumId를 가져옴
   const navigate = useNavigate();
   const [curriculum, setCurriculum] = useState({
     name: "",
@@ -117,7 +117,6 @@ const CurriculumDetail = () => {
             status: surveyResponse.data.status || "대기 중",
           });
 
-          // 확인용 로그
           console.log('Survey State after setting:', {
             id: surveyResponse.data.surveyId,
             title: surveyResponse.data.title,
@@ -380,15 +379,9 @@ const CurriculumDetail = () => {
             <div className="curriculum-detail-info-box curriculum-detail-survey-box">
               <div className="curriculum-detail-survey-header">
                 <span className="curriculum-detail-subtitle">설문 조사</span>
-                {console.log('Survey ID during link rendering:', survey.id)}
-                {survey.id && (
-                  <Link
-                    to={`/managers/curriculum/${id}/survey/${survey.id}/basic`}
-                    className="survey-link"
-                  >
-                    자세히 보기
-                  </Link>
-                )}
+                <Link to={`/managers/curriculum/${id}/survey/${survey.id}/detail`} className="survey-link">
+                  자세히 보기{" "}
+                </Link>
               </div>
               {survey.title ? (
                 <div className="curriculum-detail-survey-content">
@@ -408,7 +401,7 @@ const CurriculumDetail = () => {
                     {survey.status !== "완료" && (
                       <button
                         className="curriculum-detail-survey-button"
-                        onClick={handleSurveyAction}
+                        onClick={() => navigate(`/managers/curriculum/${id}/survey/${survey.id}/detail`)}
                       >
                         {survey.status === "대기 중" ? "설문 등록" : "설문 마감"}
                       </button>
