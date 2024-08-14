@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "../../utils/axios";
-import { Bar, Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import './SurveyDetail.css';
+import swal from "sweetalert";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const SurveyDetail = () => {
   const { curriculumId } = useParams();
@@ -45,6 +46,36 @@ const SurveyDetail = () => {
     fetchSurveyData();
   }, [curriculumId]);
 
+  const handleSurveyEnd = async () => {
+    try {
+      if (!surveyDetails || !surveyDetails.surveyId) {
+        swal("등록 실패", "설문 조사 ID를 찾을 수 없습니다.", "warning");
+        return;
+      }
+
+      const token = getToken();
+      const config = { headers: { access: token } };
+
+      console.log("Attempting to end survey with ID:", surveyDetails.surveyId);
+
+      const response = await axios.post(`/managers/manage-curriculums/survey-stop/${surveyDetails.surveyId}`, {}, config);
+
+      if (response.status === 200) {
+        const endedSurveysResponse = await axios.get(`/managers/curriculum/${curriculumId}/survey-status/end`, config);
+        setEndedSurveys(endedSurveysResponse.data);
+
+        setSurveyDetails(null);
+        swal("설문 마감", "설문 조사가 성공적으로 마감되었습니다.", "success");
+      } else {
+        swal("설문 마감 오류", "설문 마감 중 오류가 발생했습니다.", "error");
+      }
+    } catch (error) {
+      console.error("설문 마감 중 오류 발생:", error);
+      swal("등록 실패", "설문 마감 중 오류가 발생했습니다.", "warning");
+    }
+  };
+
+
   if (isLoading) return <div>로딩 중...</div>;
   if (error) return <div>오류 발생: {error}</div>;
   if (!surveyDetails || !curriculumSimple) return <div>설문조사 정보를 불러올 수 없습니다.</div>;
@@ -81,7 +112,7 @@ const SurveyDetail = () => {
             <div className="survey-info">
               <p>{surveyDetails.title}</p>
               <p className="survey-count">{surveyDetails.completed}/{surveyDetails.total}</p>
-              <button className="iclass">설문 마감</button>
+              <button className="survey-end-button" onClick={handleSurveyEnd}>설문 마감</button>
             </div>
           </div>
           <div className="survey-chart">
@@ -92,12 +123,14 @@ const SurveyDetail = () => {
         <div className="right-container">
           <div className="survey-card completed-surveys">
             <h3>종료된 설문 조사</h3>
-            {endedSurveys.map((survey, index) => (
-              <div key={index} className="completed-survey-item">
-                <p>{survey.title}</p>
-                <p className="survey-count">{survey.completed}/{survey.total}</p>
-              </div>
-            ))}
+            <div className="completed-surveys-list">
+              {endedSurveys.map((survey, index) => (
+                <div key={index} className="completed-survey-item">
+                  <p>{survey.title}</p>
+                  <p className="survey-count">{survey.completed}/{survey.total}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

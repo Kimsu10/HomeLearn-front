@@ -60,12 +60,13 @@
   margin-top: 5px;
 }
 
-.iclass {
-  background-color: #4a90e2;
+.survey-end-button {
+  width:100px;
+  background-color: #757575;
   color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
+  padding: 10px ;
+  border-radius: 20px;
   cursor: pointer;
   font-size: 14px;
   margin-top: 10px;
@@ -90,8 +91,13 @@
 }
 
 .completed-surveys {
+  max-height: 510px;
+}
+
+.completed-surveys-list {
   overflow-y: auto;
   max-height: 510px;
+  padding-right: 10px;
 }
 
 .completed-survey-item {
