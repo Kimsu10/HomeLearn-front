@@ -2,9 +2,11 @@ import React, {useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import './TeacherSideBar.css';
 import useGetFetch from "../../hooks/useGetFetch";
+import TeacherLectureRegister from "../../pages/Teacher/TeacherLectureRegister";
 
 const TeacherSideBar = () => {
     const [dropdownOpen, setDropdownOpen] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
     const location = useLocation();
 
     const { data: subject, error: subjectError } = useGetFetch("/data/student/mainpage/sidebar.json", []);
@@ -36,6 +38,14 @@ const TeacherSideBar = () => {
     if(subjectError) {
         return <div>Error loading sidebar data</div>;
     }
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
     return (
         <div className="teacher_sideBar_container">
@@ -82,7 +92,7 @@ const TeacherSideBar = () => {
                             </div>
                             <ul className={`teacher_sideBar_subMenu ${dropdownOpen === 'subject' ? 'open' : ''}`}>
                                 <li>
-                                    <span className="teacher_sideBar_subject_add_btn">과목 등록</span>
+                                    <span className="teacher_sideBar_subject_add_btn" onClick={openModal}>과목 등록</span>
                                 </li>
                                 <div className="teacher_sideBar_seperate_line"></div>
                                 {subject.subject?.map((el) => (
@@ -179,6 +189,7 @@ const TeacherSideBar = () => {
                 </div>
             </div>
             <div className="teacher_sideBar_line"></div>
+            {isModalOpen && <TeacherLectureRegister onClose={closeModal} />}
         </div>
     );
 }

@@ -1,0 +1,164 @@
+.teacher-lecture-register {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.teacher-lecture-register-modal {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 800px;
+    height: 700px;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    border: 1px solid var(--teacherMainColor);
+
+}
+
+.teacher-lecture-modal-close-button{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 1.5em;
+    height: 1.5em;
+    border: none;
+    background: none;
+    font-size: 40px;
+    cursor: pointer;
+    color: var(--teacherMainColor);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20%;
+    transition: background-color 0.3s ease;
+}
+
+.teacher-lecture-modal-close-button:hover {
+    background-color: rgba(210, 218, 255, 0.3);
+}
+
+.teacher-lecture-register-container{
+    width: 500px;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.teacher-lecture-register-title{
+    font-size: 36px;
+    color: var(--teacherMainColor);
+}
+
+.teacher-lecture-register-label {
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    color: var(--teacherMainColor);
+}
+
+.teacher-lecture-register-label > input{
+    width: 400px;
+    height: 50px;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid var(--teacherAssistColor);
+    font-size: 18px;
+    transition: border-color 0.3s ease;
+}
+
+.teacher-lecture-register-label > textarea{
+    width: 400px;
+    height: 200px;
+    resize: none;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid var(--teacherAssistColor);
+    font-size: 18px;
+    transition: border-color 0.3s ease;
+}
+
+.teacher-lecture-register-label input:focus,
+.teacher-lecture-register-label textarea:focus {
+    outline: none;
+    border-color: var(--teacherSubColor);
+    box-shadow: 0 0 0 1px rgba(0, 0, 255, 0.1);
+}
+
+.teacher-lecture-register-file{
+    width: 400px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.teacher-lecture-register-filename{
+    width: 300px;
+    height: 50px;
+    border: 1px solid var(--teacherAssistColor);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.teacher-lecture-register-file > button{
+    width: 80px;
+    height: 50px;
+    border: 1px solid var(--teacherMainColor);
+    background-color: rgba(210, 218, 255, 0.2);
+    color: var(--teacherMainColor);
+    border-radius: 10px;
+    transition: border-color 0.3s ease;
+}
+
+.teacher-lecture-register-file button:hover {
+    outline: none;
+    background-color: rgba(210, 218, 255, 0.5);
+}
+
+.teacher-lecture-register-button{
+    display: flex;
+    justify-content: space-between;
+    width: 250px;
+}
+
+.teacher-lecture-register-button > button[type="submit"] {
+    width: 100px;
+    height: 30px;
+    background-color: var(--teacherMainColor);
+    color: #ffffff;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.teacher-lecture-register-button > button[type="button"]{
+    width: 100px;
+    height: 30px;
+    border: 1px solid var(--teacherMainColor);
+    background-color: rgba(210, 218, 255, 0.2);
+    color: var(--teacherMainColor);
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.teacher-lecture-register-button > button[type="submit"]:hover{
+    background-color: #a5a6ea;
+}
+
+.teacher-lecture-register-button > button[type="button"]:hover {
+    background-color: rgba(210, 218, 255, 0.5);
+}

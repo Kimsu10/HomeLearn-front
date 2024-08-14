@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import "./StudentLecture.css";
+import "./TeacherLecture.css";
 import useGetFetch from "../../hooks/useGetFetch";
 import { useEffect } from "react";
 
-const StudentLecture = () => {
+const TeacherLecture = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,14 +15,14 @@ const StudentLecture = () => {
     data: mainLectures,
     loading: mainLecturesLoading,
     error: mainLecturesError,
-  } = useGetFetch("/data/student/mainLecture/mainLecture.json", "");
+  } = useGetFetch("/data/teacher/mainLecture/mainLecture.json", "");
 
   // 과목 게시판
   const {
     data: subjectBoards,
     loading: subjectBoardsLoading,
     error: subjectBoardsError,
-  } = useGetFetch("/data/student/mainLecture/subjectBoard.json", []);
+  } = useGetFetch("/data/teacher/mainLecture/subjectBoard.json", []);
 
   // 질문 게시판
 
@@ -30,7 +30,7 @@ const StudentLecture = () => {
     data: inquiryBoards,
     loading: inquiryBoardsLoading,
     error: inquiryBoardsError,
-  } = useGetFetch("/data/student/mainLecture/inquiryBoard.json", []);
+  } = useGetFetch("/data/teacher/mainLecture/inquiryBoard.json", []);
 
   if (mainLecturesLoading || subjectBoardsLoading || inquiryBoardsLoading) {
     return <div>데이터를 불러오는 중입니다.</div>;
@@ -70,28 +70,28 @@ const StudentLecture = () => {
   };
 
   return (
-    <div className="student_lecture_container">
-      <div className="main_container">
-        <div className="lecture_type_container">
+    <div className="teacher_lecture_container">
+      <div className="teacher_main_container">
+        <div className="teacher_lecture_type_container">
           <img
-            className="lecture_type_image"
+            className="teacher_lecture_type_image"
             alt="과목이미지"
             src={mainLectures.imgPath}
           />
-          <div className="lecture_description_box">
-            <h1 className="lecture_type_name">{mainLectures.title}</h1>
-            <p className="lecture_type_description">
+          <div className="teacher_lecture_description_box">
+            <h1 className="teacher_lecture_type_name">{mainLectures.title}</h1>
+            <p className="teacher_lecture_type_description">
               {mainLectures.description}
             </p>
           </div>
         </div>
         {/* 게시판 */}
-        <div className="board_container">
-          <div className="lecture_subject_board_container">
-            <div className="board_title_box">
-              <h3 className="board_title">과목 게시판</h3>
+        <div className="teacher_board_container">
+          <div className="teacher_lecture_subject_board_container">
+            <div className="teacher_board_title_box">
+              <h3 className="teacher_board_title">과목 게시판</h3>
               <span
-                className="go_to_show_more_page"
+                className="teacher_go_to_show_more_page"
                 onClick={() =>
                   navigate(`/students/${mainLectures.title}/boardList`)
                 }
@@ -99,10 +99,10 @@ const StudentLecture = () => {
                 더보기 ⟩
               </span>
             </div>
-            <div className="subject_list_container">
+            <div className="teacher_subject_list_container">
               {subjectBoards.slice(0, 4).map((el, idx) => (
                 <div
-                  className="subject_list"
+                  className="teacher_subject_list"
                   key={idx}
                   onClick={() =>
                     navigate(
@@ -110,46 +110,46 @@ const StudentLecture = () => {
                     )
                   }
                 >
-                  <div className="subject_title_box">
-                    <h4 className="subject_title">{el.title}</h4>
-                    <span className="subject_write_date">{el.writeDate}</span>
+                  <div className="teacher_subject_title_box">
+                    <h4 className="teacher_subject_title">{el.title}</h4>
+                    <span className="teacher_subject_write_date">{el.writeDate}</span>
                   </div>
-                  <div className="subject_content_box">
-                    <span className="subject_text_content">{el.content}</span>
-                    <span className="subject_file_name">{el.filePath}</span>
+                  <div className="teacher_subject_content_box">
+                    <span className="teacher_subject_text_content">{el.content}</span>
+                    <span className="teacher_subject_file_name">{el.filePath}</span>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          <div className="inquiry_board_container">
-            <div className="board_title_box">
-              <h3 className="board_title">질문 게시판</h3>
+          <div className="teacher_inquiry_board_container">
+            <div className="teacher_board_title_box">
+              <h3 className="teacher_board_title">질문 게시판</h3>
               <span
-                className="go_to_show_more_page"
+                className="teacher_go_to_show_more_page"
                 onClick={() => navigate("/students/inquiryBoard")}
               >
                 더보기 ⟩
               </span>
             </div>
-            <div className="inquiry_list_container">
+            <div className="teacher_inquiry_list_container">
               {inquiryBoards.slice(0, 4).map((el, idx) => (
                 <div
-                  className="inquiry_list"
+                  className="teacher_inquiry_list"
                   key={idx}
                   onClick={() => navigate(`/students/inquiryDetail/${el.id}`)}
                 >
-                  <div className="inquiry_title_box">
-                    <div className="inquiry_type">{el.type}</div>
-                    <h4 className="inquiry_list_title">{el.content}</h4>
-                    <span className="inquiry_write_date">{el.writeDate}</span>
+                  <div className="teacher_inquiry_title_box">
+                    <div className="teacher_inquiry_type">{el.type}</div>
+                    <h4 className="teacher_inquiry_list_title">{el.content}</h4>
+                    <span className="teacher_inquiry_write_date">{el.writeDate}</span>
                   </div>
-                  <div className="inquiry_content_box">
-                    <span className="inquiry_subject_name">
+                  <div className="teacher_inquiry_content_box">
+                    <span className="teacher_inquiry_subject_name">
                       {el.subjectName}
                     </span>
-                    <span className="inquiry_text_content">{el.content} </span>
-                    <span className="inquiry_file_name">
+                    <span className="teacher_inquiry_text_content">{el.content} </span>
+                    <span className="teacher_inquiry_file_name">
                       {formatFilePath(el.filePath)}
                     </span>
                   </div>
@@ -158,15 +158,15 @@ const StudentLecture = () => {
             </div>
           </div>
         </div>
-        <div className="lecture_list_container">
-          <div className="lecture_title_box">
-            <h3 className="lecture_list_title">강의영상</h3>
-            <div className="button_box">
-              <button className="left_button non_style_button">⟨</button>
-              <button className="right_button non_style_button">⟩</button>
+        <div className="teacher_lecture_list_container">
+          <div className="teacher_lecture_title_box">
+            <h3 className="teacher_lecture_list_title">강의영상</h3>
+            <div className="teacher_button_box">
+              <button className="teacher_left_button non_style_button">⟨</button>
+              <button className="teacher_right_button non_style_button">⟩</button>
             </div>
           </div>
-          <div className="lecture_video_container">
+          <div className="teacher_lecture_video_container">
             {mainLectures &&
               mainLectures.lectures &&
               mainLectures.lectures.map((el, idx) => {
@@ -174,9 +174,9 @@ const StudentLecture = () => {
                 const daysRemaining = checkDatesUntilOpen(el.date);
 
                 return (
-                  <div className="lecture_video" key={idx}>
+                  <div className="teacher_lecture_video" key={idx}>
                     <div
-                      className={`video_wrapper ${
+                      className={`teacher_video_wrapper ${
                         !isOpen ? "not-released" : ""
                       }`}
                     >
@@ -212,4 +212,4 @@ const StudentLecture = () => {
   );
 };
 
-export default StudentLecture;
+export default TeacherLecture;
