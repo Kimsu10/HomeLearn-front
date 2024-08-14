@@ -10,19 +10,26 @@ const StudentLecture = () => {
   const subjectId = useParams();
   console.log(subjectId);
 
+  const mainSubjectId = subjectId["*"].split("/")[0];
+
+  console.log(mainSubjectId);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   // 강의 영상
-  const { data: mainLectures } = useAxiosGet("/students/subjects/1", "");
+  const { data: mainLectures } = useAxiosGet(
+    `/students/subjects/${mainSubjectId}`,
+    ""
+  );
 
   console.log(mainLectures);
   //"imagePath": "curriculum/ncp/1/subject/37126063-8f24-4aad-b4f9-68f72e0976cc.png" 이걸 못 불러온다.
 
   // 과목 게시판
   const { data: subjectBoards } = useAxiosGet(
-    "/students/subjects/1/boards-recent",
+    `/students/subjects/${mainLectures.subjectId}/boards-recent`,
     []
   );
 
