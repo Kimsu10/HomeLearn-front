@@ -342,12 +342,6 @@ const CurriculumDetail = () => {
                   </div>
                 )}
               </div>
-              <Link
-                to={`/attendance/${id}`}
-                className="curriculum-detail-link attendance-link"
-              >
-                자세히 보기{""}
-              </Link>
             </div>
             <div className="curriculum-detail-info-box">
               <div className="curriculum-detail-info-box-title">
@@ -370,11 +364,7 @@ const CurriculumDetail = () => {
                   <p>강사 정보가 없습니다.</p>
                 )}
               </div>
-              {teacher && teacher.name && (
-                <Link to={`/teacher/${id}`} className="curriculum-detail-link teacher-link">
-                  자세히 보기{" "}
-                </Link>
-              )}
+
             </div>
             <div className="curriculum-detail-info-box curriculum-detail-survey-box">
               <div className="curriculum-detail-survey-header">
