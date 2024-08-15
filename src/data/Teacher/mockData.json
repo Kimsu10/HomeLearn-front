@@ -1,0 +1,17 @@
+{
+  "attendanceData": {
+    "attendance": 28,
+    "total": 30,
+    "weekAttendance": {
+      "월": 30,
+      "화": 25,
+      "수": 28,
+      "목": 29,
+      "금": 27
+    }
+  },
+  "homeworkData": {
+    "title": "Spring 게시판 CRUD",
+    "submitRate": 75
+  }
+}

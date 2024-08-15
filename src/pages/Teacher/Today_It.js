@@ -1,11 +1,11 @@
 import React from 'react';
 import './Today_It.css';
 
-const SettingList = () => {
+const Today_It = () => {
   return (
     <div className="teacher-today-container">
       <div className="teacher-today-header">
-        <div className="teacher-today-title">설문 조사</div>
+        <div className="teacher-today-title">오늘의 IT</div>
       </div>
       <ul className="teacher-today-list">
         <li className="teacher-today-list-content">
@@ -19,4 +19,4 @@ const SettingList = () => {
   );
 };
 
-export default SettingList;
+export default Today_It;

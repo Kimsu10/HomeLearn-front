@@ -64,7 +64,7 @@ const TeacherSideBar = () => {
                     <ul className="teacher_sideBar_menu">
                         {/* 1. Dashboard */}
                         <li>
-                            <NavLink to="/teachers" end
+                            <NavLink to="/main" end
                                      className={({isActive}) => isActive ? 'teacher_sideBar_link active' : 'teacher_sideBar_link'}>
                                 대시보드
                             </NavLink>
