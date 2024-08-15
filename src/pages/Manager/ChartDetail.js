@@ -6,7 +6,9 @@ import 'chart.js/auto';
 
 const ChartDetail = () => {
   const { curriculumId, surveyId } = useParams();
-  const [surveyData, setSurveyData] = useState(null);
+  const [surveyTitle, setSurveyTitle] = useState('');
+  const [choiceResponses, setChoiceResponses] = useState([]);
+  const [textResponses, setTextResponses] = useState([]);
   const [error, setError] = useState(null);
 
   const getToken = () => localStorage.getItem("access-token");
@@ -14,12 +16,21 @@ const ChartDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log('Fetching data for ChartDetail with surveyId:', surveyId);
         const token = getToken();
         const config = { headers: { access: token } };
-        const response = await axios.get(`/managers/curriculum/${curriculumId}/survey/${surveyId}/basic`, config);
-        console.log('Survey data received:', response.data);
-        setSurveyData(response.data);
+
+        // 1. 설문조사 제목을 가져옵니다.
+        const surveyResponse = await axios.get(`/managers/curriculum/${curriculumId}/survey/${surveyId}/basic`, config);
+        setSurveyTitle(surveyResponse.data.surveyTitle);
+
+        // 2. 선택형 응답 데이터를 가져옵니다.
+        const choiceResponse = await axios.get(`/managers/curriculum/${curriculumId}/survey/${surveyId}/choice-response`, config);
+        setChoiceResponses(choiceResponse.data);
+
+        // 3. 주관식 응답 데이터를 가져옵니다.
+        const textResponse = await axios.get(`/managers/curriculum/${curriculumId}/survey/${surveyId}/text-response`, config);
+        setTextResponses(textResponse.data.content);
+
       } catch (error) {
         setError("데이터 가져오기 오류");
         console.error('Error fetching data for ChartDetail:', error);
@@ -30,14 +41,15 @@ const ChartDetail = () => {
   }, [curriculumId, surveyId]);
 
   if (error) return <div>{error}</div>;
-  if (!surveyData) return <div>로딩 중...</div>;
+  if (!choiceResponses.length) return <div>로딩 중...</div>;
 
+  // Radar chart data 설정
   const radarData = {
-    labels: surveyData.choiceLabels || [], // 데이터가 없을 경우 빈 배열로 처리
+    labels: choiceResponses.map(choice => choice.question),
     datasets: [
       {
         label: "응답 결과",
-        data: surveyData.choiceValues || [], // 데이터가 없을 경우 빈 배열로 처리
+        data: choiceResponses.map(choice => choice.averageScore),
         backgroundColor: "rgba(34, 202, 236, .2)",
         borderColor: "rgba(34, 202, 236, 1)",
         borderWidth: 2,
@@ -47,12 +59,12 @@ const ChartDetail = () => {
 
   return (
     <div>
-      <h2>{surveyData.surveyTitle || '설문 제목 없음'}</h2> {/* 데이터가 없을 경우 기본 값 처리 */}
+      <h2>{surveyTitle || '설문 제목 없음'}</h2> {/* 데이터가 없을 경우 기본 값 처리 */}
       <Radar data={radarData} />
       <h3>주관식 응답</h3>
       <ul>
-        {surveyData.textResponses && surveyData.textResponses.length > 0 ? (
-          surveyData.textResponses.map((response, index) => (
+        {textResponses && textResponses.length > 0 ? (
+          textResponses.map((response, index) => (
             <li key={index}>{response}</li>
           ))
         ) : (
