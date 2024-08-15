@@ -45,6 +45,7 @@ table {
   color: var(--descColor);
   line-height: 1.618;
 }
+
 a {
   text-decoration: none;
   color: var(--descColor);
@@ -71,7 +72,7 @@ input {
 
 .subTitle {
   font-size: 3.2rem;
-  color: var(--mainColor);
+  color: var(--studentMainColor);
 }
 
 .contents {

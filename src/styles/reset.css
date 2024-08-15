@@ -8,12 +8,14 @@ html {
   font-size: 62.5%; /*10px*/
   scroll-behavior: smooth;
 }
+
 body {
   background: #fff;
   padding: 8rem 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-x: hidden;
 }
 
 ol,

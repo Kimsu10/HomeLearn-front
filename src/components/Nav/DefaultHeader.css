@@ -7,7 +7,8 @@
   width: 100%;
   height: 80px;
   border-bottom: 1px solid var(--borderColor-300);
-  background: #fff;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
 }
 
 .default_h-inner {
@@ -60,10 +61,12 @@
   border-radius: 2rem;
   color: #fff;
   font-size: 1.6rem;
+  font-weight: 700;
   transition: background 0.3s ease;
+  text-decoration: none;
 }
 
 .default_h-login_btn:hover {
   background: var(--studentSubColor);
-  font-weight: 700;
+  font-weight: 800;
 }
