@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";  // useNavigate 추가
 import axios from "../../utils/axios";
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
@@ -10,7 +10,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const SurveyDetail = () => {
   const { curriculumId } = useParams();
-  const navigate = useNavigate(); // navigate 함수 추가
+  const navigate = useNavigate();  // useNavigate로 navigate 선언
   const [surveyDetails, setSurveyDetails] = useState(null);
   const [curriculumSimple, setCurriculumSimple] = useState(null);
   const [endedSurveys, setEndedSurveys] = useState([]);
@@ -130,9 +130,12 @@ const SurveyDetail = () => {
             <div className="completed-surveys-list">
               {endedSurveys.map((survey, index) => (
                 <div key={index} className="completed-survey-item">
-                  <p>{survey.title}</p>
+                  <Link to={`/managers/curriculum/${curriculumId}/survey/${survey.surveyId}/basic`} className="survey-info-title">
+                    {survey.title}
+                  </Link>
                   <p className="survey-count">
-                    <i className="fa-solid fa-user"></i>{survey.completed}/{survey.total}</p>
+                    <i className="fa-solid fa-user"></i>{survey.completed}/{survey.total}
+                  </p>
                 </div>
               ))}
             </div>
