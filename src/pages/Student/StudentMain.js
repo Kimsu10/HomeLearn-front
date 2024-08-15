@@ -17,6 +17,7 @@ import StudentHeader from "../../components/Nav/StudentHeader";
 import StudentBadge from "./StudentBadge";
 import StudentFreeBoardDetail from "./StudentFreeBoardDetail";
 import SurveyForm from "./SurveyForm";
+import StudentQuestionBoardDetail from "./StudentQuestionBoardDetail";
 
 const StudentMain = () => {
   const [selectedSubject, setSelectedSubject] = useState(null);
@@ -71,12 +72,16 @@ const StudentMain = () => {
             element={<StudentLectureDetail username={username} />}
           />
           <Route
-            path="/freeBoard"
-            element={<StudentFreeBoard username={username} />}
+            path="/questionBoards"
+            element={<StudentQuestionBoard username={username} />}
           />
           <Route
-            path="/questionBoard"
-            element={<StudentQuestionBoard username={username} />}
+            path="/questionBoards/:questionBoardId"
+            element={<StudentQuestionBoardDetail username={username} />}
+          />
+          <Route
+            path="/freeBoard"
+            element={<StudentFreeBoard username={username} />}
           />
           <Route
             path="/assignmentDetail/:homeworkId"

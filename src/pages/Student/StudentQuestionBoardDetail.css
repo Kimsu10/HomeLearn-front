@@ -1,7 +1,7 @@
 .student_inquiry_board_main_container {
   display: flex;
   flex-direction: column;
-  width: 1140px;
+  width: 1120px;
   padding: 100px 68px;
   background-color: hwb(0 100% 0%);
 }

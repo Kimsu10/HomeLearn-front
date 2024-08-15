@@ -14,6 +14,7 @@ const StudentLectureList = () => {
   const [subjectName, setSubjectName] = useState([]);
   const [subjectNamesError, setSubjectNamesError] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [page, setPage] = useState(0);
   const [selectedSubjectName, setSelectedSubjectName] = useState("전체");
   // const [selectedVideodata, setSelectedVideoData] = useState([]);
 
@@ -43,6 +44,10 @@ const StudentLectureList = () => {
       console.error("Error fetching subject names:", error);
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
 
   useEffect(() => {
     fetchSubjectNames();

@@ -1,41 +1,59 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import "./StudentQeustionBoard.css";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useAxiosGet from "../../hooks/useAxiosGet";
+import "./StudentQeustionBoard.css";
 
-const StudentQuestionBoard = () => {
+const StudentQuestionBoardDetail = () => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [page, setPage] = useState(0);
+  const [selectedSubject, setSelectedSubject] = useState("all");
+  const [selectedCommentCount, setSelectedCommentCount] = useState("all");
   const pageSize = 15;
 
-  const { data: questionBoards } = useAxiosGet(
-    `/students/questions/1/boards?page=${page}&size=${pageSize}`,
-    []
-  );
+  const { data: questionBoards } = useAxiosGet(`/students/question-boards`, []);
+  const { data: subjects } = useAxiosGet("/side-bar", []);
 
-  const mainLectures = location.state?.mainLectures || {
-    name: "",
-    description: "",
-    imagePath: "",
-  };
-
-  console.log(mainLectures);
+  const boardContent = questionBoards?.content || [];
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [page]);
 
+  const splitDate = (date) => {
+    return date ? date.slice(0, 10) : "작성일";
+  };
+
   const handlePageChange = (newPage) => {
-    if (newPage >= 0 && newPage < questionBoards.totalPages) {
+    if (newPage >= 0 && newPage < questionBoards?.totalPages) {
       setPage(newPage);
     }
   };
 
+  const handleSubjectChange = (event) => {
+    setSelectedSubject(event.target.value);
+  };
+
+  const handleCommentCountChange = (event) => {
+    setSelectedCommentCount(event.target.value);
+  };
+
+  const uniqueCommentCounts = [
+    ...new Set(boardContent.map((qb) => qb.commentCount)),
+  ];
+
+  const filteredQuestions = boardContent.filter((el) => {
+    const subjectMatch =
+      selectedSubject === "all" || el.subjectName === selectedSubject;
+    const commentMatch =
+      selectedCommentCount === "all" ||
+      el.commentCount === parseInt(selectedCommentCount);
+    return subjectMatch && commentMatch;
+  });
+
   const renderPageNumbers = () => {
     const pages = [];
-    for (let i = 0; i < questionBoards.totalPages; i++) {
+    for (let i = 0; i < (questionBoards?.totalPages || 0); i++) {
       pages.push(
         <button
           key={i}
@@ -50,96 +68,120 @@ const StudentQuestionBoard = () => {
   };
 
   return (
-    <div className="question_board_main_container">
-      <div className="question_board_type_container">
-        <img
-          className="question_board_type_image"
-          alt="과목이미지"
-          src={mainLectures.imgPath}
-        />
-        <div className="question_board_description_box">
-          <h1 className="question_board_type_name">{mainLectures.name}</h1>
-          <p className="question_board_type_description">
-            {mainLectures.description}
-          </p>
+    <div className="student_inquiry_board_main_container">
+      <div className="student_inquiry_board_title_box">
+        <h1 className="student_inquiry_board_title">질문 게시판</h1>
+        <div className="student_inquiry_board_filtering_box">
+          <select
+            className="search_type_box question_select_box"
+            onChange={handleSubjectChange}
+            value={selectedSubject}
+          >
+            <option value="all">전체</option>
+            {subjects?.map((subject) => (
+              <option key={subject.subjectId} value={subject.name}>
+                {subject.name}
+              </option>
+            ))}
+          </select>
+          <select
+            className="inquiry_board_answer_box question_select_box"
+            onChange={handleCommentCountChange}
+            value={selectedCommentCount}
+          >
+            <option value="all">전체</option>
+            {uniqueCommentCounts.map((count) => (
+              <option key={count} value={count}>
+                답변 {count}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
-      <div className="question_board_main_body_container">
-        <h3 className="question_board_main_title">과목 게시판</h3>
-        <table className="question_board_list_table">
-          <thead>
-            <tr className="question_board_table_tab_names">
-              <th>번호</th>
-              <th>제목</th>
-              <th>작성자</th>
-              <th>작성일</th>
-              <th>조회수</th>
+      <table className="student_inquiry_board_table">
+        <thead>
+          <tr>
+            <th className="tudent_inquiry_board_number">번호</th>
+            <th className="student_inquiry_board_subject_">과목명</th>
+            <th className="student_inquiry_board_writed_title">제목</th>
+            <th className="student_inquiry_board_writer_name">작성자</th>
+            <th className="student_inquiry_board_write_date">작성일</th>
+            <th>답변수</th>
+            <th>답변 여부</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredQuestions.map((el, idx) => (
+            <tr key={idx}>
+              <td className="student_inquiry_board_number">{idx + 1}</td>
+              <td className="student_inquiry_board_subject_">
+                {el.subjectName}
+              </td>
+              <td
+                className="student_inquiry_board_writed_title"
+                onClick={() => navigate(``)}
+              >
+                {el.title}
+              </td>
+              <td className="student_inquiry_board_writer_name">{el.name}</td>
+              <td className="student_inquiry_board_write_date">
+                {splitDate(el.createDate)}
+              </td>
+              <td>{el.commentCount}</td>
+              <td>
+                {el.commentCount > 0 ? (
+                  <i
+                    className="bi bi-check-circle-fill"
+                    style={{ color: "green" }}
+                  ></i>
+                ) : (
+                  <i
+                    className="bi bi-slash-circle"
+                    style={{ color: "red" }}
+                  ></i>
+                )}
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {questionBoards.content?.map((el, idx) => (
-              <tr className="writed_question_board_lists" key={el.boardId}>
-                <td>
-                  {questionBoards.totalElements - (page * pageSize + idx)}
-                </td>
-                <td
-                  className="writed_question_board_title_one"
-                  style={{ cursor: "pointer" }}
-                  onClick={() =>
-                    navigate(
-                      `/students/${mainLectures.name}/BoardDetail/${el.boardId}`,
-                      {
-                        state: { mainLectures },
-                      }
-                    )
-                  }
-                >
-                  {el.title}
-                </td>
-                <td>{el.writer}</td>
-                <td>{el.writeDate}</td>
-                <td>{el.viewCount}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="pagination_container">
-          <button
-            onClick={() => handlePageChange(0)}
-            disabled={page === 0}
-            className={`pagination_button ${page === 0 ? "disabled-icon" : ""}`}
-          >
-            <i className="bi bi-chevron-double-left pagenation_btn"></i>
-          </button>
-          <button
-            onClick={() => handlePageChange(page - 1)}
-            disabled={page === 0}
-            className={`pagination_button ${page === 0 ? "disabled-icon" : ""}`}
-          >
-            <i className="bi bi-chevron-left pagenation_btn"></i>
-          </button>
-          {renderPageNumbers()}
-          <button
-            onClick={() => handlePageChange(page + 1)}
-            disabled={page === questionBoards.totalPages - 1}
-            className={`pagination_button ${
-              page === questionBoards.totalPages - 1 ? "disabled-icon" : ""
-            }`}
-          >
-            <i className="bi bi-chevron-right pagenation_btn"></i>
-          </button>
-          <button
-            onClick={() => handlePageChange(questionBoards.totalPages - 1)}
-            disabled={page === questionBoards.totalPages - 1}
-            className={`pagination_button ${
-              page === questionBoards.totalPages - 1 ? "disabled-icon" : ""
-            }`}
-          >
-            <i className="bi bi-chevron-double-right pagenation_btn"></i>
-          </button>
-        </div>
+          ))}
+        </tbody>
+      </table>
+      <div className="pagination_container">
+        <button
+          onClick={() => handlePageChange(0)}
+          disabled={page === 0}
+          className={`pagination_button ${page === 0 ? "disabled-icon" : ""}`}
+        >
+          <i className="bi bi-chevron-double-left pagenation_btn"></i>
+        </button>
+        <button
+          onClick={() => handlePageChange(page - 1)}
+          disabled={page === 0}
+          className={`pagination_button ${page === 0 ? "disabled-icon" : ""}`}
+        >
+          <i className="bi bi-chevron-left pagenation_btn"></i>
+        </button>
+        {renderPageNumbers()}
+        <button
+          onClick={() => handlePageChange(page + 1)}
+          disabled={page === questionBoards?.totalPages - 1}
+          className={`pagination_button ${
+            page === questionBoards?.totalPages - 1 ? "disabled-icon" : ""
+          }`}
+        >
+          <i className="bi bi-chevron-right pagenation_btn"></i>
+        </button>
+        <button
+          onClick={() => handlePageChange(questionBoards?.totalPages - 1)}
+          disabled={page === questionBoards?.totalPages - 1}
+          className={`pagination_button ${
+            page === questionBoards?.totalPages - 1 ? "disabled-icon" : ""
+          }`}
+        >
+          <i className="bi bi-chevron-double-right pagenation_btn"></i>
+        </button>
       </div>
     </div>
   );
 };
-export default StudentQuestionBoard;
+
+export default StudentQuestionBoardDetail;

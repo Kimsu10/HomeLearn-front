@@ -132,7 +132,7 @@ const StudentLecture = () => {
                 <span
                   className="go_to_show_more_page"
                   onClick={() =>
-                    navigate("/students/questionBoard", {
+                    navigate("/students/questionBoards", {
                       state: { mainLectures },
                     })
                   }
