@@ -117,7 +117,7 @@ const StudentSideBar = () => {
                 {subjects?.map((el, idx) => (
                   <li key={el.subjectId}>
                     <NavLink
-                      to={`/students/${el.name}/board`}
+                      to={`/students/${el.subjectId}/board`}
                       className={({ isActive }) =>
                         isActive
                           ? "student_sideBar_link active"

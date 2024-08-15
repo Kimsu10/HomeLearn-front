@@ -14,7 +14,12 @@ const StudentLectureList = () => {
   const [subjectName, setSubjectName] = useState([]);
   const [subjectNamesError, setSubjectNamesError] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [page, setPage] = useState(0);
   const [selectedSubjectName, setSelectedSubjectName] = useState("전체");
+  // const [selectedVideodata, setSelectedVideoData] = useState([]);
+
+  console.log(subjectVideosData);
+  console.log(selectedVideoUrl);
 
   const fetchSubjectVideos = async (lectureId) => {
     try {
@@ -39,6 +44,10 @@ const StudentLectureList = () => {
       console.error("Error fetching subject names:", error);
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
 
   useEffect(() => {
     fetchSubjectNames();
@@ -147,7 +156,10 @@ const StudentLectureList = () => {
         </div>
       </div>
       <StudentVideoModal isOpen={isModalOpen} onClose={closeModal}>
-        <LectureVideo url={selectedVideoUrl} />
+        <LectureVideo
+          url={selectedVideoUrl}
+          subjectVideos={subjectVideosData}
+        />
       </StudentVideoModal>
     </div>
   );

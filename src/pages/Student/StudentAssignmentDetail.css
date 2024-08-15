@@ -104,7 +104,6 @@
 
 .student_submit_assignment_detail_box {
   width: 1050px;
-  height: 320px;
   border-bottom: 1px solid #5c8d89;
   padding: 40px;
   display: flex;
@@ -118,6 +117,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 16px;
 }
 
 .student_submit_assignment_detail_title {
@@ -146,7 +146,6 @@
 .student_non_submit_assignment_detail_box {
   width: 1050px;
   height: 320px;
-  /* border-bottom: 1px solid #5c8d89; */
   padding: 40px;
   display: flex;
   flex-direction: column;
@@ -180,12 +179,10 @@
 /* 피드백 스타일 */
 .student_submit_assignment_feedback_box {
   width: 1050px;
-  height: 320px;
-  /* border-top: 1px solid #5c8d89; */
-  padding: 40px;
+  padding: 40px 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-around;
   margin-bottom: 48px;
 }
@@ -193,6 +190,8 @@
 .student_submit_assignment_feedback_content {
   font-size: 28px;
   color: black;
+  margin: 16px;
+  padding: 20px;
 }
 
 .student_submit_assignment_feedback_date_box {
@@ -202,6 +201,7 @@
   width: 100%;
   font-size: 24px;
   color: black;
+  padding: 0 40px;
 }
 
 .student_submit_assignment_feedback_date {
