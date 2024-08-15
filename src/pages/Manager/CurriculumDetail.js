@@ -103,21 +103,12 @@ const CurriculumDetail = () => {
         setSchedules(calendarResponse.data);
 
         const surveyResponse = await axios.get(
-          `/managers/curriculum/${id}/survey-status/progress`,
+          `/managers/curriculum/${id}/survey-status/curriculum-simple`, // 수정된 엔드포인트
           config
         );
-        console.log('Survey Response:', surveyResponse.data);
+
         if (surveyResponse.data) {
           setSurvey({
-            id: surveyResponse.data.surveyId,
-            title: surveyResponse.data.title,
-            th: surveyResponse.data.th,
-            completed: surveyResponse.data.completed,
-            total: surveyResponse.data.total,
-            status: surveyResponse.data.status || "대기 중",
-          });
-
-          console.log('Survey State after setting:', {
             id: surveyResponse.data.surveyId,
             title: surveyResponse.data.title,
             th: surveyResponse.data.th,
@@ -364,12 +355,14 @@ const CurriculumDetail = () => {
                   <p>강사 정보가 없습니다.</p>
                 )}
               </div>
-
             </div>
             <div className="curriculum-detail-info-box curriculum-detail-survey-box">
               <div className="curriculum-detail-survey-header">
                 <span className="curriculum-detail-subtitle">설문 조사</span>
-                <Link to={`/managers/curriculum/${id}/survey/${survey.id}/detail`} className="survey-link">
+                <Link
+                  to={`/managers/curriculum/${id}/survey/detail`}
+                  className="survey-link"
+                >
                   자세히 보기{" "}
                 </Link>
               </div>
@@ -388,14 +381,12 @@ const CurriculumDetail = () => {
                     <span className="curriculum-detail-survey-status-text">
                       {survey.status}
                     </span>
-                    {survey.status !== "완료" && (
-                      <button
-                        className="curriculum-detail-survey-button"
-                        onClick={() => navigate(`/managers/curriculum/${id}/survey/${survey.id}/detail`)}
-                      >
-                        {survey.status === "대기 중" ? "설문 등록" : "설문 마감"}
-                      </button>
-                    )}
+                    <button
+                      className="curriculum-detail-survey-button"
+                      onClick={handleSurveyAction}
+                    >
+                      {survey.status === "대기 중" ? "설문 등록" : "설문 마감"}
+                    </button>
                   </div>
                 </div>
               ) : (
@@ -495,9 +486,18 @@ const CurriculumDetail = () => {
                     color={updatedCurriculum.color}
                     onChangeComplete={handleColorChange}
                     colors={[
-                      "#F3C41E", "#F58D11", "#B85B27", "#A90C57",
-                      "#F45CE5", "#AE59F0", "#0A8735", "#6F961E",
-                      "#19E308", "#1D1AA6", "#20CFF5", "#98B3E5",
+                      "#F3C41E",
+                      "#F58D11",
+                      "#B85B27",
+                      "#A90C57",
+                      "#F45CE5",
+                      "#AE59F0",
+                      "#0A8735",
+                      "#6F961E",
+                      "#19E308",
+                      "#1D1AA6",
+                      "#20CFF5",
+                      "#98B3E5",
                     ]}
                   />
                 </div>
@@ -512,9 +512,7 @@ const CurriculumDetail = () => {
                 className="teacher-select"
               >
                 <option value="">선택 안 함</option>
-                {teacher && (
-                  <option value={teacher.id}>{teacher.name}</option>
-                )}
+                {teacher && <option value={teacher.id}>{teacher.name}</option>}
               </select>
             </div>
             <div className="modal-actions">
@@ -542,7 +540,8 @@ const CurriculumDetail = () => {
               ×
             </button>
             <h2 className="delete-modal-title">
-              {curriculum.name} {curriculum.th}기 과정을<br />
+              {curriculum.name} {curriculum.th}기 과정을
+              <br />
               삭제하시려면 비밀번호를 입력해 주세요
             </h2>
             <div className="curriculum-input-group">
