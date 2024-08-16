@@ -62,6 +62,7 @@
   font-size: 32px;
   font-weight: 700;
   color: var(--studentMainColor);
+  margin-bottom: 24px;
 }
 
 .recent_contents_box {
@@ -285,7 +286,6 @@
 
 /*  과제 목록 스타일 */
 .subject_container {
-  margin: 30px 0;
   width: 500px;
   height: 520px;
   background-color: #f4f9f4;
@@ -360,6 +360,20 @@
 .show_student_assignment_complete {
   font-size: 16px;
   margin: 8px 0;
+}
+
+.no_student_assignment_box {
+  width: 248px;
+  height: 390px;
+  padding: 20px 8px;
+  border: 3px solid var(--studentSubColor);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  color: black;
+  background-color: white;
 }
 
 .bi-check-circle-fill {

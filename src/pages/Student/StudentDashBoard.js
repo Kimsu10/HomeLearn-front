@@ -8,6 +8,7 @@ import useGetFetch from "../../hooks/useGetFetch";
 import { useNavigate } from "react-router-dom";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import StudentModal from "../../components/Modal/StudentModal/StudentModal";
+import useAxiosGet from "../../hooks/useAxiosGet";
 
 const StudentDashBoard = () => {
   const navigate = useNavigate();
@@ -61,14 +62,40 @@ const StudentDashBoard = () => {
     error: questionError,
   } = useGetFetch("/data/student/mainpage/question.json", []);
 
-  // 과제
-  const {
-    data: assignment,
-    loading: assignmentLoading,
-    error: assignmentError,
-  } = useGetFetch("/data/student/mainpage/assignment.json", []);
+  // 과제 목록 GET
+  const { data: assignment } = useAxiosGet(
+    `/students/homeworks/progress?page=0`
+  );
 
-  console.log(assignment);
+  const { data: assignment2 } = useAxiosGet(
+    `/students/homeworks/progress?page=1`
+  );
+
+  console.log(assignment?.content);
+  console.log(assignment2?.content);
+
+  const homeworkId = assignment?.content?.[0]?.homeworkId;
+  const homeworkId2 = assignment2?.content?.[0]?.homeworkId;
+
+  console.log(homeworkId);
+  console.log(homeworkId2);
+
+  // 나의 과제 제출 내역 GET
+  const { data: mySubmit } = useAxiosGet(
+    `/students/homeworks/${homeworkId}/my-submit`
+  );
+
+  console.log(mySubmit);
+
+  const { data: mySubmit2 } = useAxiosGet(
+    `/students/homeworks/${homeworkId2}/my-submit`
+  );
+
+  console.log(mySubmit2);
+
+  // const homeworks = [];
+
+  // console.log(homeworks);
 
   const {
     data: badge,
@@ -87,28 +114,6 @@ const StudentDashBoard = () => {
     loading: teacherNoticeLoading,
     error: teacherNoticeError,
   } = useGetFetch("/data/student/mainpage/teacherNotice.json", []);
-
-  if (
-    recentLectureLoading ||
-    questionLoading ||
-    assignmentLoading ||
-    badgeLoading ||
-    adminNoticeLoading ||
-    teacherNoticeLoading
-  ) {
-    return <div>Loading...</div>;
-  }
-
-  if (
-    recentLectureError ||
-    questionError ||
-    assignmentError ||
-    badgeError ||
-    adminNoticeError ||
-    teacherNoticeError
-  ) {
-    return <div>Error loading data</div>;
-  }
 
   return (
     <div className="contents">
@@ -247,15 +252,14 @@ const StudentDashBoard = () => {
                 </span>
               </div>
               <div className="dashboard_student_assignment_list_container">
-                {assignment?.map((el, idx) => (
-                  <div
-                    className="dashboard_student_assignment_list_box"
-                    key={idx}
-                  >
+                {assignment && assignment?.content?.[0] ? (
+                  <div className="dashboard_student_assignment_list_box">
                     <h3 className="student_assignment_sub_title">과제</h3>
-                    <h4 className="student_assignment_name">{el.title}</h4>
+                    <h4 className="student_assignment_name">
+                      {assignment?.content?.[0]?.title}
+                    </h4>
                     <p className="student_assignment_description">
-                      {el.description}
+                      {assignment?.content?.[0]?.description}
                     </p>
                     <button
                       className="student_assignment_submit_button"
@@ -263,7 +267,7 @@ const StudentDashBoard = () => {
                     >
                       제출하기
                     </button>
-                    <div className="show_student_assignment_complete">
+                    {/* <div className="show_student_assignment_complete">
                       {el.isSubmit === true ? (
                         <span>
                           제출 여부 <i className="bi bi-check-circle-fill"></i>
@@ -272,16 +276,28 @@ const StudentDashBoard = () => {
                         <span>
                           제출 여부 <i className="bi bi-x-circle-fill"></i>
                         </span>
-                      )}
-                    </div>
+                      )} 
+                    </div> */}
                     <div className="addtional_info_box">
                       <span className="student_assignment_deadline">
-                        ~{el.deadLine}
+                        ~{assignment?.content?.[0]?.deadLine}
                       </span>
-                      <span className="go_to_subject_page"> 자세히 보기 ⟩</span>
+                      <span
+                        className="go_to_subject_page"
+                        onClick={() =>
+                          navigate(`/students/assignmentDetail/${homeworkId}`)
+                        }
+                      >
+                        {" "}
+                        자세히 보기 ⟩
+                      </span>
                     </div>
                   </div>
-                ))}
+                ) : (
+                  <div className="no_student_assignment_box">
+                    진행중인 과제가 없습니다.
+                  </div>
+                )}
               </div>
             </div>
             <div className="notice_container">
