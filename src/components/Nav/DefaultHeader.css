@@ -4,22 +4,22 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000; /* 다른 요소 위로 오도록 설정 */
+  z-index: 1000;
   background-color: white;
-  box-shadow: 0px 4px 2px -2px gray; /* 살짝의 그림자 효과 */
+  box-shadow: 0px 4px 2px -2px gray;
 }
 
 .default_h-inner {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 10px 20px; /* 패딩 추가 */
+  padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .default_h-logo img {
-  height: 40px; /* 로고 크기 조절 */
+  height: 40px;
 }
 
 .default_h-login_btn {
