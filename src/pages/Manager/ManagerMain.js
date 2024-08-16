@@ -1,3 +1,4 @@
+// ManagerMain.js
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import ManagerSideBar from "../../components/SideBar/ManagerSideBar";
@@ -13,8 +14,9 @@ import Notice from "./Notice";
 import StudentContact from "./StudentContact";
 import TeacherContact from "./TeacherContact";
 import CurriculumDetail from "./CurriculumDetail";
-import StudentDetail from "./StudentDetail";
 import SurveyDetail from "./SurveyDetail";
+import StudentDetail from "./StudentDetail";
+import ChartDetail from "./ChartDetail";
 import "./ManagerMain.css";
 import ManagerHeader from "../../components/Nav/ManagerHeader";
 
@@ -54,7 +56,9 @@ function ManagerMain() {
             <Route path="contact-students" element={<StudentContact />} />
             <Route path="contact-teachers" element={<TeacherContact />} />
             <Route path="calendar/:eventId" element={<CalendarDetail />} />
-            <Route path="survey/:id" element={<SurveyDetail />} />
+            <Route path="curriculum/:curriculumId/survey/:surveyId/detail" element={<SurveyDetail />} />
+            <Route path="curriculum/:curriculumId/survey/detail" element={<SurveyDetail />} />
+            <Route path="curriculum/:curriculumId/survey/:surveyId/basic" element={<ChartDetail />} />
           </Routes>
         </div>
       </div>

@@ -8,12 +8,12 @@ const TeacherHeader = () => {
   const navigate = useNavigate();
   const [curriculum, setCurriculum] = useState({
     curriculumFullName: "",
-    progressRate: 0, // Progress in percentage
+    progressRate: 0,
   });
 
   const [teacher, setTeacher] = useState({
     name: "",
-    imagePath: "", // Assume you have teacher's profile image path
+    imagePath: "",
   });
 
   const [notifications, setNotifications] = useState([]);
