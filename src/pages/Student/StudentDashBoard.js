@@ -26,6 +26,47 @@ const StudentDashBoard = () => {
   // 사이드바에 유저 정보 들어올때까지는 임시로 사용할 유저명
   const username = "ksj";
 
+  // 최근 들은 강의
+  const { data: recentLecture } = useGetFetch(
+    "/data/student/mainpage/recentLecture.json",
+    ""
+  );
+
+  // 질의응답
+  const { data: question } = useAxiosGet(`/students/dash-boards/questions`, []);
+
+  console.log(question);
+
+  // 과제 목록 GET
+  const { data: assignment } = useAxiosGet(`/students/dash-boards/homewor`);
+
+  console.log(assignment);
+
+  const homeworkId = assignment?.content?.[0]?.homeworkId;
+
+  console.log(homeworkId);
+
+  // 나의 과제 제출 내역 GET
+  // const { data: mySubmit } = useAxiosGet(
+  //   `/students/homeworks/${homeworkId}/my-submit`
+  // );
+
+  // console.log(mySubmit);
+
+  //뱃지
+  const { data: badge } = useGetFetch("/data/student/mainpage/badge.json", []);
+
+  // 관리자 공지사항
+  const { data: adminNotice } = useAxiosGet(
+    `/data/student/mainpage/adminNotice.json`,
+    []
+  );
+  // 선생님 공지사항
+  const { data: teacherNotice } = useGetFetch(
+    "/data/student/mainpage/teacherNotice.json",
+    []
+  );
+
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -52,71 +93,6 @@ const StudentDashBoard = () => {
     }
   };
 
-  const {
-    data: recentLecture,
-    loading: recentLectureLoading,
-    error: recentLectureError,
-  } = useGetFetch("/data/student/mainpage/recentLecture.json", "");
-
-  const {
-    data: question,
-    loading: questionLoading,
-    error: questionError,
-  } = useGetFetch("/data/student/mainpage/question.json", []);
-
-  // 과제 목록 GET
-  const { data: assignment } = useAxiosGet(
-    `/students/homeworks/progress?page=0`
-  );
-
-  const { data: assignment2 } = useAxiosGet(
-    `/students/homeworks/progress?page=1`
-  );
-
-  console.log(assignment?.content);
-  console.log(assignment2?.content);
-
-  const homeworkId = assignment?.content?.[0]?.homeworkId;
-  const homeworkId2 = assignment2?.content?.[0]?.homeworkId;
-
-  console.log(homeworkId);
-  console.log(homeworkId2);
-
-  // 나의 과제 제출 내역 GET
-  const { data: mySubmit } = useAxiosGet(
-    `/students/homeworks/${homeworkId}/my-submit`
-  );
-
-  console.log(mySubmit);
-
-  const { data: mySubmit2 } = useAxiosGet(
-    `/students/homeworks/${homeworkId2}/my-submit`
-  );
-
-  console.log(mySubmit2);
-
-  // const homeworks = [];
-
-  // console.log(homeworks);
-
-  const {
-    data: badge,
-    loading: badgeLoading,
-    error: badgeError,
-  } = useGetFetch("/data/student/mainpage/badge.json", []);
-
-  const {
-    data: adminNotice,
-    loading: adminNoticeLoading,
-    error: adminNoticeError,
-  } = useGetFetch("/data/student/mainpage/adminNotice.json", []);
-
-  const {
-    data: teacherNotice,
-    loading: teacherNoticeLoading,
-    error: teacherNoticeError,
-  } = useGetFetch("/data/student/mainpage/teacherNotice.json", []);
-
   return (
     <div className="contents">
       <div className="dashboard_main_container">
@@ -136,14 +112,7 @@ const StudentDashBoard = () => {
                 </span>
               </div>
               {/* onClick시에 준명이가 만든 영상 API가 뜨도록해야함 */}
-              <div
-                className="recent_contents_box"
-                onClick={() =>
-                  navigate(
-                    `/students/${recentLecture.subjectName}/lectures/${recentLecture.lectureId}`
-                  )
-                }
-              >
+              <div className="recent_contents_box" onClick={() => {}}>
                 <h3 className="recent_lecture_type">
                   {recentLecture.subjectName}
                 </h3>
@@ -297,7 +266,7 @@ const StudentDashBoard = () => {
                   </div>
                 ) : (
                   <div className="no_student_assignment_box">
-                    진행중인 과제가 없습니다.
+                    미제출한 과제가 없습니다.
                   </div>
                 )}
               </div>
