@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import StudentModal from "../../components/Modal/StudentModal/StudentModal";
 import useAxiosGet from "../../hooks/useAxiosGet";
+import TeacherCalendar from "../../components/Calendar/TeacherCalendar/TeacherCalendar";
+import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
 
 const StudentDashBoard = () => {
   const navigate = useNavigate();
@@ -239,7 +241,7 @@ const StudentDashBoard = () => {
           <div className="right_container">
             <div className="calander-container">
               <h3 className="components_title">캘린더</h3>
-              <div className="calander"> {/* 캘린더 컴포넌트 */}</div>
+              <div className="calander"></div>
             </div>
             <div className="subject_container">
               <div className="title_box">
