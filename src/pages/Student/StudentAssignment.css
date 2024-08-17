@@ -14,7 +14,7 @@
 
 /* 진행중인 과제  */
 .current_proceeding_assignment_container {
-  width: 1050px;
+  width: 100%;
   height: 500px;
   border: 1px solid #5c8d89;
   border-radius: 20px;
@@ -110,8 +110,7 @@
 /* 마감된 과제 컨테이너 */
 .closed_assignment_container {
   margin-top: 32px;
-  width: 1050px;
-  /* height: 1450px; */
+  width: 100%;
   gap: 32px;
   border: 1px solid #5c8d89;
   border-radius: 20px;

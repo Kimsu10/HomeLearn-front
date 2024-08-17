@@ -27,45 +27,59 @@ const StudentDashBoard = () => {
   const username = "ksj";
 
   // 최근 들은 강의
-  const { data: recentLecture } = useGetFetch(
-    "/data/student/mainpage/recentLecture.json",
+  const { data: recentLecture } = useAxiosGet(
+    `/students/dash-boards/recentLecture`,
     ""
   );
+  console.log(recentLecture);
+
+  // 강사가 등록한 일정 & 매니저가 등록한 일정(달력 완성 후)
+  const { data: calendarTeacher } = useAxiosGet(
+    `/students/dash-boards/calendar/teacher`,
+    []
+  );
+  console.log(calendarTeacher);
+
+  const { data: calendarManager } = useAxiosGet(
+    `/students/dash-boards/calendar/manager`,
+    []
+  );
+  console.log(calendarManager);
 
   // 질의응답
   const { data: question } = useAxiosGet(`/students/dash-boards/questions`, []);
-
   console.log(question);
 
   // 과제 목록 GET
-  const { data: assignment } = useAxiosGet(`/students/dash-boards/homewor`);
-
+  const { data: assignment } = useAxiosGet(`/students/dash-boards/homeworks`);
   console.log(assignment);
 
   const homeworkId = assignment?.content?.[0]?.homeworkId;
-
   console.log(homeworkId);
 
   // 나의 과제 제출 내역 GET
   // const { data: mySubmit } = useAxiosGet(
   //   `/students/homeworks/${homeworkId}/my-submit`
   // );
-
   // console.log(mySubmit);
 
-  //뱃지
-  const { data: badge } = useGetFetch("/data/student/mainpage/badge.json", []);
+  //뱃지(고민)
+  const { data: badge } = useAxiosGet("/students/dash-boards/badges", []);
+  console.log(badge);
 
-  // 관리자 공지사항
+  // 매니저 공지사항
   const { data: adminNotice } = useAxiosGet(
-    `/data/student/mainpage/adminNotice.json`,
+    `students/dash-boards/manager-boards`,
     []
   );
+  console.log(adminNotice);
+
   // 선생님 공지사항
-  const { data: teacherNotice } = useGetFetch(
-    "/data/student/mainpage/teacherNotice.json",
+  const { data: teacherNotice } = useAxiosGet(
+    `students/dash-boards/teacher-boards`,
     []
   );
+  console.log(teacherNotice);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -259,7 +273,6 @@ const StudentDashBoard = () => {
                           navigate(`/students/assignmentDetail/${homeworkId}`)
                         }
                       >
-                        {" "}
                         자세히 보기 ⟩
                       </span>
                     </div>
@@ -293,11 +306,15 @@ const StudentDashBoard = () => {
                 <h3 className="notice_components_title">선생님 공지사항</h3>
                 {teacherNotice.map((el, idx) => (
                   <div key={idx} className="notice_list">
-                    <div className={`notice_type ${el.type}_notice`}>
-                      {el.type === "alert" ? "긴급" : "공지"}
+                    <div
+                      className={`notice_type ${
+                        el.isEmergency ? "emergency_notice" : "regular_notice"
+                      }`}
+                    >
+                      {el.isEmergency ? "긴급" : "공지"}
                     </div>
                     <div className="notice_title">{el.title}</div>
-                    <span className="notice_date">{el.writeDate}</span>
+                    <span className="notice_date">{el.createdDate}</span>
                   </div>
                 ))}
                 <div className="align_right_box">
