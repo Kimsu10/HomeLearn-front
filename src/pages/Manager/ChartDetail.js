@@ -10,7 +10,6 @@ const ChartDetail = () => {
   const [surveyTitle, setSurveyTitle] = useState('');
   const [choiceResponses, setChoiceResponses] = useState([]);
   const [textResponses, setTextResponses] = useState([]);
-  const [currentTextPage, setCurrentTextPage] = useState(0);
   const [error, setError] = useState(null);
 
   const getToken = () => localStorage.getItem("access-token");
@@ -25,9 +24,11 @@ const ChartDetail = () => {
         setSurveyTitle(surveyResponse.data.surveyTitle);
 
         const choiceResponse = await axios.get(`/managers/curriculum/${curriculumId}/survey/${surveyId}/choice-response`, config);
+        console.log("Choice Responses:", choiceResponse.data);
         setChoiceResponses(choiceResponse.data);
 
         const textResponse = await axios.get(`/managers/curriculum/${curriculumId}/survey/${surveyId}/text-response`, config);
+        console.log("Text Responses:", textResponse.data.content);
         setTextResponses(textResponse.data.content);
 
       } catch (error) {
@@ -45,26 +46,53 @@ const ChartDetail = () => {
   const radarOptions = {
     scales: {
       r: {
-        angleLines: { display: false },
-        suggestedMin: 1,
+        angleLines: { display: true },
+        suggestedMin: 0,
         suggestedMax: 5,
-        ticks: { stepSize: 1, display: false }
-      }
+        ticks: {
+          stepSize: 1,
+          display: false,
+        },
+        pointLabels: {
+          font: {
+            size: 12,
+          },
+          color: "#000",
+        },
+        grid: {
+          color: "#ccc",
+        },
+      },
     },
     plugins: {
       legend: { display: false }
-    }
+    },
+    elements: {
+      line: {
+        borderWidth: 2,
+        borderColor: "#555",
+        backgroundColor: "rgba(0, 0, 0, 0.2)",
+      },
+      point: {
+        radius: 3,
+        backgroundColor: "#fff",
+        borderColor: "#000",
+      },
+    },
   };
 
   const createRadarData = (choice) => ({
     labels: ['1', '2', '3', '4', '5'],
     datasets: [{
-      data: [choice.averageScore, choice.averageScore, choice.averageScore, choice.averageScore, choice.averageScore],
+      label: choice.content,
+      data: [
+        choice.scoreResponseCount[1] || 0,
+        choice.scoreResponseCount[2] || 0,
+        choice.scoreResponseCount[3] || 0,
+        choice.scoreResponseCount[4] || 0,
+        choice.scoreResponseCount[5] || 0,
+      ],
       fill: true,
-      backgroundColor: "rgba(34, 202, 236, .2)",
-      borderColor: "rgba(34, 202, 236, 1)",
-      borderWidth: 2,
-      pointBackgroundColor: "rgba(34, 202, 236, 1)",
     }]
   });
 
@@ -77,7 +105,7 @@ const ChartDetail = () => {
           <div className="radar-charts">
             {choiceResponses.map((choice, index) => (
               <div key={index} className="radar-chart-wrapper">
-                <h3>{choice.question}</h3>
+                <h3>{choice.content}</h3>
                 <Radar data={createRadarData(choice)} options={radarOptions} />
               </div>
             ))}
@@ -88,17 +116,13 @@ const ChartDetail = () => {
           <div className="text-response-section">
             {textResponses && textResponses.length > 0 ? (
               <>
-                <div className="text-response-card">
-                  <h3>소감 및 개선 사항에 대한 의견</h3>
-                  <p>{textResponses[currentTextPage]}</p>
-                </div>
-                <div className="pagination">
-                  <button onClick={() => setCurrentTextPage(prev => Math.max(0, prev - 1))} disabled={currentTextPage === 0}>
-                    {'<'}
-                  </button>
-                  <button onClick={() => setCurrentTextPage(prev => Math.min(textResponses.length - 1, prev + 1))} disabled={currentTextPage === textResponses.length - 1}>
-                    {'>'}
-                  </button>
+                <h3>소감 및 개선 사항에 대한 의견</h3>
+                <div className="text-response-list">
+                  {textResponses.map((response, index) => (
+                    <div key={index} className="text-response-card">
+                      <p>{response}</p>
+                    </div>
+                  ))}
                 </div>
               </>
             ) : (

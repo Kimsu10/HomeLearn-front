@@ -3,13 +3,19 @@
   margin-bottom: 20px;
 }
 
+.objective-survey h2,
+.subjective-survey h2{
+    font-size:28px;
+    font-weight:bold;
+}
+
 .chart-survey-content {
   display: flex;
   flex-direction: column;
-  padding:20px;
-  border-radius:20px;
-  border:1px solid #757575;
-  background :#f0f0f0;
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid #757575;
+  background: #f0f0f0;
 }
 
 .objective-survey, .subjective-survey {
@@ -25,11 +31,11 @@
 .radar-chart-wrapper {
   width: 180px;
   height: 200px;
-  padding:10px;
+  padding: 10px;
   margin: 10px;
-    background:#fff;
-  border-radius:20px;
-  border:1px solid #757575;
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid #757575;
   text-align: center;
 }
 
@@ -42,34 +48,39 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  border:1px solid #757575;
+  border-radius:20px;
+  background:#fff;
+}
+
+.text-response-section h3{
+    width:1000px;
+    font-size:24px;
+    font-weight:bold;
+    display:flex;
+    justify-content:flex-start;
+    margin:10px 0 30px 0;
+}
+
+.text-response-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
 }
 
 .text-response-card {
   background-color: #f8f9fa;
   padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 600px;
+  border-radius: 20px;
+  border:1px solid #757575;
+  width: 500px;
+  height: 100px;
   margin-bottom: 10px;
 }
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.pagination button {
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.pagination button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
+.text-response-card p{
+    display:flex;
+    text-align:center;
+    align-items:center;
+    justify-content:center;
 }
