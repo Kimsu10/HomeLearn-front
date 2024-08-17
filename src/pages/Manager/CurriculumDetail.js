@@ -39,6 +39,26 @@ const CurriculumDetail = () => {
 
   const getToken = () => localStorage.getItem("access-token");
 
+  const fetchSurveyData = async () => {
+    try {
+      const token = getToken();
+      const config = {
+        headers: { access: token },
+      };
+      const surveyResponse = await axios.get(
+        `/managers/curriculum/${id}/survey-status/progress`,
+        config
+      );
+      if (surveyResponse.data && surveyResponse.data.surveyId) {
+        setSurvey(surveyResponse.data);
+      } else {
+        setSurvey(null);
+      }
+    } catch (error) {
+      console.error("설문 정보 로드 오류:", error.response);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -47,7 +67,6 @@ const CurriculumDetail = () => {
           headers: { access: token },
         };
 
-        // 기본 정보 가져오기
         const basicResponse = await axios.get(
           `/managers/curriculum/${id}/basic`,
           config
@@ -76,18 +95,10 @@ const CurriculumDetail = () => {
         setSchedules(calendarResponse.data);
 
         // 설문 정보 가져오기
-        const surveyResponse = await axios.get(
-          `/managers/curriculum/${id}/survey-status/progress`,
-          config
-        );
-        if (surveyResponse.data && surveyResponse.data.surveyId) {
-          setSurvey(surveyResponse.data);
-        } else {
-          setSurvey(null);
-        }
+        await fetchSurveyData();
       } catch (error) {
         if (error.response && error.response.status === 409) {
-          setIsWeekend(true); // 409 에러 발생 시 "휴무일입니다" 메시지를 표시
+          setIsWeekend(true);
         } else {
           console.error("데이터 가져오기 오류:", error.response);
         }
@@ -238,14 +249,8 @@ const CurriculumDetail = () => {
           "success"
         );
 
-        // 설문 정보 즉시 재로드
-        const updatedSurveyResponse = await axios.get(
-          `/managers/curriculum/${id}/survey-status/progress`,
-          {
-            headers: { access: token },
-          }
-        );
-        setSurvey(updatedSurveyResponse.data);
+        // 새로운 설문 상태를 서버에서 받아와서 갱신합니다.
+        await fetchSurveyData();
       } else {
         swal(
           "설문 작업 실패",
@@ -338,7 +343,7 @@ const CurriculumDetail = () => {
                   to={`/managers/curriculum/${id}/survey/detail`}
                   className="survey-link"
                 >
-                  자세히 보기{" "}
+                  자세히 보기
                 </Link>
               </div>
               {survey ? (
@@ -367,10 +372,10 @@ const CurriculumDetail = () => {
               ) : (
                 <div className="curriculum-detail-survey-content curriculum-detail-no-survey">
                   <p>진행중인 설문 조사가 없습니다.</p>
-                    <button
+                  <button
                     className="curriculum-detail-survey-button"
                     onClick={handleSurveyAction}
-                    >
+                  >
                     설문 등록
                   </button>
                 </div>
@@ -383,10 +388,10 @@ const CurriculumDetail = () => {
           </div>
         </div>
         <div className="curriculum-detail-update-button-container">
-            <button
+          <button
             className="curriculum-detail-update-button"
             onClick={() => setIsModalOpen(true)}
-            >
+          >
             교육 과정 수정
           </button>
         </div>
