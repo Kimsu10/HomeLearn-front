@@ -86,7 +86,11 @@ const CurriculumDetail = () => {
           setSurvey(null);
         }
       } catch (error) {
-        console.error("데이터 가져오기 오류:", error.response);
+        if (error.response && error.response.status === 409) {
+          setIsWeekend(true); // 409 에러 발생 시 "휴무일입니다" 메시지를 표시
+        } else {
+          console.error("데이터 가져오기 오류:", error.response);
+        }
       }
     };
 
