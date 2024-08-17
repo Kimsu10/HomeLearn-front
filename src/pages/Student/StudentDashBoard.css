@@ -241,8 +241,8 @@
 }
 
 .badge_list {
-  width: 100px;
-  height: 100px;
+  width: 92px;
+  height: 92px;
   border-radius: 50%;
   padding: 10px;
   border: 2px solid var(--studentSubColor);

@@ -289,12 +289,16 @@ const StudentDashBoard = () => {
                 <h3 className="notice_components_title">관리자 공지사항</h3>
                 {adminNotice.map((el, idx) => (
                   <div className="notice_list" key={idx}>
-                    <div className={`notice_type ${el.type}_notice`}>
-                      {el.type === "alert" ? "긴급" : "공지"}
+                    <div
+                      className={`notice_type ${
+                        el.isEmergency ? "emergency_notice" : "regular_notice"
+                      }`}
+                    >
+                      {el.isEmergency ? "긴급" : "공지"}
                     </div>
                     <div className="notice_title">{el.title}</div>
                     <span className="go_to_admin_notice_page navigate_button">
-                      <span className="notice_date">{el.deadLine}</span>
+                      <span className="notice_date">{el.createdDate}</span>
                     </span>
                   </div>
                 ))}

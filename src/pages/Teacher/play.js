@@ -126,11 +126,11 @@ const LectureVideo = ({ url, subjectVideos }) => {
 
   useEffect(() => {
     if (currentUrl) {
-      const videoId = extractVideoId(currentUrl); // 수정된 부분
+      const videoId = extractVideoId(currentUrl);
       console.log(videoId);
       if (videoId) {
         loadYouTubeAPI(videoId);
-        setLinks(currentUrl); // currentUrl에 따라 링크를 설정
+        setLinks(currentUrl);
       } else {
         setError(new Error("Invalid video URL"));
       }
@@ -152,7 +152,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
       }
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
     };
-  }, [currentUrl, url, player]); // currentUrl이 변경될 때 플레이어의 videoId도 바뀌는데 왜 영상이 안바뀌냐고오오오
+  }, [currentUrl, player]); // currentUrl이 변경될 때 플레이어의 videoId도 바뀌는데 왜 영상이 안바뀌냐고오오오
 
   const loadYouTubeAPI = (videoId) => {
     console.log(videoId);
