@@ -1,123 +1,74 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import axios from "../../utils/axios";
-import { Radar } from 'react-chartjs-2';
-import "./ChartDetail.css";  // 추가할 CSS 파일
+.chart-detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
 
-const ChartDetail = () => {
-  const { curriculumId, surveyId } = useParams();
-  const [surveyInfo, setSurveyInfo] = useState(null);
-  const [choiceStats, setChoiceStats] = useState([]);
-  const [textResponses, setTextResponses] = useState([]);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+.survey-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-  useEffect(() => {
-    const fetchSurveyData = async () => {
-      try {
-        const token = localStorage.getItem("access-token");
-        const config = { headers: { access: token } };
+.survey-content {
+  display: flex;
+  flex-direction: column;
+}
 
-        // 설문조사 기본 정보 가져오기
-        const surveyInfoResponse = await axios.get(
-          `/managers/curriculum/${curriculumId}/survey/${surveyId}/basic`,
-          config
-        );
-        setSurveyInfo(surveyInfoResponse.data);
+.objective-survey, .subjective-survey {
+  margin-bottom: 40px;
+}
 
-        // 객관식 통계 데이터 가져오기
-        const choiceStatsResponse = await axios.get(
-          `/managers/curriculum/${curriculumId}/survey/${surveyId}/choice-response`,
-          config
-        );
-        setChoiceStats(choiceStatsResponse.data);
+.radar-charts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
 
-        // 주관식 응답 데이터 가져오기
-        const textResponsesResponse = await axios.get(
-          `/managers/curriculum/${curriculumId}/survey/${surveyId}/text-response?page=${currentPage}`,
-          config
-        );
-        setTextResponses(textResponsesResponse.data.content);
-        setTotalPages(textResponsesResponse.data.totalPages);
+.radar-chart-wrapper {
+  width: 200px;
+  height: 200px;
+  margin: 10px;
+  text-align: center;
+}
 
-        setIsLoading(false);
-      } catch (error) {
-        setError(error.response?.data || "데이터 가져오기 오류");
-        setIsLoading(false);
-      }
-    };
+.radar-chart-wrapper h3 {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
 
-    fetchSurveyData();
-  }, [curriculumId, surveyId, currentPage]);
+.text-response-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
+.text-response-card {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 10px;
+}
 
-  const renderRadarCharts = () => {
-    return choiceStats.map((stat, index) => {
-      const data = {
-        labels: stat.questions,
-        datasets: [
-          {
-            label: '응답자 수',
-            data: stat.answers,
-            backgroundColor: 'rgba(75, 192, 192, 0.4)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1,
-          },
-        ],
-      };
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
 
-      return (
-        <div key={index} className="radar-chart-container">
-          <h4>{stat.title}</h4>
-          <Radar data={data} />
-        </div>
-      );
-    });
-  };
+.pagination button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
-  if (isLoading) return <div>로딩 중...</div>;
-  if (error) return <div>오류 발생: {error}</div>;
-
-  return (
-    <div className="chart-detail">
-      <div className="chart-detail-header">
-        <h2>{surveyInfo?.curriculumName} - {surveyInfo?.surveyTitle}</h2>
-        <span>{surveyInfo?.term}</span>
-      </div>
-      <div className="objective-survey-section">
-        <h3>객관식 만족도 조사</h3>
-        <div className="radar-charts">
-          {renderRadarCharts()}
-        </div>
-      </div>
-      <div className="subjective-survey-section">
-        <h3>주관식 만족도 조사</h3>
-        <div className="text-responses">
-          {textResponses.map((response, index) => (
-            <div key={index} className="text-response">
-              <p>{response}</p>
-            </div>
-          ))}
-        </div>
-        <div className="pagination">
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <button
-              key={index}
-              className={`page-button ${index === currentPage ? "active" : ""}`}
-              onClick={() => handlePageChange(index)}
-            >
-              {index + 1}
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default ChartDetail;
+.pagination button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
