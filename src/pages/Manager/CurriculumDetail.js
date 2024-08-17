@@ -40,6 +40,11 @@
    const getToken = () => localStorage.getItem("access-token");
 
    useEffect(() => {
+     if (!id) {
+       console.error("잘못된 커리큘럼 ID입니다.");
+       return;
+     }
+
      const fetchData = async () => {
        try {
          const token = getToken();
@@ -53,6 +58,25 @@
          );
          setCurriculum(basicResponse.data);
 
+         const teacherResponse = await axios.get(
+           `/managers/curriculum/${id}/teacher`,
+           config
+         );
+         setTeacher(teacherResponse.data);
+
+         const attendanceResponse = await axios.get(
+           `/managers/curriculum/${id}/attendance`,
+           config
+         );
+         setAttendance(attendanceResponse.data);
+
+         const calendarResponse = await axios.get(
+           `/managers/curriculum/${id}/calendar`,
+           config
+         );
+         setSchedules(calendarResponse.data);
+
+         // 설문 정보를 제대로 불러오는 부분
          const surveyResponse = await axios.get(
            `/managers/curriculum/${id}/survey-status/progress`,
            config
@@ -68,8 +92,7 @@
      };
 
      fetchData();
-   }, [id]); // 여기서 id에 따라 데이터가 변경되도록 확인
-
+   }, [id]);
 
    const handleInputChange = (e) => {
      const { name, value } = e.target;
