@@ -76,7 +76,8 @@
   border:1px solid #757575;
   width: 500px;
   height: 100px;
-  margin-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 .text-response-card p{
     display:flex;
