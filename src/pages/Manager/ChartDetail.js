@@ -48,14 +48,14 @@ const ChartDetail = () => {
       r: {
         angleLines: { display: true },
         suggestedMin: 0,
-        suggestedMax: 5,
+        suggestedMax: 2,
         ticks: {
           stepSize: 1,
           display: false,
         },
         pointLabels: {
           font: {
-            size: 12,
+            size: 14,
           },
           color: "#000",
         },
@@ -81,20 +81,26 @@ const ChartDetail = () => {
     },
   };
 
-  const createRadarData = (choice) => ({
-    labels: ['1', '2', '3', '4', '5'],
-    datasets: [{
-      label: choice.content,
-      data: [
-        choice.scoreResponseCount[1] || 0,
-        choice.scoreResponseCount[2] || 0,
-        choice.scoreResponseCount[3] || 0,
-        choice.scoreResponseCount[4] || 0,
-        choice.scoreResponseCount[5] || 0,
-      ],
-      fill: true,
-    }]
-  });
+  const createRadarData = (choice) => {
+    const filteredData = [];
+    const labels = ['1', '2', '3', '4', '5'];
+
+    labels.forEach((label, index) => {
+      const value = choice.scoreResponseCount[index + 1];
+      if (value !== undefined && value !== null) {
+        filteredData.push(value);
+      }
+    });
+
+    return {
+      labels: labels.slice(0, filteredData.length),
+      datasets: [{
+        label: '',
+        data: filteredData,
+        fill: true,
+      }]
+    };
+  };
 
   return (
     <div className="chart-detail-container">
@@ -106,7 +112,7 @@ const ChartDetail = () => {
             {choiceResponses.map((choice, index) => (
               <div key={index} className="radar-chart-wrapper">
                 <h3>{choice.content}</h3>
-                <Radar data={createRadarData(choice)} options={radarOptions} />
+                <Radar data={createRadarData(choice, index)} options={radarOptions} />
               </div>
             ))}
           </div>
@@ -118,7 +124,7 @@ const ChartDetail = () => {
               <>
                 <h3>소감 및 개선 사항에 대한 의견</h3>
                 <div className="text-response-list">
-                  {textResponses.map((response, index) => (
+                  {textResponses.slice(0, 6).map((response, index) => (
                     <div key={index} className="text-response-card">
                       <p>{response}</p>
                     </div>

@@ -1,4 +1,3 @@
-// SurveyDetail.js
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "../../utils/axios";
@@ -23,7 +22,6 @@ const SurveyDetail = () => {
   const [surveyDetails, setSurveyDetails] = useState(null);
   const [curriculumSimple, setCurriculumSimple] = useState(null);
   const [endedSurveys, setEndedSurveys] = useState([]);
-  const [surveyTrend, setSurveyTrend] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -39,18 +37,15 @@ const SurveyDetail = () => {
           surveyResponse,
           curriculumResponse,
           endedSurveysResponse,
-          trendResponse,
         ] = await Promise.all([
           axios.get(`/managers/curriculum/${curriculumId}/survey-status/progress`, config),
           axios.get(`/managers/curriculum/${curriculumId}/survey-status/curriculum-simple`, config),
           axios.get(`/managers/curriculum/${curriculumId}/survey-status/end`, config),
-          axios.get(`/managers/curriculum/${curriculumId}/survey-status/basic-trend`, config),
         ]);
 
         setSurveyDetails(surveyResponse.data);
         setCurriculumSimple(curriculumResponse.data);
         setEndedSurveys(endedSurveysResponse.data);
-        setSurveyTrend(trendResponse.data);
       } catch (error) {
         setError(error.response?.data || "데이터 가져오기 오류");
       } finally {
@@ -133,12 +128,13 @@ const SurveyDetail = () => {
     );
   }
 
+  // 설문조사에 응답한 학생 수를 기반으로 데이터를 구성합니다.
   const chartData = {
-    labels: Object.keys(surveyTrend),
+    labels: [surveyDetails.title], // 설문 제목을 라벨로 사용
     datasets: [
       {
-        label: "설문 조사 응답 수",
-        data: Object.values(surveyTrend),
+        label: "응답한 학생 수",
+        data: [surveyDetails.completed], // 응답한 학생 수를 데이터로 사용
         backgroundColor: "rgba(75, 192, 192, 0.6)",
         borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,
@@ -150,7 +146,10 @@ const SurveyDetail = () => {
     scales: {
       y: {
         beginAtZero: true,
-        max: Math.max(...Object.values(surveyTrend)) + 5,
+        max: Math.max(surveyDetails.total, surveyDetails.completed) + 1,
+        ticks: {
+          stepSize: 1, // 정수 단위로 y축 표시
+        },
       },
     },
   };
