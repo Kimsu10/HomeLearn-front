@@ -65,7 +65,15 @@ const ChartDetail = () => {
       },
     },
     plugins: {
-      legend: { display: false }
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: function(tooltipItem) {
+            const value = tooltipItem.raw;  // 데이터를 가져옵니다.
+            return `${value} 명`;  // '명'을 추가하여 반환합니다.
+          }
+        }
+      }
     },
     elements: {
       line: {
@@ -80,6 +88,7 @@ const ChartDetail = () => {
       },
     },
   };
+
 
   const createRadarData = (choice) => {
     const filteredData = [];
