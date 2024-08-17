@@ -1,6 +1,6 @@
 .Lecture_state_container {
   width: 500px;
-  height: 277px;
+  height: 320px;
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
@@ -9,7 +9,7 @@
 }
 
 .Lecture_state_title {
-  width: 420px;
+  width: 470px; /* 너비 확대 */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -25,41 +25,29 @@
 }
 
 .Lecture_state_chart_container {
-  margin-top: 20px;
+  margin-top: 10px;
   display: flex;
 }
 
 .Lecture_state_content {
   display: flex;
   justify-content: space-between;
-  width: 360px;
+  gap: 5rem;
+  width: 400px;
+  height: 250px;
   margin: 0 auto;
   color: #b1b2ff;
 }
 
-.attendance_state {
+.attendance_state, .homework_state {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 150px;
-  height: 220px;
+  width: 175px;
+  height: 200px;
 }
 
-.attendance_chart {
-  width: 150px;
-  height: 150px;
-}
-
-.homework_state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 150px;
-  height: 220px;
-}
-
-.homework_chart {
-  width: 150px;
-  height: 120px;
-  margin: 0 auto;
+.attendance_chart, .homework_chart {
+  width: 100%; /* 차트가 부모 컨테이너에 맞게 크기를 조정 */
+  height: 200px;
 }

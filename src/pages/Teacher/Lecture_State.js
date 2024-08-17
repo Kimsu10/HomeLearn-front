@@ -35,7 +35,7 @@ const Lecture_State = () => {
         });
     }, []);
 
-    // 출석 현황 차트 데이터
+    // 출석 현황 차트 데이터 (왼쪽 차트)
     const attendanceChartData = attendanceData ? {
         labels: Object.keys(attendanceData.weekAttendance),
         datasets: [
@@ -52,7 +52,7 @@ const Lecture_State = () => {
         ],
     } : {};
 
-    // 출석 현황 차트의 옵션 (디자인 조정)
+    // 출석 현황 차트의 옵션 (왼쪽 차트)
     const attendanceChartOptions = {
         responsive: true,
         maintainAspectRatio: false,
@@ -69,6 +69,29 @@ const Lecture_State = () => {
             },
             tooltip: {
                 enabled: true,
+                backgroundColor: '#B1B2FF',  // 바의 색상과 일치
+                titleColor: '#fff',
+                bodyColor: '#fff',
+                titleFont: {
+                    size: 12,
+                    weight: 'bold',
+                },
+                bodyFont: {
+                    size: 10,
+                },
+                padding: 8,
+                cornerRadius: 4,
+                displayColors: false,
+                caretSize: 5,
+                caretPadding: 5,
+                callbacks: {
+                    title: (tooltipItems) => {
+                        return tooltipItems[0].label;
+                    },
+                    label: (context) => {
+                        return `총 ${context.parsed.y}명`;
+                    },
+                },
             },
             datalabels: {
                 anchor: 'end',
@@ -79,6 +102,7 @@ const Lecture_State = () => {
                     size: 12,
                     weight: 'bold',
                 },
+                formatter: (value) => `${value}명`,
             },
         },
         scales: {
@@ -100,6 +124,7 @@ const Lecture_State = () => {
             },
             y: {
                 beginAtZero: true,
+                max: 35,
                 grid: {
                     display: false,
                 },
@@ -122,7 +147,7 @@ const Lecture_State = () => {
         barThickness: 18,
     };
 
-    // 과제 제출 차트 데이터
+    // 과제 제출 차트 데이터 (오른쪽 차트)
     const homeworkChartData = homeworkData ? {
         labels: ['제출', '미제출'],
         datasets: [
@@ -133,34 +158,50 @@ const Lecture_State = () => {
                 borderColor: ['#B1B2FF', '#F13429'],
                 borderWidth: 1,
                 borderRadius: 5,
-                barPercentage: 0.7,
-                categoryPercentage: 0.7,
             },
         ],
     } : {};
 
-    // 과제 제출 차트의 옵션
+    // 과제 제출 차트의 옵션 (오른쪽 차트)
     const homeworkChartOptions = {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
             legend: {
                 display: false,
-                labels: {
-                    font: {
-                        size: 10,
-                        family: 'NanumSquare, sans-serif',
-                    },
-                    color: '#AAC4FF',
-                },
             },
             tooltip: {
                 enabled: true,
+                backgroundColor: (context) => {
+                    return context.tooltip.dataPoints[0].dataIndex === 0 ? '#B1B2FF' : '#EA2C0E';
+                },
+                titleColor: '#fff',
+                bodyColor: '#fff',
+                titleFont: {
+                    size: 12,
+                    weight: 'bold',
+                },
+                bodyFont: {
+                    size: 10,
+                },
+                padding: 8,
+                cornerRadius: 4,
+                displayColors: false,
+                caretSize: 5,
+                caretPadding: 5,
+                callbacks: {
+                    title: (tooltipItems) => {
+                        return tooltipItems[0].label;
+                    },
+                    label: (context) => {
+                        return `${context.parsed.y}%`;
+                    },
+                },
             },
             datalabels: {
                 anchor: 'end',
                 align: 'top',
-                offset: 2,
+                offset: 0,
                 color: (context) => {
                     const label = context.dataset.label[context.dataIndex];
                     return label === '제출' ? '#AAC4FF' : '#DF7D71';
@@ -169,6 +210,7 @@ const Lecture_State = () => {
                     size: 12,
                     weight: 'bold',
                 },
+                formatter: (value) => `${value}%`,
             },
         },
         scales: {
@@ -193,6 +235,7 @@ const Lecture_State = () => {
             },
             y: {
                 beginAtZero: true,
+                max: 105,
                 grid: {
                     display: false,
                 },
@@ -206,13 +249,10 @@ const Lecture_State = () => {
         },
         layout: {
             padding: {
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
+                top: 20,
             }
         },
-        barThickness: 18
+        barThickness: 18,
     };
 
     return (
@@ -230,7 +270,9 @@ const Lecture_State = () => {
                             {attendanceData &&
                                 <Bar
                                     data={attendanceChartData}
-                                    options={attendanceChartOptions} // 수정된 옵션 적용
+                                    options={attendanceChartOptions}
+                                    height={250}
+                                    width={250}
                                 />
                             }
                         </div>
@@ -243,7 +285,9 @@ const Lecture_State = () => {
                             {homeworkData &&
                                 <Bar
                                     data={homeworkChartData}
-                                    options={homeworkChartOptions} // 수정된 옵션 적용
+                                    options={homeworkChartOptions}
+                                    height={250}
+                                    width={250}
                                 />}
                         </div>
                     </div>
