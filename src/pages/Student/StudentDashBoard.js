@@ -11,6 +11,8 @@ import StudentModal from "../../components/Modal/StudentModal/StudentModal";
 import useAxiosGet from "../../hooks/useAxiosGet";
 import TeacherCalendar from "../../components/Calendar/TeacherCalendar/TeacherCalendar";
 import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
+import StudentVideoModal from "../../components/Modal/StudentModal/StudentVideoModal";
+import RecentVideo from "../../components/Lectures/RecentVideo";
 
 const StudentDashBoard = () => {
   const navigate = useNavigate();
@@ -107,6 +109,10 @@ const StudentDashBoard = () => {
     }
   };
 
+  const url = recentLecture.youtubeUrl;
+
+  console.log(url);
+
   return (
     <div className="contents">
       <div className="dashboard_main_container">
@@ -126,7 +132,7 @@ const StudentDashBoard = () => {
                 </span>
               </div>
               {/* onClick시에 준명이가 만든 영상 API가 뜨도록해야함 */}
-              <div className="recent_contents_box" onClick={() => {}}>
+              <div className="recent_contents_box" onClick={openModal}>
                 <h3 className="recent_lecture_type">
                   {recentLecture.subjectName}
                 </h3>
@@ -150,6 +156,9 @@ const StudentDashBoard = () => {
                   </div>
                 </div>
               </div>
+              <StudentVideoModal isOpen={isModalOpen} onClose={closeModal}>
+                <RecentVideo url={url} />
+              </StudentVideoModal>
             </div>
             <div className="video_container">
               <h3 className="components_title">오늘의 IT</h3>
