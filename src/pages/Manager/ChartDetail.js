@@ -70,8 +70,8 @@ const ChartDetail = () => {
 
   return (
     <div className="chart-detail-container">
-      <h1 className="survey-title">{surveyTitle}</h1>
-      <div className="survey-content">
+      <h1 className="chart-survey-title">{surveyTitle}</h1>
+      <div className="chart-survey-content">
         <div className="objective-survey">
           <h2>객관식 만족도 조사</h2>
           <div className="radar-charts">
