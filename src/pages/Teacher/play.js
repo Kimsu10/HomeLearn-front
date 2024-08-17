@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import "./play.css";
 import { useNavigate } from "react-router-dom";
-import useGetFetch from "../../hooks/useGetFetch";
 import axios from "axios";
 
 const LectureVideo = ({ url, subjectVideos }) => {
@@ -36,6 +35,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
   const playerContainerRef = useRef(null);
   const progressInterval = useRef(null);
   const requestAnimationFrameRef = useRef(null);
+  const [currentUrl, setCurrentUrl] = useState(url);
 
   // 컴파일러 관련 상태 추가
   const [code, setCode] = useState(
@@ -60,17 +60,6 @@ const LectureVideo = ({ url, subjectVideos }) => {
   }, [language]);
 
   const navigate = useNavigate();
-
-  // useGetFetch
-  // const { data: subjectVideos, error: subjectVideosError } = useGetFetch(
-  //   "/data/student/mainLecture/lectureList.json",
-  //   []
-  // );
-
-  // const { data: subjectName, error: subjectNameError } = useGetFetch(
-  //   "/data/student/mainpage/subjectCategory.json",
-  //   []
-  // );
 
   const handleMouseEnter = () => setIsHovering(true);
   const handleMouseLeave = () => setIsHovering(false);
@@ -135,7 +124,38 @@ const LectureVideo = ({ url, subjectVideos }) => {
     };
   }, [isPlaying, player]);
 
+  useEffect(() => {
+    if (currentUrl) {
+      const videoId = extractVideoId(currentUrl); // 수정된 부분
+      console.log(videoId);
+      if (videoId) {
+        loadYouTubeAPI(videoId);
+        setLinks(currentUrl); // currentUrl에 따라 링크를 설정
+      } else {
+        setError(new Error("Invalid video URL"));
+      }
+      setLoading(false);
+    } else {
+      setError(new Error("No video URL provided"));
+      setLoading(false);
+    }
+
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+    return () => {
+      if (player) {
+        stopProgressTracker();
+      }
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, [currentUrl, url, player]); // currentUrl이 변경될 때 플레이어의 videoId도 바뀌는데 왜 영상이 안바뀌냐고오오오
+
   const loadYouTubeAPI = (videoId) => {
+    console.log(videoId);
     const tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
     const firstScriptTag = document.getElementsByTagName("script")[0];
@@ -336,6 +356,21 @@ const LectureVideo = ({ url, subjectVideos }) => {
 
   const renderSidebarContent = () => {
     console.log(subjectVideos);
+
+    const getYouTubeThumbnail = (url) => {
+      const videoIdMatch = url.match(
+        /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+      );
+      return videoIdMatch
+        ? `https://img.youtube.com/vi/${videoIdMatch[1]}/maxresdefault.jpg`
+        : "";
+    };
+
+    const handleLectureClick = (link) => {
+      console.log(link);
+      setCurrentUrl(link);
+    };
+
     switch (sidebarContent) {
       case "info":
         return (
@@ -346,12 +381,16 @@ const LectureVideo = ({ url, subjectVideos }) => {
             <p className="player_category">다른 강의</p>
             <div className="player_line"></div>
             <div className="player_lecture_list_container">
-              {subjectVideos.map((el, idx) => (
-                <div className="player_lecture_list_content" key={el.lectureId}>
+              {subjectVideos.map((el) => (
+                <div
+                  className="player_lecture_list_content"
+                  key={el.lectureId}
+                  onClick={() => handleLectureClick(el.link)} // 클릭 이벤트
+                >
                   <img
                     className="player_lecture_list_image"
                     alt="썸네일 이미지"
-                    src={el.link}
+                    src={getYouTubeThumbnail(el.link)}
                   />
                   <h1
                     className="player_lecture_list_title"
@@ -406,10 +445,6 @@ const LectureVideo = ({ url, subjectVideos }) => {
         return null;
     }
   };
-
-  // if (subjectNameError || subjectVideosError) {
-  //   return <div>데이터 로딩에 실패하였습니다.</div>;
-  // }
 
   if (loading) {
     return <p>비디오 로딩 중...</p>;
