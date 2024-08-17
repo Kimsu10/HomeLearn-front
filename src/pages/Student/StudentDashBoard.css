@@ -62,6 +62,7 @@
   font-size: 32px;
   font-weight: 700;
   color: var(--studentMainColor);
+  margin-bottom: 24px;
 }
 
 .recent_contents_box {
@@ -285,7 +286,6 @@
 
 /*  과제 목록 스타일 */
 .subject_container {
-  margin: 30px 0;
   width: 500px;
   height: 520px;
   background-color: #f4f9f4;
@@ -362,6 +362,20 @@
   margin: 8px 0;
 }
 
+.no_student_assignment_box {
+  width: 248px;
+  height: 390px;
+  padding: 20px 8px;
+  border: 3px solid var(--studentSubColor);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  color: black;
+  background-color: white;
+}
+
 .bi-check-circle-fill {
   color: var(--studentMainColor);
 }
@@ -403,6 +417,7 @@
 .teacher_notice_container,
 .admin_notice_container {
   padding: 32px 8px 0 8px;
+  position: relative;
 }
 
 .notice_components_title {
@@ -426,20 +441,28 @@
 }
 
 .notice_type {
-  width: 40px;
-  height: 25px;
+  width: 48px;
+  height: 32px;
   text-align: center;
   line-height: 25px;
   border: 1px solid var(--studentSubColor);
   border-radius: 20px;
   background-color: var(--studentPrimaryColor) 2b;
   color: var(--studentSubColor);
+  font-size: 16px;
 }
 
-.alert_notice {
-  font-weight: 600;
-  font-size: 12px;
-  color: #ff0000;
+.emergency_notice {
+  border: 1px solid red;
+  padding: 5px;
+  border-radius: 20px;
+  color: red;
+}
+
+.regular_notice {
+  border: 1px solid var(--studentMainColor);
+  padding: 5px;
+  border-radius: 20px;
 }
 
 .notice_title {
@@ -464,6 +487,9 @@
   flex-direction: row-reverse;
   text-align: right;
   width: 100%;
+  position: absolute;
+  top: 88%;
+  right: 24px;
 }
 
 /* 과제 제출용 모달창 */

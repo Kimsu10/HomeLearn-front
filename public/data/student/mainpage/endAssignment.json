@@ -1,0 +1,50 @@
+{
+  "totalPages": 2,
+  "totalElements": 4,
+  "first": true,
+  "last": false,
+  "size": 3,
+  "content": [
+    {
+      "homeworkId": 7,
+      "title": "title4",
+      "description": "description4",
+      "deadLine": "2024-08-13 01:13",
+      "submitCount": 0
+    },
+    {
+      "homeworkId": 6,
+      "title": "title3",
+      "description": "description3",
+      "deadLine": "2024-08-13 02:13",
+      "submitCount": 0
+    },
+    {
+      "homeworkId": 5,
+      "title": "title2",
+      "description": "description2",
+      "deadLine": "2024-08-13 02:13",
+      "submitCount": 0
+    }
+  ],
+  "number": 0,
+  "sort": {
+    "empty": true,
+    "unsorted": true,
+    "sorted": false
+  },
+  "pageable": {
+    "pageNumber": 0,
+    "pageSize": 3,
+    "sort": {
+      "empty": true,
+      "unsorted": true,
+      "sorted": false
+    },
+    "offset": 0,
+    "unpaged": false,
+    "paged": true
+  },
+  "numberOfElements": 3,
+  "empty": false
+}

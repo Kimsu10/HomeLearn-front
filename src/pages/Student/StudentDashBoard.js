@@ -8,6 +8,9 @@ import useGetFetch from "../../hooks/useGetFetch";
 import { useNavigate } from "react-router-dom";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import StudentModal from "../../components/Modal/StudentModal/StudentModal";
+import useAxiosGet from "../../hooks/useAxiosGet";
+import TeacherCalendar from "../../components/Calendar/TeacherCalendar/TeacherCalendar";
+import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
 
 const StudentDashBoard = () => {
   const navigate = useNavigate();
@@ -22,6 +25,61 @@ const StudentDashBoard = () => {
 
   // 사이드바에 유저 정보 들어올때까지는 임시로 사용할 유저명
   const username = "ksj";
+
+  // 최근 들은 강의
+  const { data: recentLecture } = useAxiosGet(
+    `/students/dash-boards/recentLecture`,
+    ""
+  );
+  console.log(recentLecture);
+
+  // 강사가 등록한 일정 & 매니저가 등록한 일정(달력 완성 후)
+  const { data: calendarTeacher } = useAxiosGet(
+    `/students/dash-boards/calendar/teacher`,
+    []
+  );
+  console.log(calendarTeacher);
+
+  const { data: calendarManager } = useAxiosGet(
+    `/students/dash-boards/calendar/manager`,
+    []
+  );
+  console.log(calendarManager);
+
+  // 질의응답
+  const { data: question } = useAxiosGet(`/students/dash-boards/questions`, []);
+  console.log(question);
+
+  // 과제 목록 GET
+  const { data: assignment } = useAxiosGet(`/students/dash-boards/homeworks`);
+  console.log(assignment);
+
+  const homeworkId = assignment?.content?.[0]?.homeworkId;
+  console.log(homeworkId);
+
+  // 나의 과제 제출 내역 GET
+  // const { data: mySubmit } = useAxiosGet(
+  //   `/students/homeworks/${homeworkId}/my-submit`
+  // );
+  // console.log(mySubmit);
+
+  //뱃지(고민)
+  const { data: badge } = useAxiosGet("/students/dash-boards/badges", []);
+  console.log(badge);
+
+  // 매니저 공지사항
+  const { data: adminNotice } = useAxiosGet(
+    `students/dash-boards/manager-boards`,
+    []
+  );
+  console.log(adminNotice);
+
+  // 선생님 공지사항
+  const { data: teacherNotice } = useAxiosGet(
+    `students/dash-boards/teacher-boards`,
+    []
+  );
+  console.log(teacherNotice);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -49,65 +107,6 @@ const StudentDashBoard = () => {
     }
   };
 
-  const {
-    data: recentLecture,
-    loading: recentLectureLoading,
-    error: recentLectureError,
-  } = useGetFetch("/data/student/mainpage/recentLecture.json", "");
-
-  const {
-    data: question,
-    loading: questionLoading,
-    error: questionError,
-  } = useGetFetch("/data/student/mainpage/question.json", []);
-
-  // 과제
-  const {
-    data: subject,
-    loading: subjectLoading,
-    error: subjectError,
-  } = useGetFetch("/data/student/mainpage/assignment.json", []);
-
-  const {
-    data: badge,
-    loading: badgeLoading,
-    error: badgeError,
-  } = useGetFetch("/data/student/mainpage/badge.json", []);
-
-  const {
-    data: adminNotice,
-    loading: adminNoticeLoading,
-    error: adminNoticeError,
-  } = useGetFetch("/data/student/mainpage/adminNotice.json", []);
-
-  const {
-    data: teacherNotice,
-    loading: teacherNoticeLoading,
-    error: teacherNoticeError,
-  } = useGetFetch("/data/student/mainpage/teacherNotice.json", []);
-
-  if (
-    recentLectureLoading ||
-    questionLoading ||
-    subjectLoading ||
-    badgeLoading ||
-    adminNoticeLoading ||
-    teacherNoticeLoading
-  ) {
-    return <div>Loading...</div>;
-  }
-
-  if (
-    recentLectureError ||
-    questionError ||
-    subjectError ||
-    badgeError ||
-    adminNoticeError ||
-    teacherNoticeError
-  ) {
-    return <div>Error loading data</div>;
-  }
-
   return (
     <div className="contents">
       <div className="dashboard_main_container">
@@ -127,14 +126,7 @@ const StudentDashBoard = () => {
                 </span>
               </div>
               {/* onClick시에 준명이가 만든 영상 API가 뜨도록해야함 */}
-              <div
-                className="recent_contents_box"
-                onClick={() =>
-                  navigate(
-                    `/students/${recentLecture.subjectName}/lectures/${recentLecture.lectureId}`
-                  )
-                }
-              >
+              <div className="recent_contents_box" onClick={() => {}}>
                 <h3 className="recent_lecture_type">
                   {recentLecture.subjectName}
                 </h3>
@@ -232,7 +224,7 @@ const StudentDashBoard = () => {
           <div className="right_container">
             <div className="calander-container">
               <h3 className="components_title">캘린더</h3>
-              <div className="calander"> {/* 캘린더 컴포넌트 */}</div>
+              <div className="calander"></div>
             </div>
             <div className="subject_container">
               <div className="title_box">
@@ -245,15 +237,14 @@ const StudentDashBoard = () => {
                 </span>
               </div>
               <div className="dashboard_student_assignment_list_container">
-                {subject?.map((el, idx) => (
-                  <div
-                    className="dashboard_student_assignment_list_box"
-                    key={idx}
-                  >
+                {assignment && assignment?.content?.[0] ? (
+                  <div className="dashboard_student_assignment_list_box">
                     <h3 className="student_assignment_sub_title">과제</h3>
-                    <h4 className="student_assignment_name">{el.title}</h4>
+                    <h4 className="student_assignment_name">
+                      {assignment?.content?.[0]?.title}
+                    </h4>
                     <p className="student_assignment_description">
-                      {el.description}
+                      {assignment?.content?.[0]?.description}
                     </p>
                     <button
                       className="student_assignment_submit_button"
@@ -261,7 +252,7 @@ const StudentDashBoard = () => {
                     >
                       제출하기
                     </button>
-                    <div className="show_student_assignment_complete">
+                    {/* <div className="show_student_assignment_complete">
                       {el.isSubmit === true ? (
                         <span>
                           제출 여부 <i className="bi bi-check-circle-fill"></i>
@@ -270,16 +261,27 @@ const StudentDashBoard = () => {
                         <span>
                           제출 여부 <i className="bi bi-x-circle-fill"></i>
                         </span>
-                      )}
-                    </div>
+                      )} 
+                    </div> */}
                     <div className="addtional_info_box">
                       <span className="student_assignment_deadline">
-                        ~{el.deadLine}
+                        ~{assignment?.content?.[0]?.deadLine}
                       </span>
-                      <span className="go_to_subject_page"> 자세히 보기 ⟩</span>
+                      <span
+                        className="go_to_subject_page"
+                        onClick={() =>
+                          navigate(`/students/assignmentDetail/${homeworkId}`)
+                        }
+                      >
+                        자세히 보기 ⟩
+                      </span>
                     </div>
                   </div>
-                ))}
+                ) : (
+                  <div className="no_student_assignment_box">
+                    미제출한 과제가 없습니다.
+                  </div>
+                )}
               </div>
             </div>
             <div className="notice_container">
@@ -304,11 +306,15 @@ const StudentDashBoard = () => {
                 <h3 className="notice_components_title">선생님 공지사항</h3>
                 {teacherNotice.map((el, idx) => (
                   <div key={idx} className="notice_list">
-                    <div className={`notice_type ${el.type}_notice`}>
-                      {el.type === "alert" ? "긴급" : "공지"}
+                    <div
+                      className={`notice_type ${
+                        el.isEmergency ? "emergency_notice" : "regular_notice"
+                      }`}
+                    >
+                      {el.isEmergency ? "긴급" : "공지"}
                     </div>
                     <div className="notice_title">{el.title}</div>
-                    <span className="notice_date">{el.writeDate}</span>
+                    <span className="notice_date">{el.createdDate}</span>
                   </div>
                 ))}
                 <div className="align_right_box">
