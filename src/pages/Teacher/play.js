@@ -157,6 +157,20 @@ const LectureVideo = ({ url, subjectVideos }) => {
     };
   }, [currentUrl, player]); // currentUrl이 변경될 때 플레이어의 videoId도 바뀌는데 왜 영상이 안바뀌냐고오오오
 
+  //안바뀌어서 하나 더 추가
+  useEffect(() => {
+    if (player && currentUrl) {
+      const videoId = extractVideoId(currentUrl);
+      if (videoId) {
+        player.loadVideoById(videoId); // player에 새로운 비디오를 로드
+        setLinks(currentUrl);
+      } else {
+        setError(new Error("Invalid video URL"));
+      }
+      setLoading(false);
+    }
+  }, [currentUrl, player]);
+
   const loadYouTubeAPI = (videoId) => {
     console.log(videoId);
     const tag = document.createElement("script");
@@ -168,6 +182,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
       const newPlayer = new window.YT.Player("youtube-player", {
         videoId: videoId,
         playerVars: {
+          autoplay: 0, // 왜자꾸 오토플레이가 되는거야..
           controls: 0,
           disablekb: 1,
           fs: 0,
@@ -394,7 +409,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
                 <div
                   className="player_lecture_list_content"
                   key={el.lectureId}
-                  onClick={() => handleLectureClick(el.link)} // 클릭 이벤트
+                  onClick={() => handleLectureClick(el.link)}
                 >
                   <img
                     className="player_lecture_list_image"
