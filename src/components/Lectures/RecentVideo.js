@@ -24,6 +24,7 @@ const RecentVideo = ({ url }) => {
   const playerContainerRef = useRef(null);
   const progressInterval = useRef(null);
   const requestAnimationFrameRef = useRef(null);
+  const [currentTime, setCurrentTime] = useState(0);
   const [links, setLinks] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -66,6 +67,8 @@ const RecentVideo = ({ url }) => {
         if (totalDuration > 0) {
           const currentProgress = (currentTime / totalDuration) * 100;
           setProgress(currentProgress);
+          setCurrentTime(currentTime); // Update currentTime
+          setDuration(totalDuration); // Update duration
         }
       }
       if (isPlaying) {
@@ -84,36 +87,6 @@ const RecentVideo = ({ url }) => {
       cancelAnimationFrame(requestAnimationFrameRef.current);
     };
   }, [isPlaying, player]);
-
-  useEffect(() => {
-    if (url) {
-      const videoId = extractVideoId(url);
-      console.log(videoId);
-      if (videoId) {
-        loadYouTubeAPI(videoId);
-        setLinks(url);
-      } else {
-        setError(new Error("Invalid video URL"));
-      }
-      setLoading(false);
-    } else {
-      setError(new Error("No video URL provided"));
-      setLoading(false);
-    }
-
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-
-    document.addEventListener("fullscreenchange", handleFullscreenChange);
-
-    return () => {
-      if (player) {
-        stopProgressTracker();
-      }
-      document.removeEventListener("fullscreenchange", handleFullscreenChange);
-    };
-  }, [url, player]);
 
   const loadYouTubeAPI = (videoId) => {
     console.log(videoId);
@@ -164,6 +137,7 @@ const RecentVideo = ({ url }) => {
         const currentProgress =
           (player.getCurrentTime() / player.getDuration()) * 100;
         setProgress(currentProgress);
+        setCurrentTime(player.getCurrentTime());
       }
     }, 1000);
   };
@@ -219,6 +193,7 @@ const RecentVideo = ({ url }) => {
     const newTime = (newProgress / 100) * duration;
     player.seekTo(newTime, true);
     setProgress(newProgress);
+    setCurrentTime(newTime);
   };
 
   const handlePlaybackRateChange = (e) => {
@@ -234,6 +209,13 @@ const RecentVideo = ({ url }) => {
     );
     return match ? match[1] : null;
   };
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
+
   return (
     <div
       ref={playerContainerRef}
@@ -273,23 +255,36 @@ const RecentVideo = ({ url }) => {
               style={{ "--value": `${volume}%` }}
             />
           </div>
-          <div className="controls-bottom-right">
-            <select
-              value={playbackRate}
-              onChange={handlePlaybackRateChange}
-              className="playback-rate-select"
-            >
-              <option value="0.25">0.25x</option>
-              <option value="0.5">0.5x</option>
-              <option value="0.75">0.75x</option>
-              <option value="1">Normal</option>
-              <option value="1.25">1.25x</option>
-              <option value="1.5">1.5x</option>
-              <option value="2">2x</option>
-            </select>
-            <button onClick={toggleFullscreen} className="control-btn">
-              {isFullscreen ? <Minimize size={24} /> : <Maximize size={24} />}
-            </button>
+          <div
+            style={{
+              display: "flex",
+              height: "50px",
+              alignItems: "center",
+              paddingRight: "10px",
+              color: "white",
+            }}
+          >
+            <div className="time-display">
+              {formatTime(currentTime)} / {formatTime(duration)}
+            </div>
+            <div className="controls-bottom-right">
+              <select
+                value={playbackRate}
+                onChange={handlePlaybackRateChange}
+                className="playback-rate-select"
+              >
+                <option value="0.25">0.25x</option>
+                <option value="0.5">0.5x</option>
+                <option value="0.75">0.75x</option>
+                <option value="1">Normal</option>
+                <option value="1.25">1.25x</option>
+                <option value="1.5">1.5x</option>
+                <option value="2">2x</option>
+              </select>
+              <button onClick={toggleFullscreen} className="control-btn">
+                {isFullscreen ? <Minimize size={24} /> : <Maximize size={24} />}
+              </button>
+            </div>
           </div>
         </div>
       </div>
