@@ -10,7 +10,7 @@ import RandomVideo from "../../components/Lectures/RandomVideo";
 import LectureVideo from "../../components/Lectures/LectureVideo";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
+// import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
 
 const StudentDashBoard = () => {
   const navigate = useNavigate();
@@ -32,6 +32,7 @@ const StudentDashBoard = () => {
 
   // 임시 변수와 값
   const username = "kimsu10";
+  const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,13 +85,16 @@ const StudentDashBoard = () => {
         (recentLecture.lastPosition / videoDuration) *
         100
       ).toFixed(2);
-      return progress;
+      return parseFloat(progress);
     }
-    return recentLecture?.progress || 0;
+    return 0;
   };
 
   useEffect(() => {
-    calculateProgress();
+    if (videoDuration !== null && recentLecture?.lastPosition !== undefined) {
+      calculateProgress();
+    }
+    console.log(videoDuration);
   }, [videoDuration, recentLecture?.lastPosition]);
 
   const openModal = () => setIsModalOpen(true);
@@ -167,6 +171,9 @@ const StudentDashBoard = () => {
     return null;
   };
 
+  console.log(url);
+  console.log(apiKey);
+
   return (
     <div className="contents">
       <div className="dashboard_main_container">
@@ -174,10 +181,6 @@ const StudentDashBoard = () => {
         <div className="divide_right_container">
           <div className="left_container">
             <div className="recent_lecture_container">
-              <YouTubeVideoDuration
-                youtubeUrl={recentLecture?.youtubeUrl}
-                onDurationFetched={handleDurationFetched}
-              />
               <div className="title_box">
                 <h3 className="components_title">최근 학습 강의</h3>
                 <span
@@ -193,6 +196,12 @@ const StudentDashBoard = () => {
                 <h3 className="recent_lecture_type">
                   {recentLecture?.subjectName}
                 </h3>
+                {/* 흠.. */}
+                <YouTubeVideoDuration
+                  youtubeUrl={url}
+                  onDurationFetched={handleDurationFetched}
+                  apiKey={apiKey}
+                />
                 <div className="recent_video_box">
                   <i className="bi bi-play-btn play_recent_video_icon"></i>
                   <p className="recent_lecture_video_title">
@@ -220,11 +229,11 @@ const StudentDashBoard = () => {
             <div className="video_container">
               <h3 className="components_title">오늘의 IT</h3>
               <div className="random_video_box">
-                <RandomVideo width="250" height="240" />
+                {/* <RandomVideo width="250" height="240" /> */}
               </div>
               <h3 className="components_title">보충 강의</h3>
               <div className="lecture_video_box">
-                <LectureVideo width="250" height="240" />
+                {/* <LectureVideo width="250" height="240" /> */}
               </div>
             </div>
             <div className="question_container">

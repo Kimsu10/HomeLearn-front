@@ -1,15 +1,19 @@
-import React, { useEffect } from "react";
 import axios from "axios";
+import { useEffect } from "react";
 
-const YouTubeVideoDuration = ({ youtubeUrl, onDurationFetched }) => {
+const YouTubeVideoDuration = ({ youtubeUrl, onDurationFetched, apiKey }) => {
+  console.log(apiKey);
+  console.log(youtubeUrl);
+  console.log(onDurationFetched);
+
   useEffect(() => {
     const fetchVideoDuration = async () => {
-      try {
-        console.log("Fetching video duration for URL:", youtubeUrl);
+      if (!youtubeUrl) return;
 
+      try {
         const videoId =
-          youtubeUrl.split("v=")[1] || youtubeUrl.split("/").pop();
-        console.log("Video ID:", videoId);
+          youtubeUrl.split("v=")[1]?.split("&")[0] ||
+          youtubeUrl.split("/").pop();
 
         const response = await axios.get(
           "https://www.googleapis.com/youtube/v3/videos",
@@ -17,20 +21,20 @@ const YouTubeVideoDuration = ({ youtubeUrl, onDurationFetched }) => {
             params: {
               part: "contentDetails",
               id: videoId,
-              key: process.env.REACT_APP_YOUTUBE_API_KEY,
+              key: apiKey,
             },
+            mode: "cors",
           }
         );
 
-        console.log("API response:", response.data);
-
         if (response.data.items.length > 0) {
           const isoDuration = response.data.items[0].contentDetails.duration;
+
           console.log("ISO Duration:", isoDuration);
 
           const totalSeconds = parseISODuration(isoDuration);
-          console.log("Total video duration in seconds:", totalSeconds);
 
+          // 동영상 초단위 부모 컴포넌트로 전달
           onDurationFetched(totalSeconds);
         }
       } catch (error) {
@@ -39,22 +43,15 @@ const YouTubeVideoDuration = ({ youtubeUrl, onDurationFetched }) => {
     };
 
     fetchVideoDuration();
-  }, [youtubeUrl]);
+  }, [youtubeUrl, apiKey, onDurationFetched]);
 
   const parseISODuration = (isoDuration) => {
-    console.log("Parsing ISO duration:", isoDuration);
-
     const match = isoDuration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
-    if (!match) {
-      console.error("Failed to parse ISO duration:", isoDuration);
-      return 0;
-    }
+    if (!match) return 0;
 
     const hours = parseInt(match[1], 10) || 0;
     const minutes = parseInt(match[2], 10) || 0;
     const seconds = parseInt(match[3], 10) || 0;
-
-    console.log("Hours:", hours, "Minutes:", minutes, "Seconds:", seconds);
 
     return hours * 3600 + minutes * 60 + seconds;
   };
