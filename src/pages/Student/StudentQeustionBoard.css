@@ -1,4 +1,4 @@
-.student_inquiry_board_main_container {
+.student_question_board_main_container {
   display: flex;
   flex-direction: column;
   width: 1140px;
@@ -6,22 +6,23 @@
   background-color: hwb(0 100% 0%);
 }
 
-.student_inquiry_board_title_box {
+.student_question_board_title_box {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
 
-.student_inquiry_board_title {
+.student_question_board_title {
   font-size: 48px;
 }
 
-.student_inquiry_board_filtering_box {
+.student_question_board_filtering_box {
   display: flex;
   justify-content: space-between;
   gap: 20px;
 }
-.inquiry_board_answer_box,
+
+.question_board_answer_box,
 .search_type_box {
   width: 245px;
   height: 50px;
@@ -31,7 +32,7 @@
 }
 
 /* 선택 박스 디자인 */
-.inquiry_board_answer_box,
+.question_board_answer_box,
 .search_type_box {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -42,7 +43,7 @@
   font-size: 16px;
 }
 
-.inquiry_board_answer_box:focus,
+.question_board_answer_box:focus,
 .search_type_box:focus {
   outline: none;
 }
@@ -68,7 +69,7 @@
 
 /* 테이블  */
 
-.student_inquiry_board_table {
+.student_question_board_table {
   width: 100%;
   margin-top: 100px;
   font-size: 24px;
@@ -77,8 +78,8 @@
   table-layout: fixed;
 }
 
-.student_inquiry_board_table th,
-.student_inquiry_board_table td {
+.student_question_board_table th,
+.student_question_board_table td {
   text-align: center;
 
   overflow: hidden;
@@ -86,34 +87,34 @@
   white-space: nowrap;
 }
 
-.student_inquiry_board_table thead th {
+.student_question_board_table thead th {
   border-bottom: 2px solid #5d8d89;
 }
 
-.student_inquiry_board_number {
+.student_question_board_number {
   width: 20px;
 }
 
-.student_inquiry_board_subject_ {
+.student_question_board_subject_ {
   width: 100px;
 }
 
-.student_inquiry_board_writed_title {
+.student_question_board_writed_title {
   width: 300px;
 }
 
-.student_inquiry_board_writer_name {
+.student_question_board_writer_name {
   width: 100px;
 }
 
-.student_inquiry_board_write_date {
+.student_question_board_write_date {
   width: 150px;
 }
 
-.student_inquiry_board_comment_count {
+.student_question_board_comment_count {
   width: 90px;
 }
 
-.student_inquiry_board_comment_status {
+.student_question_board_comment_status {
   width: 60px;
 }

@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import "./StudentLecture.css";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import useAxiosGet from "../../hooks/useAxiosGet";
 
 // 과목 상세페이지
@@ -35,8 +35,11 @@ const StudentLecture = () => {
     "/students/question-boards",
     []
   );
-
   console.log(inquiryBoards);
+
+  //강의 영상 리스트
+  const { data: lectures } = useAxiosGet(`/students/lectures/sub`);
+  console.log(lectures);
 
   const getYoutubeEmbedUrl = (url) => {
     const videoId = url.split("v=")[1]?.split("&")[0];

@@ -68,10 +68,10 @@ const StudentQuestionBoardDetail = () => {
   };
 
   return (
-    <div className="student_inquiry_board_main_container">
-      <div className="student_inquiry_board_title_box">
-        <h1 className="student_inquiry_board_title">질문 게시판</h1>
-        <div className="student_inquiry_board_filtering_box">
+    <div className="student_question_board_main_container">
+      <div className="student_question_board_title_box">
+        <h1 className="student_question_board_title">질문 게시판</h1>
+        <div className="student_question_board_filtering_box">
           <select
             className="search_type_box question_select_box"
             onChange={handleSubjectChange}
@@ -85,7 +85,7 @@ const StudentQuestionBoardDetail = () => {
             ))}
           </select>
           <select
-            className="inquiry_board_answer_box question_select_box"
+            className="question_board_answer_box question_select_box"
             onChange={handleCommentCountChange}
             value={selectedCommentCount}
           >
@@ -98,14 +98,14 @@ const StudentQuestionBoardDetail = () => {
           </select>
         </div>
       </div>
-      <table className="student_inquiry_board_table">
+      <table className="student_question_board_table">
         <thead>
           <tr>
-            <th className="tudent_inquiry_board_number">번호</th>
-            <th className="student_inquiry_board_subject_">과목명</th>
-            <th className="student_inquiry_board_writed_title">제목</th>
-            <th className="student_inquiry_board_writer_name">작성자</th>
-            <th className="student_inquiry_board_write_date">작성일</th>
+            <th className="tudent_question_board_number">번호</th>
+            <th className="student_question_board_subject_">과목명</th>
+            <th className="student_question_board_writed_title">제목</th>
+            <th className="student_question_board_writer_name">작성자</th>
+            <th className="student_question_board_write_date">작성일</th>
             <th>답변수</th>
             <th>답변 여부</th>
           </tr>
@@ -113,18 +113,18 @@ const StudentQuestionBoardDetail = () => {
         <tbody>
           {filteredQuestions.map((el, idx) => (
             <tr key={idx}>
-              <td className="student_inquiry_board_number">{idx + 1}</td>
-              <td className="student_inquiry_board_subject_">
+              <td className="student_question_board_number">{idx + 1}</td>
+              <td className="student_question_board_subject_">
                 {el.subjectName}
               </td>
               <td
-                className="student_inquiry_board_writed_title"
+                className="student_question_board_writed_title"
                 onClick={() => navigate(``)}
               >
                 {el.title}
               </td>
-              <td className="student_inquiry_board_writer_name">{el.name}</td>
-              <td className="student_inquiry_board_write_date">
+              <td className="student_question_board_writer_name">{el.name}</td>
+              <td className="student_question_board_write_date">
                 {splitDate(el.createDate)}
               </td>
               <td>{el.commentCount}</td>
