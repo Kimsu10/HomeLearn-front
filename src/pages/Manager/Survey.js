@@ -17,7 +17,7 @@ const SettingList = () => {
           </div>
           <div className="survey-status">
             <div className="survey-check">진행중</div>
-            <span className="survey-participants"><i className="fa-solid fa-user"></i> 2/2</span>
+            <span className="survey-participants"><i className="fa-solid fa-user"></i> 1/2</span>
           </div>
         </li>
         <li className="survey-item">

@@ -48,7 +48,7 @@ const ChartDetail = () => {
       r: {
         angleLines: { display: true },
         suggestedMin: 0,
-        suggestedMax: 2,
+        suggestedMax: 3,
         ticks: {
           stepSize: 1,
           display: false,
