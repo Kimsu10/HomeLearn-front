@@ -5,6 +5,7 @@ const YouTubeVideoDuration = ({ youtubeUrl, onDurationFetched, apiKey }) => {
   console.log(apiKey);
   console.log(youtubeUrl);
   console.log(onDurationFetched);
+  // cors에러 cors 에러..뭐가 무제지
 
   useEffect(() => {
     const fetchVideoDuration = async () => {
