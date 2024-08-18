@@ -3,13 +3,29 @@ import { NavLink, useLocation } from "react-router-dom";
 import "./StudentSideBar.css";
 
 import useAxiosGet from "../../hooks/useAxiosGet";
+import axios from "axios";
 
 const StudentSideBar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(null);
+  const [user, setUser] = useState({});
   const location = useLocation();
 
   const { data: subjects, error: subjectError } = useAxiosGet("/side-bar", []);
   console.log(subjects);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userData = await axios.get(`/header/common`);
+        setUser(userData.data);
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  console.log(user);
 
   useEffect(() => {
     const path = location.pathname;
@@ -50,23 +66,27 @@ const StudentSideBar = () => {
         <div className="student_sideBar_profile_box">
           <div className="student_sideBar_profile_left">
             <div className="student_sideBar_profile_image">
-              <img className="student_sideBar_profile_img" alt="프로필" />
+              <img
+                className="student_sideBar_profile_img"
+                src={user.imagePath}
+                alt="프로필"
+              />
             </div>
           </div>
 
           <div className="student_sideBar_profile_right">
-            <span className="student_sideBar_profile_name">
-              {/*{student.name}*/}노승빈
-            </span>
+            <span className="student_sideBar_profile_name">{user.name}</span>
             <span className="student_sideBar_profile_curriculum">
-              {/*{curriculum.name} {curriculum.th}기*/}네이버 클라우드 데브옵스
-              10기
+              {user.curriculumFullName}
             </span>
             <div className="student_sideBar_profile_progress_bar">
-              <div className="student_sideBar_profile_progress"></div>
+              <div
+                className="student_sideBar_profile_progress"
+                style={{ width: `${user.progressRate}%` }}
+              ></div>
             </div>
             <span className="student_sideBar_profile_progress_text">
-              {/*{curriculum.progress?.toFixed(1)} / 100%*/}75.2 / 100%
+              {user.progressRate}/ 100%
             </span>
           </div>
         </div>

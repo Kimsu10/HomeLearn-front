@@ -65,16 +65,15 @@ const LectureVideo = ({ url, subjectVideos }) => {
   const handleMouseEnter = () => setIsHovering(true);
   const handleMouseLeave = () => setIsHovering(false);
 
-  // 값은 잘 들어오는데 영상이 바로 뜨지 않음 ->
   console.log(url);
-  console.log(subjectVideos); // 빈배열 -> props 로 넘겨줌 아직 썸네일 미포함
+  console.log(subjectVideos);
   useEffect(() => {
     if (url) {
       const videoId = extractVideoId(url);
       console.log(videoId);
       if (videoId) {
         loadYouTubeAPI(videoId);
-        setLinks(url); //link를 추가하지 않아서 잘못된 링크라고 떴던것
+        setLinks(url);
       } else {
         setError(new Error("Invalid video URL"));
       }
@@ -155,14 +154,13 @@ const LectureVideo = ({ url, subjectVideos }) => {
       }
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
     };
-  }, [currentUrl, player]); // currentUrl이 변경될 때 플레이어의 videoId도 바뀌는데 왜 영상이 안바뀌냐고오오오
+  }, [currentUrl, player]);
 
-  //안바뀌어서 하나 더 추가
   useEffect(() => {
     if (player && currentUrl) {
       const videoId = extractVideoId(currentUrl);
       if (videoId) {
-        player.loadVideoById(videoId); // player에 새로운 비디오를 로드
+        player.loadVideoById(videoId);
         setLinks(currentUrl);
       } else {
         setError(new Error("Invalid video URL"));
@@ -172,7 +170,6 @@ const LectureVideo = ({ url, subjectVideos }) => {
   }, [currentUrl, player]);
 
   const loadYouTubeAPI = (videoId) => {
-    console.log(videoId);
     const tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
     const firstScriptTag = document.getElementsByTagName("script")[0];
@@ -182,7 +179,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
       const newPlayer = new window.YT.Player("youtube-player", {
         videoId: videoId,
         playerVars: {
-          autoplay: 0, // 왜자꾸 오토플레이가 되는거야..
+          autoplay: 0, // 왜 자꾸 오토플레이가 되는거야..
           controls: 0,
           disablekb: 1,
           fs: 0,
