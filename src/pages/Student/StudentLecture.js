@@ -4,10 +4,9 @@ import React, { useState, useEffect } from "react";
 import useAxiosGet from "../../hooks/useAxiosGet";
 
 // 과목 상세페이지
-const StudentLecture = () => {
+const StudentLecture = ({ baseUrl }) => {
   const navigate = useNavigate();
   const { "*": subjectId } = useParams();
-  const baseUrl = process.env.REACT_APP_BASE_URL;
   const mainSubjectId = subjectId.split("/")[0];
 
   const [currentPage, setCurrentPage] = useState(0);

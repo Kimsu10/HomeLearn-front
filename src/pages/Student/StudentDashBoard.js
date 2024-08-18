@@ -12,7 +12,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 // import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
 
-const StudentDashBoard = () => {
+const StudentDashBoard = ({ username }) => {
   const navigate = useNavigate();
   const [videoDuration, setVideoDuration] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,7 +31,7 @@ const StudentDashBoard = () => {
   const [teacherNotice, setTeacherNotice] = useState([]);
 
   // 임시 변수와 값
-  const username = "kimsu10";
+
   const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
 
   useEffect(() => {

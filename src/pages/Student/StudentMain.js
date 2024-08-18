@@ -24,6 +24,7 @@ const StudentMain = () => {
   const [username, setUsername] = useState("");
 
   const navigate = useNavigate();
+  const baseUrl = process.env.REACT_APP_BASE_URL;
 
   useEffect(() => {
     const token = localStorage.getItem("access-token");
@@ -36,19 +37,21 @@ const StudentMain = () => {
     }
   }, []);
 
-  console.log(username); // 잘들어옴
-
   return (
     <div className="student_dashboard_body" id="container">
       <StudentHeader />
       <StudentSideBar />
       <div className="contents">
         <Routes>
-          <Route path="" element={<StudentDashBoard />} />
+          <Route path="" element={<StudentDashBoard username={username} />} />
           <Route
             path=":subjectName/board"
             element={
-              <StudentLecture subject={selectedSubject} username={username} />
+              <StudentLecture
+                subject={selectedSubject}
+                username={username}
+                baseUrl={baseUrl}
+              />
             }
           />
           <Route
@@ -89,7 +92,7 @@ const StudentMain = () => {
           />
           <Route
             path="/:studentId/badge"
-            element={<StudentBadge username={username} />}
+            element={<StudentBadge username={username} baseUrl={baseUrl} />}
           />
           <Route
             path="/freeboard/:boardId"
@@ -102,7 +105,7 @@ const StudentMain = () => {
           {/* <Route path="/teacherNotice" element={< />} /> */}
           {/* 언젠가 들어올 투표 페이지 */}
           {/* <Route path="/teacherNotice" element={< />} /> */}
-          <Route path="/survey/:surveyId" element={<SurveyForm />} />{" "}
+          <Route path="/survey/:surveyId" element={<SurveyForm />} />
           {/* 설문조사 */}
         </Routes>
       </div>
