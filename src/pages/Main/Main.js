@@ -51,9 +51,9 @@ const Main = () => {
         ) : userRole === "ROLE_MANAGER" ? (
             <ManagerMain />
         ) : (
-            <div>
-              비로그인 시 보여줄 페이지 <button> 로그인</button>
-            </div>
+             <div>
+               비로그인 시 보여줄 페이지 <button> 로그인</button>
+             </div>
         );
 
     return <div className="main-body">{roleComponent}</div>;
