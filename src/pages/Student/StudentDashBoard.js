@@ -1,20 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./StudentMain.css";
+import { useNavigate } from "react-router-dom";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import StudentModal from "../../components/Modal/StudentModal/StudentModal";
+import RecentVideo from "../../components/Lectures/RecentVideo";
+import RecentLectureModal from "../../components/Modal/StudentModal/RecentLectureModal";
+import axios from "axios";
 import RandomVideo from "../../components/Lectures/RandomVideo";
 import LectureVideo from "../../components/Lectures/LectureVideo";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import useGetFetch from "../../hooks/useGetFetch";
-import { useNavigate } from "react-router-dom";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import StudentModal from "../../components/Modal/StudentModal/StudentModal";
-import useAxiosGet from "../../hooks/useAxiosGet";
-import TeacherCalendar from "../../components/Calendar/TeacherCalendar/TeacherCalendar";
-import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
+// import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
 
 const StudentDashBoard = () => {
   const navigate = useNavigate();
-
+  const [videoDuration, setVideoDuration] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
@@ -22,64 +22,80 @@ const StudentDashBoard = () => {
     file: null,
   });
   const [selectedFileName, setSelectedFileName] = useState("");
+  const [recentLecture, setRecentLecture] = useState(null);
+  const [calendarManager, setCalendarManager] = useState([]);
+  const [question, setQuestion] = useState([]);
+  const [assignment, setAssignment] = useState({});
+  const [badge, setBadge] = useState([]);
+  const [adminNotice, setAdminNotice] = useState([]);
+  const [teacherNotice, setTeacherNotice] = useState([]);
 
-  // 사이드바에 유저 정보 들어올때까지는 임시로 사용할 유저명
-  const username = "ksj";
+  // 임시 변수와 값
+  const username = "kimsu10";
+  const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
 
-  // 최근 들은 강의
-  const { data: recentLecture } = useAxiosGet(
-    `/students/dash-boards/recentLecture`,
-    ""
-  );
-  console.log(recentLecture);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const recentLectureData = await axios.get(
+          `/students/dash-boards/recentLecture`
+        );
+        setRecentLecture(recentLectureData.data);
 
-  // 강사가 등록한 일정 & 매니저가 등록한 일정(달력 완성 후)
-  const { data: calendarTeacher } = useAxiosGet(
-    `/students/dash-boards/calendar/teacher`,
-    []
-  );
-  console.log(calendarTeacher);
+        // const calendarManagerData = await axios.get(
+        //   `/students/dash-boards/calendar/manager`
+        // );
+        // setCalendarManager(calendarManagerData.data);
 
-  const { data: calendarManager } = useAxiosGet(
-    `/students/dash-boards/calendar/manager`,
-    []
-  );
-  console.log(calendarManager);
+        const questionData = await axios.get(`/students/dash-boards/questions`);
+        setQuestion(questionData.data);
 
-  // 질의응답
-  const { data: question } = useAxiosGet(`/students/dash-boards/questions`, []);
-  console.log(question);
+        const assignmentData = await axios.get(
+          `/students/dash-boards/homeworks`
+        );
+        setAssignment(assignmentData.data);
 
-  // 과제 목록 GET
-  const { data: assignment } = useAxiosGet(`/students/dash-boards/homeworks`);
-  console.log(assignment);
+        const badgeData = await axios.get(`/students/dash-boards/badges`);
+        setBadge(badgeData.data);
 
-  const homeworkId = assignment?.content?.[0]?.homeworkId;
-  console.log(homeworkId);
+        const adminNoticeData = await axios.get(
+          `/students/dash-boards/manager-boards`
+        );
+        setAdminNotice(adminNoticeData.data);
 
-  // 나의 과제 제출 내역 GET
-  // const { data: mySubmit } = useAxiosGet(
-  //   `/students/homeworks/${homeworkId}/my-submit`
-  // );
-  // console.log(mySubmit);
+        const teacherNoticeData = await axios.get(
+          `/students/dash-boards/teacher-boards`
+        );
+        setTeacherNotice(teacherNoticeData.data);
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
 
-  //뱃지(고민)
-  const { data: badge } = useAxiosGet("/students/dash-boards/badges", []);
-  console.log(badge);
+    fetchData();
+  }, []);
 
-  // 매니저 공지사항
-  const { data: adminNotice } = useAxiosGet(
-    `students/dash-boards/manager-boards`,
-    []
-  );
-  console.log(adminNotice);
+  const handleDurationFetched = (duration) => {
+    setVideoDuration(duration);
+  };
 
-  // 선생님 공지사항
-  const { data: teacherNotice } = useAxiosGet(
-    `students/dash-boards/teacher-boards`,
-    []
-  );
-  console.log(teacherNotice);
+  const calculateProgress = () => {
+    if (videoDuration && recentLecture && recentLecture.lastPosition) {
+      const progress = (
+        (recentLecture.lastPosition / videoDuration) *
+        100
+      ).toFixed(2);
+      return parseFloat(progress);
+    }
+    return 0;
+  };
+
+  useEffect(() => {
+    if (videoDuration !== null && recentLecture?.lastPosition !== undefined) {
+      calculateProgress();
+    }
+    console.log(videoDuration);
+  }, [videoDuration, recentLecture?.lastPosition]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -95,7 +111,6 @@ const StudentDashBoard = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("모달 데이터 : " + formData);
     closeModal();
   };
 
@@ -106,6 +121,58 @@ const StudentDashBoard = () => {
       handleChange(e);
     }
   };
+
+  const url = recentLecture?.youtubeUrl;
+
+  const YouTubeVideoDuration = ({ youtubeUrl, onDurationFetched }) => {
+    useEffect(() => {
+      const fetchVideoDuration = async () => {
+        if (!youtubeUrl) return;
+
+        try {
+          const videoId =
+            youtubeUrl.split("v=")[1] || youtubeUrl.split("/").pop();
+
+          const response = await axios.get(
+            "https://www.googleapis.com/youtube/v3/videos",
+            {
+              params: {
+                part: "contentDetails",
+                id: videoId,
+                key: process.env.REACT_APP_YOUTUBE_API_KEY,
+              },
+            }
+          );
+
+          if (response.data.items.length > 0) {
+            const isoDuration = response.data.items[0].contentDetails.duration;
+            const totalSeconds = parseISODuration(isoDuration);
+            onDurationFetched(totalSeconds);
+          }
+        } catch (error) {
+          console.error("Error fetching video duration", error);
+        }
+      };
+
+      fetchVideoDuration();
+    }, [youtubeUrl]);
+
+    const parseISODuration = (isoDuration) => {
+      const match = isoDuration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+      if (!match) return 0;
+
+      const hours = parseInt(match[1], 10) || 0;
+      const minutes = parseInt(match[2], 10) || 0;
+      const seconds = parseInt(match[3], 10) || 0;
+
+      return hours * 3600 + minutes * 60 + seconds;
+    };
+
+    return null;
+  };
+
+  console.log(url);
+  console.log(apiKey);
 
   return (
     <div className="contents">
@@ -119,25 +186,30 @@ const StudentDashBoard = () => {
                 <span
                   className="go_to_lecture_page navigate_button"
                   onClick={() =>
-                    navigate(`/students/${recentLecture.subject}/board`)
+                    navigate(`/students/${recentLecture?.subject}/board`)
                   }
                 >
                   학습 목록 ⟩
                 </span>
               </div>
-              {/* onClick시에 준명이가 만든 영상 API가 뜨도록해야함 */}
-              <div className="recent_contents_box" onClick={() => {}}>
+              <div className="recent_contents_box" onClick={openModal}>
                 <h3 className="recent_lecture_type">
-                  {recentLecture.subjectName}
+                  {recentLecture?.subjectName}
                 </h3>
+                {/* 흠.. */}
+                <YouTubeVideoDuration
+                  youtubeUrl={url}
+                  onDurationFetched={handleDurationFetched}
+                  apiKey={apiKey}
+                />
                 <div className="recent_video_box">
                   <i className="bi bi-play-btn play_recent_video_icon"></i>
                   <p className="recent_lecture_video_title">
-                    {recentLecture.title}
+                    {recentLecture?.title}
                   </p>
                   <div className="recent_lecture_progress_container">
                     <CircularProgressbar
-                      value={recentLecture.progress}
+                      value={calculateProgress()}
                       styles={buildStyles({
                         pathColor: "#A7D7C5",
                         textColor: "#5C8D89",
@@ -145,11 +217,14 @@ const StudentDashBoard = () => {
                       })}
                     />
                     <p className="recent_lecture_percentage">
-                      {recentLecture.progress}%
+                      {calculateProgress()}%
                     </p>
                   </div>
                 </div>
               </div>
+              <RecentLectureModal isOpen={isModalOpen} onClose={closeModal}>
+                <RecentVideo url={url} />
+              </RecentLectureModal>
             </div>
             <div className="video_container">
               <h3 className="components_title">오늘의 IT</h3>
@@ -169,7 +244,7 @@ const StudentDashBoard = () => {
                 </span>
               </div>
               <div className="question_list_container">
-                {question?.map((el, idx) => (
+                {question.map((el, idx) => (
                   <div
                     className="question_list"
                     key={idx}
@@ -196,7 +271,6 @@ const StudentDashBoard = () => {
                 ))}
               </div>
             </div>
-            {/* 배지 컨테이너 */}
             <div
               className="badge_container"
               onClick={() => navigate(`/students/${username}/badge`)}
@@ -220,7 +294,6 @@ const StudentDashBoard = () => {
               </div>
             </div>
           </div>
-          {/* 오른쪽 메인 부분 */}
           <div className="right_container">
             <div className="calander-container">
               <h3 className="components_title">캘린더</h3>
@@ -228,7 +301,7 @@ const StudentDashBoard = () => {
             </div>
             <div className="subject_container">
               <div className="title_box">
-                <h3 className="components_title"> 과제 목록</h3>
+                <h3 className="components_title">과제 목록</h3>
                 <span
                   className="go_to_subject_page navigate_button"
                   onClick={() => navigate("/students/assignment")}
@@ -237,14 +310,14 @@ const StudentDashBoard = () => {
                 </span>
               </div>
               <div className="dashboard_student_assignment_list_container">
-                {assignment && assignment?.content?.[0] ? (
+                {assignment.content?.[0] ? (
                   <div className="dashboard_student_assignment_list_box">
                     <h3 className="student_assignment_sub_title">과제</h3>
                     <h4 className="student_assignment_name">
-                      {assignment?.content?.[0]?.title}
+                      {assignment.content[0]?.title}
                     </h4>
                     <p className="student_assignment_description">
-                      {assignment?.content?.[0]?.description}
+                      {assignment.content[0]?.description}
                     </p>
                     <button
                       className="student_assignment_submit_button"
@@ -252,25 +325,16 @@ const StudentDashBoard = () => {
                     >
                       제출하기
                     </button>
-                    {/* <div className="show_student_assignment_complete">
-                      {el.isSubmit === true ? (
-                        <span>
-                          제출 여부 <i className="bi bi-check-circle-fill"></i>
-                        </span>
-                      ) : (
-                        <span>
-                          제출 여부 <i className="bi bi-x-circle-fill"></i>
-                        </span>
-                      )} 
-                    </div> */}
                     <div className="addtional_info_box">
                       <span className="student_assignment_deadline">
-                        ~{assignment?.content?.[0]?.deadLine}
+                        ~{assignment.content[0]?.deadLine}
                       </span>
                       <span
                         className="go_to_subject_page"
                         onClick={() =>
-                          navigate(`/students/assignmentDetail/${homeworkId}`)
+                          navigate(
+                            `/students/assignmentDetail/${assignment.content[0]?.homeworkId}`
+                          )
                         }
                       >
                         자세히 보기 ⟩
@@ -289,12 +353,16 @@ const StudentDashBoard = () => {
                 <h3 className="notice_components_title">관리자 공지사항</h3>
                 {adminNotice.map((el, idx) => (
                   <div className="notice_list" key={idx}>
-                    <div className={`notice_type ${el.type}_notice`}>
-                      {el.type === "alert" ? "긴급" : "공지"}
+                    <div
+                      className={`notice_type ${
+                        el.isEmergency ? "emergency_notice" : "regular_notice"
+                      }`}
+                    >
+                      {el.isEmergency ? "긴급" : "공지"}
                     </div>
                     <div className="notice_title">{el.title}</div>
                     <span className="go_to_admin_notice_page navigate_button">
-                      <span className="notice_date">{el.deadLine}</span>
+                      <span className="notice_date">{el.createdDate}</span>
                     </span>
                   </div>
                 ))}
@@ -332,7 +400,7 @@ const StudentDashBoard = () => {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         handleFileChange={handleFileChange}
-        selectedFileName={formData.selectedFileName}
+        selectedFileName={selectedFileName}
         modalName="과제 제출"
         contentTitle="제목"
         contentBody="내용"

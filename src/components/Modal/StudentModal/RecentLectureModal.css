@@ -1,4 +1,4 @@
-.student_video_modal_overlay {
+.recent_video_modal_overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -11,16 +11,14 @@
   z-index: 2000;
 }
 
-.student_video_modal_content {
+.recent_video_modal_content {
   background: #000;
   border-radius: 8px;
   position: relative;
   width: 100vw;
-  height: 100vh;
-  padding-top: 48px;
 }
 
-.student_video_modal_close {
+.recent_video_modal_close {
   position: absolute;
   top: 10px;
   left: 9px;
