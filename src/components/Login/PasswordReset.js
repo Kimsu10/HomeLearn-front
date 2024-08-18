@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import swal from "sweetalert";
 import axios from "../../utils/axios";
 import "./PasswordReset.css";
@@ -9,6 +9,13 @@ function PasswordReset() {
   const [code, setCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.email) {
+      setEmail(location.state.email); // 이메일 상태 설정
+    }
+  }, [location.state]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +29,7 @@ function PasswordReset() {
       const response = await axios.post("/account/reset-password", {
         username: email, // username 필드로 전송
         password: newPassword, // password 필드로 전송
-        // code는 서버 측에서 처리되지 않는 경우 따로 전송할 필요 없음
+        code, // 인증 코드도 함께 전송
       });
 
       if (response.status === 200) {
@@ -46,9 +53,8 @@ function PasswordReset() {
           <input
             className="password-reset-input"
             type="email"
-            placeholder="이메일 입력"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            readOnly // 이메일 필드를 읽기 전용으로 설정
           />
         </div>
         <div className="password-reset-input-group">

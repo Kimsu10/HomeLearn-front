@@ -32,7 +32,7 @@ function LoginFind() {
             "해당 이메일로 비밀번호 재설정 코드를 전송했습니다.",
             "success"
           );
-          navigate("/reset-password"); // 비밀번호 재설정 페이지로 이동
+          navigate("/reset-password", { state: { email } }); // 이메일을 상태로 전달
         }
       } else {
         swal("오류", "해당 이메일로 등록된 정보가 없습니다.", "error");
