@@ -11,7 +11,7 @@ import StudentMain from "./pages/Student/StudentMain";
 import TeacherMain from "./pages/Teacher/TeacherMain";
 import YouTubePlayer from "./pages/Teacher/play";
 import LoginFind from "./components/Login/LoginFind";
-
+import PasswordReset from "./components/Login/PasswordReset";
 
 const Router = () => {
   return (
@@ -25,11 +25,11 @@ const Router = () => {
         <Route path="/main" element={<Main />} />
         <Route path="/find-id" element={<LoginFind findType="id" />} />
         <Route path="/find-password" element={<LoginFind findType="password" />} />
+        <Route path="/reset-password" element={<PasswordReset />} /> {/* 비밀번호 재설정 경로 추가 */}
         <Route path="/managers/*" element={<ManagerMain />} />
         <Route path="/students/*" element={<StudentMain />} />
         <Route path="/teachers/*" element={<TeacherMain />} />
         <Route path="/play" element={<YouTubePlayer />} />
-        {/* 잘못된 경로로 접근했을 때 메인으로 리다이렉트 */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       <Footer />
