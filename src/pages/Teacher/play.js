@@ -106,6 +106,8 @@ const LectureVideo = ({ url, subjectVideos }) => {
         if (totalDuration > 0) {
           const currentProgress = (currentTime / totalDuration) * 100;
           setProgress(currentProgress);
+          setCurrentTime(currentTime);
+          setDuration(totalDuration);
         }
       }
       if (isPlaying) {
