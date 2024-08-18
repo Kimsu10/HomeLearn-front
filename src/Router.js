@@ -10,6 +10,8 @@ import ManagerMain from "./pages/Manager/ManagerMain";
 import StudentMain from "./pages/Student/StudentMain";
 import TeacherMain from "./pages/Teacher/TeacherMain";
 import YouTubePlayer from "./pages/Teacher/play";
+import LoginFind from "./components/Login/LoginFind";
+
 
 const Router = () => {
   return (
@@ -21,10 +23,14 @@ const Router = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/email" element={<LoginEmail />} />
         <Route path="/main" element={<Main />} />
+        <Route path="/find-id" element={<LoginFind findType="id" />} />
+        <Route path="/find-password" element={<LoginFind findType="password" />} />
         <Route path="/managers/*" element={<ManagerMain />} />
         <Route path="/students/*" element={<StudentMain />} />
         <Route path="/teachers/*" element={<TeacherMain />} />
         <Route path="/play" element={<YouTubePlayer />} />
+        {/* 잘못된 경로로 접근했을 때 메인으로 리다이렉트 */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       <Footer />
     </BrowserRouter>
