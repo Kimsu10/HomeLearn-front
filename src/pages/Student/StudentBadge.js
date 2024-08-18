@@ -12,7 +12,7 @@ const StudentBadge = () => {
   }, []);
 
   return (
-    <div className="main_container">
+    <div className="badge_main_container">
       <h1 className="student_badge_page_title">배지</h1>
       <div className="student_badge_filter_box">
         <button className="show_all_badges badge_filter_box">모든 배지</button>

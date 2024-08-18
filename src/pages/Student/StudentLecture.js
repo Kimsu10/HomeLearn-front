@@ -7,10 +7,11 @@ import useAxiosGet from "../../hooks/useAxiosGet";
 const StudentLecture = () => {
   const navigate = useNavigate();
   const { "*": subjectId } = useParams();
-  console.log(subjectId);
-
+  const baseUrl = process.env.REACT_APP_BASE_URL;
   const mainSubjectId = subjectId.split("/")[0];
-  console.log(mainSubjectId);
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const [lecture, setLecture] = useState([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -21,8 +22,6 @@ const StudentLecture = () => {
     `/students/subjects/${mainSubjectId}`,
     ""
   );
-
-  console.log(mainLectures);
 
   // 과목 게시판
   const { data: subjectBoards = [] } = useAxiosGet(
@@ -35,14 +34,30 @@ const StudentLecture = () => {
     "/students/question-boards",
     []
   );
-  console.log(inquiryBoards);
 
   //강의 영상 리스트
   const { data: lectures } = useAxiosGet(`/students/lectures/sub`);
   console.log(lectures);
 
-  const getYoutubeEmbedUrl = (url) => {
-    const videoId = url.split("v=")[1]?.split("&")[0];
+  useEffect(() => {
+    // 현재 페이지에 해당하는 데이터를 설정합니다.
+    setLecture(lectures.content);
+  }, [currentPage, lectures]);
+
+  const handleLeftButtonClick = () => {
+    if (currentPage > 0) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  const handleRightButtonClick = () => {
+    if (currentPage < lectures.totalPages - 1) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const getYoutubeEmbedUrl = (link) => {
+    const videoId = link.split("v=")[1]?.split("&")[0];
     return `https://www.youtube.com/embed/${videoId}`;
   };
 
@@ -65,6 +80,8 @@ const StudentLecture = () => {
     (item) => item.subjectName === mainLectures?.name
   );
 
+  const imgPath = mainLectures?.imagePath;
+
   return (
     <div className="student_lecture_container">
       <div className="main_container">
@@ -72,8 +89,9 @@ const StudentLecture = () => {
           <img
             className="lecture_type_image"
             alt="과목이미지"
-            src={mainLectures?.imagePath}
+            src={`${baseUrl}/image/${imgPath}`}
           />
+
           <div className="lecture_description_box">
             <h1 className="lecture_type_name">{mainLectures?.name}</h1>
             <p className="lecture_type_description">
@@ -189,18 +207,30 @@ const StudentLecture = () => {
           <div className="lecture_title_box">
             <h3 className="lecture_list_title">강의영상</h3>
             <div className="button_box">
-              <button className="left_button non_style_button">⟨</button>
-              <button className="right_button non_style_button">⟩</button>
+              <button
+                className="left_button non_style_button"
+                onClick={handleLeftButtonClick}
+                disabled={currentPage === 0}
+              >
+                ⟨
+              </button>
+              <button
+                className="right_button non_style_button"
+                onClick={handleRightButtonClick}
+                disabled={currentPage === lectures.totalPages - 1}
+              >
+                ⟩
+              </button>
             </div>
           </div>
           <div className="lecture_video_container">
-            {mainLectures?.lectures?.map((el, idx) => (
+            {lectures?.content?.map((el, idx) => (
               <div className="lecture_video" key={idx}>
                 <iframe
                   width="100%"
                   height="100%"
                   src={
-                    getYoutubeEmbedUrl(el.links) +
+                    getYoutubeEmbedUrl(el.link) +
                     "?enablejsapi=1&modestbranding=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&fs=0&playsinline=1"
                   }
                   frameBorder="0"
