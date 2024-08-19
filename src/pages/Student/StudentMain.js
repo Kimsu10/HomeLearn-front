@@ -23,7 +23,6 @@ const StudentMain = () => {
   // const [showSection, setShowSection] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [username, setUsername] = useState("");
-  const location = useLocation();
 
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
