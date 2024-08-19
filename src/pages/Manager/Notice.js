@@ -1,80 +1,161 @@
-import React, { useState } from 'react';
-import './Notice.css';
-
-const initialNotices = [
-  { noticeId: 1, noticeType: '긴급', noticeTitle: '사이트 점검 안내', noticeDate: '2024-07-23', noticeContent: '대성진', noticeFile: '' },
-  { noticeId: 2, noticeType: '긴급', noticeTitle: '사이트 점검 안내', noticeDate: '2024-07-23', noticeContent: '신수정', noticeFile: '' },
-  { noticeId: 3, noticeType: '공지', noticeTitle: '사이트 점검 안내', noticeDate: '2024-07-23', noticeContent: '너무 졸리다', noticeFile: '' },
-];
+import React, { useState, useEffect } from "react";
+import "./Notice.css";
+import axios from "../../utils/axios";
 
 const Notice = () => {
-  const [notices, setNotices] = useState(initialNotices);
-  const [expandedNoticeId, setExpandedNoticeId] = useState(null);
-  const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false);
-  const [isNoticeEditing, setIsNoticeEditing] = useState(false);
-  const [currentNotice, setCurrentNotice] = useState({ noticeType: '공지', noticeTitle: '', noticeDate: '', noticeContent: '', noticeFile: '' });
-  const [selectedNotices, setSelectedNotices] = useState([]);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [notices, setNotices] = useState([]); // 공지사항 리스트 상태 관리
+  const [expandedNoticeId, setExpandedNoticeId] = useState(null); // 확장된 공지사항의 ID 상태 관리
+  const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false); // 공지사항 모달의 열림 상태 관리
+  const [isNoticeEditing, setIsNoticeEditing] = useState(false); // 공지사항 수정 모드 여부 상태 관리
+  const [currentNotice, setCurrentNotice] = useState({ // 현재 선택된 공지사항 상태 관리
+    noticeId: null,
+    noticeType: '공지',
+    noticeTitle: '',
+    noticeDate: '',
+    noticeContent: '',
+    noticeFile: '',
+  });
+  const [selectedNotices, setSelectedNotices] = useState([]); // 선택된 공지사항들 상태 관리
+  const [selectedFile, setSelectedFile] = useState(null); // 선택된 파일 상태 관리
 
+  // 컴포넌트가 마운트될 때 백엔드에서 공지사항 목록을 가져옴
+  useEffect(() => {
+    fetchNotices();
+  }, []);
+
+  // 공지사항 목록을 백엔드에서 가져오는 함수
+  const fetchNotices = async () => {
+    try {
+      const token = localStorage.getItem("access-token"); // 토큰 가져오기
+      const response = await axios.get("/managers/notification-boards?page=0", {
+        headers: {
+          access: token,
+        },
+      });
+      setNotices(response.data.content); // 공지사항 목록 설정
+    } catch (error) {
+      console.error("Error fetching notices:", error);
+    }
+  };
+
+  // 공지사항의 상세 내용을 열거나 닫는 함수
   const handleToggleNotice = (noticeId) => {
     setExpandedNoticeId(expandedNoticeId === noticeId ? null : noticeId);
   };
 
-  const handleOpenNoticeModal = (notice = { noticeType: '공지', noticeTitle: '', noticeDate: '', noticeContent: '', noticeFile: '' }) => {
+  // 공지사항 등록/수정 모달을 여는 함수
+  const handleOpenNoticeModal = (notice = {
+    noticeId: null,
+    noticeType: '공지',
+    noticeTitle: '',
+    noticeDate: '',
+    noticeContent: '',
+    noticeFile: '',
+  }) => {
     setCurrentNotice(notice);
-    setIsNoticeEditing(!!notice.noticeId);
-    setIsNoticeModalOpen(true);
+    setIsNoticeEditing(!!notice.noticeId); // 공지사항 ID가 존재하면 수정 모드로 설정
+    setIsNoticeModalOpen(true); // 모달 열기
   };
 
+  // 공지사항 등록/수정 모달을 닫는 함수
   const handleCloseNoticeModal = () => {
-    setIsNoticeModalOpen(false);
-    setCurrentNotice({ noticeType: '공지', noticeTitle: '', noticeDate: '', noticeContent: '', noticeFile: '' });
-    setIsNoticeEditing(false);
-    setSelectedFile(null);
+    setIsNoticeModalOpen(false); // 모달 닫기
+    setCurrentNotice({ // 현재 공지사항 상태 초기화
+      noticeId: null,
+      noticeType: '공지',
+      noticeTitle: '',
+      noticeDate: '',
+      noticeContent: '',
+      noticeFile: '',
+    });
+    setIsNoticeEditing(false); // 수정 모드 해제
+    setSelectedFile(null); // 선택된 파일 초기화
   };
 
+  // 공지사항 입력 필드의 변경을 처리하는 함수
   const handleNoticeChange = (e) => {
     const { name, value } = e.target;
     setCurrentNotice((prev) => ({ ...prev, [name]: value }));
   };
 
+  // 파일 선택 시 처리하는 함수
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setSelectedFile(file);
-    setCurrentNotice((prev) => ({ ...prev, noticeFile: file ? file.name : '' }));
+    setSelectedFile(file); // 선택된 파일 설정
+    setCurrentNotice((prev) => ({ ...prev, noticeFile: file ? file.name : '' })); // 현재 공지사항의 파일 정보 업데이트
   };
 
+  // 선택된 파일을 삭제하는 함수
   const handleFileDelete = () => {
-    setSelectedFile(null);
-    setCurrentNotice((prev) => ({ ...prev, noticeFile: '' }));
+    setSelectedFile(null); // 선택된 파일 초기화
+    setCurrentNotice((prev) => ({ ...prev, noticeFile: '' })); // 현재 공지사항의 파일 정보 초기화
   };
 
-  const handleSaveNotice = () => {
-    if (isNoticeEditing) {
-      setNotices((prev) =>
-        prev.map((notice) =>
-          notice.noticeId === currentNotice.noticeId ? currentNotice : notice
-        )
-      );
-    } else {
-      setNotices((prev) => [
-        ...prev,
-        { ...currentNotice, noticeId: prev.length + 1, noticeDate: new Date().toISOString().split('T')[0] },
-      ]);
+  // 공지사항을 저장하는 함수 (등록 및 수정)
+  const handleSaveNotice = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("title", currentNotice.noticeTitle);
+      formData.append("content", currentNotice.noticeContent);
+      formData.append("emergency", currentNotice.noticeType === '긴급');
+      if (selectedFile) {
+        formData.append("file", selectedFile);
+      }
+
+      const token = localStorage.getItem("access-token");
+
+      if (isNoticeEditing) { // 수정 모드일 경우
+        await axios.patch(`/managers/notification-boards/${currentNotice.noticeId}`, formData, {
+          headers: {
+            access: token,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+      } else { // 등록 모드일 경우
+        await axios.post("/managers/notification-boards", formData, {
+          headers: {
+            access: token,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+      }
+
+      fetchNotices(); // 공지사항 목록 갱신
+      handleCloseNoticeModal(); // 모달 닫기
+    } catch (error) {
+      console.error("Error saving notice:", error);
     }
-    handleCloseNoticeModal();
   };
 
-  const handleDeleteNotices = () => {
-    if (selectedNotices.length > 0) {
-      setNotices((prev) => prev.filter((notice) => !selectedNotices.includes(notice.noticeId)));
-      setSelectedNotices([]);
-    } else if (currentNotice.noticeId) {
-      setNotices((prev) => prev.filter((notice) => notice.noticeId !== currentNotice.noticeId));
+  // 선택된 공지사항을 삭제하는 함수
+  const handleDeleteNotices = async () => {
+    try {
+      const token = localStorage.getItem("access-token");
+
+      if (selectedNotices.length > 0) { // 여러 공지사항 삭제
+        await axios.delete("/managers/notification-boards", {
+          data: selectedNotices,
+          headers: {
+            access: token,
+          },
+        });
+        setSelectedNotices([]); // 선택된 공지사항 초기화
+      } else if (currentNotice.noticeId) { // 단일 공지사항 삭제
+        await axios.delete(`/managers/notification-boards/${currentNotice.noticeId}`, {
+          headers: {
+            access: token,
+          },
+        });
+      }
+
+      fetchNotices(); // 공지사항 목록 갱신
+      handleCloseNoticeModal(); // 모달 닫기
+    } catch (error) {
+      console.error("Error deleting notices:", error);
     }
-    handleCloseNoticeModal();
   };
 
+  // 체크박스 상태를 변경하는 함수
   const handleCheckboxChange = (noticeId) => {
     setSelectedNotices((prev) =>
       prev.includes(noticeId) ? prev.filter((id) => id !== noticeId) : [...prev, noticeId]
@@ -86,34 +167,51 @@ const Notice = () => {
       <div className="notice-header">
         <h1>공지사항</h1>
         <div className="notice-actions">
-          <button className="notice-action-button" onClick={() => handleOpenNoticeModal()}>등록</button>
-          <button className="notice-action-button" onClick={handleDeleteNotices}>삭제</button>
+          <button className="notice-action-button" onClick={() => handleOpenNoticeModal()}>
+            등록
+          </button>
+          <button className="notice-action-button" onClick={handleDeleteNotices}>
+            삭제
+          </button>
         </div>
       </div>
       {notices.map((notice) => (
-        <div key={notice.noticeId} className="notice-item">
+        <div key={notice.id} className="notice-item">
           <div className="notice-summary">
             <input
               type="checkbox"
-              checked={selectedNotices.includes(notice.noticeId)}
-              onChange={() => handleCheckboxChange(notice.noticeId)}
+              checked={selectedNotices.includes(notice.id)}
+              onChange={() => handleCheckboxChange(notice.id)}
             />
-            <span className={`notice-type ${notice.noticeType === '긴급' ? 'urgent' : 'normal'}`}>{notice.noticeType}</span>
+            <span className={`notice-type ${notice.emergency ? 'urgent' : 'normal'}`}>
+              {notice.emergency ? '긴급' : '공지'}
+            </span>
             <div className="notice-title-date">
-              <span className="notice-title">{notice.noticeTitle}</span>
-              <span className="notice-date">{notice.noticeDate}</span>
+              <span className="notice-title">{notice.title}</span>
+              <span className="notice-date">{notice.date}</span>
             </div>
-            <button className="notice-toggle-button" onClick={() => handleToggleNotice(notice.noticeId)}>
-              {expandedNoticeId === notice.noticeId ? '-' : '+'}
+            <button className="notice-toggle-button" onClick={() => handleToggleNotice(notice.id)}>
+              {expandedNoticeId === notice.id ? '-' : '+'}
             </button>
           </div>
-          {expandedNoticeId === notice.noticeId && (
+          {expandedNoticeId === notice.id && (
             <div className="notice-content">
-              <button className="notice-edit-button" onClick={() => handleOpenNoticeModal(notice)}>수정</button>
-              <p>{notice.noticeContent}</p>
-              {notice.noticeFile && <div className="notice-footer">
-                <span>{notice.noticeFile}</span>
-              </div>}
+              <button className="notice-edit-button" onClick={() => handleOpenNoticeModal({
+                noticeId: notice.id, // 공지사항 ID 전달
+                noticeType: notice.emergency ? '긴급' : '공지',
+                noticeTitle: notice.title,
+                noticeDate: notice.date,
+                noticeContent: notice.content,
+                noticeFile: notice.file,
+              })}>
+                수정
+              </button>
+              <p>{notice.content}</p>
+              {notice.file && (
+                <div className="notice-footer">
+                  <span>{notice.file}</span>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -123,7 +221,9 @@ const Notice = () => {
         <div className="notice-modal">
           <div className="notice-modal-header">
             <h2>{isNoticeEditing ? '공지 사항 수정' : '공지 사항 등록'}</h2>
-            <button className="modal-close" onClick={handleCloseNoticeModal}>&times;</button>
+            <button className="modal-close" onClick={handleCloseNoticeModal}>
+              &times;
+            </button>
           </div>
           <div className="notice-modal-body">
             <div className="modal-header-row">
@@ -134,7 +234,12 @@ const Notice = () => {
                     type="checkbox"
                     name="noticeType"
                     checked={currentNotice.noticeType === '긴급'}
-                    onChange={(e) => setCurrentNotice((prev) => ({ ...prev, noticeType: e.target.checked ? '긴급' : '공지' }))}
+                    onChange={(e) =>
+                      setCurrentNotice((prev) => ({
+                        ...prev,
+                        noticeType: e.target.checked ? '긴급' : '공지',
+                      }))
+                    }
                   />
                   긴급 여부
                 </label>
@@ -159,10 +264,7 @@ const Notice = () => {
               <div className="file-input-container">
                 <input type="text" value={currentNotice.noticeFile} readOnly />
                 {currentNotice.noticeFile && (
-                  <button
-                    className="notice-file-delete-button"
-                    onClick={handleFileDelete}
-                  >
+                  <button className="notice-file-delete-button" onClick={handleFileDelete}>
                     삭제
                   </button>
                 )}
@@ -176,10 +278,10 @@ const Notice = () => {
             <button className="notice-submit-button" onClick={handleSaveNotice}>
               {isNoticeEditing ? '공지 사항 수정' : '공지 사항 등록'}
             </button>
-            <button className="notice-cancel-button" onClick={handleCloseNoticeModal}>등록취소</button>
-            {isNoticeEditing && (
-              <button className="notice-delete-button" onClick={handleDeleteNotices}>공지 사항 삭제</button>
-            )}
+            <button className="notice-cancel-button" onClick={handleCloseNoticeModal}>
+              등록취소
+            </button>
+
           </div>
         </div>
       )}

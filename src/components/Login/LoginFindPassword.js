@@ -26,12 +26,7 @@ function LoginFindPassword() {
     setIsSubmitting(true);
 
     try {
-      console.log("Sending email request to /account/send-code");
-      console.log("Email:", email);
-
       const response = await axios.post("/account/send-code", { email });
-
-      console.log("Response:", response);
 
       if (response.status === 200) {
         swal(
@@ -44,7 +39,6 @@ function LoginFindPassword() {
         swal("오류", "해당 이메일로 등록된 정보가 없습니다.", "error");
       }
     } catch (error) {
-      console.error("오류:", error);
       swal("오류", "해당 이메일로 등록된 정보가 없습니다.", "error");
     } finally {
       setIsSubmitting(false);
@@ -62,21 +56,17 @@ function LoginFindPassword() {
     setIsSubmitting(true);
 
     try {
-      console.log("Sending code verification request to /account/verify-code");
-      console.log("Code:", code);
-
       const response = await axios.post("/account/verify-code", { email, code });
 
-      console.log("Response:", response);
-
       if (response.status === 200) {
+        const username = response.data;  // 서버로부터 받은 username
         swal("인증 성공", "코드 인증이 성공했습니다.", "success");
-        navigate("/reset-password", { state: { email } });
+        // reset-password 페이지로 이동하면서 username 값을 전달
+        navigate("/reset-password", { state: { username } });
       } else {
         swal("오류", "인증 코드가 잘못되었거나 만료되었습니다.", "error");
       }
     } catch (error) {
-      console.error("오류:", error);
       swal("오류", "인증 코드 확인 중 문제가 발생했습니다.", "error");
     } finally {
       setIsSubmitting(false);
