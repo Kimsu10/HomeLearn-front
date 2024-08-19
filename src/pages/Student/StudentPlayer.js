@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import useGetFetch from "../../hooks/useGetFetch";
 import axios from "../../utils/axios";
 
+
 const LectureVideo = ({ url, subjectVideos }) => {
   console.log(url);
   const [player, setPlayer] = useState(null);
@@ -39,13 +40,12 @@ const LectureVideo = ({ url, subjectVideos }) => {
   const [currentUrl, setCurrentUrl] = useState(url);
   const [currentTime, setCurrentTime] = useState(0);
 
-  // 컴파일러 관련 상태 추가
+  // 컴파일러 관련 상태
   const [code, setCode] = useState(
-    'public class Main {\n    public static void main(String[] args) {\n        System.out.println("hello, world");\n    }\n}'
+      'public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}'
   );
   const [language, setLanguage] = useState("java");
-  const [compilerOutput, setCompilerOutput] =
-    useState("출력이 여기에 표시됩니다.");
+  const [compilerOutput, setCompilerOutput] = useState("출력이 여기에 표시됩니다.");
 
   const languageTemplates = {
     java: `public class Main {
@@ -66,7 +66,6 @@ const LectureVideo = ({ url, subjectVideos }) => {
   const handleMouseEnter = () => setIsHovering(true);
   const handleMouseLeave = () => setIsHovering(false);
 
-  // 값은 잘 들어오는데 영상이 바로 뜨지 않음 ->
   console.log(url);
   console.log(subjectVideos);
   useEffect(() => {
@@ -216,7 +215,8 @@ const LectureVideo = ({ url, subjectVideos }) => {
     if (progressInterval.current) clearInterval(progressInterval.current);
     progressInterval.current = setInterval(() => {
       if (player && player.getCurrentTime) {
-        const currentProgress = (player.getCurrentTime() / player.getDuration()) * 100;
+        const currentProgress =
+          (player.getCurrentTime() / player.getDuration()) * 100;
         setProgress(currentProgress);
       }
     }, 1000);
@@ -287,7 +287,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
   const extractVideoId = (link) => {
     console.log(link);
     const match = link.match(
-        /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+      /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
     );
     return match ? match[1] : null;
   };
@@ -326,6 +326,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
       setCompilerOutput("코드 실행 중 오류 발생: " + error.message);
     }
   };
+
   const renderSidebarContent = () => {
     console.log(subjectVideos);
 
@@ -346,6 +347,8 @@ const LectureVideo = ({ url, subjectVideos }) => {
     switch (sidebarContent) {
       case "info":
         return (
+
+
           <div className="player_sidebar-content">
             <p className="player_category">동영상 정보</p>
             <div className="player_line"></div>
@@ -430,6 +433,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
     console.log(links);
     return <p>잘못된 링크로 비디오를 찾을 수 없습니다.</p>;
   }
+
 
   return (
     <div

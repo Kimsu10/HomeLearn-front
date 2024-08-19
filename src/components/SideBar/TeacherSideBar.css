@@ -154,7 +154,7 @@
 }
 
 .teacher_sideBar_subMenu.open {
-    max-height: 100px;
+    max-height: 200px;
 }
 
 .teacher_sideBar_subMenu li {

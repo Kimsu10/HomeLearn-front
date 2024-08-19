@@ -18,16 +18,20 @@ const TeacherLectureList = () => {
   const location = useLocation();
   const [subjectName, setSubjectName] = useState([]);
   const [subjectNamesError, setSubjectNamesError] = useState(null);
+  const [selectedLectureId, setSelectedLectureId] = useState("all");
 
   const { data: subjectData, error: subjectError, loading: subjectLoading } = useGetFetch("/data/student/mainpage/sidebar.json", []);
+
+  console.log(subjectVideosData);
+  console.log(selectedVideoUrl);
 
   const fetchSubjectVideos = async (lectureId) => {
     console.log(lectureId);
     try {
       const url =
           lectureId === "all"
-              ? "/students/lectures?page=0"
-              : `/students/lectures?page=0&subjectId=1`;
+              ? "/teachers/lectures?page=0"
+              : `/teachers/lectures?page=0&subjectId=${lectureId}`;
       const response = await axios.get(url);
       setSubjectVideosData(response.data.content || []);
     } catch (error) {
@@ -38,7 +42,7 @@ const TeacherLectureList = () => {
 
   const fetchSubjectNames = async () => {
     try {
-      const response = await axios.get("/students/lectures/subject-select");
+      const response = await axios.get("/teachers/lectures/subject-select");
       setSubjectName(response.data);
     } catch (error) {
       setSubjectNamesError(error);
@@ -67,29 +71,50 @@ const TeacherLectureList = () => {
   };
 
   useEffect(() => {
-    fetchSubjectVideos();
-  }, [fetchSubjectVideos]);
+    fetchSubjectVideos(selectedLectureId);
+  }, [selectedLectureId]);
+
+  useEffect(() => {
+    fetchSubjectNames();
+  }, []);
 
   useEffect(() => {
     if (subjectVideosData.length > 0) {
-      const urls = subjectVideosData.map((el) => getYouTubeThumbnailUrl(el.link));
+      const urls = subjectVideosData.map((el) =>
+          getYouTubeThumbnailUrl(el.link)
+      );
       setThumbnailUrls(urls);
     }
   }, [subjectVideosData]);
 
-  const getYouTubeThumbnailUrl = useCallback((youtubeUrl) => {
-    // 기존 코드 유지
-  }, []);
+  const getYouTubeThumbnailUrl = (youtubeUrl) => {
+    const videoId =
+        youtubeUrl.split("v=")[1] || youtubeUrl.split("youtu.be/")[1];
+    if (videoId) {
+      const ampersandPosition = videoId.indexOf("&");
+      if (ampersandPosition !== -1) {
+        return `https://img.youtube.com/vi/${videoId.substring(
+            0,
+            ampersandPosition
+        )}/mqdefault.jpg`;
+      }
+      return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+    }
+    return null;
+  };
+
 
   const openModal = useCallback((youtubeUrl) => {
     setSelectedVideoUrl(youtubeUrl);
-    setIsModalOpen(true);
-  }, []);
+    setIsModalOpen(true); // 부모 컴포넌트의 상태 업데이트
+  }, [setIsModalOpen]);
 
   const closeModal = useCallback(() => {
-    setIsModalOpen(false);
     setSelectedVideoUrl("");
-  }, []);
+    setIsModalOpen(false); // 부모 컴포넌트의 상태 업데이트
+    window.location.reload();
+  }, [setIsModalOpen]);
+
 
   const toggleDropdown = useCallback((menu) => {
     setDropdownOpen(prevState => prevState === menu ? null : menu);
@@ -120,10 +145,10 @@ const TeacherLectureList = () => {
   }
 
   return (
-      <div className="subject_lecture_list_body">
-        <div className="subject_lecture_list_main_container">
-          <div className="subject_lecture_list_page_title_box">
-            <h1 className="subject_lecture_list_page_title">강의 영상</h1>
+      <div className="teacher_lecture_list_body">
+        <div className="teacher_lecture_list_main_container">
+          <div className="teacher_lecture_list_page_title_box">
+            <h1 className="teacher_lecture_list_page_title">강의 영상</h1>
             <div className="custom-select">
               <div className={`teacher_lecture_dropdown ${dropdownOpen === 'subject' ? 'open' : ''}`}>
                 <div

@@ -1,4 +1,4 @@
-.subject_lecture_list_main_container {
+.teacher_lecture_list_main_container {
   display: flex;
   flex-direction: column;
   width: 1120px;
@@ -6,20 +6,20 @@
   background-color: #fff;
 }
 
-.subject_lecture_list_container {
+.teacher_lecture_list_container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px 30px;
 }
 
-.subject_lecture_list_page_title_box {
+.teacher_lecture_list_page_title_box {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--teacherMainColor);
 }
 
-.subject_lecture_list_page_title {
+.teacher_lecture_list_page_title {
   font-size: 48px;
   padding-bottom: 75px;
   color: var(--teacherMainColor);
