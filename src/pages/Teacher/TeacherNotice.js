@@ -28,7 +28,7 @@ const TeacherNotice = () => {
         fetchNotices();
     }, []);
 
-    // 공지사항 목록
+    // 공지사항 목록.
     const fetchNotices = async () => {
         try {
             const response = await axios.get("/teachers/notification-boards", {
