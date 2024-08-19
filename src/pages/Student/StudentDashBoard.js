@@ -36,6 +36,10 @@ const StudentDashBoard = ({ username }) => {
   const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const recentLectureData = await axios.get(
@@ -170,6 +174,8 @@ const StudentDashBoard = ({ username }) => {
 
   //   return null;
   // };
+
+  console.log(assignment);
 
   return (
     <div className="contents">
@@ -323,7 +329,11 @@ const StudentDashBoard = ({ username }) => {
                       </p>
                       <button
                         className="student_assignment_submit_button"
-                        onClick={openSubmit}
+                        onClick={() =>
+                          navigate(
+                            `/students/assignmentDetail/${el.homeworkId}`
+                          )
+                        }
                       >
                         제출하기
                       </button>
@@ -405,7 +415,6 @@ const StudentDashBoard = ({ username }) => {
         handleFileChange={handleFileChange}
         selectedFileName={selectedFileName}
         modalName="과제 제출"
-        // contentTitle="제목"
         contentBody="내용"
         contentFile="파일 첨부"
         url="/students/homeworks"

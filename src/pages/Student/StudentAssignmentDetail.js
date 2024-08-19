@@ -16,6 +16,10 @@ const StudentAssignmentDetail = () => {
     file: "",
   });
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const openModal = () => {
     setIsModalOpen(true);
     setIsModifyOpen(false);
@@ -184,7 +188,6 @@ const StudentAssignmentDetail = () => {
         handleSubmit={handleSubmit}
         handleFileChange={handleFileChange}
         selectedFileName={formData.selectedFileName}
-        homeworkId={homeworkId}
         modalName="과제 제출"
         contentBody="내용"
         contentFile="파일 첨부"
