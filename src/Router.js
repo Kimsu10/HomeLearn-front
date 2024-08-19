@@ -10,7 +10,8 @@ import ManagerMain from "./pages/Manager/ManagerMain";
 import StudentMain from "./pages/Student/StudentMain";
 import TeacherMain from "./pages/Teacher/TeacherMain";
 import YouTubePlayer from "./pages/Teacher/play";
-import LoginFind from "./components/Login/LoginFind";
+import LoginFindId from "./components/Login/LoginFindId";
+import LoginFindPassword from "./components/Login/LoginFindPassword";
 import PasswordReset from "./components/Login/PasswordReset";
 
 const Router = () => {
@@ -23,9 +24,9 @@ const Router = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/email" element={<LoginEmail />} />
         <Route path="/main" element={<Main />} />
-        <Route path="/find-id" element={<LoginFind findType="id" />} />
-        <Route path="/find-password" element={<LoginFind findType="password" />} />
-        <Route path="/reset-password" element={<PasswordReset />} /> {/* 비밀번호 재설정 경로 추가 */}
+        <Route path="/find-id" element={<LoginFindId />} />
+        <Route path="/find-password" element={<LoginFindPassword />} />
+        <Route path="/reset-password" element={<PasswordReset />} />
         <Route path="/managers/*" element={<ManagerMain />} />
         <Route path="/students/*" element={<StudentMain />} />
         <Route path="/teachers/*" element={<TeacherMain />} />

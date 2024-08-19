@@ -4,18 +4,18 @@ import swal from "sweetalert";
 import axios from "../../utils/axios";
 import "./LoginFind.css";
 
-function LoginFind() {
+function LoginFindPassword() {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isCodeSent, setIsCodeSent] = useState(false); // 인증 코드 전송 여부
+  const [isCodeSent, setIsCodeSent] = useState(false);
   const navigate = useNavigate();
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
 
     if (isSubmitting) {
-      return; // 이미 제출 중이면 아무 동작도 하지 않음
+      return;
     }
 
     if (!email) {
@@ -29,7 +29,6 @@ function LoginFind() {
       console.log("Sending email request to /account/send-code");
       console.log("Email:", email);
 
-      // 서버로 이메일 전송, 응답 처리
       const response = await axios.post("/account/send-code", { email });
 
       console.log("Response:", response);
@@ -40,7 +39,7 @@ function LoginFind() {
           "해당 이메일로 비밀번호 재설정 코드를 전송했습니다.",
           "success"
         );
-        setIsCodeSent(true); // 인증 코드 전송 상태로 변경
+        setIsCodeSent(true);
       } else {
         swal("오류", "해당 이메일로 등록된 정보가 없습니다.", "error");
       }
@@ -66,7 +65,6 @@ function LoginFind() {
       console.log("Sending code verification request to /account/verify-code");
       console.log("Code:", code);
 
-      // 서버로 인증 코드 전송, 응답 처리
       const response = await axios.post("/account/verify-code", { email, code });
 
       console.log("Response:", response);
@@ -141,4 +139,4 @@ function LoginFind() {
   );
 }
 
-export default LoginFind;
+export default LoginFindPassword;
