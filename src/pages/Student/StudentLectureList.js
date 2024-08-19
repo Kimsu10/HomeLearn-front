@@ -22,6 +22,7 @@ const StudentLectureList = () => {
   console.log(selectedVideoUrl);
 
   const fetchSubjectVideos = async (lectureId) => {
+    console.log(lectureId);
     try {
       const url =
         lectureId === "all"

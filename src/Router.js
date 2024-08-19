@@ -10,6 +10,7 @@ import ManagerMain from "./pages/Manager/ManagerMain";
 import StudentMain from "./pages/Student/StudentMain";
 import TeacherMain from "./pages/Teacher/TeacherMain";
 import YouTubePlayer from "./pages/Teacher/play";
+import NotFound from "./pages/NotFound";
 
 const Router = () => {
   return (
@@ -25,6 +26,7 @@ const Router = () => {
         <Route path="/students/*" element={<StudentMain />} />
         <Route path="/teachers/*" element={<TeacherMain />} />
         <Route path="/play" element={<YouTubePlayer />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
     </BrowserRouter>
