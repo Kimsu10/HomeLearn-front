@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 // 기본 URL 설정

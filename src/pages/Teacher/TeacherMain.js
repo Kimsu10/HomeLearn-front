@@ -94,6 +94,7 @@ function TeacherMain() {
               <Route path="manage-curriculums" element={<CurriculumManagement />} />
               <Route path="manage-teachers" element={<TeacherManagement />} />
               <Route path="notice" element={<Notice />} />
+              <Route path="notice/teacherNotice" element={<TeacherNotice />} />
               <Route path="contact-students" element={<StudentContact />} />
               <Route path="contact-teachers" element={<TeacherContact />} />
             </Routes>
@@ -102,5 +103,4 @@ function TeacherMain() {
 
   );
 }
-
 export default TeacherMain;
