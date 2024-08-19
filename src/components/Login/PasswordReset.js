@@ -5,7 +5,7 @@ import axios from "../../utils/axios";
 import "./PasswordReset.css";
 
 function PasswordReset() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(true);
@@ -13,46 +13,50 @@ function PasswordReset() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // 이메일 상태를 location.state로부터 설정
   useEffect(() => {
-    if (location.state?.email) {
-      setEmail(location.state.email);
+    if (location.state?.username) {
+      setUsername(location.state.username);
+      console.log("Received username:", location.state.username);
+    } else {
+      console.log("No username found in location.state");
     }
   }, [location.state]);
 
-  // 새 비밀번호와 확인 비밀번호가 일치하는지 확인
   useEffect(() => {
     setPasswordMatch(newPassword === confirmPassword);
   }, [newPassword, confirmPassword]);
 
-  // 비밀번호 형식 검증
   useEffect(() => {
     validatePassword(newPassword);
   }, [newPassword]);
 
   const validatePassword = (password) => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,18}$/;
-    setPasswordValid(passwordRegex.test(password));
+    const isValid = passwordRegex.test(password);
+    setPasswordValid(isValid);
+    console.log("Password valid:", isValid);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 비밀번호 일치와 형식 유효성 검증
     if (!passwordMatch || !passwordValid) {
       swal("입력 오류", "비밀번호를 확인해 주세요.", "warning");
       return;
     }
 
-    if (!email || !newPassword) {
+    if (!username || !newPassword) {
       swal("입력 오류", "모든 필드를 입력하세요.", "warning");
       return;
     }
 
     try {
-      // 서버로 비밀번호 재설정 요청
+      console.log("Submitting password reset request:");
+      console.log("Username:", username);
+      console.log("New password:", newPassword);
+
       const response = await axios.post("/account/reset-password", {
-        username: email,
+        username: username,
         password: newPassword,
       });
 
@@ -60,8 +64,10 @@ function PasswordReset() {
         swal("성공", "비밀번호가 성공적으로 재설정되었습니다.", "success");
         navigate("/login");
       } else {
-        swal("오류", "비밀번호 재설정에 실패했습니다.", "error");
+        console.log("Response data:", response.data);
+        swal("오류", `비밀번호 재설정에 실패했습니다. 상태 코드: ${response.status}`, "error");
       }
+
     } catch (error) {
       console.error("오류:", error);
       swal("오류", "비밀번호 재설정 중 문제가 발생했습니다.", "error");
@@ -73,11 +79,11 @@ function PasswordReset() {
       <form onSubmit={handleSubmit}>
         <h2 className="password-reset-title">비밀번호 재설정</h2>
         <div className="password-reset-input-group">
-          <span className="password-reset-label">이메일</span>
+          <span className="password-reset-label">아이디</span>
           <input
             className="password-reset-input"
-            type="email"
-            value={email}
+            type="text"
+            value={username}
             readOnly
           />
         </div>
