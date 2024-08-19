@@ -1,7 +1,8 @@
-.main_container {
+.badge_main_container {
   display: flex;
   flex-direction: column;
   width: 1120px;
+  height: 1010px;
   padding: 100px 68px;
   background-color: #fff;
 }
@@ -31,10 +32,15 @@
 /* 모든 배지들이 있는 컨테이너 */
 .student_badge_list_container {
   margin: 50px 0;
-  width: 1120px;
+  width: 1020px;
+  height: 1000px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 40px;
+}
+
+.student_badge_list {
+  height: 284px;
 }
 
 .student_badge_box {
@@ -68,14 +74,77 @@
   font-size: 20px;
 }
 
-/* 뒷면? */
-.student_badge_detail_info_box {
+/*취득한 배지 */
+@keyframes sheen {
+  0% {
+    transform: skewY(-10deg) translateX(-50%);
+  }
+  100% {
+    transform: skewY(-55deg) translateX(30em);
+  }
+}
+
+.wrapper_badge_contaier {
+  display: block;
   position: absolute;
-  top: 0;
-  right: -105%;
-  padding: 20px;
-  width: 240px;
-  height: 300px;
-  border: 2px solid var(--studentSubColor);
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.student_badge_box {
+  padding: 0.75em 2em;
+  text-align: center;
+  text-decoration: none;
+  color: var(--studentMainColor);
+  border: 1px solid var(--studentMainColor);
+  font-size: 24px;
+  display: inline-block;
   border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+}
+
+.shimmer {
+  content: "";
+  background: linear-gradient(
+    90deg,
+    rgba(255, 191, 48, 0.6) 20%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 188, 0, 0.8) 80%
+  );
+  position: absolute;
+  top: 10%;
+  left: -100%;
+  height: 180%;
+  width: 150%;
+  transform: skewY(-45deg);
+  animation: sheen 1.8s infinite;
+  z-index: 10;
+  display: none;
+}
+
+.badge_acquired .shimmer {
+  display: block;
+}
+
+.badge_acquired {
+  color: rgb(255, 229, 36);
+  filter: drop-shadow(0 0 6px rgba(226, 188, 40, 0.8));
+  border-radius: 20px;
+  border: none;
+}
+
+.student_badge_image,
+.student_badge_info_box {
+  position: relative;
+  z-index: 11;
+}
+
+.student_badge_info_box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
 }

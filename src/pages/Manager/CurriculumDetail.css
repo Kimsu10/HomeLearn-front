@@ -125,6 +125,8 @@
 .survey-link {
   bottom: 10px;
   right: 10px;
+  color:#757575;
+  text-decoration : none;
 }
 
 .curriculum-detail-info-box-content {
@@ -274,9 +276,6 @@
 }
 
 .curriculum-detail-no-survey {
-  border: 3px solid #757575;
-  border-radius: 20px;
-  padding: 10px;
   text-align: center;
 }
 .curriculum-detail-no-survey p{
@@ -289,4 +288,9 @@
 
 .CircularProgressbar .CircularProgressbar-text {
   fill: #757575;
+}
+.curriculum-modal-title{
+    display:flex;
+    justify-content:center;
+    font-size:28px;
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./StudentVideoModal.css";
-import LectureVideo from "../../../pages/Teacher/play";
+import LectureVideo from "../../../pages/Student/StudentPlayer";
 
 const StudentVideoModal = ({ isOpen, onClose, children, url }) => {
   if (!isOpen) return null;
@@ -13,7 +13,7 @@ const StudentVideoModal = ({ isOpen, onClose, children, url }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <button className="student_video_modal_close" onClick={onClose}>
-          X
+          닫기
         </button>
         {children}
         {/* <LectureVideo url={url} /> */}

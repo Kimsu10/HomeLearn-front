@@ -37,6 +37,7 @@
     "react-transition-group": "^4.4.5",
     "sockjs-client": "^1.6.1",
     "sweetalert": "^2.1.2",
+    "swiper": "^11.1.9",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

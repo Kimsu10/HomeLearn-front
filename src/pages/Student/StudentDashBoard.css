@@ -240,8 +240,8 @@
 }
 
 .badge_list {
-  width: 100px;
-  height: 100px;
+  width: 92px;
+  height: 92px;
   border-radius: 50%;
   padding: 10px;
   border: 2px solid var(--studentSubColor);
@@ -251,12 +251,12 @@
 }
 
 .badge_image {
-  width: 90px;
-  height: 90px;
+  width: 92px;
+  height: 92px;
   border-radius: 50%;
   position: absolute;
-  top: 3%;
-  left: 3%;
+  top: -2px;
+  left: -1px;
 }
 
 .go_to_badge_page {
@@ -285,7 +285,6 @@
 
 /*  과제 목록 스타일 */
 .subject_container {
-  margin: 30px 0;
   width: 500px;
   height: 520px;
   background-color: #f4f9f4;
@@ -300,6 +299,7 @@
   flex-direction: row;
   justify-content: space-between;
   gap: 24px;
+  margin-top: 20px;
 }
 
 .dashboard_student_assignment_list_box {
@@ -362,6 +362,20 @@
   margin: 8px 0;
 }
 
+.no_student_assignment_box {
+  width: 248px;
+  height: 390px;
+  padding: 20px 8px;
+  border: 3px solid var(--studentSubColor);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  color: black;
+  background-color: white;
+}
+
 .bi-check-circle-fill {
   color: var(--studentMainColor);
 }
@@ -403,6 +417,7 @@
 .teacher_notice_container,
 .admin_notice_container {
   padding: 32px 8px 0 8px;
+  position: relative;
 }
 
 .notice_components_title {
@@ -426,20 +441,28 @@
 }
 
 .notice_type {
-  width: 40px;
-  height: 25px;
+  width: 48px;
+  height: 32px;
   text-align: center;
   line-height: 25px;
   border: 1px solid var(--studentSubColor);
   border-radius: 20px;
   background-color: var(--studentPrimaryColor) 2b;
   color: var(--studentSubColor);
+  font-size: 16px;
 }
 
-.alert_notice {
-  font-weight: 600;
-  font-size: 12px;
-  color: #ff0000;
+.emergency_notice {
+  border: 1px solid red;
+  padding: 5px;
+  border-radius: 20px;
+  color: red;
+}
+
+.regular_notice {
+  border: 1px solid var(--studentMainColor);
+  padding: 5px;
+  border-radius: 20px;
 }
 
 .notice_title {
@@ -464,6 +487,9 @@
   flex-direction: row-reverse;
   text-align: right;
   width: 100%;
+  position: absolute;
+  top: 88%;
+  right: 24px;
 }
 
 /* 과제 제출용 모달창 */
@@ -494,7 +520,7 @@
   width: 80%;
 }
 
-.close {
+/* .close {
   display: flex;
   flex-direction: row-reverse;
   color: var(--studentMainColor);
@@ -507,7 +533,7 @@
   color: black;
   text-decoration: none;
   cursor: pointer;
-}
+} */
 
 .modal_title {
   text-align: center;

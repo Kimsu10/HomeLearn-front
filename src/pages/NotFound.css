@@ -1,0 +1,22 @@
+.notfound_page_container {
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px;
+}
+
+.notfound-page_title {
+  padding-bottom: 60px;
+  font-size: 38px;
+  font-weight: 600;
+  color: #5c8d89;
+}
+
+.not_found_img {
+  height: 700px;
+  width: 1200px;
+  border-radius: 10px;
+}

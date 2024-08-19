@@ -1,113 +1,211 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "../../utils/axios";
-import { Radar } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
   Tooltip,
   Legend,
-} from 'chart.js';
+} from "chart.js";
+import "./SurveyDetail.css";
+import swal from "sweetalert";
 
-ChartJS.register(
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const SurveyDetail = () => {
-  const { curriculumId, surveyId } = useParams();
-  const [curriculumAndSurvey, setCurriculumAndSurvey] = useState(null);
-  const [choiceStatistics, setChoiceStatistics] = useState([]);
-  const [textResponses, setTextResponses] = useState([]);
-  const [currentPage, setCurrentPage] = useState(0);
+  const { curriculumId, surveyId } = useParams(); // surveyId를 받을 수 있도록 수정
+  const navigate = useNavigate();
+  const [surveyDetails, setSurveyDetails] = useState(null);
+  const [curriculumSimple, setCurriculumSimple] = useState(null);
+  const [endedSurveys, setEndedSurveys] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const getToken = () => localStorage.getItem("access-token");
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchSurveyData = async () => {
       try {
         const token = getToken();
-        const config = {
-          headers: { access: token },
-        };
+        const config = { headers: { access: token } };
 
-        const basicResponse = await axios.get(
-          `/managers/curriculum/${curriculumId}/survey/${surveyId}/basic`,
-          config
-        );
-        setCurriculumAndSurvey(basicResponse.data);
+        const [
+          surveyResponse,
+          curriculumResponse,
+          endedSurveysResponse,
+        ] = await Promise.all([
+          axios.get(`/managers/curriculum/${curriculumId}/survey-status/progress`, config),
+          axios.get(`/managers/curriculum/${curriculumId}/survey-status/curriculum-simple`, config),
+          axios.get(`/managers/curriculum/${curriculumId}/survey-status/end`, config),
+        ]);
 
-        const choiceResponse = await axios.get(
-          `/managers/curriculum/${curriculumId}/survey/${surveyId}/choice-response`,
-          config
-        );
-        setChoiceStatistics(choiceResponse.data);
-
-        const textResponse = await axios.get(
-          `/managers/curriculum/${curriculumId}/survey/${surveyId}/text-response?page=${currentPage}`,
-          config
-        );
-        setTextResponses(textResponse.data.content);
+        setSurveyDetails(surveyResponse.data);
+        setCurriculumSimple(curriculumResponse.data);
+        setEndedSurveys(endedSurveysResponse.data);
       } catch (error) {
-        console.error("데이터 가져오기 오류:", error.response);
+        setError(error.response?.data || "데이터 가져오기 오류");
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    fetchData();
-  }, [curriculumId, surveyId, currentPage]);
+    fetchSurveyData();
+  }, [curriculumId]);
 
-  const radarData = {
-    labels: choiceStatistics.map(stat => stat.question),
+  const handleSurveyEnd = async () => {
+    try {
+      if (!surveyDetails || !surveyDetails.surveyId) {
+        swal("등록 실패", "설문 조사 ID를 찾을 수 없습니다.", "warning");
+        return;
+      }
+
+      const token = getToken();
+      const config = { headers: { access: token } };
+
+      const response = await axios.post(
+        `/managers/manage-curriculums/survey-stop/${surveyDetails.surveyId}`,
+        {},
+        config
+      );
+
+      if (response.status === 200) {
+        const endedSurveysResponse = await axios.get(
+          `/managers/curriculum/${curriculumId}/survey-status/end`,
+          config
+        );
+        setEndedSurveys(endedSurveysResponse.data);
+
+        setSurveyDetails(null);
+        swal("설문 마감", "설문 조사가 성공적으로 마감되었습니다.", "success");
+
+        navigate(-1);
+      } else {
+        swal("설문 마감 오류", "설문 마감 중 오류가 발생했습니다.", "error");
+      }
+    } catch (error) {
+      console.error("설문 마감 중 오류 발생:", error);
+      swal("등록 실패", "설문 마감 중 오류가 발생했습니다.", "warning");
+    }
+  };
+
+  if (isLoading) return <div>로딩 중...</div>;
+  if (error) return <div>오류 발생: {error}</div>;
+
+  // 설문조사가 없는 경우 처리
+  if (!surveyDetails) {
+    return (
+      <div className="survey-detail">
+        <div className="survey-detail-title">
+          <h2>{curriculumSimple?.name} <span>{curriculumSimple?.th}기</span></h2>
+        </div>
+        <div className="survey-content">
+          <p>진행 중인 설문 조사가 없습니다.</p>
+          <div className="survey-card-end completed-surveys">
+            <h3>종료된 설문 조사</h3>
+            <div className="completed-surveys-list">
+              {endedSurveys.length > 0 ? (
+                endedSurveys.map((survey, index) => (
+                  <div key={index} className="completed-survey-item">
+                    <Link to={`/managers/curriculum/${curriculumId}/survey/${survey.surveyId}/basic`} className="survey-info-title">
+                      {survey.title}
+                    </Link>
+                    <p className="survey-count">
+                      <i className="fa-solid fa-user"></i>{survey.completed}/{survey.total}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p>종료된 설문 조사가 없습니다.</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 설문조사에 응답한 학생 수를 기반으로 데이터를 구성합니다.
+  const chartData = {
+    labels: [surveyDetails.title], // 설문 제목을 라벨로 사용
     datasets: [
       {
-        label: '평균 점수',
-        data: choiceStatistics.map(stat => stat.averageScore),
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
+        label: "응답한 학생 수",
+        data: [surveyDetails.completed], // 응답한 학생 수를 데이터로 사용
+        backgroundColor: "rgba(75, 192, 192, 0.6)",
+        borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,
       },
     ],
   };
 
+  const chartOptions = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: Math.max(surveyDetails.total, surveyDetails.completed) + 1,
+        ticks: {
+          stepSize: 1, // 정수 단위로 y축 표시
+        },
+      },
+    },
+  };
+
   return (
     <div className="survey-detail">
-      <h2 className="survey-detail-title">
-        {curriculumAndSurvey?.curriculumName} {curriculumAndSurvey?.curriculumTh}기 설문조사
-      </h2>
-      <h3 className="survey-detail-subtitle">
-        {curriculumAndSurvey?.surveyTitle}
-      </h3>
-
-      <div className="survey-cards-container">
-        <div className="survey-card">
-          <div className="survey-card-title">진행 중인 설문 조사</div>
-          {/* 여기서 진행 중인 설문을 맵핑하여 목록을 보여줄 수 있습니다 */}
-        </div>
-        <div className="survey-card">
-          <div className="survey-card-title">종료된 설문 조사</div>
-          {/* 여기서 완료된 설문을 맵핑하여 목록을 보여줄 수 있습니다 */}
-        </div>
-        <div className="survey-card survey-trend-card">
-          <div className="survey-card-title">설문 조사 추이</div>
-          <Radar data={radarData} />
-        </div>
+      <div className="survey-detail-title">
+        <h2>
+          {curriculumSimple.name} <span>{curriculumSimple.th}기</span>
+        </h2>
       </div>
-
-      <div className="text-responses">
-        <h4>주관식 응답</h4>
-        {textResponses.map((response, index) => (
-          <p key={index} className="text-response">{response}</p>
-        ))}
-        <div className="pagination-buttons">
-          <button onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}>이전</button>
-          <button onClick={() => setCurrentPage(prev => prev + 1)}>다음</button>
+      <div className="survey-content">
+        <div className="left-container">
+          <div className="survey-card active-survey">
+            <h3>진행 중인 설문 조사</h3>
+            <div className="survey-info">
+              <Link to={`/managers/curriculum/${curriculumId}/survey/${surveyDetails.surveyId}/basic`} className="survey-info-title">
+                {surveyDetails.title}
+              </Link>
+              <div className="survey-info-title-right-title">
+                <p className="survey-count">
+                  <i className="fa-solid fa-user"></i>
+                  {surveyDetails.completed}/{surveyDetails.total}
+                </p>
+                <button className="survey-end-button" onClick={handleSurveyEnd}>
+                  설문 마감
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="survey-chart">
+            <h3>설문 조사 추이</h3>
+            <Bar data={chartData} options={chartOptions} />
+          </div>
+        </div>
+        <div className="right-container">
+          <div className="survey-card-end completed-surveys">
+            <h3>종료된 설문 조사</h3>
+            <div className="completed-surveys-list">
+              {endedSurveys.length > 0 ? (
+                endedSurveys.map((survey, index) => (
+                  <div key={index} className="completed-survey-item">
+                    <Link to={`/managers/curriculum/${curriculumId}/survey/${survey.surveyId}/basic`} className="survey-info-title">
+                      {survey.title}
+                    </Link>
+                    <p className="survey-count">
+                      <i className="fa-solid fa-user"></i>
+                      {survey.completed}/{survey.total}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p>종료된 설문 조사가 없습니다.</p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

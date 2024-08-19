@@ -74,14 +74,14 @@
   margin-left: 10px;
 }
 
-.survey-title {
+.survey-title-dash {
   font-size: 18px;
   font-weight: bold;
   color: #757575;
   margin: 0;
   cursor: pointer;
 }
-.survey-title:hover {
+.survey-title-dash:hover {
   color: #000000;
 }
 .survey-status {

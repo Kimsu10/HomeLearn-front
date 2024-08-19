@@ -1,0 +1,94 @@
+.student_inquiry_board_main_container {
+  display: flex;
+  flex-direction: column;
+  width: 1120px;
+  padding: 100px 68px;
+  background-color: hwb(0 100% 0%);
+}
+
+.student_inquiry_board_title_box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.student_inquiry_board_title {
+  font-size: 48px;
+}
+
+.student_inquiry_board_filtering_box {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+.inquiry_board_answer_box,
+.search_type_box {
+  width: 245px;
+  height: 50px;
+  border: 2px solid #5d8d89;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+/* 선택 박스 디자인 */
+.inquiry_board_answer_box,
+.search_type_box {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url('data:image/svg+xml;utf8,<svg fill="green" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>')
+    no-repeat right 10px center;
+  padding: 10px 40px 10px 10px;
+  font-size: 16px;
+}
+
+.inquiry_board_answer_box:focus,
+.search_type_box:focus {
+  outline: none;
+}
+
+.select-container {
+  position: relative;
+  display: inline-block;
+  width: 80%;
+}
+
+.select-container::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 10px;
+  height: 10px;
+  background: url('data:image/svg+xml;utf8,<svg fill="green" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>')
+    no-repeat center;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+/* 테이블  */
+
+.student_inquiry_board_table {
+  margin-top: 100px;
+  font-size: 24px;
+  border-collapse: separate;
+  border-spacing: 0 50px;
+  border-bottom: 2px solid #5d8d89;
+}
+
+.student_inquiry_board_table th,
+.student_inquiry_board_table td {
+  text-align: center;
+  padding: 10px 10px;
+}
+
+.student_inquiry_board_table tr:first-of-type th {
+  border-bottom: 2px solid #5d8d89;
+}
+
+.student_inquiry_board_table tr:not(:first-of-type) th,
+.student_inquiry_board_table tr:not(:first-of-type) td {
+  border-bottom: none;
+}
+
+/* 테이블 내용 */

@@ -21,22 +21,6 @@ const TeacherContact = () => {
       question: "강의 자료 언제 받을 수 있나요?",
       instructor: "성진대",
     },
-    {
-      id: 3,
-      curriculum: "AWS",
-      date: "2024.08.26",
-      status: "답변 완료",
-      question: "강의 자료 언제 받을 수 있나요?",
-      instructor: "신수정",
-    },
-    {
-      id: 4,
-      curriculum: "AWS",
-      date: "2024.08.26",
-      status: "답변 완료",
-      question: "강의 자료 언제 받을 수 있나요?",
-      instructor: "수정신",
-    },
   ]);
 
   const filteredInquiries = inquiries.filter((inquiry) => {

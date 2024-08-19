@@ -1,68 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./StudentContact.css";
+import axios from "../../utils/axios";
 
 const StudentContact = () => {
   const [selectedCurriculum, setSelectedCurriculum] = useState("all");
   const [selectedStatus, setSelectedStatus] = useState("all");
-  const [inquiries, setInquiries] = useState([
-    {
-      id: 1,
-      curriculum: "네이버 데브옵스",
-      date: "2024.08.26",
-      status: "미답변",
-      question: "AWS 교재 언제쯤 오나요??",
-      instructor: "안성민",
-    },
-    {
-      id: 2,
-      curriculum: "네이버 데브옵스",
-      date: "2024.08.26",
-      status: "미답변",
-      question: "AWS 교재 언제쯤 오나요??",
-      instructor: "안성민",
-    },
-    {
-      id: 3,
-      curriculum: "AWS",
-      date: "2024.08.26",
-      status: "답변 완료",
-      question: "AWS 교재 언제쯤 오나요??",
-      instructor: "안성민",
-    },
-    {
-      id: 4,
-      curriculum: "AWS",
-      date: "2024.08.26",
-      status: "답변 완료",
-      question: "AWS 교재 언제쯤 오나요??",
-      instructor: "안성민",
-    },
-  ]);
+  const [inquiries, setInquiries] = useState([]);
 
+  // 백엔드에서 데이터를 가져오는 함수
+  const fetchInquiries = async () => {
+    try {
+      const token = localStorage.getItem("access-token");
+      const response = await axios.get("/managers/students-inquiries", {
+        headers: {
+          access: token,
+        },
+      });
+
+      // 받아온 데이터가 배열인지 확인
+      if (Array.isArray(response.data)) {
+        setInquiries(response.data);
+      } else {
+        setInquiries([]); // 배열이 아니면 빈 배열로 설정
+      }
+    } catch (error) {
+      console.error("Error fetching inquiries:", error);
+      setInquiries([]); // 오류 발생 시 빈 배열로 설정
+    }
+  };
+
+  // 컴포넌트가 마운트될 때 데이터를 가져옴
+  useEffect(() => {
+    fetchInquiries();
+  }, []);
+
+  // 필터링된 문의 목록을 계산
   const filteredInquiries = inquiries.filter((inquiry) => {
-    return (
-      (selectedCurriculum === "all" ||
-        inquiry.curriculum === selectedCurriculum) &&
-      (selectedStatus === "all" || inquiry.status === selectedStatus)
-    );
+    const curriculumMatches =
+      selectedCurriculum === "all" || inquiry.curriculumName === selectedCurriculum;
+    const statusMatches =
+      selectedStatus === "all" ||
+      (selectedStatus === "답변 완료" && inquiry.response) ||
+      (selectedStatus === "미답변" && !inquiry.response);
+
+    return curriculumMatches && statusMatches;
   });
 
   return (
     <div className="student-contact">
       <h2>학생 문의</h2>
       <div className="filter-container">
-        <img
-          src="/path/to/naver-logo.png"
-          alt="Naver"
-          className="filter-logo"
-          onClick={() => setSelectedCurriculum("네이버 데브옵스")}
-        />
-        <img
-          src="/path/to/aws-logo.png"
-          alt="AWS"
-          className="filter-logo"
-          onClick={() => setSelectedCurriculum("AWS")}
-        />
         <select
           className="curriculum-filter"
           onChange={(e) => setSelectedCurriculum(e.target.value)}
@@ -82,40 +69,43 @@ const StudentContact = () => {
       </div>
       <div className="inquiries-border">
         <div className="inquiries-container">
-          {filteredInquiries.map((inquiry) => (
-            <div
-              key={inquiry.id}
-              className={`inquiry-card ${
-                inquiry.status === "답변 완료" ? "answered" : "unanswered"
-              }`}
-            >
-              <div className="inquiry-header">
-                <span className="inquiry-batch">10기</span>
-                <span className="inquiry-course">{inquiry.curriculum}</span>
-                <i className="fas fa-user"></i>{" "}
-                <span className="inquiry-instructor">{inquiry.instructor}</span>
-                <i className="fas fa-calendar-alt"></i>{" "}
-                <span className="inquiry-date">{inquiry.date}</span>
-              </div>
-              <div className="inquiry-footer">
-                <p className="inquiry-question">{inquiry.question}</p>
-                <span
-                  className={`inquiry-status ${
-                    inquiry.status === "답변 완료"
-                      ? "status-answered"
-                      : "status-unanswered"
-                  }`}
-                >
-                  {inquiry.status}
-                  <i
-                    className={`fas fa-${
-                      inquiry.status === "답변 완료" ? "check" : "times"
+          {filteredInquiries.length > 0 ? (
+            filteredInquiries.map((inquiry) => (
+              <div
+                key={inquiry.id}
+                className={`inquiry-card ${
+                  inquiry.response ? "answered" : "unanswered"
+                }`}
+              >
+                <div className="inquiry-header">
+                  <span className="inquiry-course">{inquiry.curriculumName}</span>
+                  <i className="fas fa-user"></i>{" "}
+                  <span className="inquiry-instructor">{inquiry.user.name}</span>
+                  <i className="fas fa-calendar-alt"></i>{" "}
+                  <span className="inquiry-date">
+                    {new Date(inquiry.createdDate).toLocaleDateString()}
+                  </span>
+                </div>
+                <div className="inquiry-footer">
+                  <p className="inquiry-question">{inquiry.content}</p>
+                  <span
+                    className={`inquiry-status ${
+                      inquiry.response ? "status-answered" : "status-unanswered"
                     }`}
-                  ></i>
-                </span>
+                  >
+                    {inquiry.response ? "답변 완료" : "미답변"}
+                    <i
+                      className={`fas fa-${
+                        inquiry.response ? "check" : "times"
+                      }`}
+                    ></i>
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>문의가 없습니다.</p>
+          )}
         </div>
       </div>
     </div>

@@ -12,6 +12,11 @@
   border-radius: 20px;
 }
 
+.slecture_type_container {
+  display: flex;
+  align-items: center;
+}
+
 .subject_board_type_container {
   width: 100%;
   display: flex;
@@ -39,7 +44,7 @@
 }
 
 .subject_board_main_body_container {
-  padding: 75px 0;
+  padding: 48px 0;
 }
 
 .subject_board_main_title {
@@ -90,6 +95,54 @@
   padding: 20px 0 10px 0;
 }
 
-/* .writed_subject_board_title_one {
-  cursor: pointer !important;
-} */
+/* 페이지 네이션  */
+.pagination_container {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pagination_button {
+  font-size: 1.5rem;
+  width: 36px;
+  height: 36px;
+  padding: 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination_button.active {
+  background-color: var(--studentMainColor);
+  color: white;
+  border-radius: 50%;
+}
+
+.pagination_button:hover:not(:disabled) {
+  background-color: var(--studentMainColor);
+  color: white;
+  border-radius: 50%;
+}
+
+.pagination_button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  color: #d9d9d9;
+}
+
+.pagenation_btn {
+  font-size: 24px;
+}
+
+.pagination_button.disabled-icon .pagenation_btn {
+  color: #d9d9d9;
+}
+
+.pagination_button:not(.disabled-icon) .pagenation_btn {
+  color: var(--studentMainColor);
+}

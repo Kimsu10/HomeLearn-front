@@ -1,0 +1,43 @@
+{
+  "title": "JAVA",
+  "description": "자바자바 엄청긴 자바",
+  "imgPath": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSv_al5pqaDdDHWONxiCA-B1mjpNdbA8fEe8g&s",
+  "lectures": [
+    {
+      "id": 1,
+      "title": "1주차 강의",
+      "links": "https://youtu.be/jdTsJzXmgU0?list=PLuHgQVnccGMCeAy-2-llhw3nWoQKUvQck",
+      "date": "2024-07-13"
+    },
+    {
+      "id": 2,
+      "title": "2주차 강의",
+      "links": "https://www.youtube.com/watch?v=kj33guVJuso",
+      "date": "2024-07-23"
+    },
+    {
+      "id": 3,
+      "title": "3주차 강의",
+      "links": "https://www.youtube.com/watch?v=f0cAmTYo4tQ",
+      "date": "2024-08-03"
+    },
+    {
+      "id": 4,
+      "title": "4주차 강의",
+      "links": "https://www.youtube.com/watch?v=OxvtGYvVkRU",
+      "date": "2024-08-13"
+    },
+    {
+      "id": 5,
+      "title": "5주차 강의",
+      "links": "https://www.youtube.com/watch?v=VvVruEDCSSY",
+      "date": "2024-08-23"
+    },
+    {
+      "id": 6,
+      "title": "6주차 강의",
+      "links": "https://www.youtube.com/watch?v=hy3mji0XuMw",
+      "date": "2024-09-03"
+    }
+  ]
+}
