@@ -27,9 +27,9 @@ function PasswordReset() {
     try {
       // 서버로 코드 검증 및 비밀번호 재설정 요청
       const response = await axios.post("/account/reset-password", {
-        username: email, // username 필드로 전송
-        password: newPassword, // password 필드로 전송
-        code, // 인증 코드도 함께 전송
+        username: email,
+        password: newPassword,
+        code,
       });
 
       if (response.status === 200) {
@@ -54,7 +54,7 @@ function PasswordReset() {
             className="password-reset-input"
             type="email"
             value={email}
-            readOnly // 이메일 필드를 읽기 전용으로 설정
+            readOnly
           />
         </div>
         <div className="password-reset-input-group">
