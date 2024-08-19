@@ -1,0 +1,44 @@
+{
+  "totalPages": 1,
+  "totalElements": 3,
+  "first": true,
+  "last": true,
+  "size": 15,
+  "content": [
+    {
+      "lectureId": 3,
+      "title": "제목3",
+      "link": "https://www.youtube.com/watch?v=DNCBaeCoMug"
+    },
+    {
+      "lectureId": 2,
+      "title": "제목2",
+      "link": "https://www.youtube.com/watch?v=OxvtGYvVkRU&t=4s"
+    },
+    {
+      "lectureId": 1,
+      "title": "title",
+      "link": "https://youtu.be/zRf3FyEno-0"
+    }
+  ],
+  "number": 0,
+  "sort": {
+    "empty": true,
+    "unsorted": true,
+    "sorted": false
+  },
+  "pageable": {
+    "pageNumber": 0,
+    "pageSize": 15,
+    "sort": {
+      "empty": true,
+      "unsorted": true,
+      "sorted": false
+    },
+    "offset": 0,
+    "unpaged": false,
+    "paged": true
+  },
+  "numberOfElements": 3,
+  "empty": false
+}

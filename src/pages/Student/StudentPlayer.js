@@ -11,9 +11,10 @@ import {
   Info,
   Code,
 } from "lucide-react";
-import "./play.css";
+import "./StudentPlayer.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import useGetFetch from "../../hooks/useGetFetch";
+import axios from "../../utils/axios";
 
 const LectureVideo = ({ url, subjectVideos }) => {
   console.log(url);
@@ -65,6 +66,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
   const handleMouseEnter = () => setIsHovering(true);
   const handleMouseLeave = () => setIsHovering(false);
 
+  // 값은 잘 들어오는데 영상이 바로 뜨지 않음 ->
   console.log(url);
   console.log(subjectVideos);
   useEffect(() => {
@@ -110,8 +112,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
         }
       }
       if (isPlaying) {
-        requestAnimationFrameRef.current =
-          requestAnimationFrame(updateProgress);
+        requestAnimationFrameRef.current = requestAnimationFrame(updateProgress);
       }
     };
 
@@ -179,7 +180,6 @@ const LectureVideo = ({ url, subjectVideos }) => {
       const newPlayer = new window.YT.Player("youtube-player", {
         videoId: videoId,
         playerVars: {
-          autoplay: 0, // 왜 자꾸 오토플레이가 되는거야..
           controls: 0,
           disablekb: 1,
           fs: 0,
@@ -216,8 +216,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
     if (progressInterval.current) clearInterval(progressInterval.current);
     progressInterval.current = setInterval(() => {
       if (player && player.getCurrentTime) {
-        const currentProgress =
-          (player.getCurrentTime() / player.getDuration()) * 100;
+        const currentProgress = (player.getCurrentTime() / player.getDuration()) * 100;
         setProgress(currentProgress);
       }
     }, 1000);
@@ -288,7 +287,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
   const extractVideoId = (link) => {
     console.log(link);
     const match = link.match(
-      /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+        /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
     );
     return match ? match[1] : null;
   };
@@ -314,67 +313,19 @@ const LectureVideo = ({ url, subjectVideos }) => {
 
   const runCode = async () => {
     setCompilerOutput("코드 실행 중...");
-    const languageId = {
-      python: 71,
-      javascript: 63,
-      java: 62,
-    }[language];
-
     try {
-      // Base64로 인코딩
-      const encodedCode = btoa(unescape(encodeURIComponent(code)));
-      console.log("Sending encoded code to API:", encodedCode);
-
-      const response = await axios.post(
-        "https://judge0-ce.p.rapidapi.com/submissions",
-        {
-          language_id: languageId,
-          source_code: code,
-          stdin: "",
-          base64_encoded: true,
-        },
-        {
-          headers: {
-            "content-type": "application/json",
-            "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
-            "X-RapidAPI-Key":
-              "180f0cf557msh68f08910ce677b9p1712c4jsn889cb7401d81",
-          },
-        }
-      );
-
-      console.log("API response:", response.data);
-      const { token } = response.data;
-
-      // 결과를 기다리기 위해 잠시 대기
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      const result = await axios.get(
-        `https://judge0-ce.p.rapidapi.com/submissions/${token}`,
-        {
-          headers: {
-            "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
-            "X-RapidAPI-Key":
-              "180f0cf557msh68f08910ce677b9p1712c4jsn889cb7401d81",
-          },
-          params: {
-            base64_encoded: "true", // 결과도 Base64로 인코딩되어 있음을 명시
-          },
-        }
-      );
-
-      const decodedOutput = result.data.stdout
-        ? decodeURIComponent(escape(atob(result.data.stdout)))
-        : result.data.stderr
-        ? decodeURIComponent(escape(atob(result.data.stderr)))
-        : "출력 없음";
-      setCompilerOutput(decodedOutput);
+      console.log("API 요청 시작");
+      const response = await axios.post("/students/compile", {
+        sourceCode: code,
+        language: language,
+      });
+      console.log("API 응답:", response.data);
+      setCompilerOutput(response.data);
     } catch (error) {
-      console.error("Error running code:", error);
+      console.error("코드 실행 중 오류 발생:", error);
       setCompilerOutput("코드 실행 중 오류 발생: " + error.message);
     }
   };
-
   const renderSidebarContent = () => {
     console.log(subjectVideos);
 
@@ -433,34 +384,34 @@ const LectureVideo = ({ url, subjectVideos }) => {
         );
       case "compiler":
         return (
-          <div className="player-sidebar-content compiler-container">
-            <p className="compiler-title">컴파일러</p>
-            <div className="player_line"></div>
-            <div className="compiler-header">
-              <select
-                value={language}
-                onChange={handleLanguageChange}
-                className="compiler-language-select"
-              >
-                <option value="java">Java</option>
-                <option value="python">Python</option>
-                <option value="javascript">JavaScript</option>
-              </select>
-              <button onClick={runCode} className="compiler-run-button">
-                <Play size={16} className="compiler-run-icon" />
-                Run
-              </button>
+            <div className="player-sidebar-content compiler-container">
+              <p className="compiler-title">컴파일러</p>
+              <div className="player_line"></div>
+              <div className="compiler-header">
+                <select
+                    value={language}
+                    onChange={handleLanguageChange}
+                    className="compiler-language-select"
+                >
+                  <option value="java">Java</option>
+                  <option value="python">Python</option>
+                  <option value="javascript">JavaScript</option>
+                </select>
+                <button onClick={runCode} className="compiler-run-button">
+                  <Play size={16} className="compiler-run-icon" />
+                  Run
+                </button>
+              </div>
+              <textarea
+                  value={code}
+                  onChange={handleCodeChange}
+                  className="compiler-code-editor"
+                  placeholder="여기에 코드를 입력하세요"
+              />
+              <div className="compiler-output-container">
+                <pre className="compiler-output-content">{compilerOutput}</pre>
+              </div>
             </div>
-            <textarea
-              value={code}
-              onChange={handleCodeChange}
-              className="compiler-code-editor"
-              placeholder="여기에 코드를 입력하세요"
-            />
-            <div className="compiler-output-container">
-              <pre className="compiler-output-content">{compilerOutput}</pre>
-            </div>
-          </div>
         );
       default:
         return null;

@@ -1,0 +1,58 @@
+.subject_lecture_detail_main_container {
+  display: flex;
+  flex-direction: column;
+  width: 1120px;
+  padding: 100px 68px 200px 68px;
+  background-color: #fff;
+}
+
+.subject_lecture_detail_video_container {
+  width: 960px;
+  display: flex;
+  flex-direction: column;
+}
+
+.subject_lecture_video_box {
+  border-radius: 20px;
+  padding: 36px;
+}
+
+.subject_lecutre_video_title_box {
+  display: flex;
+  justify-content: space-between;
+  padding: 75px 75px 0 75px;
+  color: black;
+  border-top: 1px solid #5c8d89;
+}
+
+.subject_lecutre_video_title {
+  font-size: 36px;
+  margin-bottom: 75px;
+}
+
+.subject_lecutre_video__type_name {
+  border: 1px solid #5c8d89;
+  color: #5c8d89;
+  width: 108px;
+  height: 44px;
+  text-align: center;
+  line-height: 44px;
+  font-size: 20px;
+  border-radius: 10px;
+  background-color: rgba(167, 215, 197, 0.25);
+}
+
+.subject_lecutre_video_description_box {
+  padding: 0 75px 50px 75px;
+  font-size: 28px;
+  border-bottom: 1px solid #5c8d89;
+}
+
+.subject_lecutre_video__description {
+  font-size: 36px;
+}
+
+/* 강의 영상 리스트  */
+.lecture_videos_lists_box {
+  padding: 75px;
+}
