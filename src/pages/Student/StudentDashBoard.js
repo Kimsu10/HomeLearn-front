@@ -16,6 +16,7 @@ const StudentDashBoard = ({ username }) => {
   const navigate = useNavigate();
   const [videoDuration, setVideoDuration] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [submitModal, setSubmitModal] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -40,9 +41,11 @@ const StudentDashBoard = ({ username }) => {
         const recentLectureData = await axios.get(
           `/students/dash-boards/recent-lecture`
         );
-        setRecentLecture(recentLectureData.data);
+        setRecentLecture(recentLectureData?.data);
 
+        // console.log(recentLectureData);
         console.log(recentLecture);
+
         // const calendarManagerData = await axios.get(
         //   `/students/dash-boards/calendar/manager`
         // );
@@ -76,30 +79,13 @@ const StudentDashBoard = ({ username }) => {
     fetchData();
   }, []);
 
-  const handleDurationFetched = (duration) => {
-    setVideoDuration(duration);
-  };
-
-  const calculateProgress = () => {
-    if (videoDuration && recentLecture && recentLecture.lastPosition) {
-      const progress = (
-        (recentLecture.lastPosition / videoDuration) *
-        100
-      ).toFixed(2);
-      return parseFloat(progress);
-    }
-    return 0;
-  };
-
-  useEffect(() => {
-    if (videoDuration !== null && recentLecture?.lastPosition !== undefined) {
-      calculateProgress();
-    }
-    console.log(videoDuration);
-  }, [videoDuration, recentLecture?.lastPosition]);
-
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  const openSubmit = () => setSubmitModal(true);
+  const closeSubmit = () => setSubmitModal(false);
+
+  console.log(isModalOpen);
+  console.log(submitModal);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -112,7 +98,7 @@ const StudentDashBoard = ({ username }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    closeModal();
+    closeSubmit();
   };
 
   const handleFileChange = (e) => {
@@ -123,57 +109,67 @@ const StudentDashBoard = ({ username }) => {
     }
   };
 
-  const url = recentLecture?.youtubeUrl;
+  // google 403 오류 보류
 
-  const YouTubeVideoDuration = ({ youtubeUrl, onDurationFetched }) => {
-    useEffect(() => {
-      const fetchVideoDuration = async () => {
-        if (!youtubeUrl) return;
+  // const handleDurationFetched = (duration) => {
+  //   setVideoDuration(duration);
+  // };
+  // const calculateProgress = () => {
+  //   if (videoDuration && recentLecture && recentLecture.lastPosition) {
+  //     const progress = (
+  //       (recentLecture.lastPosition / videoDuration) *
+  //       100
+  //     ).toFixed(2);
+  //     return parseFloat(progress);
+  //   }
+  //   return 0;
+  // };
+  // useEffect(() => {
+  //   if (videoDuration !== null && recentLecture?.lastPosition !== undefined) {
+  //     calculateProgress();
+  //   }
+  //   console.log(videoDuration);
+  // }, [videoDuration, recentLecture?.lastPosition]);
+  // const url = recentLecture?.youtubeUrl;
+  // const YouTubeVideoDuration = ({ youtubeUrl, onDurationFetched }) => {
+  //   useEffect(() => {
+  //     const fetchVideoDuration = async () => {
+  //       if (!youtubeUrl) return;
+  //       try {
+  //         const videoId =
+  //           youtubeUrl.split("v=")[1] || youtubeUrl.split("/").pop();
+  //         const response = await axios.get(
+  //           "https://www.googleapis.com/youtube/v3/videos",
+  //           {
+  //             params: {
+  //               part: "contentDetails",
+  //               id: videoId,
+  //               key: process.env.REACT_APP_YOUTUBE_API_KEY,
+  //             },
+  //           }
+  //         );
+  //         if (response.data.items.length > 0) {
+  //           const isoDuration = response.data.items[0].contentDetails.duration;
+  //           const totalSeconds = parseISODuration(isoDuration);
+  //           onDurationFetched(totalSeconds);
+  //         }
+  //       } catch (error) {
+  //         console.error("Error fetching video duration", error);
+  //       }
+  //     };
+  //     fetchVideoDuration();
+  //   }, [youtubeUrl]);
+  //   const parseISODuration = (isoDuration) => {
+  //     const match = isoDuration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+  //     if (!match) return 0;
+  //     const hours = parseInt(match[1], 10) || 0;
+  //     const minutes = parseInt(match[2], 10) || 0;
+  //     const seconds = parseInt(match[3], 10) || 0;
+  //     return hours * 3600 + minutes * 60 + seconds;
+  //   };
 
-        try {
-          const videoId =
-            youtubeUrl.split("v=")[1] || youtubeUrl.split("/").pop();
-
-          const response = await axios.get(
-            "https://www.googleapis.com/youtube/v3/videos",
-            {
-              params: {
-                part: "contentDetails",
-                id: videoId,
-                key: process.env.REACT_APP_YOUTUBE_API_KEY,
-              },
-            }
-          );
-
-          if (response.data.items.length > 0) {
-            const isoDuration = response.data.items[0].contentDetails.duration;
-            const totalSeconds = parseISODuration(isoDuration);
-            onDurationFetched(totalSeconds);
-          }
-        } catch (error) {
-          console.error("Error fetching video duration", error);
-        }
-      };
-
-      fetchVideoDuration();
-    }, [youtubeUrl]);
-
-    const parseISODuration = (isoDuration) => {
-      const match = isoDuration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
-      if (!match) return 0;
-
-      const hours = parseInt(match[1], 10) || 0;
-      const minutes = parseInt(match[2], 10) || 0;
-      const seconds = parseInt(match[3], 10) || 0;
-
-      return hours * 3600 + minutes * 60 + seconds;
-    };
-
-    return null;
-  };
-
-  console.log(url);
-  console.log(apiKey);
+  //   return null;
+  // };
 
   return (
     <div className="contents">
@@ -198,11 +194,11 @@ const StudentDashBoard = ({ username }) => {
                   {recentLecture?.subjectName}
                 </h3>
                 {/* 흠.. */}
-                <YouTubeVideoDuration
+                {/* <YouTubeVideoDuration
                   youtubeUrl={url}
                   onDurationFetched={handleDurationFetched}
                   apiKey={apiKey}
-                />
+                /> */}
                 <div className="recent_video_box">
                   <i className="bi bi-play-btn play_recent_video_icon"></i>
                   <p className="recent_lecture_video_title">
@@ -210,7 +206,7 @@ const StudentDashBoard = ({ username }) => {
                   </p>
                   <div className="recent_lecture_progress_container">
                     <CircularProgressbar
-                      value={calculateProgress()}
+                      value={recentLecture?.lastPosition / 100}
                       styles={buildStyles({
                         pathColor: "#A7D7C5",
                         textColor: "#5C8D89",
@@ -218,13 +214,13 @@ const StudentDashBoard = ({ username }) => {
                       })}
                     />
                     <p className="recent_lecture_percentage">
-                      {calculateProgress()}%
+                      {recentLecture?.lastPosition / 100}%
                     </p>
                   </div>
                 </div>
               </div>
               <RecentLectureModal isOpen={isModalOpen} onClose={closeModal}>
-                <RecentVideo url={url} />
+                <RecentVideo url={recentLecture?.youtubeUrl} />
               </RecentLectureModal>
             </div>
             <div className="video_container">
@@ -324,7 +320,7 @@ const StudentDashBoard = ({ username }) => {
                       </p>
                       <button
                         className="student_assignment_submit_button"
-                        onClick={openModal}
+                        onClick={openSubmit}
                       >
                         제출하기
                       </button>
@@ -398,8 +394,8 @@ const StudentDashBoard = ({ username }) => {
         </div>
       </div>
       <StudentModal
-        isOpen={isModalOpen}
-        closeModal={closeModal}
+        isOpen={submitModal}
+        closeModal={closeSubmit}
         formData={formData}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
