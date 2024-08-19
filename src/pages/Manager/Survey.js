@@ -12,7 +12,7 @@ const SettingList = () => {
           <div className="survey-info">
             <span className="survey-id">1기</span>
             <div className="survey-details">
-              <p className="survey-title">네이버 클라우드 데브옵스 만족도 설문조사 1차</p>
+              <p className="survey-title-dash">네이버 클라우드 데브옵스 <br />만족도 설문조사 1차</p>
             </div>
           </div>
           <div className="survey-status">
@@ -24,7 +24,7 @@ const SettingList = () => {
           <div className="survey-info">
             <span className="survey-id">2기</span>
             <div className="survey-details">
-              <p className="survey-title">네이버 클라우드 데브옵스 만족도 설문조사 2차</p>
+              <p className="survey-title-dash">네이버 클라우드 데브옵스 <br />만족도 설문조사 2차</p>
             </div>
           </div>
           <div className="survey-status">

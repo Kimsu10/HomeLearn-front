@@ -47,10 +47,9 @@ function Login() {
             navigate("/managers"); // 매니저 페이지로 이동
           } else if (userType === "teacher") {
             navigate("/teachers"); // 강사 페이지로 이동
-          }else if (userType === "student") {
+          } else if (userType === "student") {
             navigate("/students"); // 학생 페이지로 이동
-          }
-          else {
+          } else {
             navigate("/main"); // 그 외 메인 페이지 이동
           }
         } else {
@@ -96,8 +95,19 @@ function Login() {
           />
         </div>
         <div className="user-found">
-          <span className="user-found-id">아이디 찾기 </span>/
-          <span className="user-found-pw">비밀번호 찾기</span>
+          <span
+            className="user-found-id"
+            onClick={() => navigate("/find-id")}
+          >
+            아이디 찾기
+          </span>
+          /
+          <span
+            className="user-found-pw"
+            onClick={() => navigate("/find-password")}
+          >
+            비밀번호 찾기
+          </span>
         </div>
         <div className="login-button-group">
           <button className="login-button" type="submit">

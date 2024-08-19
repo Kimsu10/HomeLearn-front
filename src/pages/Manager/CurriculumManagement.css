@@ -84,6 +84,7 @@
   color: #757575;
   font-weight: bold;
   cursor: pointer;
+  text-decoration : none;
 }
 
 .curriculum-type:hover {

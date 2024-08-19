@@ -245,7 +245,7 @@ const CurriculumDetail = () => {
         const newStatus = !survey || survey.status === "대기 중" ? "진행 중" : "완료";
         swal(
           newStatus === "진행 중" ? "설문 등록" : "설문 마감",
-          `설문 조사가 ${newStatus}되었습니다.`,
+          `설문 조사가 등록 되었습니다.`,
           "success"
         );
 
