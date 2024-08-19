@@ -11,9 +11,10 @@ import {
   Info,
   Code,
 } from "lucide-react";
-import "./play.css";
+import "./TeacherPlayer.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import useGetFetch from "../../hooks/useGetFetch";
+import axios from "../../utils/axios";
 
 const LectureVideo = ({ url, subjectVideos }) => {
   console.log(url);
@@ -38,13 +39,12 @@ const LectureVideo = ({ url, subjectVideos }) => {
   const [currentUrl, setCurrentUrl] = useState(url);
   const [currentTime, setCurrentTime] = useState(0);
 
-  // 컴파일러 관련 상태 추가
+  // 컴파일러 관련 상태
   const [code, setCode] = useState(
-    'public class Main {\n    public static void main(String[] args) {\n        System.out.println("hello, world");\n    }\n}'
+      'public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}'
   );
   const [language, setLanguage] = useState("java");
-  const [compilerOutput, setCompilerOutput] =
-    useState("출력이 여기에 표시됩니다.");
+  const [compilerOutput, setCompilerOutput] = useState("출력이 여기에 표시됩니다.");
 
   const languageTemplates = {
     java: `public class Main {
@@ -110,8 +110,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
         }
       }
       if (isPlaying) {
-        requestAnimationFrameRef.current =
-          requestAnimationFrame(updateProgress);
+        requestAnimationFrameRef.current = requestAnimationFrame(updateProgress);
       }
     };
 
@@ -179,7 +178,6 @@ const LectureVideo = ({ url, subjectVideos }) => {
       const newPlayer = new window.YT.Player("youtube-player", {
         videoId: videoId,
         playerVars: {
-          autoplay: 0, // 왜 자꾸 오토플레이가 되는거야..
           controls: 0,
           disablekb: 1,
           fs: 0,
@@ -216,8 +214,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
     if (progressInterval.current) clearInterval(progressInterval.current);
     progressInterval.current = setInterval(() => {
       if (player && player.getCurrentTime) {
-        const currentProgress =
-          (player.getCurrentTime() / player.getDuration()) * 100;
+        const currentProgress = (player.getCurrentTime() / player.getDuration()) * 100;
         setProgress(currentProgress);
       }
     }, 1000);
@@ -279,16 +276,10 @@ const LectureVideo = ({ url, subjectVideos }) => {
     setPlaybackRate(newRate);
   };
 
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
-  };
-
   const extractVideoId = (link) => {
     console.log(link);
     const match = link.match(
-      /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+        /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
     );
     return match ? match[1] : null;
   };
@@ -313,159 +304,120 @@ const LectureVideo = ({ url, subjectVideos }) => {
   };
 
   const runCode = async () => {
+    console.log("runCode 함수 실행");
+    console.log("코드:", code);
+    console.log("언어:", language);
+
     setCompilerOutput("코드 실행 중...");
-    const languageId = {
-      python: 71,
-      javascript: 63,
-      java: 62,
-    }[language];
-
     try {
-      // Base64로 인코딩
-      const encodedCode = btoa(unescape(encodeURIComponent(code)));
-      console.log("Sending encoded code to API:", encodedCode);
-
-      const response = await axios.post(
-        "https://judge0-ce.p.rapidapi.com/submissions",
-        {
-          language_id: languageId,
-          source_code: code,
-          stdin: "",
-          base64_encoded: true,
-        },
-        {
-          headers: {
-            "content-type": "application/json",
-            "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
-            "X-RapidAPI-Key":
-              "180f0cf557msh68f08910ce677b9p1712c4jsn889cb7401d81",
-          },
-        }
-      );
-
-      console.log("API response:", response.data);
-      const { token } = response.data;
-
-      // 결과를 기다리기 위해 잠시 대기
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      const result = await axios.get(
-        `https://judge0-ce.p.rapidapi.com/submissions/${token}`,
-        {
-          headers: {
-            "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
-            "X-RapidAPI-Key":
-              "180f0cf557msh68f08910ce677b9p1712c4jsn889cb7401d81",
-          },
-          params: {
-            base64_encoded: "true", // 결과도 Base64로 인코딩되어 있음을 명시
-          },
-        }
-      );
-
-      const decodedOutput = result.data.stdout
-        ? decodeURIComponent(escape(atob(result.data.stdout)))
-        : result.data.stderr
-        ? decodeURIComponent(escape(atob(result.data.stderr)))
-        : "출력 없음";
-      setCompilerOutput(decodedOutput);
+      console.log("API 요청 시작");
+      const response = await axios.post("/students/compile", {
+        sourceCode: code,
+        language: language,
+      });
+      console.log("API 응답:", response.data);
+      setCompilerOutput(response.data);
     } catch (error) {
-      console.error("Error running code:", error);
+      console.error("코드 실행 중 오류 발생:", error);
       setCompilerOutput("코드 실행 중 오류 발생: " + error.message);
     }
   };
-
   const renderSidebarContent = () => {
     console.log(subjectVideos);
 
     const getYouTubeThumbnail = (url) => {
       const videoIdMatch = url.match(
-        /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+          /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
       );
       return videoIdMatch
-        ? `https://img.youtube.com/vi/${videoIdMatch[1]}/maxresdefault.jpg`
-        : "";
+          ? `https://img.youtube.com/vi/${videoIdMatch[1]}/maxresdefault.jpg`
+          : "";
     };
 
     const handleLectureClick = (link) => {
       console.log(link);
       setCurrentUrl(link);
     };
-
     switch (sidebarContent) {
       case "info":
         return (
-          <div className="player_sidebar-content">
-            <p className="player_category">동영상 정보</p>
-            <div className="player_line"></div>
-            <p className="player_title">{videoTitle}</p>
-            <p className="player_category">다른 강의</p>
-            <div className="player_line"></div>
-            <div className="player_lecture_list_container">
-              {subjectVideos.map((el) => (
-                <div
-                  className="player_lecture_list_content"
-                  key={el.lectureId}
-                  onClick={() => handleLectureClick(el.link)}
-                >
-                  <img
-                    className="player_lecture_list_image"
-                    alt="썸네일 이미지"
-                    src={getYouTubeThumbnail(el.link)}
-                  />
-                  <h1
-                    className="player_lecture_list_title"
-                    onClick={() =>
-                      navigate(
-                        `/students/${el.subjectName}/lectures/${el.lectureId}`
-                      )
-                    }
-                  >
-                    {el.title}
-                  </h1>
-                  <p className="player_lecture_list_description">
-                    {el.content}
-                  </p>
-                </div>
-              ))}
+
+
+            <div className="player_sidebar-content">
+              <p className="player_category">동영상 정보</p>
+              <div className="player_line"></div>
+              <p className="player_title">{videoTitle}</p>
+              <p className="player_category">다른 강의</p>
+              <div className="player_line"></div>
+              <div className="player_lecture_list_container">
+                {subjectVideos.map((el) => (
+                    <div
+                        className="player_lecture_list_content"
+                        key={el.lectureId}
+                        onClick={() => handleLectureClick(el.link)}
+                    >
+                      <img
+                          className="player_lecture_list_image"
+                          alt="썸네일 이미지"
+                          src={getYouTubeThumbnail(el.link)}
+                      />
+                      <h1
+                          className="player_lecture_list_title"
+                          onClick={() =>
+                              navigate(
+                                  `/students/${el.subjectName}/lectures/${el.lectureId}`
+                              )
+                          }
+                      >
+                        {el.title}
+                      </h1>
+                      <p className="player_lecture_list_description">
+                        {el.content}
+                      </p>
+                    </div>
+                ))}
+              </div>
             </div>
-          </div>
         );
       case "compiler":
         return (
-          <div className="player-sidebar-content compiler-container">
-            <p className="compiler-title">컴파일러</p>
-            <div className="player_line"></div>
-            <div className="compiler-header">
-              <select
-                value={language}
-                onChange={handleLanguageChange}
-                className="compiler-language-select"
-              >
-                <option value="java">Java</option>
-                <option value="python">Python</option>
-                <option value="javascript">JavaScript</option>
-              </select>
-              <button onClick={runCode} className="compiler-run-button">
-                <Play size={16} className="compiler-run-icon" />
-                Run
-              </button>
+            <div className="player-sidebar-content compiler-container">
+              <p className="compiler-title">컴파일러</p>
+              <div className="player_line"></div>
+              <div className="compiler-header">
+                <select
+                    value={language}
+                    onChange={handleLanguageChange}
+                    className="compiler-language-select"
+                >
+                  <option value="java">Java</option>
+                  <option value="python">Python</option>
+                  <option value="javascript">JavaScript</option>
+                </select>
+                <button onClick={runCode} className="compiler-run-button">
+                  <Play size={16} className="compiler-run-icon" />
+                  Run
+                </button>
+              </div>
+              <textarea
+                  value={code}
+                  onChange={handleCodeChange}
+                  className="compiler-code-editor"
+                  placeholder="여기에 코드를 입력하세요"
+              />
+              <div className="compiler-output-container">
+                <pre className="compiler-output-content">{compilerOutput}</pre>
+              </div>
             </div>
-            <textarea
-              value={code}
-              onChange={handleCodeChange}
-              className="compiler-code-editor"
-              placeholder="여기에 코드를 입력하세요"
-            />
-            <div className="compiler-output-container">
-              <pre className="compiler-output-content">{compilerOutput}</pre>
-            </div>
-          </div>
         );
       default:
         return null;
     }
   };
+
+  // if (subjectNameError || subjectVideosError) {
+  //   return <div>데이터 로딩에 실패하였습니다.</div>;
+  // }
 
   if (loading) {
     return <p>비디오 로딩 중...</p>;
@@ -480,69 +432,58 @@ const LectureVideo = ({ url, subjectVideos }) => {
     return <p>잘못된 링크로 비디오를 찾을 수 없습니다.</p>;
   }
 
-  return (
-    <div
-      className={`custom-youtube-player-container ${
-        isSidebarOpen ? "sidebar-open" : ""
-      }`}
-    >
-      <div
-        ref={playerContainerRef}
-        className={`custom-youtube-player ${isFullscreen ? "fullscreen" : ""}`}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        <div id="youtube-player"></div>
 
+  return (
+      <div
+          className={`custom-youtube-player-container ${
+              isSidebarOpen ? "sidebar-open" : ""
+          }`}
+      >
         <div
-          className={`controls ${isHovering || !isPlaying ? "visible" : ""}`}
+            ref={playerContainerRef}
+            className={`custom-youtube-player ${isFullscreen ? "fullscreen" : ""}`}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
         >
-          <div className="controls-top">
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={progress}
-              onChange={handleProgressChange}
-              className="progress-slider"
-              style={{ "--value": `${progress}%` }}
-            />
-          </div>
-          <div className="controls-bottom">
-            <div className="controls-bottom-left">
-              <button onClick={togglePlay} className="control-btn">
-                {isPlaying ? <Pause size={24} /> : <Play size={24} />}
-              </button>
-              <button onClick={toggleMute} className="control-btn">
-                {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
-              </button>
+          <div id="youtube-player"></div>
+
+          <div
+              className={`controls ${isHovering || !isPlaying ? "visible" : ""}`}
+          >
+            <div className="controls-top">
               <input
-                type="range"
-                min="0"
-                max="100"
-                value={volume}
-                onChange={handleVolumeChange}
-                className="volume-slider"
-                style={{ "--value": `${volume}%` }}
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={progress}
+                  onChange={handleProgressChange}
+                  className="progress-slider"
+                  style={{ "--value": `${progress}%` }}
               />
             </div>
-            <div
-              style={{
-                display: "flex",
-                height: "50px",
-                alignItems: "center",
-                paddingRight: "10px",
-                color: "white",
-              }}
-            >
-              <div className="time-display">
-                {formatTime(currentTime)} / {formatTime(duration)}
+            <div className="controls-bottom">
+              <div className="controls-bottom-left">
+                <button onClick={togglePlay} className="control-btn">
+                  {isPlaying ? <Pause size={24} /> : <Play size={24} />}
+                </button>
+                <button onClick={toggleMute} className="control-btn">
+                  {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
+                </button>
+                <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={volume}
+                    onChange={handleVolumeChange}
+                    className="volume-slider"
+                    style={{ "--value": `${volume}%` }}
+                />
               </div>
               <div className="controls-bottom-right">
                 <select
-                  value={playbackRate}
-                  onChange={handlePlaybackRateChange}
-                  className="playback-rate-select"
+                    value={playbackRate}
+                    onChange={handlePlaybackRateChange}
+                    className="playback-rate-select"
                 >
                   <option value="0.25">0.25x</option>
                   <option value="0.5">0.5x</option>
@@ -553,48 +494,43 @@ const LectureVideo = ({ url, subjectVideos }) => {
                   <option value="2">2x</option>
                 </select>
                 <button onClick={toggleFullscreen} className="control-btn">
-                  {isFullscreen ? (
-                    <Minimize size={24} />
-                  ) : (
-                    <Maximize size={24} />
-                  )}
+                  {isFullscreen ? <Minimize size={24} /> : <Maximize size={24} />}
                 </button>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className={`player-sidebar ${isSidebarOpen ? "open" : ""}`}>
-        <button className="player-sidebar-toggle" onClick={toggleSidebar}>
-          {isSidebarOpen ? (
-            <ChevronRight size={24} />
-          ) : (
-            <ChevronLeft size={24} />
-          )}
-        </button>
-        <div className="player_sidebar-buttons">
-          <div className="player_sidebar_button_list">
-            <button
-              className="player_sidebar-btn"
-              onClick={() => changeSidebarContent("info")}
-            >
-              <Info size={24} />
-              <span>동영상 정보</span>
-            </button>
+        <div className={`player-sidebar ${isSidebarOpen ? "open" : ""}`}>
+          <button className="player-sidebar-toggle" onClick={toggleSidebar}>
+            {isSidebarOpen ? (
+                <ChevronRight size={24} />
+            ) : (
+                <ChevronLeft size={24} />
+            )}
+          </button>
+          <div className="player_sidebar-buttons">
+            <div className="player_sidebar_button_list">
+              <button
+                  className="player_sidebar-btn"
+                  onClick={() => changeSidebarContent("info")}
+              >
+                <Info size={24} />
+                <span>동영상 정보</span>
+              </button>
+            </div>
+            <div className="player_sidebar_button_list">
+              <button
+                  className="player_sidebar-btn"
+                  onClick={() => changeSidebarContent("compiler")}
+              >
+                <Code size={24} />
+                <span>컴파일러</span>
+              </button>
+            </div>
           </div>
-          <div className="player_sidebar_button_list">
-            <button
-              className="player_sidebar-btn"
-              onClick={() => changeSidebarContent("compiler")}
-            >
-              <Code size={24} />
-              <span>컴파일러</span>
-            </button>
-          </div>
+          {renderSidebarContent()}
         </div>
-        {renderSidebarContent()}
       </div>
-    </div>
   );
 };
 

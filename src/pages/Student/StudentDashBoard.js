@@ -12,7 +12,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 // import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
 
-const StudentDashBoard = ({ username }) => {
+const StudentDashBoard = ({ username, baseUrl }) => {
   const navigate = useNavigate();
   const [videoDuration, setVideoDuration] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,7 +33,9 @@ const StudentDashBoard = ({ username }) => {
 
   // 임시 변수와 값
 
-  const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,6 +63,8 @@ const StudentDashBoard = ({ username }) => {
 
         const badgeData = await axios.get(`/students/dash-boards/badges`);
         setBadge(badgeData.data);
+
+        console.log(badge);
 
         const adminNoticeData = await axios.get(
           `/students/dash-boards/manager-boards`
@@ -171,6 +175,8 @@ const StudentDashBoard = ({ username }) => {
   //   return null;
   // };
 
+  console.log(assignment);
+
   return (
     <div className="contents">
       <div className="dashboard_main_container">
@@ -236,7 +242,10 @@ const StudentDashBoard = ({ username }) => {
             <div className="question_container">
               <div className="title_box">
                 <h3 className="components_title">질문사항</h3>
-                <span className="go_to_inquiry_page navigate_button">
+                <span
+                  className="go_to_inquiry_page navigate_button"
+                  onClick={() => navigate("/students/questionBoards")}
+                >
                   더보기 ⟩
                 </span>
               </div>
@@ -279,10 +288,10 @@ const StudentDashBoard = ({ username }) => {
                 </span>
               </div>
               <div className="badge_list_box">
-                {badge.map((el, idx) => (
+                {badge?.slice(0, 4).map((el, idx) => (
                   <div className="badge_list" key={idx}>
                     <img
-                      src={el.filePath}
+                      src={`${baseUrl}/image/${el.imagePath}`}
                       alt="badge"
                       className="badge_image"
                     />
@@ -320,7 +329,11 @@ const StudentDashBoard = ({ username }) => {
                       </p>
                       <button
                         className="student_assignment_submit_button"
-                        onClick={openSubmit}
+                        onClick={() =>
+                          navigate(
+                            `/students/assignmentDetail/${el.homeworkId}`
+                          )
+                        }
                       >
                         제출하기
                       </button>
@@ -402,7 +415,6 @@ const StudentDashBoard = ({ username }) => {
         handleFileChange={handleFileChange}
         selectedFileName={selectedFileName}
         modalName="과제 제출"
-        contentTitle="제목"
         contentBody="내용"
         contentFile="파일 첨부"
         url="/students/homeworks"

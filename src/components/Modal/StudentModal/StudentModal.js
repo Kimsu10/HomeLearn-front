@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./StudentModal.css";
-
-// studentFreeBoard 처럼 사용하면 됩니다.
+import { useParams } from "react-router-dom";
 
 const StudentModal = ({
   isOpen,
@@ -15,11 +14,17 @@ const StudentModal = ({
   submitName,
   cancelName,
 }) => {
+  const { homeworkId } = useParams();
+
+  console.log(homeworkId);
+
   const [formData, setFormData] = useState({
-    title: "",
-    content: "",
+    homeworkId: homeworkId,
+    description: "",
     file: null,
   });
+
+  console.log(formData);
 
   const [selectedFileName, setSelectedFileName] = useState("");
 
@@ -52,8 +57,8 @@ const StudentModal = ({
     e.preventDefault();
 
     const submissionData = new FormData();
-    submissionData.append("title", formData.title);
-    submissionData.append("content", formData.content);
+    submissionData.append("homeworkId", formData.homeworkId);
+    submissionData.append("description", formData.description);
 
     if (formData.file) {
       submissionData.append("file", formData.file);
@@ -68,7 +73,6 @@ const StudentModal = ({
 
       if (response.status === 200) {
         alert(`${modalName}(이)가 완료!`);
-        // handleClose();
         window.location.reload();
       }
     } catch (error) {
@@ -79,8 +83,8 @@ const StudentModal = ({
 
   const handleClose = () => {
     setFormData({
-      title: "",
-      content: "",
+      homeworkId: "",
+      description: "",
       file: null,
     });
     setSelectedFileName("");
@@ -99,19 +103,9 @@ const StudentModal = ({
         <form onSubmit={handleSubmit} className="student_modal_form_body">
           <label>
             <p className="student_modal_name_tag">{contentTitle}</p>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              className="student_modal_input_title"
-            />
-          </label>
-          <label>
-            <p className="student_modal_content_tag">{contentBody}</p>
             <textarea
-              name="content"
-              value={formData.content}
+              name="description"
+              value={formData.description}
               onChange={handleChange}
               className="student_modal_input_content"
             ></textarea>

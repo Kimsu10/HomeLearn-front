@@ -12,6 +12,11 @@
   border-radius: 20px;
 }
 
+.slecture_type_container {
+  display: flex;
+  align-items: center;
+}
+
 .subject_board_type_container {
   width: 100%;
   display: flex;

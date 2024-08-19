@@ -10,8 +10,16 @@
 
 .teacher-content-area {
   flex: 1;
-  padding: 100px 0 100px 65px;
+  /*padding: 100px 0 100px 65px;*/
   width: 1120px;
+}
+
+.teacher-dashboard-body {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--teacherAssistColor);
+  margin: 0 auto;
+  justify-content: center;
 }
 
 /* grid 설정 */
