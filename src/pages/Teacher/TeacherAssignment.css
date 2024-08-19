@@ -1,0 +1,222 @@
+/* 메인 스타일 */
+.teacher_assignment_main_container {
+    display: flex;
+    flex-direction: column;
+    width: 1120px;
+    background-color: #fff;
+}
+
+.teacher_assignment_page_title_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 75px;
+}
+
+.teacher_assignment_page_title {
+    font-size: 4.8rem;
+    color: var(--teacherMainColor);
+}
+
+.teacher_assignment_page_enroll_btn {
+    padding: 0.8rem 1.6rem;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--teacherMainColor);
+    border: 1px solid var(--teacherMainColor);
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+.teacher_assignment_page_enroll_btn:hover {
+    background-color: var(--teacherMainColor);
+    color: #fff;
+}
+
+/* 진행중인 과제  */
+.teacher_current_proceeding_assignment_container {
+    width: 100%;
+    height: 500px;
+    border: 1px solid var(--teacherMainColor);
+    border-radius: 2rem;
+    padding: 4rem;
+    background-color: rgba(210, 218, 255, 0.25);
+    display: flex;
+    flex-direction: column;
+}
+
+.teacher_current_proceeding_assignment_title_box {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3.2rem;
+}
+
+.teacher_current_proceeding_assignment_box_name {
+    color: var(--teacherMainColor);
+    font-size: 3.2rem;
+}
+
+.teacher_control_box_with_both_side {
+    display: flex;
+    justify-content: space-between;
+    width: 82px;
+    height: 28px;
+    align-items: center;
+    color: var(--teacherMainColor);
+}
+.teacher_Right_and_left_button,
+.teacher_Right_and_left_button {
+    font-size: 2.8rem;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.teacher_Right_and_left_button:hover,
+.teacher_Right_and_left_button:hover {
+    font-size: 32px;
+}
+
+.teacher_Right_and_left_button.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* 진행 중인 과제 내용 */
+.teacher_current_proceeding_assignment_contents_container {
+    width: 100%;
+    height: 460px;
+    margin: 0 auto;
+    border: 3px solid var(--teacherSubColor);
+    border-radius: 2rem;
+    padding: 3.6rem;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #000;
+}
+
+.teacher_current_proceeding_assignment_contents_title_box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.teacher_current_proceeding_assignment_contents_title {
+    font-size: 3.6rem;
+}
+
+.teacher_go_to_proceeding_assignment_page {
+    color: var(--teacherMainColor);
+    font-size: 2.4rem;
+    cursor: pointer;
+}
+
+.teacher_current_proceeding_assignment_contents {
+    font-size: 2.4rem;
+    white-space: pre-wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.teacher_current_proceeding_assignment_contents_additional_data_box {
+    display: flex;
+    justify-content: space-between;
+    font-size: 2.4rem;
+}
+
+.teacher_geen_text {
+    color: var(--teacherMainColor);
+}
+
+/* 마감된 과제 컨테이너 */
+.teacher_closed_assignment_container {
+    margin-top: 3.2rem;
+    width: 100%;
+    gap: 3.2rem;
+    border: 1px solid var(--teacherMainColor);
+    border-radius: 2rem;
+    padding: 4.5rem;
+    background-color: rgba(210, 218, 255, 0.25);
+    display: flex;
+    flex-direction: column;
+}
+
+.teacher_closed_assignment_title_box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.teacher_closed_assignment_box_name {
+    color: var(--teacherMainColor);
+    font-size: 32px;
+}
+
+.teacher_control_box_with_both_side {
+    display: flex;
+    justify-content: space-between;
+    width: 82px;
+    height: 28px;
+    align-items: center;
+    color: var(--teacherMainColor);
+}
+.teacher_Right_and_left_button,
+.teacher_Right_and_left_button {
+    font-size: 28px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.teacher_Right_and_left_button:hover,
+.teacher_Right_and_left_button:hover {
+    font-size: 32px;
+}
+
+/* 마감된 과제 리스트들 */
+.teacher_closed_assignment_contents_container {
+    height: 100%;
+    border: 3px solid var(--teacherSubColor);
+    border-radius: 20px;
+    padding: 36px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: black;
+}
+
+.teacher_closed_assignment_contents_title_box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.teacher_closed_assignment_contents_title {
+    font-size: 36px;
+}
+
+.teacher_go_to_closed_assignment_page {
+    color: var(--teacherMainColor);
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.teacher_closed_assignment_contents {
+    font-size: 24px;
+    width: 100%;
+    overflow: hidden;
+    white-space: pre;
+    margin: 16px 0;
+}
+
+.teacher_closed_assignment_contents_additional_data_box {
+    display: flex;
+    justify-content: space-between;
+    font-size: 24px;
+}
+
+.teacher_geen_text {
+    color: var(--teacherMainColor);
+}
+
+.teacher_empty_assignment_contents_container {
+    font-size: 20px;
+}

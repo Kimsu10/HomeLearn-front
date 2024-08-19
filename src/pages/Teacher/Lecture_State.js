@@ -29,7 +29,7 @@ const Lecture_State = () => {
         //     .catch(error => console.error('Error fetching homework data:', error));
 
         // 목데이터 사용 (실제 데이터를 사용할 때 이 부분을 주석 처리하세요)
-        import('../../data/Teacher/mockData.json').then((data) => {
+        import('../../data/Teacher/AttendanceAndHomeworkData.json').then((data) => {
             setAttendanceData(data.attendanceData);
             setHomeworkData(data.homeworkData);
         });
