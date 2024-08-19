@@ -21,22 +21,6 @@ const StudentContact = () => {
       question: "AWS 교재 언제쯤 오나요??",
       instructor: "안성민",
     },
-    {
-      id: 3,
-      curriculum: "AWS",
-      date: "2024.08.26",
-      status: "답변 완료",
-      question: "AWS 교재 언제쯤 오나요??",
-      instructor: "안성민",
-    },
-    {
-      id: 4,
-      curriculum: "AWS",
-      date: "2024.08.26",
-      status: "답변 완료",
-      question: "AWS 교재 언제쯤 오나요??",
-      instructor: "안성민",
-    },
   ]);
 
   const filteredInquiries = inquiries.filter((inquiry) => {

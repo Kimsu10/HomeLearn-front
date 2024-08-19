@@ -27,7 +27,7 @@ const Notice = () => {
   const fetchNotices = async () => {
     try {
       const token = localStorage.getItem("access-token"); // 토큰 가져오기
-      const response = await axios.get("/managers/notification-boards?page=0", {
+      const response = await axios.get("/managers/notification-boards", {
         headers: {
           access: token,
         },
