@@ -13,27 +13,32 @@ function PasswordReset() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // 이메일 상태를 location.state로부터 설정
   useEffect(() => {
     if (location.state?.email) {
-      setEmail(location.state.email); // 이메일 상태 설정
+      setEmail(location.state.email);
     }
   }, [location.state]);
 
+  // 새 비밀번호와 확인 비밀번호가 일치하는지 확인
   useEffect(() => {
-    setPasswordMatch(newPassword === confirmPassword); // 비밀번호 일치 여부 확인
+    setPasswordMatch(newPassword === confirmPassword);
   }, [newPassword, confirmPassword]);
 
+  // 비밀번호 형식 검증
   useEffect(() => {
-    validatePassword(newPassword); // 비밀번호 유효성 검사
+    validatePassword(newPassword);
   }, [newPassword]);
 
   const validatePassword = (password) => {
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,18}$/; // 백엔드에서 원하는 비밀번호 형식 맞춤
-    setPasswordValid(passwordRegex.test(password)); // 비밀번호 형식 검사
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,18}$/;
+    setPasswordValid(passwordRegex.test(password));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 비밀번호 일치와 형식 유효성 검증
     if (!passwordMatch || !passwordValid) {
       swal("입력 오류", "비밀번호를 확인해 주세요.", "warning");
       return;
@@ -87,7 +92,9 @@ function PasswordReset() {
           />
           <div className="password-check">
             {newPassword && !passwordValid && (
-              <span className="not-available">비밀번호는 대문자와 특수문자를 포함하여 10-18자리여야 합니다</span>
+              <span className="not-available">
+                비밀번호는 대문자와 특수문자를 포함하여 10-18자리여야 합니다
+              </span>
             )}
           </div>
         </div>
@@ -102,8 +109,10 @@ function PasswordReset() {
           />
           <div className="password-match-message">
             {confirmPassword && (
-              <span className={passwordMatch ? 'match' : 'no-match'}>
-                {passwordMatch ? '비밀번호가 일치합니다' : '비밀번호가 일치하지 않습니다'}
+              <span className={passwordMatch ? "match" : "no-match"}>
+                {passwordMatch
+                  ? "비밀번호가 일치합니다"
+                  : "비밀번호가 일치하지 않습니다"}
               </span>
             )}
           </div>
