@@ -12,7 +12,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 // import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
 
-const StudentDashBoard = ({ username }) => {
+const StudentDashBoard = ({ username, baseUrl }) => {
   const navigate = useNavigate();
   const [videoDuration, setVideoDuration] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,8 +32,6 @@ const StudentDashBoard = ({ username }) => {
   const [teacherNotice, setTeacherNotice] = useState([]);
 
   // 임시 변수와 값
-
-  const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -65,6 +63,8 @@ const StudentDashBoard = ({ username }) => {
 
         const badgeData = await axios.get(`/students/dash-boards/badges`);
         setBadge(badgeData.data);
+
+        console.log(badge);
 
         const adminNoticeData = await axios.get(
           `/students/dash-boards/manager-boards`
@@ -288,10 +288,10 @@ const StudentDashBoard = ({ username }) => {
                 </span>
               </div>
               <div className="badge_list_box">
-                {badge.map((el, idx) => (
+                {badge?.slice(0, 4).map((el, idx) => (
                   <div className="badge_list" key={idx}>
                     <img
-                      src={el.filePath}
+                      src={`${baseUrl}/image/${el.imagePath}`}
                       alt="badge"
                       className="badge_image"
                     />

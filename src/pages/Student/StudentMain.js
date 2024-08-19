@@ -27,6 +27,7 @@ const StudentMain = () => {
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const token = localStorage.getItem("access-token");
+  const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
 
   useEffect(() => {
     try {
@@ -43,7 +44,10 @@ const StudentMain = () => {
       <StudentSideBar />
       <div className="contents">
         <Routes>
-          <Route path="" element={<StudentDashBoard username={username} />} />
+          <Route
+            path=""
+            element={<StudentDashBoard username={username} baseUrl={baseUrl} />}
+          />
           <Route
             path=":subjectName/board"
             element={

@@ -16,6 +16,8 @@ const TeacherLecture = () => {
     ""
   );
 
+  console.log(mainLectures);
+
   // 과목 게시판
   const { data: subjectBoards } = useGetFetch(
     "/data/teacher/mainLecture/subjectBoard.json",
