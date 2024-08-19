@@ -38,10 +38,8 @@ const StudentBadge = ({ baseUrl }) => {
         ? prevIds.filter((id) => id !== badgeId)
         : [...prevIds, badgeId]
     );
-    console.log(badgeId);
   };
-  console.log(badges);
-  console.log(rotatedBadgeIds);
+
   return (
     <div className="badge_main_container">
       <h1 className="student_badge_page_title">배지</h1>

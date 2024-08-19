@@ -105,7 +105,6 @@
   position: relative;
   overflow: hidden;
   transition: all 0.2s ease-in-out;
-  transition: transform 1s ease-in-out;
 }
 
 .shimmer {
