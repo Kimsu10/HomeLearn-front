@@ -1,34 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./LectureVideo.css";
+import useAxiosGet from "../../hooks/useAxiosGet";
 
 const LectureVideo = ({ width, height }) => {
-  const [links, setLinks] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [videoId, setVideoId] = useState(null);
   const [error, setError] = useState(null);
 
-  console.log(links);
-  useEffect(() => {
-    fetch("/data/student/mainpage/lectureVideo.json")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-        if (data && typeof data.youtubeUrl === "string") {
-          setLinks(data.youtubeUrl);
-        } else {
-          throw new Error("Invalid data format");
-        }
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error);
-        setLoading(false);
-      });
-  }, []);
+  const { data: lecture } = useAxiosGet(`/students/dash-boards/lectures`);
 
   const extractVideoId = (link) => {
     const match = link.match(
@@ -37,19 +15,24 @@ const LectureVideo = ({ width, height }) => {
     return match ? match[1] : null;
   };
 
-  if (loading) {
-    return <p>비디오 로딩 중...</p>;
-  }
+  useEffect(() => {
+    if (lecture && lecture.youtubeUrl) {
+      const extractedVideoId = extractVideoId(lecture.youtubeUrl);
+      if (extractedVideoId) {
+        setVideoId(extractedVideoId);
+      } else {
+        setError("잘못된 링크로 비디오를 찾을 수 없습니다.");
+      }
+    }
+  }, [lecture]);
 
   if (error) {
-    return <p>오류 발생: {error.message}</p>;
+    return <p>{error}</p>;
   }
 
-  if (!links) {
-    return <p>잘못된 링크로 비디오를 찾을 수 없습니다.</p>;
+  if (!videoId) {
+    return <p>비디오를 찾을 수 없습니다.</p>;
   }
-
-  const videoId = extractVideoId(links);
 
   return (
     <div className="lecture_container" style={{ position: "relative" }}>

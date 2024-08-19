@@ -22,7 +22,6 @@ const StudentHeader = () => {
 
   const deleteToken = () => {
     localStorage.removeItem("access-token");
-    navigate("/login");
   };
 
   useEffect(() => {
@@ -36,7 +35,10 @@ const StudentHeader = () => {
         setCurriculum(commonResponse.data);
 
         // 알림 정보 가져오기
-        const notificationResponse = await axios.get("/header/notifications", config);
+        const notificationResponse = await axios.get(
+          "/header/notifications",
+          config
+        );
         setNotifications(notificationResponse.data.notifications || []);
 
         console.log("알림 정보:", notificationResponse.data.notifications);

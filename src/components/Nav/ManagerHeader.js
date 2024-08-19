@@ -1,19 +1,64 @@
-import React, { useState, useRef, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useRef, useState, useEffect } from "react";
+import { useNavigate, NavLink } from "react-router-dom";
+import axios from "../../utils/axios";
 import "./ManagerHeader.css";
 
 const ManagerHeader = () => {
+  const navigate = useNavigate();
+  const [manager, setManager] = useState({
+    name: "",
+    imagePath: "",
+  });
+
+  const [notifications, setNotifications] = useState([]);
+
+  const getToken = () => localStorage.getItem("access-token");
+
+  const deleteToken = () => {
+    localStorage.removeItem("access-token");
+    navigate("/login");
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = getToken();
+        const config = {
+          headers: { access: token },
+        };
+
+        // 공통 데이터 가져오기
+        const commonResponse = await axios.get("/header/common", config);
+        setManager(commonResponse.data);
+
+        // 알림 정보 가져오기
+        const notificationResponse = await axios.get("/header/notifications", config);
+        setNotifications(notificationResponse.data.notifications || []);
+
+        console.log("알림 정보:", notificationResponse.data.notifications);
+      } catch (error) {
+        console.error("데이터 가져오기 오류:", error.response);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const [openDropdown, setOpenDropdown] = useState(null);
   const alarmRef = useRef(null);
   const profileRef = useRef(null);
-
-  const deleteToken = () => localStorage.removeItem("access-token");
 
   const toggleDropdown = (dropdown, event) => {
     if (event) {
       event.preventDefault();
     }
     setOpenDropdown((prevState) => (prevState === dropdown ? null : dropdown));
+  };
+
+  const handleNotificationClick = (notification) => {
+    if (notification.url) {
+      navigate(notification.url);
+    }
   };
 
   useEffect(() => {
@@ -57,7 +102,6 @@ const ManagerHeader = () => {
                 </span>
               </NavLink>
             </li>
-
             <div className="manager_h-alarm" ref={alarmRef}>
               <div
                 className="manager_h-alarm_btn"
@@ -68,28 +112,32 @@ const ManagerHeader = () => {
                     <span>
                       <i className="fa-solid fa-bell"></i>
                     </span>
-                    <span className="manager_h-alarm_count"></span>
+                    <span className="manager_h-alarm_count">
+                      {notifications.length}
+                    </span>
                   </a>
                 </li>
               </div>
-
               <ul
                 id="manager_h-alarm_list"
                 className={`manager_h-alarm_list ${
                   openDropdown === "manager_alarm" ? "open" : ""
                 }`}
               >
-                <div id="manager_h-alarm_list">
+                {notifications.length > 0 ? (
+                  notifications.map((notification, index) => (
+                    <li
+                      key={index}
+                      onClick={() => handleNotificationClick(notification)}
+                    >
+                      <span>{notification.message}</span>
+                    </li>
+                  ))
+                ) : (
                   <li>
-                    <span>알림 예시입니다.</span>
+                    <span>알림이 없습니다.</span>
                   </li>
-                  <li>
-                    <span>알림 예시입니다.</span>
-                  </li>
-                  <li>
-                    <span>알림 예시입니다.</span>
-                  </li>
-                </div>
+                )}
               </ul>
             </div>
           </ul>
@@ -102,12 +150,15 @@ const ManagerHeader = () => {
               onClick={(e) => toggleDropdown("manager_profile", e)}
             >
               <div>
-                <img className="manager_h-profile_img" src="/" alt="프로필" />
+                <img
+                  className="manager_h-profile_img"
+                  src={manager.imagePath || "/default-profile.png"}
+                  alt="프로필"
+                />
               </div>
-              <span className="manager_h-profile_name">매니저</span>
+              <span className="manager_h-profile_name">{manager.name}</span>
               <i className="fa-solid fa-caret-down"></i>
             </div>
-
             <ul
               className={`manager_h-profile_menu ${
                 openDropdown === "manager_profile" ? "open" : ""

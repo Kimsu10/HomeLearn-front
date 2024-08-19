@@ -9,7 +9,7 @@ const MessageBox = () => {
         <div className="message-content">
           <div className="message-icon">
             <i className="fa-regular fa-envelope"></i>
-            <span className="message-count">12</span>
+            <span className="message-count">1</span>
           </div>
         </div>
         <a href="#" className="view-more">자세히 보기 &gt;</a>
@@ -20,7 +20,7 @@ const MessageBox = () => {
         <div className="message-content">
           <div className="message-icon">
             <i className="fa-regular fa-envelope"></i>
-            <span className="message-count">12</span>
+            <span className="message-count">1</span>
           </div>
         </div>
         <a href="#" className="view-more">자세히 보기 &gt;</a>

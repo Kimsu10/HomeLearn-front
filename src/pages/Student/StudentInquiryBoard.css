@@ -1,7 +1,7 @@
 .student_inquiry_board_main_container {
   display: flex;
   flex-direction: column;
-  width: 1400px;
+  width: 1140px;
   padding: 100px 68px;
   background-color: hwb(0 100% 0%);
 }
@@ -24,7 +24,7 @@
 .inquiry_board_answer_box,
 .search_type_box {
   width: 245px;
-  height: 40px;
+  height: 50px;
   border: 2px solid #5d8d89;
   border-radius: 20px;
   padding: 10px;

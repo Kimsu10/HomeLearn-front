@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import useGetFetch from "../../hooks/useGetFetch";
 import axios from "../../utils/axios";
 
+
 const LectureVideo = ({ url, subjectVideos }) => {
   console.log(url);
   const [player, setPlayer] = useState(null);
@@ -36,6 +37,8 @@ const LectureVideo = ({ url, subjectVideos }) => {
   const playerContainerRef = useRef(null);
   const progressInterval = useRef(null);
   const requestAnimationFrameRef = useRef(null);
+  const [currentUrl, setCurrentUrl] = useState(url);
+  const [currentTime, setCurrentTime] = useState(0);
 
   // 컴파일러 관련 상태
   const [code, setCode] = useState(
@@ -64,7 +67,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
   const handleMouseLeave = () => setIsHovering(false);
 
   console.log(url);
-  console.log(subjectVideos);
+  console.log(subjectVideos); // 빈배열 -> props 로 넘겨줌 아직 썸네일 미포함
   useEffect(() => {
     if (url) {
       const videoId = extractVideoId(url);
@@ -103,6 +106,8 @@ const LectureVideo = ({ url, subjectVideos }) => {
         if (totalDuration > 0) {
           const currentProgress = (currentTime / totalDuration) * 100;
           setProgress(currentProgress);
+          setCurrentTime(currentTime);
+          setDuration(totalDuration);
         }
       }
       if (isPlaying) {
@@ -120,6 +125,49 @@ const LectureVideo = ({ url, subjectVideos }) => {
       cancelAnimationFrame(requestAnimationFrameRef.current);
     };
   }, [isPlaying, player]);
+
+  useEffect(() => {
+    if (currentUrl) {
+      const videoId = extractVideoId(currentUrl);
+      console.log(videoId);
+      if (videoId) {
+        loadYouTubeAPI(videoId);
+        setLinks(currentUrl);
+      } else {
+        setError(new Error("Invalid video URL"));
+      }
+      setLoading(false);
+    } else {
+      setError(new Error("No video URL provided"));
+      setLoading(false);
+    }
+
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+    return () => {
+      if (player) {
+        stopProgressTracker();
+      }
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, [currentUrl, player]);
+
+  useEffect(() => {
+    if (player && currentUrl) {
+      const videoId = extractVideoId(currentUrl);
+      if (videoId) {
+        player.loadVideoById(videoId);
+        setLinks(currentUrl);
+      } else {
+        setError(new Error("Invalid video URL"));
+      }
+      setLoading(false);
+    }
+  }, [currentUrl, player]);
 
   const loadYouTubeAPI = (videoId) => {
     const tag = document.createElement("script");
@@ -167,7 +215,8 @@ const LectureVideo = ({ url, subjectVideos }) => {
     if (progressInterval.current) clearInterval(progressInterval.current);
     progressInterval.current = setInterval(() => {
       if (player && player.getCurrentTime) {
-        const currentProgress = (player.getCurrentTime() / player.getDuration()) * 100;
+        const currentProgress =
+          (player.getCurrentTime() / player.getDuration()) * 100;
         setProgress(currentProgress);
       }
     }, 1000);
@@ -229,10 +278,16 @@ const LectureVideo = ({ url, subjectVideos }) => {
     setPlaybackRate(newRate);
   };
 
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
+
   const extractVideoId = (link) => {
     console.log(link);
     const match = link.match(
-        /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+      /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
     );
     return match ? match[1] : null;
   };
@@ -257,10 +312,6 @@ const LectureVideo = ({ url, subjectVideos }) => {
   };
 
   const runCode = async () => {
-    console.log("runCode 함수 실행");
-    console.log("코드:", code);
-    console.log("언어:", language);
-
     setCompilerOutput("코드 실행 중...");
     try {
       console.log("API 요청 시작");
@@ -275,8 +326,24 @@ const LectureVideo = ({ url, subjectVideos }) => {
       setCompilerOutput("코드 실행 중 오류 발생: " + error.message);
     }
   };
+
   const renderSidebarContent = () => {
     console.log(subjectVideos);
+
+    const getYouTubeThumbnail = (url) => {
+      const videoIdMatch = url.match(
+        /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+      );
+      return videoIdMatch
+        ? `https://img.youtube.com/vi/${videoIdMatch[1]}/maxresdefault.jpg`
+        : "";
+    };
+
+    const handleLectureClick = (link) => {
+      console.log(link);
+      setCurrentUrl(link);
+    };
+
     switch (sidebarContent) {
       case "info":
         return (
@@ -311,6 +378,41 @@ const LectureVideo = ({ url, subjectVideos }) => {
                 ))}
               </div>
             </div>
+          <div className="player_sidebar-content">
+            <p className="player_category">동영상 정보</p>
+            <div className="player_line"></div>
+            <p className="player_title">{videoTitle}</p>
+            <p className="player_category">다른 강의</p>
+            <div className="player_line"></div>
+            <div className="player_lecture_list_container">
+              {subjectVideos.map((el) => (
+                <div
+                  className="player_lecture_list_content"
+                  key={el.lectureId}
+                  onClick={() => handleLectureClick(el.link)}
+                >
+                  <img
+                    className="player_lecture_list_image"
+                    alt="썸네일 이미지"
+                    src={getYouTubeThumbnail(el.link)}
+                  />
+                  <h1
+                    className="player_lecture_list_title"
+                    onClick={() =>
+                      navigate(
+                        `/students/${el.subjectName}/lectures/${el.lectureId}`
+                      )
+                    }
+                  >
+                    {el.title}
+                  </h1>
+                  <p className="player_lecture_list_description">
+                    {el.content}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         );
       case "compiler":
         return (
@@ -347,6 +449,10 @@ const LectureVideo = ({ url, subjectVideos }) => {
         return null;
     }
   };
+
+  // if (subjectNameError || subjectVideosError) {
+  //   return <div>데이터 로딩에 실패하였습니다.</div>;
+  // }
 
   if (loading) {
     return <p>비디오 로딩 중...</p>;

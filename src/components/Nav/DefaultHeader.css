@@ -1,54 +1,26 @@
-/* Container ================================== */
 #default_header {
   position: fixed;
-  left: 0;
   top: 0;
-  z-index: 10000;
+  left: 0;
   width: 100%;
-  height: 80px;
-  border-bottom: 1px solid var(--borderColor-300);
-  background: #fff;
+  z-index: 1998;
+  background-color: white;
+  /* box-shadow: 0px 4px 2px -2px gray; */
 }
 
 .default_h-inner {
-  position: relative;
   max-width: 1440px;
   margin: 0 auto;
-  height: 100%;
+  padding: 10px 20px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-}
-
-.default_h-left {
-  height: 100%;
-  display: flex;
   align-items: center;
 }
 
-.default_h-right {
-  height: 100%;
-  display: flex;
-  align-items: center;
+.default_h-logo img {
+  height: 50px;
 }
 
-/* Logo ===================================== */
-.default_h-logo {
-  width: 100px;
-}
-
-.default_h-logo a {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.default_h-logo a img {
-  width: 100%;
-}
-
-/* Login Btn ================================= */
 .default_h-login_btn {
   display: flex;
   align-items: center;
@@ -60,10 +32,18 @@
   border-radius: 2rem;
   color: #fff;
   font-size: 1.6rem;
+  font-weight: 700;
   transition: background 0.3s ease;
+  text-decoration: none;
 }
 
 .default_h-login_btn:hover {
   background: var(--studentSubColor);
-  font-weight: 700;
+  font-weight: 800;
+}
+
+.default_h-user_info {
+  padding: 10px 20px;
+  color: #333;
+  font-weight: bold;
 }

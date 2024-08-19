@@ -5,6 +5,32 @@
   align-items: center;
 }
 
+.tabs {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 1.5rem;
+  margin-bottom: 2rem;
+  z-index: 10001;
+}
+
+.tabs button {
+  padding: 10px 20px;
+  margin: 0 5px;
+  background-color: #fff;
+  border: 1px solid var(--studentMainColor);
+  color: var(--studentMainColor);
+  border-radius: 1rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.tabs button.active {
+  background-color: var(--studentMainColor);
+  color: #fff;
+  border-color: var(--studentSubColor);
+}
+
 .login_btn {
   border: 2px solid black;
   cursor: pointer;
