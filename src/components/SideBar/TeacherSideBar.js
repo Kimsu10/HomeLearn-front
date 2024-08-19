@@ -3,13 +3,15 @@ import { NavLink, useLocation } from "react-router-dom";
 import './TeacherSideBar.css';
 import useGetFetch from "../../hooks/useGetFetch";
 import TeacherLectureRegister from "../../pages/Teacher/TeacherLectureRegister";
+import useAxiosGet from "../../hooks/useAxiosGet";
 
 const TeacherSideBar = () => {
     const [dropdownOpen, setDropdownOpen] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
     const location = useLocation();
 
-    const { data: subject, error: subjectError } = useGetFetch("/data/student/mainpage/sidebar.json", []);
+    const { data: subject, error: subjectError } = useAxiosGet("/teachers/lectures/subject-select", []);
+    console.log(subject);
 
     useEffect(() => {
         const path = location.pathname;
@@ -95,7 +97,7 @@ const TeacherSideBar = () => {
                                     <span className="teacher_sideBar_subject_add_btn" onClick={openModal}>과목 등록</span>
                                 </li>
                                 <div className="teacher_sideBar_seperate_line"></div>
-                                {subject.subject?.map((el) => (
+                                {subject?.map((el) => (
                                     <li key={el.id}>
                                         <NavLink to={`/teachers/${el.name}/board`}
                                                  className={({isActive}) => isActive ? 'teacher_sideBar_link active' : 'teacher_sideBar_link'}>

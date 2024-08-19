@@ -16,6 +16,9 @@ import TeacherHeader from "../../components/Nav/TeacherHeader";
 import TeacherLecture from "./TeacherLecture";
 import { jwtDecode } from "jwt-decode";
 import StudentLecture from "../Student/StudentLecture";
+import TeacherSubjectBoardDetail from "./TeacherSubjectBoardDetail";
+import TeacherLectureList from "./TeacherLectureList";
+import TeacherLectureDetail from "./TeacherLectureDetail";
 
 function Dashboard() {
   return (
@@ -69,6 +72,18 @@ function TeacherMain() {
                     element={
                         <TeacherLecture subject={selectedSubject} username={username} />
                     }
+                />
+                <Route
+                    path="/:subjectName/boardDetail/:id"
+                    element={<TeacherSubjectBoardDetail username={username} />}
+                />
+                <Route
+                    path="/lecture"
+                    element={<TeacherLectureList username={username} />}
+                />
+                <Route
+                    path="/:subjectName/lecture/:lecutreId"
+                    element={<TeacherLectureDetail username={username} />}
                 />
               <Route path="manage-curriculums" element={<CurriculumManagement />} />
               <Route path="manage-teachers" element={<TeacherManagement />} />

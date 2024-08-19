@@ -93,7 +93,7 @@ const TeacherLecture = () => {
               <span
                 className="teacher_go_to_show_more_page"
                 onClick={() =>
-                  navigate(`/students/${mainLectures.title}/boardList`)
+                  navigate(`/teachers/${mainLectures.title}/boardList`)
                 }
               >
                 더보기 ⟩
@@ -106,7 +106,7 @@ const TeacherLecture = () => {
                   key={idx}
                   onClick={() =>
                     navigate(
-                      `/students/${mainLectures.title}/boardDetail/${el.id}`
+                      `/teachers/${mainLectures.title}/boardDetail/${el.id}`
                     )
                   }
                 >
