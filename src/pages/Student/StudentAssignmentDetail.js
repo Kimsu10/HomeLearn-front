@@ -184,6 +184,7 @@ const StudentAssignmentDetail = () => {
         handleSubmit={handleSubmit}
         handleFileChange={handleFileChange}
         selectedFileName={formData.selectedFileName}
+        homeworkId={homeworkId}
         modalName="과제 제출"
         contentBody="내용"
         contentFile="파일 첨부"
