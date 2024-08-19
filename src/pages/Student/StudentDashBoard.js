@@ -38,10 +38,11 @@ const StudentDashBoard = ({ username }) => {
     const fetchData = async () => {
       try {
         const recentLectureData = await axios.get(
-          `/students/dash-boards/recentLecture`
+          `/students/dash-boards/recent-lecture`
         );
         setRecentLecture(recentLectureData.data);
 
+        console.log(recentLecture);
         // const calendarManagerData = await axios.get(
         //   `/students/dash-boards/calendar/manager`
         // );
@@ -310,40 +311,43 @@ const StudentDashBoard = ({ username }) => {
                 </span>
               </div>
               <div className="dashboard_student_assignment_list_container">
-                {assignment.content?.[0] ? (
-                  <div className="dashboard_student_assignment_list_box">
-                    <h3 className="student_assignment_sub_title">과제</h3>
-                    <h4 className="student_assignment_name">
-                      {assignment.content[0]?.title}
-                    </h4>
-                    <p className="student_assignment_description">
-                      {assignment.content[0]?.description}
-                    </p>
-                    <button
-                      className="student_assignment_submit_button"
-                      onClick={openModal}
+                {assignment.length > 0 ? (
+                  assignment.map((el) => (
+                    <div
+                      key={el.homeworkId}
+                      className="dashboard_student_assignment_list_box"
                     >
-                      제출하기
-                    </button>
-                    <div className="addtional_info_box">
-                      <span className="student_assignment_deadline">
-                        ~{assignment.content[0]?.deadLine}
-                      </span>
-                      <span
-                        className="go_to_subject_page"
-                        onClick={() =>
-                          navigate(
-                            `/students/assignmentDetail/${assignment.content[0]?.homeworkId}`
-                          )
-                        }
+                      <h3 className="student_assignment_sub_title">과제</h3>
+                      <h4 className="student_assignment_name">{el.title}</h4>
+                      <p className="student_assignment_description">
+                        {el.description}
+                      </p>
+                      <button
+                        className="student_assignment_submit_button"
+                        onClick={openModal}
                       >
-                        자세히 보기 ⟩
-                      </span>
+                        제출하기
+                      </button>
+                      <div className="addtional_info_box">
+                        <span className="student_assignment_deadline">
+                          ~{el.deadLine}
+                        </span>
+                        <span
+                          className="go_to_subject_page"
+                          onClick={() =>
+                            navigate(
+                              `/students/assignmentDetail/${el.homeworkId}`
+                            )
+                          }
+                        >
+                          자세히 보기 ⟩
+                        </span>
+                      </div>
                     </div>
-                  </div>
+                  ))
                 ) : (
                   <div className="no_student_assignment_box">
-                    미제출한 과제가 없습니다.
+                    제출 할 과제가 없습니다.
                   </div>
                 )}
               </div>

@@ -25,10 +25,9 @@ const StudentMain = () => {
 
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
+  const token = localStorage.getItem("access-token");
 
   useEffect(() => {
-    const token = localStorage.getItem("access-token");
-
     try {
       const decodedToken = jwtDecode(token);
       setUsername(decodedToken.username);
@@ -51,6 +50,7 @@ const StudentMain = () => {
                 subject={selectedSubject}
                 username={username}
                 baseUrl={baseUrl}
+                token={token}
               />
             }
           />
