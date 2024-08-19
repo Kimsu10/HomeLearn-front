@@ -33,7 +33,6 @@
 .student_badge_list_container {
   margin: 50px 0;
   width: 1020px;
-  height: 1000px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 40px;
@@ -45,23 +44,21 @@
 
 .student_badge_box {
   position: absolute;
-  width: 240px;
+  width: 220px;
   height: 300px;
-  border: 2px solid var(--studentSubColor);
   border-radius: 20px;
-  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
   color: #757575;
-  background-color: #f4f5f7;
   text-align: center;
+  z-index: 5;
 }
 
 .student_badge_image {
-  width: 200px;
-  height: 186px;
+  width: 150px;
+  height: 150px;
   border-radius: 20px;
 }
 
@@ -74,13 +71,19 @@
   font-size: 20px;
 }
 
+.student_acquired_info_box {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 188, 0, 0.8);
+}
+
 /*취득한 배지 */
 @keyframes sheen {
   0% {
-    transform: skewY(-10deg) translateX(-50%);
+    transform: skewY(-45deg) translateX(-100%);
   }
   100% {
-    transform: skewY(-55deg) translateX(30em);
+    transform: skewY(-45deg) translateX(30em);
   }
 }
 
@@ -93,17 +96,16 @@
 }
 
 .student_badge_box {
-  padding: 0.75em 2em;
   text-align: center;
   text-decoration: none;
   color: var(--studentMainColor);
-  border: 1px solid var(--studentMainColor);
   font-size: 24px;
   display: inline-block;
   border-radius: 20px;
   position: relative;
   overflow: hidden;
   transition: all 0.2s ease-in-out;
+  transition: transform 1s ease-in-out;
 }
 
 .shimmer {
@@ -115,9 +117,9 @@
     rgba(255, 188, 0, 0.8) 80%
   );
   position: absolute;
-  top: 10%;
+  top: 20%;
   left: -100%;
-  height: 180%;
+  height: 170%;
   width: 150%;
   transform: skewY(-45deg);
   animation: sheen 1.8s infinite;
@@ -130,8 +132,8 @@
 }
 
 .badge_acquired {
-  color: rgb(255, 229, 36);
-  filter: drop-shadow(0 0 6px rgba(226, 188, 40, 0.8));
+  color: rgba(255, 188, 0, 0.8);
+  filter: drop-shadow(0 0 10px rgb(240, 153, 54));
   border-radius: 20px;
   border: none;
 }
@@ -142,9 +144,37 @@
   z-index: 11;
 }
 
+.student_badge_image {
+  border-radius: 50%;
+  box-shadow: 2px 2px 7px gray;
+  margin-bottom: 16px;
+}
+
+.acquired_badge_info_box,
 .student_badge_info_box {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 7px;
+  padding-top: 20px;
+  border-radius: 20px;
+}
+
+.acquired_badge_info_box {
+  height: 100%;
+  width: 100%;
+  color: rgb(255, 123, 0);
+  text-shadow: 2px 2px 2px rgb(219, 165, 145);
+}
+
+.student_badge_info_box {
+  background-color: #d9d9d9;
+  width: 100%;
+  height: 100%;
+  color: #00000043;
+  overflow: hidden;
+}
+
+.student_badge_box.rotated {
+  transform: rotateY(360deg);
 }
