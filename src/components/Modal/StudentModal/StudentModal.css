@@ -24,10 +24,12 @@
   margin: 5% auto;
   border: 1px solid #888;
   padding: 20px 30px;
-  /* ㅠ.ㅠ */
   position: absolute;
   top: 10%;
   left: 32%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 .subject_modal_close {

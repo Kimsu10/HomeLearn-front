@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./StudentModal.css";
 
-// studentFreeBoard 처럼 사용하면 됩니다.
-
 const StudentModal = ({
   isOpen,
   closeModal,
@@ -68,7 +66,6 @@ const StudentModal = ({
 
       if (response.status === 200) {
         alert(`${modalName}(이)가 완료!`);
-        // handleClose();
         window.location.reload();
       }
     } catch (error) {
@@ -97,16 +94,18 @@ const StudentModal = ({
         </span>
         <h1 className="student_modal_title">{modalName}</h1>
         <form onSubmit={handleSubmit} className="student_modal_form_body">
-          <label>
-            <p className="student_modal_name_tag">{contentTitle}</p>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              className="student_modal_input_title"
-            />
-          </label>
+          {contentTitle && (
+            <label>
+              <p className="student_modal_name_tag">{contentTitle}</p>
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                className="student_modal_input_title"
+              />
+            </label>
+          )}
           <label>
             <p className="student_modal_content_tag">{contentBody}</p>
             <textarea

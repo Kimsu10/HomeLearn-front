@@ -236,7 +236,10 @@ const StudentDashBoard = ({ username }) => {
             <div className="question_container">
               <div className="title_box">
                 <h3 className="components_title">질문사항</h3>
-                <span className="go_to_inquiry_page navigate_button">
+                <span
+                  className="go_to_inquiry_page navigate_button"
+                  onClick={() => navigate("/students/questionBoards")}
+                >
                   더보기 ⟩
                 </span>
               </div>
@@ -402,7 +405,7 @@ const StudentDashBoard = ({ username }) => {
         handleFileChange={handleFileChange}
         selectedFileName={selectedFileName}
         modalName="과제 제출"
-        contentTitle="제목"
+        // contentTitle="제목"
         contentBody="내용"
         contentFile="파일 첨부"
         url="/students/homeworks"
