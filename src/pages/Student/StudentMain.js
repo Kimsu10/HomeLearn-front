@@ -65,11 +65,18 @@ const StudentMain = () => {
           />
           <Route
             path="/:subjectName/board/list"
-            element={<StudentSubjectBoardList username={username} />}
+            element={
+              <StudentSubjectBoardList username={username} baseUrl={baseUrl} />
+            }
           />
           <Route
             path="/:subjectName/boardDetail/:id"
-            element={<StudentSubjectBoardDetail username={username} />}
+            element={
+              <StudentSubjectBoardDetail
+                username={username}
+                baseUrl={baseUrl}
+              />
+            }
           />
           <Route
             path="/lecture"

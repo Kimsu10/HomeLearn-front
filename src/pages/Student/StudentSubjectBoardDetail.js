@@ -5,9 +5,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useAxiosGet from "../../hooks/useAxiosGet";
 
 // 과목 게시판상세
-const StudentSubjectBoardDetail = () => {
+const StudentSubjectBoardDetail = ({ baseUrl }) => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  console.log(baseUrl);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -41,7 +43,7 @@ const StudentSubjectBoardDetail = () => {
         <img
           className="subject_board_type_image"
           alt="과목이미지"
-          src={mainLectures.imagePath}
+          src={`${baseUrl}/image/${mainLectures.imagePath}`}
         />
         <div className="lecture_description_box">
           <h1 className="lecture_type_name">{mainLectures.name}</h1>

@@ -4,7 +4,9 @@ import "./StudentLectureDetail.css";
 import LectureVideo from "./StudentPlayer";
 import { useEffect } from "react";
 
-const StudentLectureDetail = () => {
+const StudentLectureDetail = ({ baseUrl }) => {
+  console.log(baseUrl);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

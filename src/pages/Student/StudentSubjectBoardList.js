@@ -5,7 +5,8 @@ import "./StudentSubjectBoardList.css";
 import useGetFetch from "../../hooks/useGetFetch";
 
 // 과목 게시판
-const StudentSubjectBoardList = () => {
+const StudentSubjectBoardList = ({ baseUrl }) => {
+  console.log(baseUrl);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -57,7 +58,7 @@ const StudentSubjectBoardList = () => {
         <img
           className="subject_board_type_image"
           alt="과목이미지"
-          src={mainLectures.imgPath}
+          src={`${baseUrl}/image/${mainLectures.imagePath}`}
         />
         <div className="subject_board_description_box">
           <h1 className="subject_board_type_name">{mainLectures.name}</h1>
