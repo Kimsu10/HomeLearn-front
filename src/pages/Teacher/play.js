@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import "./play.css";
 import { useNavigate } from "react-router-dom";
-import useGetFetch from "../../hooks/useGetFetch";
 import axios from "axios";
 
 const LectureVideo = ({ url, subjectVideos }) => {
@@ -36,6 +35,8 @@ const LectureVideo = ({ url, subjectVideos }) => {
   const playerContainerRef = useRef(null);
   const progressInterval = useRef(null);
   const requestAnimationFrameRef = useRef(null);
+  const [currentUrl, setCurrentUrl] = useState(url);
+  const [currentTime, setCurrentTime] = useState(0);
 
   // 컴파일러 관련 상태 추가
   const [code, setCode] = useState(
@@ -61,30 +62,18 @@ const LectureVideo = ({ url, subjectVideos }) => {
 
   const navigate = useNavigate();
 
-  // useGetFetch
-  // const { data: subjectVideos, error: subjectVideosError } = useGetFetch(
-  //   "/data/student/mainLecture/lectureList.json",
-  //   []
-  // );
-
-  // const { data: subjectName, error: subjectNameError } = useGetFetch(
-  //   "/data/student/mainpage/subjectCategory.json",
-  //   []
-  // );
-
   const handleMouseEnter = () => setIsHovering(true);
   const handleMouseLeave = () => setIsHovering(false);
 
-  // 값은 잘 들어오는데 영상이 바로 뜨지 않음 ->
   console.log(url);
-  console.log(subjectVideos); // 빈배열 -> props 로 넘겨줌 아직 썸네일 미포함
+  console.log(subjectVideos);
   useEffect(() => {
     if (url) {
       const videoId = extractVideoId(url);
       console.log(videoId);
       if (videoId) {
         loadYouTubeAPI(videoId);
-        setLinks(url); //link를 추가하지 않아서 잘못된 링크라고 떴던것
+        setLinks(url);
       } else {
         setError(new Error("Invalid video URL"));
       }
@@ -116,6 +105,8 @@ const LectureVideo = ({ url, subjectVideos }) => {
         if (totalDuration > 0) {
           const currentProgress = (currentTime / totalDuration) * 100;
           setProgress(currentProgress);
+          setCurrentTime(currentTime);
+          setDuration(totalDuration);
         }
       }
       if (isPlaying) {
@@ -135,6 +126,49 @@ const LectureVideo = ({ url, subjectVideos }) => {
     };
   }, [isPlaying, player]);
 
+  useEffect(() => {
+    if (currentUrl) {
+      const videoId = extractVideoId(currentUrl);
+      console.log(videoId);
+      if (videoId) {
+        loadYouTubeAPI(videoId);
+        setLinks(currentUrl);
+      } else {
+        setError(new Error("Invalid video URL"));
+      }
+      setLoading(false);
+    } else {
+      setError(new Error("No video URL provided"));
+      setLoading(false);
+    }
+
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+    return () => {
+      if (player) {
+        stopProgressTracker();
+      }
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, [currentUrl, player]);
+
+  useEffect(() => {
+    if (player && currentUrl) {
+      const videoId = extractVideoId(currentUrl);
+      if (videoId) {
+        player.loadVideoById(videoId);
+        setLinks(currentUrl);
+      } else {
+        setError(new Error("Invalid video URL"));
+      }
+      setLoading(false);
+    }
+  }, [currentUrl, player]);
+
   const loadYouTubeAPI = (videoId) => {
     const tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
@@ -145,6 +179,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
       const newPlayer = new window.YT.Player("youtube-player", {
         videoId: videoId,
         playerVars: {
+          autoplay: 0, // 왜 자꾸 오토플레이가 되는거야..
           controls: 0,
           disablekb: 1,
           fs: 0,
@@ -244,6 +279,12 @@ const LectureVideo = ({ url, subjectVideos }) => {
     setPlaybackRate(newRate);
   };
 
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
+
   const extractVideoId = (link) => {
     console.log(link);
     const match = link.match(
@@ -336,6 +377,21 @@ const LectureVideo = ({ url, subjectVideos }) => {
 
   const renderSidebarContent = () => {
     console.log(subjectVideos);
+
+    const getYouTubeThumbnail = (url) => {
+      const videoIdMatch = url.match(
+        /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+      );
+      return videoIdMatch
+        ? `https://img.youtube.com/vi/${videoIdMatch[1]}/maxresdefault.jpg`
+        : "";
+    };
+
+    const handleLectureClick = (link) => {
+      console.log(link);
+      setCurrentUrl(link);
+    };
+
     switch (sidebarContent) {
       case "info":
         return (
@@ -346,12 +402,16 @@ const LectureVideo = ({ url, subjectVideos }) => {
             <p className="player_category">다른 강의</p>
             <div className="player_line"></div>
             <div className="player_lecture_list_container">
-              {subjectVideos.map((el, idx) => (
-                <div className="player_lecture_list_content" key={el.lectureId}>
+              {subjectVideos.map((el) => (
+                <div
+                  className="player_lecture_list_content"
+                  key={el.lectureId}
+                  onClick={() => handleLectureClick(el.link)}
+                >
                   <img
                     className="player_lecture_list_image"
                     alt="썸네일 이미지"
-                    src={el.link}
+                    src={getYouTubeThumbnail(el.link)}
                   />
                   <h1
                     className="player_lecture_list_title"
@@ -406,10 +466,6 @@ const LectureVideo = ({ url, subjectVideos }) => {
         return null;
     }
   };
-
-  // if (subjectNameError || subjectVideosError) {
-  //   return <div>데이터 로딩에 실패하였습니다.</div>;
-  // }
 
   if (loading) {
     return <p>비디오 로딩 중...</p>;
@@ -470,23 +526,40 @@ const LectureVideo = ({ url, subjectVideos }) => {
                 style={{ "--value": `${volume}%` }}
               />
             </div>
-            <div className="controls-bottom-right">
-              <select
-                value={playbackRate}
-                onChange={handlePlaybackRateChange}
-                className="playback-rate-select"
-              >
-                <option value="0.25">0.25x</option>
-                <option value="0.5">0.5x</option>
-                <option value="0.75">0.75x</option>
-                <option value="1">Normal</option>
-                <option value="1.25">1.25x</option>
-                <option value="1.5">1.5x</option>
-                <option value="2">2x</option>
-              </select>
-              <button onClick={toggleFullscreen} className="control-btn">
-                {isFullscreen ? <Minimize size={24} /> : <Maximize size={24} />}
-              </button>
+            <div
+              style={{
+                display: "flex",
+                height: "50px",
+                alignItems: "center",
+                paddingRight: "10px",
+                color: "white",
+              }}
+            >
+              <div className="time-display">
+                {formatTime(currentTime)} / {formatTime(duration)}
+              </div>
+              <div className="controls-bottom-right">
+                <select
+                  value={playbackRate}
+                  onChange={handlePlaybackRateChange}
+                  className="playback-rate-select"
+                >
+                  <option value="0.25">0.25x</option>
+                  <option value="0.5">0.5x</option>
+                  <option value="0.75">0.75x</option>
+                  <option value="1">Normal</option>
+                  <option value="1.25">1.25x</option>
+                  <option value="1.5">1.5x</option>
+                  <option value="2">2x</option>
+                </select>
+                <button onClick={toggleFullscreen} className="control-btn">
+                  {isFullscreen ? (
+                    <Minimize size={24} />
+                  ) : (
+                    <Maximize size={24} />
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -17,16 +17,17 @@ import StudentHeader from "../../components/Nav/StudentHeader";
 import StudentBadge from "./StudentBadge";
 import StudentFreeBoardDetail from "./StudentFreeBoardDetail";
 import SurveyForm from "./SurveyForm";
+import StudentQuestionBoardDetail from "./StudentQuestionBoardDetail";
 
 const StudentMain = () => {
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [username, setUsername] = useState("");
 
   const navigate = useNavigate();
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const token = localStorage.getItem("access-token");
 
   useEffect(() => {
-    const token = localStorage.getItem("access-token");
-
     try {
       const decodedToken = jwtDecode(token);
       setUsername(decodedToken.username);
@@ -35,19 +36,22 @@ const StudentMain = () => {
     }
   }, []);
 
-  console.log(username); // 잘들어옴
-
   return (
     <div className="student_dashboard_body" id="container">
       <StudentHeader />
       <StudentSideBar />
       <div className="contents">
         <Routes>
-          <Route path="" element={<StudentDashBoard />} />
+          <Route path="" element={<StudentDashBoard username={username} />} />
           <Route
             path=":subjectName/board"
             element={
-              <StudentLecture subject={selectedSubject} username={username} />
+              <StudentLecture
+                subject={selectedSubject}
+                username={username}
+                baseUrl={baseUrl}
+                token={token}
+              />
             }
           />
           <Route
@@ -55,7 +59,7 @@ const StudentMain = () => {
             element={<StudentAssignment username={username} />}
           />
           <Route
-            path="/:subjectName/boardList"
+            path="/:subjectName/board/list"
             element={<StudentSubjectBoardList username={username} />}
           />
           <Route
@@ -71,12 +75,16 @@ const StudentMain = () => {
             element={<StudentLectureDetail username={username} />}
           />
           <Route
-            path="/freeBoard"
-            element={<StudentFreeBoard username={username} />}
+            path="/questionBoards"
+            element={<StudentQuestionBoard username={username} />}
           />
           <Route
-            path="/questionBoard"
-            element={<StudentQuestionBoard username={username} />}
+            path="/questionBoards/:questionBoardId"
+            element={<StudentQuestionBoardDetail username={username} />}
+          />
+          <Route
+            path="/freeBoard"
+            element={<StudentFreeBoard username={username} />}
           />
           <Route
             path="/assignmentDetail/:homeworkId"
@@ -84,7 +92,7 @@ const StudentMain = () => {
           />
           <Route
             path="/:studentId/badge"
-            element={<StudentBadge username={username} />}
+            element={<StudentBadge username={username} baseUrl={baseUrl} />}
           />
           <Route
             path="/freeboard/:boardId"
@@ -97,7 +105,7 @@ const StudentMain = () => {
           {/* <Route path="/teacherNotice" element={< />} /> */}
           {/* 언젠가 들어올 투표 페이지 */}
           {/* <Route path="/teacherNotice" element={< />} /> */}
-          <Route path="/survey/:surveyId" element={<SurveyForm />} />{" "}
+          <Route path="/survey/:surveyId" element={<SurveyForm />} />
           {/* 설문조사 */}
         </Routes>
       </div>

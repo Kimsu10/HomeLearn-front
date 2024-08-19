@@ -80,7 +80,7 @@ const SurveyForm = () => {
                       onChange={(e) => handleInputChange(question.id, e.target.value)}
                       required
                     />
-                    매우 만족
+                    매우 불만족
                   </label>
                   <label>
                     <input
@@ -90,7 +90,7 @@ const SurveyForm = () => {
                       onChange={(e) => handleInputChange(question.id, e.target.value)}
                       required
                     />
-                    만족
+                    불만족
                   </label>
                   <label>
                     <input
@@ -110,7 +110,7 @@ const SurveyForm = () => {
                       onChange={(e) => handleInputChange(question.id, e.target.value)}
                       required
                     />
-                    불만족
+                    만족
                   </label>
                   <label>
                     <input
@@ -120,7 +120,7 @@ const SurveyForm = () => {
                       onChange={(e) => handleInputChange(question.id, e.target.value)}
                       required
                     />
-                    매우 불만족
+                    매우 만족
                   </label>
                 </>
               ) : question.type === "TEXT" ? (

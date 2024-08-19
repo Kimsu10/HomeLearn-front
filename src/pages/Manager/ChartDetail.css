@@ -1,0 +1,90 @@
+.chart-survey-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.objective-survey h2,
+.subjective-survey h2{
+    font-size:28px;
+    font-weight:bold;
+}
+
+.chart-survey-content {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid #757575;
+  background: #f0f0f0;
+}
+
+.objective-survey, .subjective-survey {
+  margin-bottom: 40px;
+}
+
+.radar-charts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.radar-chart-wrapper {
+  width: 180px;
+  height: 250px;
+  padding: 10px;
+  margin: 10px;
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid #757575;
+  text-align: center;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.radar-chart-wrapper h3 {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.text-response-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border:1px solid #757575;
+  border-radius:20px;
+  background:#fff;
+}
+
+.text-response-section h3{
+    width:1000px;
+    font-size:24px;
+    font-weight:bold;
+    display:flex;
+    justify-content:flex-start;
+    margin:10px 0 30px 0;
+}
+
+.text-response-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.text-response-card {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 20px;
+  border:1px solid #757575;
+  width: 500px;
+  height: 100px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.text-response-card p{
+    display:flex;
+    text-align:center;
+    align-items:center;
+    justify-content:center;
+}

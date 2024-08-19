@@ -1,28 +1,29 @@
 import { useEffect, useState } from "react";
 import useAxiosGet from "../../hooks/useAxiosGet";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./StudentSubjectBoardList.css";
 import useGetFetch from "../../hooks/useGetFetch";
 
 // 과목 게시판
 const StudentSubjectBoardList = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [page, setPage] = useState(0);
   const pageSize = 15;
 
-  const {
-    data: subjectBoards,
-    error,
-    loading,
-  } = useAxiosGet(
+  const { data: subjectBoards } = useAxiosGet(
     `/students/subjects/1/boards?page=${page}&size=${pageSize}`,
     []
   );
 
-  const mainLectures = useGetFetch(
-    "/data/student/mainLecture/mainLecture.json",
-    ""
-  );
+  const mainLectures = location.state?.mainLectures || {
+    name: "",
+    description: "",
+    imagePath: "",
+  };
+
+  console.log(mainLectures);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -59,7 +60,7 @@ const StudentSubjectBoardList = () => {
           src={mainLectures.imgPath}
         />
         <div className="subject_board_description_box">
-          <h1 className="subject_board_type_name">{mainLectures.title}</h1>
+          <h1 className="subject_board_type_name">{mainLectures.name}</h1>
           <p className="subject_board_type_description">
             {mainLectures.description}
           </p>
@@ -86,7 +87,10 @@ const StudentSubjectBoardList = () => {
                   style={{ cursor: "pointer" }}
                   onClick={() =>
                     navigate(
-                      `/students/${mainLectures.title}/BoardDetail/${el.boardId}`
+                      `/students/${mainLectures.name}/BoardDetail/${el.boardId}`,
+                      {
+                        state: { mainLectures },
+                      }
                     )
                   }
                 >

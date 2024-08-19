@@ -23,7 +23,6 @@ const StudentDetail = () => {
     const token = getToken();
     const config = { headers: { access: token } };
 
-    // 학생 기본 정보 가져오기
     const fetchStudent = async () => {
       try {
         const response = await axios.get(`managers/students/basic/${id}`, config);
@@ -36,7 +35,6 @@ const StudentDetail = () => {
       }
     };
 
-    // 커리큘럼 정보 가져오기
     const fetchCurriculum = async () => {
       try {
         const response = await axios.get(`managers/students/curriculum/${id}`, config);
@@ -46,7 +44,6 @@ const StudentDetail = () => {
       }
     };
 
-    // 출석 정보 가져오기
     const fetchAttendance = async () => {
       try {
         const response = await axios.get(`managers/students/attendance/${id}`, config);
@@ -109,6 +106,8 @@ const StudentDetail = () => {
     }
   };
 
+  const attendanceRatio = attendance && attendance.ratio !== undefined ? attendance.ratio.toFixed(1) : 0;
+
   if (loading) {
     return <p>로딩 중...</p>;
   }
@@ -129,7 +128,25 @@ const StudentDetail = () => {
               <h3>{curriculum.name} {curriculum.th}기</h3>
               <div className="progress-info">
                 <span>과정 진행률</span>
-                <span>{curriculum.progress}%</span>
+                <div className="student-progress-bar">
+                  <div
+                    className="student-progress-bar-inner"
+                    style={{ width: `${curriculum.progress}%` }}
+                  >
+                    {curriculum.progress}%
+                  </div>
+                </div>
+              </div>
+              <div className="progress-info">
+                <span>학생 출석률</span>
+                <div className="student-progress-bar">
+                  <div
+                    className="progress-bar-inner progress-bar-attendance"
+                    style={{ width: `${attendanceRatio}%` }}
+                  >
+                    {attendanceRatio}%
+                  </div>
+                </div>
               </div>
             </>
           )}
@@ -189,7 +206,7 @@ const StudentDetail = () => {
             ) : (
               <button onClick={() => setIsEditing(true)}>학생 정보 수정</button>
             )}
-            <button onClick={() => navigate(`/managers/manage-students`)}>목록으로 돌아가기</button>
+            <button onClick={() => navigate(`/managers/manage-students`)}>목록으로</button>
           </div>
         </div>
         <div className="student-info-right">

@@ -92,7 +92,7 @@ const StudentModal = ({
   return (
     <div className="student_modal show">
       <div className="student_modal_content">
-        <span className="close" onClick={handleClose}>
+        <span className="subject_modal_close" onClick={handleClose}>
           &times;
         </span>
         <h1 className="student_modal_title">{modalName}</h1>

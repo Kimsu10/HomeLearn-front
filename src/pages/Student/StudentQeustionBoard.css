@@ -1,0 +1,120 @@
+.student_question_board_main_container {
+  display: flex;
+  flex-direction: column;
+  width: 1140px;
+  padding: 100px 68px;
+  background-color: hwb(0 100% 0%);
+}
+
+.student_question_board_title_box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.student_question_board_title {
+  font-size: 48px;
+}
+
+.student_question_board_filtering_box {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.question_board_answer_box,
+.search_type_box {
+  width: 245px;
+  height: 50px;
+  border: 2px solid #5d8d89;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+/* 선택 박스 디자인 */
+.question_board_answer_box,
+.search_type_box {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url('data:image/svg+xml;utf8,<svg fill="green" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>')
+    no-repeat right 10px center;
+  padding: 10px 40px 10px 10px;
+  font-size: 16px;
+}
+
+.question_board_answer_box:focus,
+.search_type_box:focus {
+  outline: none;
+}
+
+.select-container {
+  position: relative;
+  display: inline-block;
+  width: 80%;
+}
+
+.select-container::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 10px;
+  height: 10px;
+  background: url('data:image/svg+xml;utf8,<svg fill="green" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>')
+    no-repeat center;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+/* 테이블  */
+
+.student_question_board_table {
+  width: 100%;
+  margin-top: 100px;
+  font-size: 24px;
+  border-collapse: separate;
+  border-spacing: 0 44px;
+  table-layout: fixed;
+}
+
+.student_question_board_table th,
+.student_question_board_table td {
+  text-align: center;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.student_question_board_table thead th {
+  border-bottom: 2px solid #5d8d89;
+}
+
+.student_question_board_number {
+  width: 20px;
+}
+
+.student_question_board_subject_ {
+  width: 100px;
+}
+
+.student_question_board_writed_title {
+  width: 300px;
+}
+
+.student_question_board_writer_name {
+  width: 100px;
+}
+
+.student_question_board_write_date {
+  width: 150px;
+}
+
+.student_question_board_comment_count {
+  width: 90px;
+}
+
+.student_question_board_comment_status {
+  width: 60px;
+}
