@@ -347,37 +347,8 @@ const LectureVideo = ({ url, subjectVideos }) => {
     switch (sidebarContent) {
       case "info":
         return (
-            <div className="player_sidebar-content">
-              <p className="player_category">동영상 정보</p>
-              <div className="player_line"></div>
-              <p className="player_title">{videoTitle}</p>
-              <p className="player_category">다른 강의</p>
-              <div className="player_line"></div>
-              <div className="player_lecture_list_container">
-                {subjectVideos.map((el, idx) => (
-                    <div className="player_lecture_list_content" key={el.lectureId}>
-                      <img
-                          className="player_lecture_list_image"
-                          alt="과목이미지"
-                          src={el.link}
-                      />
-                      <h1
-                          className="player_lecture_list_title"
-                          onClick={() =>
-                              navigate(
-                                  `/students/${el.subjectName}/lectures/${el.lectureId}`
-                              )
-                          }
-                      >
-                        {el.title}
-                      </h1>
-                      <p className="player_lecture_list_description">
-                        {el.content}
-                      </p>
-                    </div>
-                ))}
-              </div>
-            </div>
+
+
           <div className="player_sidebar-content">
             <p className="player_category">동영상 정보</p>
             <div className="player_line"></div>

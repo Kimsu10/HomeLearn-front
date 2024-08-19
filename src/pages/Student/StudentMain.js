@@ -61,7 +61,7 @@ const StudentMain = () => {
 
   return (
     <div className="student_dashboard_body" id="container">
-      {!isLecturePage && <StudentHeader />}
+      <StudentHeader />
       <StudentSideBar />
       <div className="contents">
         <Routes>

@@ -9,7 +9,6 @@ import LoginEmail from "./components/Login/Login_email";
 import ManagerMain from "./pages/Manager/ManagerMain";
 import StudentMain from "./pages/Student/StudentMain";
 import TeacherMain from "./pages/Teacher/TeacherMain";
-import YouTubePlayer from "./pages/Teacher/play";
 import LoginFindId from "./components/Login/LoginFindId";
 import LoginFindPassword from "./components/Login/LoginFindPassword";
 import PasswordReset from "./components/Login/PasswordReset";

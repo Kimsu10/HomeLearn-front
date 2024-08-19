@@ -44,6 +44,7 @@ function TeacherMain() {
     const [selectedSubject, setSelectedSubject] = useState(null);
     const [username, setUsername] = useState("");
     const location = useLocation();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const navigate = useNavigate();
 
@@ -62,7 +63,7 @@ function TeacherMain() {
 
   return (
         <div className="teacher-dashboard-body" id="container">
-            <TeacherHeader />
+            <TeacherHeader />  {/* 모달이 열려있지 않을 때만 헤더 표시 */}
             <TeacherSideBar />
           <div className="teacher-content-area">
             <Routes>
