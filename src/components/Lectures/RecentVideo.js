@@ -67,8 +67,8 @@ const RecentVideo = ({ url }) => {
         if (totalDuration > 0) {
           const currentProgress = (currentTime / totalDuration) * 100;
           setProgress(currentProgress);
-          setCurrentTime(currentTime); // Update currentTime
-          setDuration(totalDuration); // Update duration
+          setCurrentTime(currentTime);
+          setDuration(totalDuration);
         }
       }
       if (isPlaying) {

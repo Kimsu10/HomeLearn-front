@@ -519,7 +519,7 @@
   width: 80%;
 }
 
-.close {
+/* .close {
   display: flex;
   flex-direction: row-reverse;
   color: var(--studentMainColor);
@@ -532,7 +532,7 @@
   color: black;
   text-decoration: none;
   cursor: pointer;
-}
+} */
 
 .modal_title {
   text-align: center;

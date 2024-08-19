@@ -10,6 +10,7 @@ import ManagerMain from "./pages/Manager/ManagerMain";
 import StudentMain from "./pages/Student/StudentMain";
 import TeacherMain from "./pages/Teacher/TeacherMain";
 import YouTubePlayer from "./pages/Teacher/play";
+import NotFound from "./pages/NotFound";
 import LoginFindId from "./components/Login/LoginFindId";
 import LoginFindPassword from "./components/Login/LoginFindPassword";
 import PasswordReset from "./components/Login/PasswordReset";
@@ -31,6 +32,7 @@ const Router = () => {
         <Route path="/students/*" element={<StudentMain />} />
         <Route path="/teachers/*" element={<TeacherMain />} />
         <Route path="/play" element={<YouTubePlayer />} />
+        <Route path="*" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       <Footer />

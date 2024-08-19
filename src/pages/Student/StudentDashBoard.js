@@ -12,10 +12,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 // import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
 
-const StudentDashBoard = () => {
+const StudentDashBoard = ({ username }) => {
   const navigate = useNavigate();
   const [videoDuration, setVideoDuration] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [submitModal, setSubmitModal] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -31,16 +32,19 @@ const StudentDashBoard = () => {
   const [teacherNotice, setTeacherNotice] = useState([]);
 
   // 임시 변수와 값
-  const username = "kimsu10";
+
   const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const recentLectureData = await axios.get(
-          `/students/dash-boards/recentLecture`
+          `/students/dash-boards/recent-lecture`
         );
-        setRecentLecture(recentLectureData.data);
+        setRecentLecture(recentLectureData?.data);
+
+        // console.log(recentLectureData);
+        console.log(recentLecture);
 
         // const calendarManagerData = await axios.get(
         //   `/students/dash-boards/calendar/manager`
@@ -75,30 +79,13 @@ const StudentDashBoard = () => {
     fetchData();
   }, []);
 
-  const handleDurationFetched = (duration) => {
-    setVideoDuration(duration);
-  };
-
-  const calculateProgress = () => {
-    if (videoDuration && recentLecture && recentLecture.lastPosition) {
-      const progress = (
-        (recentLecture.lastPosition / videoDuration) *
-        100
-      ).toFixed(2);
-      return parseFloat(progress);
-    }
-    return 0;
-  };
-
-  useEffect(() => {
-    if (videoDuration !== null && recentLecture?.lastPosition !== undefined) {
-      calculateProgress();
-    }
-    console.log(videoDuration);
-  }, [videoDuration, recentLecture?.lastPosition]);
-
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  const openSubmit = () => setSubmitModal(true);
+  const closeSubmit = () => setSubmitModal(false);
+
+  console.log(isModalOpen);
+  console.log(submitModal);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -111,7 +98,7 @@ const StudentDashBoard = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    closeModal();
+    closeSubmit();
   };
 
   const handleFileChange = (e) => {
@@ -122,57 +109,67 @@ const StudentDashBoard = () => {
     }
   };
 
-  const url = recentLecture?.youtubeUrl;
+  // google 403 오류 보류
 
-  const YouTubeVideoDuration = ({ youtubeUrl, onDurationFetched }) => {
-    useEffect(() => {
-      const fetchVideoDuration = async () => {
-        if (!youtubeUrl) return;
+  // const handleDurationFetched = (duration) => {
+  //   setVideoDuration(duration);
+  // };
+  // const calculateProgress = () => {
+  //   if (videoDuration && recentLecture && recentLecture.lastPosition) {
+  //     const progress = (
+  //       (recentLecture.lastPosition / videoDuration) *
+  //       100
+  //     ).toFixed(2);
+  //     return parseFloat(progress);
+  //   }
+  //   return 0;
+  // };
+  // useEffect(() => {
+  //   if (videoDuration !== null && recentLecture?.lastPosition !== undefined) {
+  //     calculateProgress();
+  //   }
+  //   console.log(videoDuration);
+  // }, [videoDuration, recentLecture?.lastPosition]);
+  // const url = recentLecture?.youtubeUrl;
+  // const YouTubeVideoDuration = ({ youtubeUrl, onDurationFetched }) => {
+  //   useEffect(() => {
+  //     const fetchVideoDuration = async () => {
+  //       if (!youtubeUrl) return;
+  //       try {
+  //         const videoId =
+  //           youtubeUrl.split("v=")[1] || youtubeUrl.split("/").pop();
+  //         const response = await axios.get(
+  //           "https://www.googleapis.com/youtube/v3/videos",
+  //           {
+  //             params: {
+  //               part: "contentDetails",
+  //               id: videoId,
+  //               key: process.env.REACT_APP_YOUTUBE_API_KEY,
+  //             },
+  //           }
+  //         );
+  //         if (response.data.items.length > 0) {
+  //           const isoDuration = response.data.items[0].contentDetails.duration;
+  //           const totalSeconds = parseISODuration(isoDuration);
+  //           onDurationFetched(totalSeconds);
+  //         }
+  //       } catch (error) {
+  //         console.error("Error fetching video duration", error);
+  //       }
+  //     };
+  //     fetchVideoDuration();
+  //   }, [youtubeUrl]);
+  //   const parseISODuration = (isoDuration) => {
+  //     const match = isoDuration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+  //     if (!match) return 0;
+  //     const hours = parseInt(match[1], 10) || 0;
+  //     const minutes = parseInt(match[2], 10) || 0;
+  //     const seconds = parseInt(match[3], 10) || 0;
+  //     return hours * 3600 + minutes * 60 + seconds;
+  //   };
 
-        try {
-          const videoId =
-            youtubeUrl.split("v=")[1] || youtubeUrl.split("/").pop();
-
-          const response = await axios.get(
-            "https://www.googleapis.com/youtube/v3/videos",
-            {
-              params: {
-                part: "contentDetails",
-                id: videoId,
-                key: process.env.REACT_APP_YOUTUBE_API_KEY,
-              },
-            }
-          );
-
-          if (response.data.items.length > 0) {
-            const isoDuration = response.data.items[0].contentDetails.duration;
-            const totalSeconds = parseISODuration(isoDuration);
-            onDurationFetched(totalSeconds);
-          }
-        } catch (error) {
-          console.error("Error fetching video duration", error);
-        }
-      };
-
-      fetchVideoDuration();
-    }, [youtubeUrl]);
-
-    const parseISODuration = (isoDuration) => {
-      const match = isoDuration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
-      if (!match) return 0;
-
-      const hours = parseInt(match[1], 10) || 0;
-      const minutes = parseInt(match[2], 10) || 0;
-      const seconds = parseInt(match[3], 10) || 0;
-
-      return hours * 3600 + minutes * 60 + seconds;
-    };
-
-    return null;
-  };
-
-  console.log(url);
-  console.log(apiKey);
+  //   return null;
+  // };
 
   return (
     <div className="contents">
@@ -197,11 +194,11 @@ const StudentDashBoard = () => {
                   {recentLecture?.subjectName}
                 </h3>
                 {/* 흠.. */}
-                <YouTubeVideoDuration
+                {/* <YouTubeVideoDuration
                   youtubeUrl={url}
                   onDurationFetched={handleDurationFetched}
                   apiKey={apiKey}
-                />
+                /> */}
                 <div className="recent_video_box">
                   <i className="bi bi-play-btn play_recent_video_icon"></i>
                   <p className="recent_lecture_video_title">
@@ -209,7 +206,7 @@ const StudentDashBoard = () => {
                   </p>
                   <div className="recent_lecture_progress_container">
                     <CircularProgressbar
-                      value={calculateProgress()}
+                      value={recentLecture?.lastPosition / 100}
                       styles={buildStyles({
                         pathColor: "#A7D7C5",
                         textColor: "#5C8D89",
@@ -217,13 +214,13 @@ const StudentDashBoard = () => {
                       })}
                     />
                     <p className="recent_lecture_percentage">
-                      {calculateProgress()}%
+                      {recentLecture?.lastPosition / 100}%
                     </p>
                   </div>
                 </div>
               </div>
               <RecentLectureModal isOpen={isModalOpen} onClose={closeModal}>
-                <RecentVideo url={url} />
+                <RecentVideo url={recentLecture?.youtubeUrl} />
               </RecentLectureModal>
             </div>
             <div className="video_container">
@@ -310,40 +307,43 @@ const StudentDashBoard = () => {
                 </span>
               </div>
               <div className="dashboard_student_assignment_list_container">
-                {assignment.content?.[0] ? (
-                  <div className="dashboard_student_assignment_list_box">
-                    <h3 className="student_assignment_sub_title">과제</h3>
-                    <h4 className="student_assignment_name">
-                      {assignment.content[0]?.title}
-                    </h4>
-                    <p className="student_assignment_description">
-                      {assignment.content[0]?.description}
-                    </p>
-                    <button
-                      className="student_assignment_submit_button"
-                      onClick={openModal}
+                {assignment.length > 0 ? (
+                  assignment.map((el) => (
+                    <div
+                      key={el.homeworkId}
+                      className="dashboard_student_assignment_list_box"
                     >
-                      제출하기
-                    </button>
-                    <div className="addtional_info_box">
-                      <span className="student_assignment_deadline">
-                        ~{assignment.content[0]?.deadLine}
-                      </span>
-                      <span
-                        className="go_to_subject_page"
-                        onClick={() =>
-                          navigate(
-                            `/students/assignmentDetail/${assignment.content[0]?.homeworkId}`
-                          )
-                        }
+                      <h3 className="student_assignment_sub_title">과제</h3>
+                      <h4 className="student_assignment_name">{el.title}</h4>
+                      <p className="student_assignment_description">
+                        {el.description}
+                      </p>
+                      <button
+                        className="student_assignment_submit_button"
+                        onClick={openSubmit}
                       >
-                        자세히 보기 ⟩
-                      </span>
+                        제출하기
+                      </button>
+                      <div className="addtional_info_box">
+                        <span className="student_assignment_deadline">
+                          ~{el.deadLine}
+                        </span>
+                        <span
+                          className="go_to_subject_page"
+                          onClick={() =>
+                            navigate(
+                              `/students/assignmentDetail/${el.homeworkId}`
+                            )
+                          }
+                        >
+                          자세히 보기 ⟩
+                        </span>
+                      </div>
                     </div>
-                  </div>
+                  ))
                 ) : (
                   <div className="no_student_assignment_box">
-                    미제출한 과제가 없습니다.
+                    제출 할 과제가 없습니다.
                   </div>
                 )}
               </div>
@@ -394,8 +394,8 @@ const StudentDashBoard = () => {
         </div>
       </div>
       <StudentModal
-        isOpen={isModalOpen}
-        closeModal={closeModal}
+        isOpen={submitModal}
+        closeModal={closeSubmit}
         formData={formData}
         handleChange={handleChange}
         handleSubmit={handleSubmit}

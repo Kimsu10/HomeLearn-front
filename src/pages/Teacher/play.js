@@ -65,16 +65,15 @@ const LectureVideo = ({ url, subjectVideos }) => {
   const handleMouseEnter = () => setIsHovering(true);
   const handleMouseLeave = () => setIsHovering(false);
 
-  // 값은 잘 들어오는데 영상이 바로 뜨지 않음 ->
   console.log(url);
-  console.log(subjectVideos); // 빈배열 -> props 로 넘겨줌 아직 썸네일 미포함
+  console.log(subjectVideos);
   useEffect(() => {
     if (url) {
       const videoId = extractVideoId(url);
       console.log(videoId);
       if (videoId) {
         loadYouTubeAPI(videoId);
-        setLinks(url); //link를 추가하지 않아서 잘못된 링크라고 떴던것
+        setLinks(url);
       } else {
         setError(new Error("Invalid video URL"));
       }
@@ -106,6 +105,8 @@ const LectureVideo = ({ url, subjectVideos }) => {
         if (totalDuration > 0) {
           const currentProgress = (currentTime / totalDuration) * 100;
           setProgress(currentProgress);
+          setCurrentTime(currentTime);
+          setDuration(totalDuration);
         }
       }
       if (isPlaying) {
@@ -153,10 +154,22 @@ const LectureVideo = ({ url, subjectVideos }) => {
       }
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
     };
-  }, [currentUrl, player]); // currentUrl이 변경될 때 플레이어의 videoId도 바뀌는데 왜 영상이 안바뀌냐고오오오
+  }, [currentUrl, player]);
+
+  useEffect(() => {
+    if (player && currentUrl) {
+      const videoId = extractVideoId(currentUrl);
+      if (videoId) {
+        player.loadVideoById(videoId);
+        setLinks(currentUrl);
+      } else {
+        setError(new Error("Invalid video URL"));
+      }
+      setLoading(false);
+    }
+  }, [currentUrl, player]);
 
   const loadYouTubeAPI = (videoId) => {
-    console.log(videoId);
     const tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
     const firstScriptTag = document.getElementsByTagName("script")[0];
@@ -166,6 +179,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
       const newPlayer = new window.YT.Player("youtube-player", {
         videoId: videoId,
         playerVars: {
+          autoplay: 0, // 왜 자꾸 오토플레이가 되는거야..
           controls: 0,
           disablekb: 1,
           fs: 0,
@@ -392,7 +406,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
                 <div
                   className="player_lecture_list_content"
                   key={el.lectureId}
-                  onClick={() => handleLectureClick(el.link)} // 클릭 이벤트
+                  onClick={() => handleLectureClick(el.link)}
                 >
                   <img
                     className="player_lecture_list_image"
