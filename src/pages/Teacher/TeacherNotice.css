@@ -25,6 +25,10 @@
     cursor: pointer;
 }
 
+.notice-action-button:hover {
+    background-color: #E0E0E0;
+}
+
 .test-list {
     margin-top: 30px;
     text-align: left;
@@ -32,6 +36,60 @@
     padding-right: 20px;
 }
 
+.notice-item {
+    padding: 15px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.notice-item:hover {
+    background-color: #f9f9f9;
+}
+
+.notice-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* 긴급 공지 */
+.notice-type.urgent {
+    color: red;
+    font-weight: bold;
+}
+
+/* 일반 공지 */
+.notice-type.normal {
+    color: #757575;
+}
+
+/* 공지사항 제목, 날짜, 내용 */
+.notice-title-date {
+    display: flex;
+    flex-direction: column;
+}
+
+.notice-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.notice-date {
+    color: #757575;
+    font-size: 14px;
+}
+
+.notice-content {
+    margin-top: 15px;
+    padding-left: 10px;
+}
+
+/* 공지사항 하단 */
 .notice-footer {
     margin-top: 40px;
     margin-right: 10px;
@@ -39,9 +97,30 @@
     justify-content: flex-end;
 }
 
+/* 공지사항 페이지네이션 */
 .notice-pagination {
     display: flex;
     justify-content: center;
     margin-top: 20px;
     flex-grow: 0;
+}
+
+/* 페이지네이션 버튼 스타일 */
+.pagination button {
+    margin: 0 5px;
+    padding: 8px 12px;
+    background-color: #F4F5F7;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.pagination button:hover {
+    background-color: #E0E0E0;
+}
+
+.pagination button:disabled {
+    background-color: #CCCCCC;
+    cursor: not-allowed;
 }

@@ -1,169 +1,146 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../utils/axios";
+import useAxiosGet from "../../hooks/useAxiosGet";
+import useAxiosPost from "../../hooks/useAxiosPost";
+import useAxiosDelete from "../../hooks/useAxiosDelete";
+import Pagination from "./Pagination";
 import "./TeacherNotice.css";
 
 function TeacherNotice() {
-    const [notices, setNotices] = useState([]);
+    //const [notices, setNotices] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const pageSize = 5;
+
+    const { data: notices, loading: loadingNotices, error: errorNotices } = useAxiosGet(
+        "/teachers/notification-boards",
+        { page: currentPage, size: pageSize }
+    );
+    const { postRequest: saveNotice, loading: loadingSaveNotice, error: errorSaveNotice } = useAxiosPost(
+        "/teachers/notification-boards",
+    );
+    const { deleteRequest: deleteNotices, loading: loadingDeleteNotices, error: errorDeleteNotices } = useAxiosDelete(
+        "/teachers/notification-boards",
+    );
+
+    // 모달
+    const [checkSelect, setCheckSelect] = useState([]);
+    const [expandedNoticeId, setExpandedNoticeId] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedNotice, setSelectedNotice] = useState(null);
+    const [isModalEditing, setIsModalEditing] = useState(false);
+    const [currentNotice, setCurrentNotice] = useState({
+        noticeTitle: '',
+        noticeContent: '',
+        noticeType: '공지',
+        noticeFile: '',
+    });
 
-    useEffect(() => {
-        fetchNotices(currentPage);
-    }, [currentPage]);
-
-    const fetchNotices = async (page) => {
-        try {
-            const response = await axios.get("/teachers/notification-boards", {
-                params: { page },
+    const handleOpenNoticeModal = (notice = null) => {
+        setIsModalOpen(true);
+        if (notice) {
+            setCurrentNotice(notice);
+            setIsModalEditing(true);
+        } else {
+            setCurrentNotice({
+                noticeTitle: '',
+                noticeContent: '',
+                noticeType: '공지',
+                noticeFile: '',
             });
-            console.log('Fetched Notices:', response.data.content);
-            setNotices(response.data.content);
-            setTotalPages(response.data.totalPages);
-        } catch (error) {
-            console.error("Error fetching notices:", error);
+            setIsModalEditing(false);
         }
     };
 
-    const handleAddOrUpdateNotice = async (notice) => {
+    const handleSaveNotice = async () => {
         try {
+            // FormData 객체 생성
             const formData = new FormData();
-            formData.append("title", notice.title);
-            formData.append("content", notice.content);
-            formData.append("isEmergency", notice.isEmergency);
-            if (notice.file) formData.append("file", notice.file);
-
-            if (notice.id) {
-                // Update existing notice
-                await axios.patch(`/teachers/notification-boards/${notice.id}`, formData);
-            } else {
-                // Add new notice
-                await axios.post("/teachers/notification-boards", formData);
+            formData.append("title", currentNotice.noticeTitle);
+            formData.append("content", currentNotice.noticeContent);
+            formData.append("isEmergency", currentNotice.noticeType === '긴급');
+            if(currentNotice.noticeFile) {
+                formData.append("file", currentNotice.noticeFile);
             }
-
-            fetchNotices(currentPage);
+            await saveNotice(formData);
+            setCurrentPage(0);
             setIsModalOpen(false);
         } catch (error) {
-            console.error("Error saving notice:", error);
+            console.error("Error Saving Teacher notice", error);
         }
     };
 
     const handleDeleteNotices = async () => {
         try {
-            const selectedIds = notices.filter(notice => notice.isSelected).map(notice => notice.boardId);
-            await axios.delete("/teachers/notification-boards", {
-                data: selectedIds,
-            });
-            fetchNotices(currentPage);
+            await deleteNotices({ boardIds: checkSelect });
+            setCurrentPage(0);
+            setCheckSelect([]);
         } catch (error) {
-            console.error("Error deleting notices:", error);
+            console.error("Error Deleting Teacher notices", error);
         }
     };
 
-    const handleOpenModal = (notice = null) => {
-        setSelectedNotice(notice);
-        setIsModalOpen(true);
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setCurrentNotice((prev) => ({
+                ...prev,
+                noticeFile: file,
+            }));
+        }
     };
 
+    const handleFileDelete = () => {
+        setCurrentNotice((prev) => ({
+            ...prev,
+            noticeFile: '',
+        }));
+    };
+
+    const handleNoticeChange = (e) => {
+        const { name, value } = e.target;
+        setCurrentNotice((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    if (loadingNotices || loadingSaveNotice || loadingDeleteNotices) return <div>Loading...</div>;
+    if (errorNotices || errorSaveNotice || errorDeleteNotices) return <div>Error occurred</div>;
+
     return (
-        <div className="teacher-notice-container">
-            <div className="teacher-notice-header">
-                <h1>강사 공지사항</h1>
-                <div className="teacher-notice-actions">
-                    <button className="notice-action-button" onClick={() => handleOpenModal()}>등록</button>
+        <div className="notice-container">
+            <div className="notice-header">
+                <h1>공지사항</h1>
+                <div className="notice-actions">
+                    <button className="notice-action-button" onClick={() => handleOpenNoticeModal()}>등록</button>
                     <button className="notice-action-button" onClick={handleDeleteNotices}>삭제</button>
                 </div>
-                <hr/>
-                <div className="test-list">
-                    <h3>테스트 리스트 1번</h3>
-                    <p>8월 14일</p>
-                    <hr/>
-                </div>
-                <div className="test-list">
-                    <h3>테스트 리스트 2번</h3>
-                    <p>8월 14일</p>
-                    <hr/>
-                </div>
             </div>
 
-            <NoticeList notices={notices} onEdit={handleOpenModal}/>
-
-            <div className="notice-footer">
-                <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-            </div>
-
-            {isModalOpen && (
-                <NoticeModal notice={selectedNotice} onSave={handleAddOrUpdateNotice} onClose={() => setIsModalOpen(false)} />
-            )}
-        </div>
-    );
-}
-
-function NoticeList({ notices, onEdit }) {
-    return (
-        <div className="notice-list">
-            {notices.length > 0 ? (
-                notices.map((notice) => (
-                    <NoticeItem key={notice.boardId} notice={notice} onEdit={onEdit} />
-                ))
-            ) : (
-                <p>공지사항이 없습니다.</p>
-            )}
-        </div>
-    );
-}
-
-function NoticeItem({ notice, onEdit }) {
-    return (
-        <div className="notice-item">
-            <span className="title">{notice.title}</span>
-            <span className="date">{new Date(notice.createDate).toLocaleDateString()}</span>
-            <button onClick={() => onEdit(notice)}>수정</button>
-        </div>
-    );
-}
-
-function Pagination({ currentPage, totalPages, onPageChange }) {
-    const pages = [...Array(totalPages).keys()];
-
-    return (
-        <div className="pagination">
-            {pages.map((page) => (
-                <button
-                    key={page}
-                    className={page === currentPage ? "active" : ""}
-                    onClick={() => onPageChange(page)}
-                >
-                    {page + 1}
-                </button>
+            { notices && notices.content.map((notice) => (
+                <div key={notice.boardId} className="notice-item">
+                    <div className="notice-summary">
+                        <input
+                            type="checkbox"
+                            checked={checkSelect.includes(notice.boardId)}
+                            onChange={() => setCheckSelect((prev) =>
+                                prev.includes(notice.boardId)
+                                    ? prev.filter((id) => id !== notice.boardId)
+                                    : [...prev, notice.boardId]
+                            )}
+                        />
+                        <span
+                            className={`notice-type ${notice.noticeType === '긴급' ? 'urgent' : 'normal'}`}>{notice.noticeType}</span>
+                        <button onClick={() => handleOpenNoticeModal(notice)}>수정</button>
+                    </div>
+                </div>
             ))}
-        </div>
-    );
-}
 
-function NoticeModal({ notice, onSave, onClose }) {
-    const [title, setTitle] = useState(notice ? notice.title : "");
-    const [content, setContent] = useState(notice ? notice.content : "");
-    const [isEmergency, setIsEmergency] = useState(notice ? notice.isEmergency : false);
-    const [file, setFile] = useState(null);
-
-    const handleSubmit = () => {
-        onSave({ ...notice, title, content, isEmergency, file });
-    };
-
-    return (
-        <div className="modal">
-            <h2>{notice ? "공지사항 수정" : "공지사항 등록"}</h2>
-            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="제목" />
-            <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="내용"></textarea>
-            <label>
-                긴급 여부:
-                <input type="checkbox" checked={isEmergency} onChange={(e) => setIsEmergency(e.target.checked)} />
-            </label>
-            <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-            <button onClick={handleSubmit}>저장</button>
-            <button onClick={onClose}>취소</button>
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+            />
         </div>
     );
 }

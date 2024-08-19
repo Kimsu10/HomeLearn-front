@@ -52,8 +52,8 @@ function TeacherMain() {
               element={<CurriculumManagement />}
             />
             <Route path="manage-teachers" element={<TeacherManagement />} />
-            <Route path="notice" element={<Notice />} />
-            <Route path="teacherNotice" element={<TeacherNotice />} />
+            <Route path="notice/managerNotice" element={<Notice />} />
+            <Route path="notice/teacherNotice" element={<TeacherNotice />} />
             <Route path="contact-students" element={<StudentContact />} />
             <Route path="contact-teachers" element={<TeacherContact />} />
           </Routes>
