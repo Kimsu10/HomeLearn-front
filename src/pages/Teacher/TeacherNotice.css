@@ -1,0 +1,123 @@
+.teacher_teacher_notice_container {
+    display: flex;
+    flex-direction: column;
+    width: 1120px;
+    padding: 100px 68px;
+    background-color: #fff;
+}
+
+.teacher_teacher_notice_title_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--teacherMainColor);
+    padding-bottom: 75px;
+}
+
+.teacher_teacher_notice_page_title {
+    font-size: 48px;
+    color: var(--teacherMainColor);
+}
+
+.teacher_teacher_notice_button_container {
+    display: flex;
+    gap: 30px;
+}
+
+.teacher_teacher_notice_button {
+    border-radius: 15px;
+    border: 1px solid;
+    color: var(--teacherMainColor);
+    width: 100px;
+    height: 40px;
+}
+
+.faq_list_box {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.faq_list_item {
+    border-bottom: 1px solid #d9d9d9;
+    width: 100%;
+}
+
+.faq_list_item_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    cursor: pointer;
+}
+
+.faq_list_item_box_left {
+    display: flex;
+    align-items: center;
+}
+
+.faq_list_item_box_left input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.faq_list_item_box_notice {
+    background-color: #ff0000;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.faq_list_item_box_title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.faq_list_item_box_right {
+    display: flex;
+    align-items: center;
+}
+
+.faq_list_item_box_date {
+    margin-right: 20px;
+    color: #666;
+}
+
+.faq_list_item_box_moreBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.faq_list_item_detail {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+    background-color: #f9f9f9;
+}
+
+.faq_list_item_detail.open {
+    max-height: 1000px;
+    padding: 20px;
+    transition: max-height 0.3s ease-in, padding 0.3s ease-in;
+}
+
+.faq_list_item_detail_content {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+}
+
+.faq_list_item_attachment {
+    margin-top: 10px;
+}
+
+.faq_list_item_attachment a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.faq_list_item_attachment a:hover {
+    text-decoration: underline;
+}

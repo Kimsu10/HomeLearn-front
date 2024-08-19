@@ -19,6 +19,7 @@ import StudentLecture from "../Student/StudentLecture";
 import TeacherSubjectBoardDetail from "./TeacherSubjectBoardDetail";
 import TeacherLectureList from "./TeacherLectureList";
 import TeacherLectureDetail from "./TeacherLectureDetail";
+import TeacherNotice from "./TeacherNotice";
 
 function Dashboard() {
   return (
@@ -85,6 +86,10 @@ function TeacherMain() {
                 <Route
                     path="/:subjectName/lecture/:lecutreId"
                     element={<TeacherLectureDetail username={username} />}
+                />
+                <Route
+                    path="/notice/teacherNotice"
+                    element={<TeacherNotice username={username} />}
                 />
               <Route path="manage-curriculums" element={<CurriculumManagement />} />
               <Route path="manage-teachers" element={<TeacherManagement />} />

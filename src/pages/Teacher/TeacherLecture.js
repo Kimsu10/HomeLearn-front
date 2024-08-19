@@ -11,25 +11,21 @@ const TeacherLecture = () => {
   }, []);
 
   // 강의 영상
-  const { data: mainLectures } = useGetFetch(
-    "/data/teacher/mainLecture/mainLecture.json",
-    ""
-  );
-
-  console.log(mainLectures);
+  const {
+    data: mainLectures
+  } = useGetFetch("/data/teacher/mainLecture/mainLecture.json", "");
 
   // 과목 게시판
-  const { data: subjectBoards } = useGetFetch(
-    "/data/teacher/mainLecture/subjectBoard.json",
-    []
-  );
+  const {
+    data: subjectBoards
+  } = useGetFetch("/data/teacher/mainLecture/subjectBoard.json", []);
 
   // 질문 게시판
 
-  const { data: inquiryBoards } = useGetFetch(
-    "/data/teacher/mainLecture/inquiryBoard.json",
-    []
-  );
+  const {
+    data: inquiryBoards
+  } = useGetFetch("/data/teacher/mainLecture/inquiryBoard.json", []);
+
 
   const getYoutubeEmbedUrl = (url) => {
     const videoId = url.split("v=")[1]?.split("&")[0];
@@ -103,17 +99,11 @@ const TeacherLecture = () => {
                 >
                   <div className="teacher_subject_title_box">
                     <h4 className="teacher_subject_title">{el.title}</h4>
-                    <span className="teacher_subject_write_date">
-                      {el.writeDate}
-                    </span>
+                    <span className="teacher_subject_write_date">{el.writeDate}</span>
                   </div>
                   <div className="teacher_subject_content_box">
-                    <span className="teacher_subject_text_content">
-                      {el.content}
-                    </span>
-                    <span className="teacher_subject_file_name">
-                      {el.filePath}
-                    </span>
+                    <span className="teacher_subject_text_content">{el.content}</span>
+                    <span className="teacher_subject_file_name">{el.filePath}</span>
                   </div>
                 </div>
               ))}
@@ -139,17 +129,13 @@ const TeacherLecture = () => {
                   <div className="teacher_inquiry_title_box">
                     <div className="teacher_inquiry_type">{el.type}</div>
                     <h4 className="teacher_inquiry_list_title">{el.content}</h4>
-                    <span className="teacher_inquiry_write_date">
-                      {el.writeDate}
-                    </span>
+                    <span className="teacher_inquiry_write_date">{el.writeDate}</span>
                   </div>
                   <div className="teacher_inquiry_content_box">
                     <span className="teacher_inquiry_subject_name">
                       {el.subjectName}
                     </span>
-                    <span className="teacher_inquiry_text_content">
-                      {el.content}{" "}
-                    </span>
+                    <span className="teacher_inquiry_text_content">{el.content} </span>
                     <span className="teacher_inquiry_file_name">
                       {formatFilePath(el.filePath)}
                     </span>
@@ -163,12 +149,8 @@ const TeacherLecture = () => {
           <div className="teacher_lecture_title_box">
             <h3 className="teacher_lecture_list_title">강의영상</h3>
             <div className="teacher_button_box">
-              <button className="teacher_left_button non_style_button">
-                ⟨
-              </button>
-              <button className="teacher_right_button non_style_button">
-                ⟩
-              </button>
+              <button className="teacher_left_button non_style_button">⟨</button>
+              <button className="teacher_right_button non_style_button">⟩</button>
             </div>
           </div>
           <div className="teacher_lecture_video_container">

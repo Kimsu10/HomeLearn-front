@@ -222,7 +222,7 @@ const TeacherSideBar = () => {
               >
                 <li>
                   <NavLink
-                    to="/teahcers/notice/teacherNotice"
+                    to="/teachers/notice/teacherNotice"
                     className={({ isActive }) =>
                       isActive
                         ? "teacher_sideBar_link active"
