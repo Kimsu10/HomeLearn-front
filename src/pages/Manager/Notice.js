@@ -3,11 +3,11 @@ import "./Notice.css";
 import axios from "../../utils/axios";
 
 const Notice = () => {
-  const [notices, setNotices] = useState([]); // 공지사항 리스트 상태 관리
-  const [expandedNoticeId, setExpandedNoticeId] = useState(null); // 확장된 공지사항의 ID 상태 관리
-  const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false); // 공지사항 모달의 열림 상태 관리
-  const [isNoticeEditing, setIsNoticeEditing] = useState(false); // 공지사항 수정 모드 여부 상태 관리
-  const [currentNotice, setCurrentNotice] = useState({ // 현재 선택된 공지사항 상태 관리
+  const [notices, setNotices] = useState([]);
+  const [expandedNoticeId, setExpandedNoticeId] = useState(null);
+  const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false);
+  const [isNoticeEditing, setIsNoticeEditing] = useState(false);
+  const [currentNotice, setCurrentNotice] = useState({
     noticeId: null,
     noticeType: '공지',
     noticeTitle: '',
@@ -23,7 +23,7 @@ const Notice = () => {
     fetchNotices();
   }, []);
 
-  // 공지사항 목록을 백엔드에서 가져오는 함수
+  // 공지사항 목록
   const fetchNotices = async () => {
     try {
       const token = localStorage.getItem("access-token"); // 토큰 가져오기
@@ -38,12 +38,12 @@ const Notice = () => {
     }
   };
 
-  // 공지사항의 상세 내용을 열거나 닫는 함수
+  // 공지사항 상세 내용
   const handleToggleNotice = (noticeId) => {
     setExpandedNoticeId(expandedNoticeId === noticeId ? null : noticeId);
   };
 
-  // 공지사항 등록/수정 모달을 여는 함수
+  // 공지사항 등록/수정 모달
   const handleOpenNoticeModal = (notice = {
     noticeId: null,
     noticeType: '공지',
@@ -53,11 +53,11 @@ const Notice = () => {
     noticeFile: '',
   }) => {
     setCurrentNotice(notice);
-    setIsNoticeEditing(!!notice.noticeId); // 공지사항 ID가 존재하면 수정 모드로 설정
-    setIsNoticeModalOpen(true); // 모달 열기
+    setIsNoticeEditing(!!notice.noticeId); // 공지사항 ID가 존재하면 수정
+    setIsNoticeModalOpen(true);
   };
 
-  // 공지사항 등록/수정 모달을 닫는 함수
+  // 공지사항 등록/수정 모달 닫기
   const handleCloseNoticeModal = () => {
     setIsNoticeModalOpen(false); // 모달 닫기
     setCurrentNotice({ // 현재 공지사항 상태 초기화
@@ -91,7 +91,7 @@ const Notice = () => {
     setCurrentNotice((prev) => ({ ...prev, noticeFile: '' })); // 현재 공지사항의 파일 정보 초기화
   };
 
-  // 공지사항을 저장하는 함수 (등록 및 수정)
+  // 공지사항 저장 함수 (등록 및 수정)
   const handleSaveNotice = async () => {
     try {
       const formData = new FormData();
@@ -104,14 +104,14 @@ const Notice = () => {
 
       const token = localStorage.getItem("access-token");
 
-      if (isNoticeEditing) { // 수정 모드일 경우
+      if (isNoticeEditing) { // 수정
         await axios.patch(`/managers/notification-boards/${currentNotice.noticeId}`, formData, {
           headers: {
             access: token,
             "Content-Type": "multipart/form-data",
           },
         });
-      } else { // 등록 모드일 경우
+      } else { // 등록
         await axios.post("/managers/notification-boards", formData, {
           headers: {
             access: token,
@@ -132,7 +132,7 @@ const Notice = () => {
     try {
       const token = localStorage.getItem("access-token");
 
-      if (selectedNotices.length > 0) { // 여러 공지사항 삭제
+      if (selectedNotices.length > 0) { // 공지사항 삭제
         await axios.delete("/managers/notification-boards", {
           data: selectedNotices,
           headers: {
@@ -149,7 +149,7 @@ const Notice = () => {
       }
 
       fetchNotices(); // 공지사항 목록 갱신
-      handleCloseNoticeModal(); // 모달 닫기
+      handleCloseNoticeModal();
     } catch (error) {
       console.error("Error deleting notices:", error);
     }
@@ -197,7 +197,7 @@ const Notice = () => {
           {expandedNoticeId === notice.id && (
             <div className="notice-content">
               <button className="notice-edit-button" onClick={() => handleOpenNoticeModal({
-                noticeId: notice.id, // 공지사항 ID 전달
+                noticeId: notice.id,
                 noticeType: notice.emergency ? '긴급' : '공지',
                 noticeTitle: notice.title,
                 noticeDate: notice.date,
