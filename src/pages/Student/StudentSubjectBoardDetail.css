@@ -12,6 +12,11 @@
   font-weight: 700;
 }
 
+.lecutre_type_container {
+  display: flex;
+  align-items: center;
+}
+
 .student_subject_board_title_box {
   display: flex;
   justify-content: space-between;

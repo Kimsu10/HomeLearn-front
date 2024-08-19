@@ -84,7 +84,7 @@ const StudentLecture = ({ baseUrl }) => {
   return (
     <div className="student_lecture_container">
       <div className="main_container">
-        <div className="lecutre_type_container">
+        <div className="lecture_type_container">
           <img
             className="lecture_type_image"
             alt="과목이미지"

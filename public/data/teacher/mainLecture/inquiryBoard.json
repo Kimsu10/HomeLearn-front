@@ -1,0 +1,93 @@
+[
+  {
+    "id": 3,
+    "type": "질문",
+    "title": "JDK 설치 오류",
+    "writeDate": "2024-07-01",
+    "content": "JDK를 설치하려고 하면 'JAVA_HOME'이 없다고 나옵니다.",
+    "filePath": "JDK_설치_오류.png",
+    "writer": "학생",
+    "subjectName": "JAVA",
+    "viewCount": 1,
+    "response": [{ "userId": 1, "content": "구글 검색좀 해보렴" }]
+  },
+  {
+    "id": 7,
+    "type": "질문",
+    "title": "자바 컴파일 오류",
+    "writeDate": "2024-07-02",
+    "content": "자바 파일을 컴파일할 때 'cannot find symbol' 오류가 발생합니다.",
+    "filePath": "컴파일_오류.txt",
+    "writer": "학생3",
+    "subjectName": "JAVA",
+    "viewCount": 1,
+    "response": [
+      { "userId": 1, "content": "구글 검색좀 해보렴" },
+      { "userId": 4, "content": "지피티 한번 잡숴봐" }
+    ]
+  },
+  {
+    "id": 9,
+    "type": "질문",
+    "title": "NullPointerException",
+    "writeDate": "2024-07-03",
+    "content": "어떻게 하면 NullPointerException을 방지할 수 있을까요?",
+    "filePath": "NullPointerException_코드.png",
+    "writer": "학생4",
+    "subjectName": "JAVA",
+    "viewCount": 11,
+    "response": [
+      { "userId": 1, "content": "구글 검색좀 해보렴" },
+      { "userId": 1, "content": "인터넷에 많음" },
+      { "userId": 1, "content": "엔티티랑 dto 확인해봄?" }
+    ]
+  },
+  {
+    "id": 10,
+    "type": "질문",
+    "title": "JDBC 연결 오류",
+    "writeDate": "2024-07-04",
+    "content": "MySQL 데이터베이스에 연결하려고 할 때 'Communications link failure' 오류가 발생합니다.",
+    "filePath": "JDBC_연결_오류.png",
+    "writer": "학생1",
+    "subjectName": "MySQL",
+    "viewCount": 17,
+    "response": []
+  },
+  {
+    "id": 15,
+    "type": "질문",
+    "title": "자바 멀티스레딩",
+    "writeDate": "2024-07-05",
+    "content": "멀티스레딩을 구현할 때 주의해야 할 점은 무엇인가요?",
+    "filePath": "멀티스레딩_예제.zip",
+    "writer": "학생2",
+    "subjectName": "JAVA",
+    "viewCount": 3,
+    "response": [{ "userId": 1, "content": "구글 검색좀 해보렴" }]
+  },
+  {
+    "id": 19,
+    "type": "질문",
+    "title": "자바 스트림 API",
+    "writeDate": "2024-07-06",
+    "content": "스트림 API를 사용할 때 병렬 처리를 어떻게 구현할 수 있나요?",
+    "filePath": "스트림_API_예제.zip",
+    "writer": "학생4",
+    "subjectName": "JAVA",
+    "viewCount": 4,
+    "response": []
+  },
+  {
+    "id": 25,
+    "type": "질문",
+    "title": "자바 람다 표현식",
+    "writeDate": "2024-07-07",
+    "content": "람다 표현식을 사용하면 코드가 더 효율적으로 작성될까요?",
+    "filePath": "람다_예제.zip",
+    "writer": "학생3",
+    "subjectName": "JAVA",
+    "viewCount": 1,
+    "response": [{ "userId": 1, "content": "구글 검색좀 해보렴" }]
+  }
+]

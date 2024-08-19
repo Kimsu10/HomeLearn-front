@@ -15,6 +15,10 @@ const StudentAssignment = () => {
   const [endAssignmentsLoading, setEndAssignmentsLoading] = useState(true);
   const [endAssignmentsError, setEndAssignmentsError] = useState(null);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   //  진행중인 과제 요청
   useEffect(() => {
     const fetchCurAssignment = async () => {

@@ -6,11 +6,6 @@
   background-color: #fff;
 }
 
-.lecture_type_container {
-  display: flex;
-  align-items: center;
-}
-
 .subject_lecture_detail_video_container {
   width: 960px;
   display: flex;

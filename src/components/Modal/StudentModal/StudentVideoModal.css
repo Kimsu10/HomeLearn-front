@@ -16,24 +16,22 @@
   border-radius: 8px;
   position: relative;
   width: 100vw;
-  height: 100vh;
-  padding-top: 48px;
 }
 
 .student_video_modal_close {
   position: absolute;
-  top: 10px;
-  left: 9px;
+  top: -20px;
+  right: 20px;
   background: none;
-  border: none;
-  font-size: 32px;
+  font-size: 24px;
   cursor: pointer;
-  background-color: #fff;
-  z-index: 2001;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  padding: 0px;
-  line-height: 48px;
-  font-size: 20px;
+  color: #fff;
+  z-index: 100;
+  border: 1px solid;
+  padding: 10px;
+  width: 100px;
+}
+
+.student_video_modal_close:hover{
+  background-color: var(--studentMainColor);
 }

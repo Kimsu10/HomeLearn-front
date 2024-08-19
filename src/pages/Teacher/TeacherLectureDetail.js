@@ -1,12 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import useGetFetch from "../../hooks/useGetFetch";
-import "./StudentLectureDetail.css";
-import LectureVideo from "./StudentPlayer";
+import "./TeacherLectureDetail.css";
+import LectureVideo from "./TeacherPlayer";
 import { useEffect } from "react";
 
-const StudentLectureDetail = ({ baseUrl }) => {
-  console.log(baseUrl);
-
+const TeacherLectureDetail = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -47,4 +45,4 @@ const StudentLectureDetail = ({ baseUrl }) => {
     </div>
   );
 };
-export default StudentLectureDetail;
+export default TeacherLectureDetail;

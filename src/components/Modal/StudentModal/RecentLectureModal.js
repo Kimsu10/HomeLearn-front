@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./RecentLectureModal.css";
-import LectureVideo from "../../../pages/Teacher/play";
 
 const RecentLectureModal = ({ isOpen, onClose, children, url }) => {
   if (!isOpen) return null;
@@ -16,7 +15,6 @@ const RecentLectureModal = ({ isOpen, onClose, children, url }) => {
           X
         </button>
         {children}
-        {/* <LectureVideo url={url} /> */}
       </div>
     </div>,
     document.body

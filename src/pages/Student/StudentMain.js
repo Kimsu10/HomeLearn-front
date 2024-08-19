@@ -20,12 +20,14 @@ import SurveyForm from "./SurveyForm";
 import StudentQuestionBoardDetail from "./StudentQuestionBoardDetail";
 
 const StudentMain = () => {
+  // const [showSection, setShowSection] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [username, setUsername] = useState("");
 
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const token = localStorage.getItem("access-token");
+  const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
 
   useEffect(() => {
     try {
@@ -42,7 +44,10 @@ const StudentMain = () => {
       <StudentSideBar />
       <div className="contents">
         <Routes>
-          <Route path="" element={<StudentDashBoard username={username} />} />
+          <Route
+            path=""
+            element={<StudentDashBoard username={username} baseUrl={baseUrl} />}
+          />
           <Route
             path=":subjectName/board"
             element={
@@ -60,11 +65,18 @@ const StudentMain = () => {
           />
           <Route
             path="/:subjectName/board/list"
-            element={<StudentSubjectBoardList username={username} />}
+            element={
+              <StudentSubjectBoardList username={username} baseUrl={baseUrl} />
+            }
           />
           <Route
             path="/:subjectName/boardDetail/:id"
-            element={<StudentSubjectBoardDetail username={username} />}
+            element={
+              <StudentSubjectBoardDetail
+                username={username}
+                baseUrl={baseUrl}
+              />
+            }
           />
           <Route
             path="/lecture"
