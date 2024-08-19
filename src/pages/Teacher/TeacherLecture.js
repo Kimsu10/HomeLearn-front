@@ -12,33 +12,20 @@ const TeacherLecture = () => {
 
   // 강의 영상
   const {
-    data: mainLectures,
-    loading: mainLecturesLoading,
-    error: mainLecturesError,
+    data: mainLectures
   } = useGetFetch("/data/teacher/mainLecture/mainLecture.json", "");
 
   // 과목 게시판
   const {
-    data: subjectBoards,
-    loading: subjectBoardsLoading,
-    error: subjectBoardsError,
+    data: subjectBoards
   } = useGetFetch("/data/teacher/mainLecture/subjectBoard.json", []);
 
   // 질문 게시판
 
   const {
-    data: inquiryBoards,
-    loading: inquiryBoardsLoading,
-    error: inquiryBoardsError,
+    data: inquiryBoards
   } = useGetFetch("/data/teacher/mainLecture/inquiryBoard.json", []);
 
-  if (mainLecturesLoading || subjectBoardsLoading || inquiryBoardsLoading) {
-    return <div>데이터를 불러오는 중입니다.</div>;
-  }
-
-  if (mainLecturesError || subjectBoardsError || inquiryBoardsError) {
-    return <div>데이터를 불러오는데 오류가 발생했습니다.</div>;
-  }
 
   const getYoutubeEmbedUrl = (url) => {
     const videoId = url.split("v=")[1]?.split("&")[0];
