@@ -113,8 +113,8 @@ function PasswordReset() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-//          <div className="g-recaptcha" data-sitekey="6Lfv5iYqAAAAAAfw_OxSLJbsnxFJQ70UR73T0bH7"></div>
-//          <input type="hidden" id="gRecaptchaResponse" name="gRecaptchaResponse" />
+         <div className="g-recaptcha" data-sitekey="6Lfv5iYqAAAAAAfw_OxSLJbsnxFJQ70UR73T0bH7"></div>
+         <input type="hidden" id="gRecaptchaResponse" name="gRecaptchaResponse" />
           <div className="password-match-message">
             {confirmPassword && (
               <span className={passwordMatch ? "match" : "no-match"}>
