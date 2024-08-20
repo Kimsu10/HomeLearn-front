@@ -16,7 +16,7 @@ const ManagerHeader = () => {
 
   const deleteToken = () => {
     localStorage.removeItem("access-token");
-    navigate("/login");
+    navigate("");
   };
 
   useEffect(() => {
