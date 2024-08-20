@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import axios from '../../../utils/axios'; // axios 임포트
 import './ManagerCalendarDetail.css';
 import ManagerCalendar from './ManagerCalendar';
 import swal from "sweetalert";
@@ -12,6 +13,7 @@ const CalendarDetail = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [curriculums, setCurriculums] = useState([]); // 커리큘럼 상태 추가
 
   const predefinedColors = ['#FF9999', '#99FF99', '#9999FF'];
 
@@ -21,12 +23,24 @@ const CalendarDetail = () => {
     const foundEvent = storedEvents.find((e) => e.id === Number(eventId));
     setEvent(foundEvent);
     setSelectedEvent(foundEvent);
+
+    // 커리큘럼 정보 가져오기
+    const fetchCurriculums = async () => {
+      try {
+        const response = await axios.get('/managers/calendar/modal');
+        setCurriculums(response.data);
+      } catch (error) {
+        console.error('커리큘럼 정보 가져오기 실패:', error);
+      }
+    };
+
+    fetchCurriculums();
   }, [eventId]);
 
   const getEventsForDate = (date) => {
     return events.filter(event =>
-      new Date(event.start).toDateString() === date.toDateString() ||
-      (new Date(event.start) <= date && new Date(event.end) >= date)
+      new Date(event.startDate).toDateString() === date.toDateString() ||
+      (new Date(event.startDate) <= date && new Date(event.endDate) >= date)
     );
   };
 
@@ -91,6 +105,11 @@ const CalendarDetail = () => {
     setEditMode(false);
   };
 
+  const getCurriculumColor = (curriculumId) => {
+    const curriculum = curriculums.find(c => c.id === curriculumId);
+    return curriculum ? curriculum.color : '#ffffff'; // 기본값으로 흰색 설정
+  };
+
   return (
     <div className="detail-calendar-detail-page">
       <div className="detail-calendar-detail-sidebar">
@@ -104,9 +123,9 @@ const CalendarDetail = () => {
         <div className="detail-calendar-detail-content">
           <div className="detail-all-events">
             <ul>
-              {getEventsForDate(selectedDate || new Date(event.start)).map((evt) => (
+              {getEventsForDate(selectedDate || new Date(event.startDate)).map((evt) => (
                 <li key={evt.id} className="detail-event-item">
-                  <div className="detail-event-color" style={{ backgroundColor: evt.color }}></div>
+                  <div className="detail-event-color" style={{ backgroundColor: getCurriculumColor(evt.curriculumId) }}></div>
                   <div className="detail-event-info">
                     <div className="detail-event-title-container">
                       <span className="detail-event-title">{evt.title}</span>
@@ -120,8 +139,8 @@ const CalendarDetail = () => {
                       </div>
                     </div>
                     <div className="detail-event-dates">
-                      <p><strong>시작일:</strong> {new Date(evt.start).toLocaleDateString()}</p>
-                      <p><strong>종료일:</strong> {new Date(evt.end).toLocaleDateString()}</p>
+                      <p><strong>시작일:</strong> {new Date(evt.startDate).toLocaleDateString()}</p>
+                      <p><strong>종료일:</strong> {new Date(evt.endDate).toLocaleDateString()}</p>
                     </div>
                   </div>
                 </li>
@@ -150,15 +169,15 @@ const CalendarDetail = () => {
               />
               <input
                 type="date"
-                name="start"
-                value={selectedEvent.start}
+                name="startDate"
+                value={new Date(selectedEvent.startDate).toISOString().substr(0, 10)}
                 onChange={handleChange}
                 className="detail-event-date-input"
               />
               <input
                 type="date"
-                name="end"
-                value={selectedEvent.end}
+                name="endDate"
+                value={new Date(selectedEvent.endDate).toISOString().substr(0, 10)}
                 onChange={handleChange}
                 className="detail-event-date-input"
               />
