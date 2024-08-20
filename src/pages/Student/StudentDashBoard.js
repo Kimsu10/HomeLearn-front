@@ -10,7 +10,7 @@ import RandomVideo from "../../components/Lectures/RandomVideo";
 import LectureVideo from "../../components/Lectures/LectureVideo";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-// import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
+//import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
 
 const StudentDashBoard = ({ username, baseUrl }) => {
   const navigate = useNavigate();
