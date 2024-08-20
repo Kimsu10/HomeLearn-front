@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import StudentModal from "../../components/Modal/StudentModal/StudentModal";
+import StudentPatchModal from "../../components/Modal/StudentModal/StudentPatchModal";
 import "./StudentAssignmentDetail.css";
 import useAxiosGet from "../../hooks/useAxiosGet";
-
+import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const StudentAssignmentDetail = () => {
   const { homeworkId } = useParams();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModifyOpen, setIsModifyOpen] = useState(false);
+  const [isModifyBoxOpen, setIsModifyBoxOpen] = useState(false); // rename for clarity
+  const [isPatchModalOpen, setIsPatchModalOpen] = useState(false); // new state for patch modal
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -22,9 +24,26 @@ const StudentAssignmentDetail = () => {
 
   const openModal = () => {
     setIsModalOpen(true);
-    setIsModifyOpen(false);
+    setIsModifyBoxOpen(false);
+    setIsPatchModalOpen(false);
   };
-  const closeModal = () => setIsModalOpen(false);
+
+  const openModifyBox = () => {
+    setIsModifyBoxOpen(true);
+    setIsModalOpen(false);
+    setIsPatchModalOpen(false);
+  };
+
+  const openPatchModal = () => {
+    setIsPatchModalOpen(true);
+    setIsModifyBoxOpen(false);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setIsModifyBoxOpen(false);
+    setIsPatchModalOpen(false);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,12 +65,8 @@ const StudentAssignmentDetail = () => {
   };
 
   const handleIconClick = () => {
-    setIsModifyOpen(!isModifyOpen);
+    openModifyBox();
   };
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   // 과제 내용 GET 요청
   const { data: assignmentDetail } = useAxiosGet(
@@ -64,11 +79,16 @@ const StudentAssignmentDetail = () => {
     []
   );
 
-  console.log(homeworkId);
-  console.log(assignment);
-  console.log(assignment.mySubmitId);
-
-  // 피드백  과제  수정 요청
+  // 과제 삭제
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/students/homeworks/${assignment.mySubmitId}`);
+      window.location.reload();
+      console.log("과제 삭제 성공");
+    } catch (err) {
+      console.error("과제 삭제 중 오류 발생:", err);
+    }
+  };
 
   const splitDate = (date) => {
     return date ? date.slice(0, 10) : "no deadline";
@@ -118,12 +138,12 @@ const StudentAssignmentDetail = () => {
               className="bi bi-three-dots-vertical show_modify_box_icon"
               onClick={handleIconClick}
             ></i>
-            {isModifyOpen && (
+            {isModifyBoxOpen && (
               <div className="show_modify_box">
-                <div className="modify_btn" onClick={openModal}>
+                <div className="modify_btn" onClick={openPatchModal}>
                   수정
                 </div>
-                <div className="modify_btn" onClick="">
+                <div className="modify_btn" onClick={handleDelete}>
                   삭제
                 </div>
               </div>
@@ -194,6 +214,21 @@ const StudentAssignmentDetail = () => {
         url="/students/homeworks"
         submitName="과제 제출"
         cancelName="제출 취소"
+      />
+
+      <StudentPatchModal
+        isOpen={isPatchModalOpen}
+        closeModal={closeModal}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        handleFileChange={handleFileChange}
+        modalName="과제 수정"
+        contentBody="내용"
+        contentFile="파일 첨부"
+        isFile={assignment.uploadFileName}
+        url="/students/homeworks"
+        submitName="과제 수정"
+        cancelName="수정 취소"
       />
     </div>
   );
