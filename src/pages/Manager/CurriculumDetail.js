@@ -365,7 +365,7 @@ const CurriculumDetail = () => {
                       className="curriculum-detail-survey-button"
                       onClick={handleSurveyAction}
                     >
-                      {survey.status === "진행 중" ? "설문 마감" : "설문 등록"}
+                      {survey.status === "진행 중" ? "설문 등록" : "설문 마감"}
                     </button>
                   </div>
                 </div>
