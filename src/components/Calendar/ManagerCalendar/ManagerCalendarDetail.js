@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './ManagerCalendarDetail.css';
 import ManagerCalendar from './ManagerCalendar';
+import swal from "sweetalert";
 
 const CalendarDetail = () => {
   const { eventId } = useParams();
@@ -34,13 +35,25 @@ const CalendarDetail = () => {
   }
 
   const handleDeleteEvent = (id) => {
-    const updatedEvents = events.filter((e) => e.id !== id);
-    localStorage.setItem('calendarEvents', JSON.stringify(updatedEvents));
-    setEvents(updatedEvents);
-    if (id === selectedEvent.id) {
-      setSelectedEvent(null);
-      setEditMode(false);
-    }
+    swal({
+      title: "삭제하시겠습니까?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        const updatedEvents = events.filter((e) => e.id !== id);
+        localStorage.setItem('calendarEvents', JSON.stringify(updatedEvents));
+        setEvents(updatedEvents);
+        if (id === selectedEvent.id) {
+          setSelectedEvent(null);
+          setEditMode(false);
+        }
+        swal("일정이 성공적으로 삭제되었습니다!", {
+          icon: "success",
+        });
+      }
+    });
   };
 
   const handleEditEvent = (evt) => {
@@ -49,11 +62,22 @@ const CalendarDetail = () => {
   };
 
   const handleSaveEvent = () => {
-    const updatedEvents = events.map((e) => e.id === selectedEvent.id ? selectedEvent : e);
-    localStorage.setItem('calendarEvents', JSON.stringify(updatedEvents));
-    setEvents(updatedEvents);
-    setEvent(selectedEvent);
-    setEditMode(false);
+    swal({
+      title: "변경 사항을 저장하시겠습니까?",
+      icon: "info",
+      buttons: true,
+    }).then((willSave) => {
+      if (willSave) {
+        const updatedEvents = events.map((e) => e.id === selectedEvent.id ? selectedEvent : e);
+        localStorage.setItem('calendarEvents', JSON.stringify(updatedEvents));
+        setEvents(updatedEvents);
+        setEvent(selectedEvent);
+        setEditMode(false);
+        swal("변경 사항이 성공적으로 저장되었습니다!", {
+          icon: "success",
+        });
+      }
+    });
   };
 
   const handleChange = (e) => {
