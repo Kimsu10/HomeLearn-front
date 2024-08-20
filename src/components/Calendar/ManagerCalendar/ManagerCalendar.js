@@ -1,24 +1,46 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaCalendarPlus } from "react-icons/fa";
+import axios from "../../../utils/axios";
 import "./ManagerCalendar.css";
 import ManagerModal from "../../Modal/ManagerModal/ManagerModal";
-// import ManagerModal from '../../Modal/ManagerModal/ManagerModal';
 
 const ManagerCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [events, setEvents] = useState([]);
   const [holidays, setHolidays] = useState([]);
+  const [curriculums, setCurriculums] = useState([]); // 커리큘럼 정보 상태 추가
   const [newEvent, setNewEvent] = useState({
     title: "",
-    start: null,
-    end: null,
-    color: "#FF9999",
-    content: "",
+    startDate: null,
+    endDate: null,
+    curriculumId: "",  // 기수 선택을 위한 필드
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  const getToken = () => localStorage.getItem('access-token');
+
+  useEffect(() => {
+    const fetchCurriculums = async () => {
+      try {
+        const token = getToken();
+        const ncpResponse = await axios.get("/managers/manage-curriculums/NCP", {
+          headers: { access: token },
+        });
+        const awsResponse = await axios.get("/managers/manage-curriculums/AWS", {
+          headers: { access: token },
+        });
+        const combinedCurriculums = [...ncpResponse.data, ...awsResponse.data];
+        setCurriculums(combinedCurriculums);
+      } catch (error) {
+        console.error("커리큘럼 정보 가져오기 실패:", error);
+      }
+    };
+
+    fetchCurriculums();
+  }, []);
 
   useEffect(() => {
     const storedEvents =
@@ -138,10 +160,9 @@ const ManagerCalendar = () => {
   const handleOpenModal = () => {
     setNewEvent({
       title: "",
-      start: selectedDate,
-      end: selectedDate,
-      color: "#FF9999",
-      content: "",
+      startDate: selectedDate,
+      endDate: selectedDate,
+      curriculumId: "", // 기수 필드 초기화
     });
     setIsModalOpen(true);
   };
@@ -150,17 +171,25 @@ const ManagerCalendar = () => {
     setIsModalOpen(false);
     setNewEvent({
       title: "",
-      start: null,
-      end: null,
-      color: "#FF9999",
-      content: "",
+      startDate: null,
+      endDate: null,
+      curriculumId: "", // 기수 필드 초기화
     });
   };
 
-  const handleSaveEvent = () => {
-    if (newEvent.title && newEvent.start && newEvent.end) {
-      setEvents([...events, { ...newEvent, id: Date.now() }]);
-      handleCloseModal();
+  const handleSaveEvent = async () => {
+    if (newEvent.title && newEvent.startDate) {
+      try {
+        const response = await axios.post("/managers/calendar", newEvent);
+        if (response.status === 200) {
+          setEvents([...events, { ...newEvent, id: Date.now() }]);
+          handleCloseModal();
+        } else {
+          console.error("일정 등록 실패:", response.statusText);
+        }
+      } catch (error) {
+        console.error("일정 등록 중 오류 발생:", error);
+      }
     }
   };
 
@@ -178,8 +207,8 @@ const ManagerCalendar = () => {
   const getEventsForDate = (date) => {
     return events.filter(
       (event) =>
-        new Date(event.start).toDateString() === date.toDateString() ||
-        (new Date(event.start) <= date && new Date(event.end) >= date)
+        new Date(event.startDate).toDateString() === date.toDateString() ||
+        (new Date(event.startDate) <= date && new Date(event.endDate) >= date)
     );
   };
 
@@ -292,12 +321,15 @@ const ManagerCalendar = () => {
               <input
                 type="date"
                 value={
-                  newEvent.start
-                    ? newEvent.start.toISOString().substr(0, 10)
+                  newEvent.startDate
+                    ? newEvent.startDate.toISOString().substr(0, 10)
                     : ""
                 }
                 onChange={(e) =>
-                  setNewEvent({ ...newEvent, start: new Date(e.target.value) })
+                  setNewEvent({
+                    ...newEvent,
+                    startDate: new Date(e.target.value),
+                  })
                 }
               />
             </div>
@@ -306,24 +338,31 @@ const ManagerCalendar = () => {
               <input
                 type="date"
                 value={
-                  newEvent.end ? newEvent.end.toISOString().substr(0, 10) : ""
+                  newEvent.endDate ? newEvent.endDate.toISOString().substr(0, 10) : ""
                 }
                 onChange={(e) =>
-                  setNewEvent({ ...newEvent, end: new Date(e.target.value) })
+                  setNewEvent({
+                    ...newEvent,
+                    endDate: new Date(e.target.value),
+                  })
                 }
               />
             </div>
-            <div className="color-picker">
-              {["#FF9999", "#99FF99", "#9999FF"].map((color) => (
-                <div
-                  key={color}
-                  className={`color-option ${
-                    newEvent.color === color ? "selected" : ""
-                  }`}
-                  style={{ backgroundColor: color }}
-                  onClick={() => setNewEvent({ ...newEvent, color })}
-                ></div>
-              ))}
+            <div className="date-input-container">
+              <label>기수 선택</label>
+              <select
+                value={newEvent.curriculumId}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, curriculumId: e.target.value })
+                }
+              >
+                <option value="">기수를 선택하세요</option>
+                {curriculums.map((curriculum) => (
+                  <option key={curriculum.id} value={curriculum.id}>
+                    {curriculum.name} {curriculum.th}기
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="calendar-submit">
               <button onClick={handleSaveEvent}>등록</button>
