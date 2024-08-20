@@ -31,7 +31,8 @@ function PasswordReset() {
   }, [newPassword]);
 
   const validatePassword = (password) => {
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,18}$/;
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,18}$/;
     const isValid = passwordRegex.test(password);
     setPasswordValid(isValid);
     console.log("Password valid:", isValid);
@@ -65,9 +66,12 @@ function PasswordReset() {
         navigate("/login");
       } else {
         console.log("Response data:", response.data);
-        swal("오류", `비밀번호 재설정에 실패했습니다. 상태 코드: ${response.status}`, "error");
+        swal(
+          "오류",
+          `비밀번호 재설정에 실패했습니다. 상태 코드: ${response.status}`,
+          "error"
+        );
       }
-
     } catch (error) {
       console.error("오류:", error);
       swal("오류", "비밀번호 재설정 중 문제가 발생했습니다.", "error");
@@ -113,8 +117,15 @@ function PasswordReset() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-         <div className="g-recaptcha" data-sitekey="6Lfv5iYqAAAAAAfw_OxSLJbsnxFJQ70UR73T0bH7"></div>
-         <input type="hidden" id="gRecaptchaResponse" name="gRecaptchaResponse" />
+          <div
+            className="g-recaptcha"
+            data-sitekey="6Lfv5iYqAAAAAAfw_OxSLJbsnxFJQ70UR73T0bH7"
+          ></div>
+          <input
+            type="hidden"
+            id="gRecaptchaResponse"
+            name="gRecaptchaResponse"
+          />
           <div className="password-match-message">
             {confirmPassword && (
               <span className={passwordMatch ? "match" : "no-match"}>
