@@ -137,7 +137,6 @@ const TeacherSideBar = () => {
                 {subject && subject.length > 0 ? (
                     subject.map((el, idx) => (
                         <li key={el.subjectId}>
-                          {console.log(el.name)}
                           <NavLink
                               to={`/teachers/${el.subjectId}/board`}
                               className={({isActive}) =>
@@ -184,7 +183,7 @@ const TeacherSideBar = () => {
             {/* 5. Question Board */}
             <li>
               <NavLink
-                to="/teachers/questionBoard"
+                to="/teachers/questionBoards"
                 className={({ isActive }) =>
                   isActive
                     ? "teacher_sideBar_link active"

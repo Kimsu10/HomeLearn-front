@@ -25,14 +25,14 @@ import TeacherAssignmentDetail from "./TeacherAssignmentDetail";
 import TeacherSubjectBoardDetail from "./TeacherSubjectBoardDetail";
 import StudentLectureList from "../Student/StudentLectureList";
 import StudentLectureDetail from "../Student/StudentLectureDetail";
-import StudentQuestionBoard from "../Student/StudentQuestionBoard";
+import TeacherQuestionBoard from "./TeacherQuestionBoard";
 import StudentQuestionBoardDetail from "../Student/StudentQuestionBoardDetail";
 import TeacherSubjectBoardList from "./TeacherSubjectBoardList";
 
 
 function TeacherDashBoard() {
     return (
-        <>
+        <div className="teacher-dashboard-container">
             <div className="teacher-dashboard-title">대시보드</div>
             <div className="teacher-dashboard-grid-container">
                 <div className="teacher-dashboard-grid">
@@ -45,7 +45,7 @@ function TeacherDashBoard() {
                     <Today_It />
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 
@@ -73,14 +73,14 @@ const TeacherMain = () => {
             <TeacherHeader />
             <div className="teacher-main-content">
                 <TeacherSideBar />
-                <div className="teacher-content-area">
+                <div className="teacher-content-dashboard">
                     <Routes>
                         <Route path="" element={<TeacherDashBoard />} />
                         {/* 과목 */}
                         <Route
                             path=":subjectName/board"
                             element={
-                                <TeacherLecture subject={selectedSubject} username={username} />
+                                <TeacherLecture subject={selectedSubject} username={username}  baseUrl={baseUrl}/>
                             }
                         />
                         <Route
@@ -116,10 +116,10 @@ const TeacherMain = () => {
                         />
 
                         {/* 질문 게시판 */}
-                        {/*<Route*/}
-                        {/*    path="/questionBoards"*/}
-                        {/*    element={<TeacherQuestionBoard username={username} />}*/}
-                        {/*/>*/}
+                        <Route
+                            path="/questionBoards"
+                            element={<TeacherQuestionBoard username={username} />}
+                        />
                         {/*<Route*/}
                         {/*    path="/questionBoards/:questionBoardId"*/}
                         {/*    element={<TeacherQuestionBoardDetail username={username} />}*/}

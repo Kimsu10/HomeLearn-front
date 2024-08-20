@@ -3,6 +3,10 @@
   flex-direction: column;
 }
 
+.teacher-dashboard-container{
+  padding: 100px 0 100px 65px;
+}
+
 .teacher-dashboard-title{
   font-size: 48px;
   padding: 0 0 50px 0;
@@ -14,7 +18,7 @@
   flex: 1;
 }
 
-.teacher-content-area {
+.teacher-content-dashboard {
   flex: 1;
   /*padding: 100px 0 100px 65px;*/
   width: 1120px;

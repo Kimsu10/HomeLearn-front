@@ -1,0 +1,126 @@
+.teacher_question_board_main_container {
+  display: flex;
+  flex-direction: column;
+  width: 1140px;
+  padding: 100px 68px;
+  background-color: hwb(0 100% 0%);
+}
+
+.teacher_question_board_title_box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.teacher_question_board_title {
+  font-size: 48px;
+}
+
+.teacher_question_board_filtering_box {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.teacher_question_board_answer_box,
+.teacher_search_type_box {
+  width: 245px;
+  height: 50px;
+  border: 2px solid var(--teacherMainColor);
+  border-radius: 20px;
+  padding: 10px;
+}
+
+/* 선택 박스 디자인 */
+.teacher_question_board_answer_box,
+.teacher_search_type_box {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url('data:image/svg+xml;utf8,<svg fill="green" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>')
+  no-repeat right 10px center;
+  padding: 10px 40px 10px 10px;
+  font-size: 16px;
+}
+
+.teacher_question_board_answer_box:focus,
+.teacher_search_type_box:focus {
+  outline: none;
+}
+
+.teacher_select-container {
+  position: relative;
+  display: inline-block;
+  width: 80%;
+}
+
+.teacher_select-container::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 10px;
+  height: 10px;
+  background: url('data:image/svg+xml;utf8,<svg fill="green" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>')
+  no-repeat center;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+/* 테이블  */
+
+.teacher_question_board_table {
+  width: 100%;
+  margin-top: 100px;
+  font-size: 24px;
+  border-collapse: separate;
+  table-layout: fixed;
+
+}
+
+.teacher_question_board_table tr{
+  height: 85px;
+}
+
+.teacher_question_board_table th,
+.teacher_question_board_table td {
+  text-align: center;
+  padding: 20px 0 10px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teacher_question_board_table thead th {
+  border-bottom: 2px solid var(--teacherMainColor);
+  color: var(--teacherMainColor);
+  padding: 10px;
+}
+
+.teacher_question_board_number {
+  /*width: 20px;*/
+}
+
+.teacher_question_board_subject_ {
+  width: 100px;
+}
+
+.teacher_question_board_writed_title {
+  width: 300px;
+}
+
+.teacher_question_board_writer_name {
+  width: 100px;
+}
+
+.teacher_question_board_write_date {
+  width: 150px;
+}
+
+.teacher_question_board_comment_count {
+  width: 90px;
+}
+
+.teacher_question_board_comment_status {
+  width: 60px;
+}
