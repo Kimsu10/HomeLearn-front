@@ -80,7 +80,7 @@ const TeacherLecture = () => {
               <span
                 className="teacher_go_to_show_more_page"
                 onClick={() =>
-                  navigate(`/teachers/${mainLectures.title}/boardList`)
+                  navigate(`/teachers/${mainLectures.title}/board/list`)
                 }
               >
                 더보기 ⟩
@@ -145,7 +145,7 @@ const TeacherLecture = () => {
             </div>
           </div>
         </div>
-        <div className="teacher_lecture_list_container">
+        <div className="teacher_lecture_playlist_container">
           <div className="teacher_lecture_title_box">
             <h3 className="teacher_lecture_list_title">강의영상</h3>
             <div className="teacher_button_box">

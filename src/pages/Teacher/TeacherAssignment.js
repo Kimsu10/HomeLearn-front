@@ -144,7 +144,6 @@ const TeacherAssignment = () => {
             console.log("과제 등록 응답 : ", response.data);
             if (response.status === 200) {
                 setIsModalOpen(false);
-                fetchCurAssignment();
             } else {
                 console.error("과제 등록 실패");
             }

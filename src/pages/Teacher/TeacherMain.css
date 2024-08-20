@@ -3,6 +3,12 @@
   flex-direction: column;
 }
 
+.teacher-dashboard-title{
+  font-size: 48px;
+  padding: 0 0 50px 0;
+  color: var(--teacherMainColor);
+}
+
 .teacher-main-content {
   display: flex;
   flex: 1;
