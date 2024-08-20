@@ -79,10 +79,11 @@ const StudentAssignmentDetail = () => {
     []
   );
 
-  // 과제 삭제 - postman 403
+  // 과제 삭제
   const handleDelete = async () => {
     try {
-      await axios.delete(`/students/homeworks/${homeworkId}`);
+      await axios.delete(`/students/homeworks/${assignment.mySubmitId}`);
+      window.location.reload();
       console.log("과제 삭제 성공");
     } catch (err) {
       console.error("과제 삭제 중 오류 발생:", err);
@@ -208,7 +209,6 @@ const StudentAssignmentDetail = () => {
         handleFileChange={handleFileChange}
         selectedFileName={formData.selectedFileName}
         modalName="과제 제출"
-        contentTitle="제목"
         contentBody="내용"
         contentFile="파일 첨부"
         url="/students/homeworks"
