@@ -169,7 +169,7 @@ const TeacherHeader = () => {
               <div>
                 <img
                   className="teacher_h-profile_img"
-                  src={teacher.imagePath || "/default-profile.png"}
+                  src={teacher.imagePath || "/images/TeacherProfile.png"} // 기본 이미지 사용
                   alt="프로필"
                 />
               </div>

@@ -101,8 +101,20 @@ const StudentModal = ({
         </span>
         <h1 className="student_modal_title">{modalName}</h1>
         <form onSubmit={handleSubmit} className="student_modal_form_body">
+          {contentTitle && (
+            <label>
+              <p className="student_modal_name_tag">{contentTitle}</p>
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                className="student_modal_input_title"
+              />
+            </label>
+          )}
           <label>
-            <p className="student_modal_name_tag">{contentTitle}</p>
+            <p className="student_modal_name_tag">{contentBody}</p>
             <textarea
               name="description"
               value={formData.description}
