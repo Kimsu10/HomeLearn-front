@@ -1,26 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-    const handlePrevious = () => {
-        if (currentPage > 0) {
-            onPageChange(currentPage - 1);
-        }
-    };
+    const [pageNumbers, setPageNumbers] = useState([]);
 
-    const handleNext = () => {
-        if (currentPage + 1 < totalPages) {
-            onPageChange(currentPage + 1);
+    useEffect(() => {
+        const pageSize = 10;
+        const currentBlock = Math.floor((currentPage - 1) / pageSize);
+        const startPage = currentBlock * pageSize + 1;
+        const endPage = Math.min(startPage + pageSize - 1, totalPages);
+
+        const newPageNumbers = [];
+        for (let i = startPage; i <= endPage; i++) {
+            newPageNumbers.push(i);
         }
-    };
+        setPageNumbers(newPageNumbers);
+    }, [currentPage, totalPages]);
 
     return (
         <div className="pagination">
-            <button onClick={handlePrevious} disabled={currentPage === 0}>
-                Previous
+            <button onClick={() => onPageChange(1)} disabled={currentPage === 1}>
+                처음
             </button>
-            <span>{currentPage + 1} / {totalPages}</span>
-            <button onClick={handleNext} disabled={currentPage + 1 === totalPages}>
-                Next
+
+            <button onClick={() => onPageChange(Math.max(pageNumbers[0] - 1, 1))} disabled={currentPage === 1}>
+                이전
+            </button>
+
+            {pageNumbers.map((number) => (
+                <button
+                    key={number}
+                    onClick={() => onPageChange(number)}
+                    className={number === currentPage ? 'active' : ''}>
+                    {number}
+                </button>
+            ))}
+            <button onClick={() => onPageChange(Math.min(pageNumbers[pageNumbers.length - 1] + 1, totalPages))}
+                    disabled={currentPage === totalPages}>
+                다음
+            </button>
+            <button onClick={() => onPageChange(totalPages)}
+                    disabled={currentPage === totalPages}>
+                마지막
             </button>
         </div>
     );
