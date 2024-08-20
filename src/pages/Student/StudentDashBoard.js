@@ -216,12 +216,7 @@ const StudentDashBoard = ({ username, baseUrl }) => {
             </div>
           </div>
           <div className="right_container">
-            <div className="calander-container">
-              <h3 className="components_title">캘린더</h3>
-              <div className="calander">
-                <StudentCalendar /> {/* StudentCalendar 컴포넌트를 추가하여 캘린더를 표시 */}
-              </div>
-            </div>
+                <StudentCalendar />
             <div className="subject_container">
               <div className="title_box">
                 <h3 className="components_title">과제 목록</h3>
