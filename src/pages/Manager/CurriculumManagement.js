@@ -27,7 +27,6 @@ const CurriculumManagement = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewCurriculum({ ...newCurriculum, [name]: value });
-    console.log(`입력 변경됨 - ${name}: ${value}`);
   };
 
   const handleCourseChange = (courseName) => {
@@ -39,20 +38,26 @@ const CurriculumManagement = () => {
       courseLabel = "AWS 자바 웹 개발자 과정";
     }
 
-    setNewCurriculum({ ...newCurriculum, type: courseName, courseLabel: courseLabel });
-    console.log(`과정 변경됨: ${courseLabel}`);
+    setNewCurriculum({
+      ...newCurriculum,
+      type: courseName,
+      courseLabel: courseLabel,
+    });
   };
 
   const handleColorChange = (color) => {
     setNewCurriculum({ ...newCurriculum, color: color.hex });
     setIsColorPickerOpen(false);
-    console.log(`색상 선택됨: ${color.hex}`);
   };
 
   const handleAddCurriculum = async () => {
     // 색상 중복 체크
     if (colors.includes(newCurriculum.color.toLowerCase())) {
-      swal("등록 실패", "이미 사용된 색상입니다. 다른 색상을 선택하세요.", "warning");
+      swal(
+        "등록 실패",
+        "이미 사용된 색상입니다. 다른 색상을 선택하세요.",
+        "warning"
+      );
       return;
     }
 
@@ -65,11 +70,13 @@ const CurriculumManagement = () => {
     };
 
     // teacherId가 유효한 경우에만 추가
-    if (newCurriculum.teacherId && !isNaN(newCurriculum.teacherId) && newCurriculum.teacherId !== "") {
+    if (
+      newCurriculum.teacherId &&
+      !isNaN(newCurriculum.teacherId) &&
+      newCurriculum.teacherId !== ""
+    ) {
       newCurriculumItem.teacherId = parseInt(newCurriculum.teacherId, 10);
     }
-
-    console.log("전송 준비된 교육 과정:", newCurriculumItem);
 
     // 날짜 유효성 검사
     if (new Date(newCurriculum.endDate) <= new Date(newCurriculum.startDate)) {
@@ -90,8 +97,6 @@ const CurriculumManagement = () => {
         }
       );
 
-      console.log("응답 수신:", response.data);
-
       if (response.status === 200) {
         setIsModalOpen(false);
         await fetchCurriculums(newCurriculum.type);
@@ -99,39 +104,42 @@ const CurriculumManagement = () => {
         swal("등록 성공", "교육 과정이 성공적으로 등록되었습니다.", "success");
       } else {
         console.error("교육 과정 등록 실패");
-        swal("등록 실패", "교육 과정 등록에 실패했습니다. 다시 시도해주세요.", "error");
+        swal(
+          "등록 실패",
+          "교육 과정 등록에 실패했습니다. 다시 시도해주세요.",
+          "error"
+        );
       }
     } catch (error) {
       console.error("교육 과정 등록 중 오류 발생:", error);
-      swal("등록 실패", "교육 과정 등록 중 오류가 발생했습니다. 다시 시도해주세요.", "error");
+      swal(
+        "등록 실패",
+        "교육 과정 등록 중 오류가 발생했습니다. 다시 시도해주세요.",
+        "error"
+      );
     }
   };
-
 
   const fetchEnrollReadyData = async () => {
     try {
       const token = getToken();
-      console.log("등록 준비 데이터 가져오는 중...");
+
       const response = await axios.get("/managers/enroll-curriculum-ready", {
         headers: { access: token },
       });
 
       const { teachers: availableTeachers, colors: usedColors } = response.data;
 
-      const assignedTeacherIds = [
-        ...ncpCurriculums,
-        ...awsCurriculums
-      ].filter(curriculum => curriculum.teacherId)
-        .map(curriculum => curriculum.teacherId);
+      const assignedTeacherIds = [...ncpCurriculums, ...awsCurriculums]
+        .filter((curriculum) => curriculum.teacherId)
+        .map((curriculum) => curriculum.teacherId);
 
       const availableTeachersFiltered = availableTeachers.filter(
         (teacher) => !assignedTeacherIds.includes(teacher.id)
       );
 
       setTeachers(availableTeachersFiltered);
-      setColors(usedColors.map(color => color.toLowerCase()));
-      console.log("강사 및 색상 데이터 가져옴:", response.data);
-
+      setColors(usedColors.map((color) => color.toLowerCase()));
     } catch (error) {
       console.error("등록 준비 데이터 가져오기 중 오류 발생:", error);
       setTeachers([]);
@@ -142,11 +150,10 @@ const CurriculumManagement = () => {
   const fetchCurriculums = async (type) => {
     try {
       const token = getToken();
-      console.log(`${type} 과정 교육 과정 목록 가져오는 중...`);
+
       const response = await axios.get(`/managers/manage-curriculums/${type}`, {
         headers: { access: token },
       });
-      console.log(`${type} 과정 목록 응답:`, response.data);
 
       if (type === "NCP") {
         setNcpCurriculums(response.data || []);
@@ -154,7 +161,10 @@ const CurriculumManagement = () => {
         setAwsCurriculums(response.data || []);
       }
     } catch (error) {
-      console.error(`${type} 과정 교육 과정 목록 가져오기 중 오류 발생:`, error);
+      console.error(
+        `${type} 과정 교육 과정 목록 가져오기 중 오류 발생:`,
+        error
+      );
     }
   };
 

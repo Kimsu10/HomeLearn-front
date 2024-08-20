@@ -45,14 +45,6 @@ const StudentDashBoard = ({ username, baseUrl }) => {
         );
         setRecentLecture(recentLectureData?.data);
 
-        // console.log(recentLectureData);
-        console.log(recentLecture);
-
-        // const calendarManagerData = await axios.get(
-        //   `/students/dash-boards/calendar/manager`
-        // );
-        // setCalendarManager(calendarManagerData.data);
-
         const questionData = await axios.get(`/students/dash-boards/questions`);
         setQuestion(questionData.data);
 

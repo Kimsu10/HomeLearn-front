@@ -77,7 +77,6 @@ const StudentBadge = ({ baseUrl }) => {
               }`}
               onClick={() => {
                 handleBadgeClick(el.badgeId);
-                console.log(el.badgeId);
               }}
             >
               {el.obtainCount > 0 ? (

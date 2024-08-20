@@ -36,7 +36,6 @@ const StudentLecture = ({ baseUrl }) => {
 
   //강의 영상 리스트
   const { data: lectures } = useAxiosGet(`/students/lectures/sub`);
-  console.log(lectures);
 
   useEffect(() => {
     // 현재 페이지에 해당하는 데이터를 설정합니다.

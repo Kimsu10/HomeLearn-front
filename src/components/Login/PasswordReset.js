@@ -16,9 +16,7 @@ function PasswordReset() {
   useEffect(() => {
     if (location.state?.username) {
       setUsername(location.state.username);
-      console.log("Received username:", location.state.username);
     } else {
-      console.log("No username found in location.state");
     }
   }, [location.state]);
 
@@ -31,10 +29,10 @@ function PasswordReset() {
   }, [newPassword]);
 
   const validatePassword = (password) => {
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,18}$/;
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,18}$/;
     const isValid = passwordRegex.test(password);
     setPasswordValid(isValid);
-    console.log("Password valid:", isValid);
   };
 
   const handleSubmit = async (e) => {
@@ -51,10 +49,6 @@ function PasswordReset() {
     }
 
     try {
-      console.log("Submitting password reset request:");
-      console.log("Username:", username);
-      console.log("New password:", newPassword);
-
       const response = await axios.post("/account/reset-password", {
         username: username,
         password: newPassword,
@@ -64,10 +58,12 @@ function PasswordReset() {
         swal("성공", "비밀번호가 성공적으로 재설정되었습니다.", "success");
         navigate("/login");
       } else {
-        console.log("Response data:", response.data);
-        swal("오류", `비밀번호 재설정에 실패했습니다. 상태 코드: ${response.status}`, "error");
+        swal(
+          "오류",
+          `비밀번호 재설정에 실패했습니다. 상태 코드: ${response.status}`,
+          "error"
+        );
       }
-
     } catch (error) {
       console.error("오류:", error);
       swal("오류", "비밀번호 재설정 중 문제가 발생했습니다.", "error");
@@ -113,8 +109,15 @@ function PasswordReset() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-         <div className="g-recaptcha" data-sitekey="6Lfv5iYqAAAAAAfw_OxSLJbsnxFJQ70UR73T0bH7"></div>
-         <input type="hidden" id="gRecaptchaResponse" name="gRecaptchaResponse" />
+          <div
+            className="g-recaptcha"
+            data-sitekey="6Lfv5iYqAAAAAAfw_OxSLJbsnxFJQ70UR73T0bH7"
+          ></div>
+          <input
+            type="hidden"
+            id="gRecaptchaResponse"
+            name="gRecaptchaResponse"
+          />
           <div className="password-match-message">
             {confirmPassword && (
               <span className={passwordMatch ? "match" : "no-match"}>

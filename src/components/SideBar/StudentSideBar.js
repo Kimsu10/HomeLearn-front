@@ -11,7 +11,6 @@ const StudentSideBar = () => {
   const location = useLocation();
 
   const { data: subjects, error: subjectError } = useAxiosGet("/side-bar", []);
-  console.log(subjects);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,8 +23,6 @@ const StudentSideBar = () => {
     };
     fetchData();
   }, []);
-
-  console.log(user);
 
   useEffect(() => {
     const path = location.pathname;

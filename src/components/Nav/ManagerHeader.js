@@ -32,10 +32,11 @@ const ManagerHeader = () => {
         setManager(commonResponse.data);
 
         // 알림 정보 가져오기
-        const notificationResponse = await axios.get("/header/notifications", config);
+        const notificationResponse = await axios.get(
+          "/header/notifications",
+          config
+        );
         setNotifications(notificationResponse.data.notifications || []);
-
-        console.log("알림 정보:", notificationResponse.data.notifications);
       } catch (error) {
         console.error("데이터 가져오기 오류:", error.response);
       }
