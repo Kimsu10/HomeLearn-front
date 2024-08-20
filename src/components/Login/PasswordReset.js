@@ -28,26 +28,6 @@ function PasswordReset() {
     validatePassword(newPassword);
   }, [newPassword]);
 
-  // reCAPTCHA 확인 로직 추가
-  useEffect(() => {
-    const form = document.querySelector("form");
-    form.addEventListener("submit", function (event) {
-      const recaptchaResponse = document.querySelector(
-        ".g-recaptcha-response"
-      ).value;
-      if (!recaptchaResponse) {
-        alert("reCAPTCHA를 완료해 주세요.");
-        event.preventDefault();
-        return false;
-      }
-      document.getElementById("gRecaptchaResponse").value = recaptchaResponse;
-    });
-
-    return () => {
-      form.removeEventListener("submit", function () {});
-    };
-  }, []);
-
   const validatePassword = (password) => {
     const passwordRegex =
       /^(?=.*[A-Z])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,18}$/;
@@ -68,6 +48,16 @@ function PasswordReset() {
       swal("입력 오류", "모든 필드를 입력하세요.", "warning");
       return;
     }
+
+    // reCAPTCHA 확인 로직 추가
+    const recaptchaResponse = document.querySelector(
+        ".g-recaptcha-response"
+    ).value;
+    if (!recaptchaResponse) {
+      alert("reCAPTCHA를 완료해 주세요.");
+      return;
+    }
+    document.getElementById("gRecaptchaResponse").value = recaptchaResponse;
 
     try {
       const response = await axios.post("/account/reset-password", {
