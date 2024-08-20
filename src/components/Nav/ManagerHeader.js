@@ -1,10 +1,15 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useParams, NavLink, useNavigate } from "react-router-dom";
 import axios from "../../utils/axios";
 import "./ManagerHeader.css";
 
 const ManagerHeader = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const [curriculum, setCurriculum] = useState({
+    curriculumFullName: "",
+  });
+
   const [manager, setManager] = useState({
     name: "",
     imagePath: "",
@@ -27,23 +32,20 @@ const ManagerHeader = () => {
           headers: { access: token },
         };
 
-        // 공통 데이터 가져오기
         const commonResponse = await axios.get("/header/common", config);
-        setManager(commonResponse.data);
+        setCurriculum(commonResponse.data);
 
-        // 알림 정보 가져오기
-        const notificationResponse = await axios.get(
-          "/header/notifications",
-          config
-        );
+        const notificationResponse = await axios.get("/header/notifications", config);
         setNotifications(notificationResponse.data.notifications || []);
+
+        console.log("알림 정보:", notificationResponse.data.notifications);
       } catch (error) {
         console.error("데이터 가져오기 오류:", error.response);
       }
     };
 
     fetchData();
-  }, []);
+  }, [id]);
 
   const [openDropdown, setOpenDropdown] = useState(null);
   const alarmRef = useRef(null);
@@ -92,12 +94,15 @@ const ManagerHeader = () => {
               />
             </a>
           </h1>
+          <span className="manager_h-curriculum_name">
+            {curriculum.curriculumFullName}
+          </span>
         </div>
 
         <div className="manager_h-right">
           <ul className="manager_h-gnb_items">
             <li>
-              <NavLink to="/managers">
+              <NavLink to="/">
                 <span>
                   <i className="fa-solid fa-clipboard-list"></i>
                 </span>
@@ -153,7 +158,7 @@ const ManagerHeader = () => {
               <div>
                 <img
                   className="manager_h-profile_img"
-                  src={manager.imagePath || "/default-profile.png"}
+                  src={manager.imagePath || "/images/AdminProfile.png"}
                   alt="프로필"
                 />
               </div>

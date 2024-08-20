@@ -71,7 +71,13 @@ const CurriculumDetail = () => {
           `/managers/curriculum/${id}/basic`,
           config
         );
-        setCurriculum(basicResponse.data);
+
+        console.log('Fetched Curriculum Data:', basicResponse.data); // 데이터 확인용
+        setCurriculum({
+          ...basicResponse.data,
+          startDate: basicResponse.data.startDate,  // 추가
+          endDate: basicResponse.data.endDate,      // 추가
+        });
 
         // 강사 정보 가져오기
         const teacherResponse = await axios.get(
@@ -107,6 +113,8 @@ const CurriculumDetail = () => {
 
     fetchData();
   }, [id]);
+
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -165,6 +173,7 @@ const CurriculumDetail = () => {
       swal("수정 실패", "교육 과정 수정 중 오류가 발생했습니다. 다시 시도해주세요.", "error");
     }
   };
+
 
   const handleDeleteCurriculum = () => {
     setIsDeleteModalOpen(true);
@@ -277,7 +286,12 @@ const CurriculumDetail = () => {
         <div className="curriculum-detail-title-progress-bar">
           <h2 className="curriculum-detail-title">
             {curriculum.name} {curriculum.th}기
+               <div className="curriculum-detail-dates">
+               <p><strong>시작일:</strong> {curriculum.startDate}</p>
+               <p><strong>종료일:</strong> {curriculum.endDate}</p>
+              </div>
           </h2>
+
           <div className="curriculum-detail-progress-container">
             <span className="curriculum-detail-progress-title">과정 현황</span>
             <div className="curriculum-detail-progress-bar">
@@ -365,7 +379,7 @@ const CurriculumDetail = () => {
                       className="curriculum-detail-survey-button"
                       onClick={handleSurveyAction}
                     >
-                      {survey.status === "진행 중" ? "설문 마감" : "설문 등록"}
+                      {survey.status === "진행 중" ? "설문 등록" : "설문 마감"}
                     </button>
                   </div>
                 </div>

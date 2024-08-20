@@ -87,44 +87,49 @@ function Register() {
     fileInputRef.current.click();
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!passwordMatch || !usernameAvailable || !usernameValid || !passwordValid) {
-      return;
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!passwordMatch || !usernameAvailable || !usernameValid || !passwordValid) {
+    return;
+  }
+
+  try {
+    const registerData = new FormData();
+    registerData.append('username', username);
+    registerData.append('password', password);
+    registerData.append('name', name);
+    registerData.append('phone', phone);
+    registerData.append('email', email);
+
+    if (gender) {
+      registerData.append('gender', gender);
     }
 
-    try {
-      const registerData = new FormData();
-      registerData.append('username', username);
-      registerData.append('password', password);
-      registerData.append('name', name);
-      registerData.append('phone', phone);
-      registerData.append('email', email);
+    if (profileImage) {
+      registerData.append('image', profileImage); // 이미지 파일 추가
+    }
 
-      if (gender) {
-        registerData.append('gender', gender);
-      }
+    // 콘솔에 데이터를 출력합니다.
+    for (let pair of registerData.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
 
-      if (profileImage) {
-        registerData.append('profileImage', profileImage); // 이미지 파일 추가
-      }
+    const response = await axios.post('/register', registerData, {
+      headers: {
+        'Content-Type': 'multipart/form-data', // 파일 전송 시에는 multipart/form-data 사용
+      },
+    });
 
-      const response = await axios.post('/register', registerData, {
-        headers: {
-          'Content-Type': 'multipart/form-data', // 파일 전송 시에는 multipart/form-data 사용
-        },
+    if (response.status === 200) {
+      swal("회원가입 성공", "회원가입이 성공적으로 완료되었습니다.", "success").then(() => {
+        navigate('/login');
       });
-
-      if (response.status === 200) {
-        swal("회원가입 성공", "회원가입이 성공적으로 완료되었습니다.", "success").then(() => {
-          navigate('/login');
-        });
-      }
-    } catch (error) {
-      console.error('회원가입 실패:', error);
-      swal("회원가입 실패", "회원가입 중 오류가 발생했습니다. 다시 시도해 주세요.", "error");
     }
-  };
+  } catch (error) {
+    console.error('회원가입 실패:', error);
+    swal("회원가입 실패", "회원가입 중 오류가 발생했습니다. 다시 시도해 주세요.", "error");
+  }
+};
 
   const handlePreviousStep = () => {
     navigate('/email');
