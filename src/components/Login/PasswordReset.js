@@ -28,11 +28,32 @@ function PasswordReset() {
     validatePassword(newPassword);
   }, [newPassword]);
 
+  // reCAPTCHA 확인 로직 추가
+  useEffect(() => {
+    const form = document.querySelector("form");
+    form.addEventListener("submit", function (event) {
+      const recaptchaResponse = document.querySelector(
+        ".g-recaptcha-response"
+      ).value;
+      if (!recaptchaResponse) {
+        alert("reCAPTCHA를 완료해 주세요.");
+        event.preventDefault();
+        return false;
+      }
+      document.getElementById("gRecaptchaResponse").value = recaptchaResponse;
+    });
+
+    return () => {
+      form.removeEventListener("submit", function () {});
+    };
+  }, []);
+
   const validatePassword = (password) => {
     const passwordRegex =
       /^(?=.*[A-Z])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,18}$/;
     const isValid = passwordRegex.test(password);
     setPasswordValid(isValid);
+    console.log("Password valid:", isValid);
   };
 
   const handleSubmit = async (e) => {
@@ -58,6 +79,7 @@ function PasswordReset() {
         swal("성공", "비밀번호가 성공적으로 재설정되었습니다.", "success");
         navigate("/login");
       } else {
+        console.log("Response data:", response.data);
         swal(
           "오류",
           `비밀번호 재설정에 실패했습니다. 상태 코드: ${response.status}`,

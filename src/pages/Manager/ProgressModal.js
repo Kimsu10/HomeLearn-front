@@ -35,6 +35,8 @@ const ProgressModal = ({ isOpen, onClose }) => {
     }
   }, [targetProgressRef.current, uploadProgress, animateProgress]);
 
+  console.log(process.env.REACT_APP_BASE_URL);
+
   useEffect(() => {
     if (isOpen) {
       setUploadProgress(0);
@@ -44,13 +46,14 @@ const ProgressModal = ({ isOpen, onClose }) => {
       setSuccessCount(0);
       targetProgressRef.current = 0;
       // 소켓 연결
-      const socket = new SockJS(`http://localhost:8080/gs-guide-websocket`);
+      const socket = new SockJS(`http://223.130.141.27/gs-guide-websocket`);
       const stompClient = new Client({
         webSocketFactory: () => socket,
         onConnect: () => {
+          console.log("Connected to WebSocket");
           stompClient.subscribe("/topic/progress", (message) => {
             const progressUpdate = JSON.parse(message.body);
-
+            console.log("Received progress update:", progressUpdate);
             targetProgressRef.current = progressUpdate.progress;
             setCurrentStudent(progressUpdate.current);
             setTotalStudents(progressUpdate.total);
