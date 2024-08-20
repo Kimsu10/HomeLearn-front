@@ -15,8 +15,6 @@ const CalendarDetail = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [curriculums, setCurriculums] = useState([]); // 커리큘럼 상태 추가
 
-  const predefinedColors = ['#FF9999', '#99FF99', '#9999FF'];
-
   useEffect(() => {
     const storedEvents = JSON.parse(localStorage.getItem('calendarEvents')) || [];
     setEvents(storedEvents);
@@ -106,7 +104,7 @@ const CalendarDetail = () => {
   };
 
   const getCurriculumColor = (curriculumId) => {
-    const curriculum = curriculums.find(c => c.id === curriculumId);
+    const curriculum = curriculums.find(c => c.name === curriculumId);
     return curriculum ? curriculum.color : '#ffffff'; // 기본값으로 흰색 설정
   };
 
@@ -150,16 +148,6 @@ const CalendarDetail = () => {
 
           {editMode && selectedEvent && (
             <div className="detail-event-edit">
-              <div className="detail-event-color-picker">
-                {predefinedColors.map(color => (
-                  <div
-                    key={color}
-                    className={`color-option ${selectedEvent.color === color ? 'selected' : ''}`}
-                    style={{ backgroundColor: color }}
-                    onClick={() => setSelectedEvent({ ...selectedEvent, color })}
-                  ></div>
-                ))}
-              </div>
               <input
                 type="text"
                 name="title"
@@ -187,6 +175,18 @@ const CalendarDetail = () => {
               </div>
             </div>
           )}
+        </div>
+        {/* Adding the legend here */}
+        <div className="detail-calendar-legend">
+          <h3>교육 과정 색상</h3>
+          <ul>
+            {curriculums.map(curriculum => (
+              <li key={curriculum.name}>
+                <div style={{ backgroundColor: curriculum.color, width: '20px', height: '20px', display: 'inline-block', marginRight: '8px' }}></div>
+                {curriculum.name}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
