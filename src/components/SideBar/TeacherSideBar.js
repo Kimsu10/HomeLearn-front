@@ -56,16 +56,16 @@ const TeacherSideBar = () => {
     setDropdownOpen(prevState => prevState === menu ? null : menu);
   };
 
-  const isActive = (path) => {
-    if (path === '/teachers') {
-      return location.pathname === '/teachers' || location.pathname === '/teachers/';
-    }
-    return location.pathname.startsWith(path);
-  };
+    const isActive = (path) => {
+        if (path === '/teachers') {
+            return location.pathname === '/teachers' || location.pathname === '/teachers/';
+        }
+        return location.pathname.startsWith(path);
+    };
 
-  if (subjectError) {
-    return <div>Error loading sidebar data</div>;
-  }
+    if(subjectError) {
+        return <div>Error loading sidebar data</div>;
+    }
 
   return (
     <div className="teacher_sideBar_container">
@@ -100,7 +100,7 @@ const TeacherSideBar = () => {
           </div>
         </div>
 
-        <div className="teacher_sideBar_seperate_line"></div>
+                <div className="teacher_sideBar_seperate_line"></div>
 
         <div className="teacher_sideBar_link">
           <ul className="teacher_sideBar_menu">
@@ -145,42 +145,42 @@ const TeacherSideBar = () => {
                 }`}
               >
                 <li>
-                  <span
-                    className="teacher_sideBar_subject_add_btn"
-                    onClick={openModal}  // 클릭 이벤트 추가
-                  >
-                    과목 등록
-                  </span>
+                        <span
+                            className="teacher_sideBar_subject_add_btn"
+                            onClick={openModal}  // 클릭 이벤트 추가
+                        >
+                            과목 등록
+                        </span>
                 </li>
                 <div className="teacher_sideBar_seperate_line"></div>
                 {subject && subject.length > 0 ? (
-                  subject.map((el, idx) => (
-                    <li key={el.subjectId}>
-                      <NavLink
-                        to={`/teachers/${el.subjectId}/board`}
-                        className={({ isActive }) =>
-                          isActive
-                            ? "teacher_sideBar_link active"
-                            : "teacher_sideBar_link"
-                        }
-                      >
-                        {el.name}
-                      </NavLink>
-                    </li>
-                  ))
+                    subject.map((el, idx) => (
+                        <li key={el.subjectId}>
+                          <NavLink
+                              to={`/teachers/${el.subjectId}/board`}
+                              className={({isActive}) =>
+                                  isActive
+                                      ? "teacher_sideBar_link active"
+                                      : "teacher_sideBar_link"
+                              }
+                          >
+                            {el.name}
+                          </NavLink>
+                        </li>
+                    ))
                 ) : (
-                  <p>No subjects available</p>
+                    <p>No subjects available</p>
                 )}
               </ul>
             </li>
             {/* 3. Assignment */}
             <li>
               <NavLink
-                to="/teachers/assignment"
-                className={({ isActive }) =>
-                  isActive
-                    ? "teacher_sideBar_link active"
-                    : "teacher_sideBar_link"
+                  to="/teachers/assignment"
+                  className={({isActive}) =>
+                      isActive
+                          ? "teacher_sideBar_link active"
+                          : "teacher_sideBar_link"
                 }
               >
                 과제
@@ -322,8 +322,8 @@ const TeacherSideBar = () => {
                 to="/teachers/vote"
                 className={({ isActive }) =>
                   isActive
-                    ? "teacher_sideBar_link active"
-                    : "teacher_sideBar_link"
+                    ? "student_sideBar_link active"
+                    : "student_sideBar_link"
                 }
               >
                 투표
@@ -334,7 +334,10 @@ const TeacherSideBar = () => {
       </div>
       <div className="teacher_sideBar_line"></div>
       {isModalOpen && (
-        <TeacherLectureRegister isOpen={isModalOpen} onClose={closeModal} />
+          <TeacherLectureRegister
+              isOpen={isModalOpen}
+              onClose={closeModal}
+          />
       )}
     </div>
   );

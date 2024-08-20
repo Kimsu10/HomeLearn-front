@@ -28,6 +28,7 @@
   background: transparent;
   border: none;
   color: #b1b2ff;
+  cursor: pointer;
 }
 
 .question-list {
