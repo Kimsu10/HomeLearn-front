@@ -15,6 +15,7 @@ const TeacherNotice = () => {
         boardDate: '',
         boardContent: '',
         boardFile: '',
+        useDefaultFile: false, // 수정모달에서 파일 삭제 할 때 사용(기본값 false)
     });
     const [selectedBoards, setSelectedBoards] = useState([]); // 선택된 공지사항들 상태 관리
     const [selectedFile, setSelectedFile] = useState(null); // 선택된 파일 상태 관리
@@ -77,28 +78,37 @@ const TeacherNotice = () => {
             boardDate: '',
             boardContent: '',
             boardFile: '',
+            useDefaultFile: false,
         });
         setIsBoardEditing(false); // 수정 모드 해제
         setSelectedFile(null); // 선택된 파일 초기화
     };
 
-    // 공지사항 입력 필드의 변경을 처리하는 함수
+    // 공지사항 입력 필드의 변경
     const handleNoticeChange = (e) => {
         const { name, value } = e.target;
         setCurrentBoard((prev) => ({ ...prev, [name]: value }));
     };
 
-    // 파일 선택 시 처리하는 함수
+    // 파일 선택 시 처리
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         setSelectedFile(file); // 선택된 파일 설정
-        setCurrentBoard((prev) => ({ ...prev, boardFile: file ? file.name : '' })); // 현재 공지사항의 파일 정보 업데이트
+        setCurrentBoard((prev) => ({
+            ...prev,
+            boardFile: file ? file.name : '',
+            useDefaultFile: false
+        })); // 현재 공지사항의 파일 정보 업데이트
     };
 
     // 선택된 파일을 삭제하는 함수
     const handleFileDelete = () => {
         setSelectedFile(null); // 선택된 파일 초기화
-        setCurrentBoard((prev) => ({ ...prev, boardFile: '' })); // 현재 공지사항의 파일 정보 초기화
+        setCurrentBoard((prev) => ({
+            ...prev,
+            boardFile: '',
+            useDefaultFile: true // 파일 삭제 요청
+        })); // 현재 공지사항의 파일 정보 초기화
     };
 
     // 공지사항 저장 함수 (등록 및 수정)
@@ -108,11 +118,12 @@ const TeacherNotice = () => {
             formData.append("title", currentBoard.boardTitle);
             formData.append("content", currentBoard.boardContent);
             formData.append("isEmergency", currentBoard.boardType === '긴급');
+            // 파일 삭제 (true, false)
+            formData.append("useDefaultFile", currentBoard.useDefaultFile || false);
 
             if (selectedFile) {
                 formData.append("file", selectedFile);
             }
-            formData.append("useDefaultFile", currentBoard.useDefaultFile || false);
             for (let pair of formData.entries()) {
                 console.log(pair[0] + ': ' + pair[1]);
             }
@@ -271,8 +282,8 @@ const TeacherNotice = () => {
                         <div className="notice-file-upload">
                             <input id="notice-file-upload" type="file" onChange={handleFileChange} style={{ display: 'none' }} />
                             <div className="file-input-container">
-                                <input type="text" value={currentBoard.boardFile} readOnly />
-                                {currentBoard.boardFile && (
+                                <input type="text" value={ selectedFile ? selectedFile.name : currentBoard.boardFile } readOnly />
+                                {(selectedFile || currentBoard.boardFile) && (
                                     <button className="notice-file-delete-button" onClick={handleFileDelete}>
                                         삭제
                                     </button>
