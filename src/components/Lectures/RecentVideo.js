@@ -36,8 +36,6 @@ const RecentVideo = ({
   const [lastPosition, setLastPosition] = useState(0);
   const [completeTime, setCompleteTime] = useState("");
 
-  console.log(lastViewPoint);
-
   useEffect(() => {
     if (url) {
       const videoId = extractVideoId(url);
@@ -67,8 +65,6 @@ const RecentVideo = ({
     };
   }, [url, player]);
 
-  console.log(progress);
-
   useEffect(() => {
     const intervalId = setInterval(() => {
       const currentProgress = player
@@ -77,12 +73,15 @@ const RecentVideo = ({
       setProgress(currentProgress);
       setLastPosition(currentProgress);
 
-      const currentIsCompleted = currentProgress >= 100;
-      setIsCompleted(currentIsCompleted);
+      let currentIsCompleted = false;
+      let currentCompleteTime = "";
 
-      const currentCompleteTime = currentIsCompleted
-        ? new Date().toISOString()
-        : "";
+      if (currentProgress >= 97) {
+        currentIsCompleted = true;
+        currentCompleteTime = new Date().toISOString();
+      }
+
+      setIsCompleted(currentIsCompleted);
       setCompleteTime(currentCompleteTime);
 
       const watchData = {
