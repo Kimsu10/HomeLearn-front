@@ -10,7 +10,7 @@ const ManagerCalendar = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [events, setEvents] = useState([]);
   const [holidays, setHolidays] = useState([]);
-  const [curriculums, setCurriculums] = useState([]); // 커리큘럼 정보 상태 추가
+  const [curriculums, setCurriculums] = useState([]);
   const [newEvent, setNewEvent] = useState({
     title: "",
     startDate: null,
@@ -22,24 +22,27 @@ const ManagerCalendar = () => {
 
   const getToken = () => localStorage.getItem('access-token');
 
+  // 교육과정 정보 가져오기
   useEffect(() => {
     const fetchCurriculums = async () => {
       try {
         const token = getToken();
+        // NCP 및 AWS 커리큘럼 정보 가져오기
         const ncpResponse = await axios.get("/managers/manage-curriculums/NCP", {
           headers: { access: token },
         });
         const awsResponse = await axios.get("/managers/manage-curriculums/AWS", {
           headers: { access: token },
         });
+        // 두 커리큘럼 정보를 하나로 합침
         const combinedCurriculums = [...ncpResponse.data, ...awsResponse.data];
-        setCurriculums(combinedCurriculums);
+        setCurriculums(combinedCurriculums); // 상태 업데이트
       } catch (error) {
         console.error("커리큘럼 정보 가져오기 실패:", error);
       }
     };
 
-    fetchCurriculums();
+    fetchCurriculums(); // 커리큘럼 정보 가져오기 실행
   }, []);
 
   useEffect(() => {
@@ -52,6 +55,7 @@ const ManagerCalendar = () => {
     localStorage.setItem("calendarEvents", JSON.stringify(events));
   }, [events]);
 
+  // 공휴일 정보
   useEffect(() => {
     const fetchHolidays = async () => {
       const year = currentDate.getFullYear();
@@ -80,7 +84,7 @@ const ManagerCalendar = () => {
               const monthDay = date.substr(4, 4);
               return monthDay !== "0717";
             });
-          setHolidays(holidays);
+          setHolidays(holidays); // 공휴일 상태 업데이트
         } else {
           console.error("공휴일 데이터 가져오기 실패:", response.statusText);
         }
@@ -89,9 +93,10 @@ const ManagerCalendar = () => {
       }
     };
 
-    fetchHolidays();
+    fetchHolidays(); // 공휴일 정보 가져오기 실행
   }, [currentDate]);
 
+  // 현재 달의 날짜 생성
   const daysInMonth = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth() + 1,
@@ -103,6 +108,7 @@ const ManagerCalendar = () => {
     1
   ).getDay();
 
+  // 달력에 표시될 날짜
   const generateCalendarDates = () => {
     const dates = [];
     const prevMonthLastDate = new Date(
@@ -116,6 +122,7 @@ const ManagerCalendar = () => {
       1
     );
 
+    // 이전 달 마지막 날들 추가
     for (let i = firstDayOfMonth - 1; i >= 0; i--) {
       dates.push({
         date: new Date(
@@ -127,6 +134,7 @@ const ManagerCalendar = () => {
       });
     }
 
+    // 현재달 날짜 추가
     for (let i = 1; i <= daysInMonth; i++) {
       dates.push({
         date: new Date(currentDate.getFullYear(), currentDate.getMonth(), i),
@@ -134,6 +142,7 @@ const ManagerCalendar = () => {
       });
     }
 
+    // 다음달 날짜 추가
     const remainingDays = 7 - (dates.length % 7);
     if (remainingDays < 7) {
       for (let i = 0; i < remainingDays; i++) {
@@ -148,9 +157,10 @@ const ManagerCalendar = () => {
       }
     }
 
-    return dates;
+    return dates; // 생성된 날짜 리스트 반환
   };
 
+  // 월 변경
   const handleMonthChange = (direction) => {
     setCurrentDate(
       new Date(currentDate.getFullYear(), currentDate.getMonth() + direction, 1)
@@ -167,6 +177,7 @@ const ManagerCalendar = () => {
     setIsModalOpen(true);
   };
 
+  // 모달 닫기 핸들러
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setNewEvent({
@@ -177,6 +188,7 @@ const ManagerCalendar = () => {
     });
   };
 
+  // 저장
   const handleSaveEvent = async () => {
     if (newEvent.title && newEvent.startDate) {
       try {
@@ -193,6 +205,7 @@ const ManagerCalendar = () => {
     }
   };
 
+  // 날짜 클릭
   const handleDateClick = (date) => {
     const adjustedDate = new Date(
       Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
@@ -204,6 +217,7 @@ const ManagerCalendar = () => {
     }
   };
 
+  // 특정 날짜
   const getEventsForDate = (date) => {
     return events.filter(
       (event) =>
@@ -212,6 +226,7 @@ const ManagerCalendar = () => {
     );
   };
 
+  // 오늘 날짜 확인
   const isCurrentDate = (date) => {
     const today = new Date();
     return (
@@ -222,6 +237,7 @@ const ManagerCalendar = () => {
     );
   };
 
+  // 공휴일 확인
   const isHoliday = (date) => {
     return holidays.some((holiday) => {
       const holidayDate = new Date(
@@ -233,6 +249,7 @@ const ManagerCalendar = () => {
     });
   };
 
+  // 주말 확인
   const isWeekend = (date) => {
     const day = date.getDay();
     return { isSunday: day === 0, isSaturday: day === 6 };

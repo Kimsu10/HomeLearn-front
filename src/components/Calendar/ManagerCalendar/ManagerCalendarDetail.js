@@ -13,16 +13,17 @@ const CalendarDetail = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [curriculums, setCurriculums] = useState([]); // 커리큘럼 상태 추가
+  const [curriculums, setCurriculums] = useState([]);
 
   useEffect(() => {
+    // 로컬 스토리지 상태 업데이트
     const storedEvents = JSON.parse(localStorage.getItem('calendarEvents')) || [];
     setEvents(storedEvents);
     const foundEvent = storedEvents.find((e) => e.id === Number(eventId));
     setEvent(foundEvent);
     setSelectedEvent(foundEvent);
 
-    // 커리큘럼 정보 가져오기
+    // 교육과정 정보 가져오기
     const fetchCurriculums = async () => {
       try {
         const response = await axios.get('/managers/calendar/modal');
@@ -35,6 +36,7 @@ const CalendarDetail = () => {
     fetchCurriculums();
   }, [eventId]);
 
+  // 특정 날짜에 해당하는 이벤트 가져옴
   const getEventsForDate = (date) => {
     return events.filter(event =>
       new Date(event.startDate).toDateString() === date.toDateString() ||
@@ -43,9 +45,10 @@ const CalendarDetail = () => {
   };
 
   if (!event) {
-    return navigate('/managers');
+    return navigate('/managers'); // 이벤트가 없으면 매니저 페이지로 리다이렉트
   }
 
+  // 이벤트 삭제 핸들러
   const handleDeleteEvent = (id) => {
     swal({
       title: "삭제하시겠습니까?",
@@ -97,15 +100,17 @@ const CalendarDetail = () => {
     setSelectedEvent({ ...selectedEvent, [name]: value });
   };
 
+  // 날짜 클릭
   const handleDayClick = (date) => {
     setSelectedDate(date);
     setSelectedEvent(null);
     setEditMode(false);
   };
 
+  // 커리큘럼 ID에 해당하는 색상을 가져오는 함수
   const getCurriculumColor = (curriculumId) => {
     const curriculum = curriculums.find(c => c.name === curriculumId);
-    return curriculum ? curriculum.color : '#ffffff'; // 기본값으로 흰색 설정
+    return curriculum ? curriculum.color : '#ffffff'; // 기본값으로 흰색 설정 -> 수정해야됨
   };
 
   return (
@@ -176,7 +181,6 @@ const CalendarDetail = () => {
             </div>
           )}
         </div>
-        {/* Adding the legend here */}
         <div className="detail-calendar-legend">
           <h3>교육 과정 색상</h3>
           <ul>
