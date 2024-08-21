@@ -260,22 +260,27 @@ const CurriculumManagement = () => {
             <span className="curriculum-submit">교육 과정 등록</span>
             <div className="course-selection">
               <button
-                className={`course-button ${
-                  newCurriculum.type === "NCP" ? "selected" : ""
-                }`}
+                className={`course-button ${newCurriculum.type === "NCP" ? "selected" : ""}`}
                 onClick={() => handleCourseChange("NCP")}
               >
-                NCP
+                <img
+                  src={process.env.PUBLIC_URL + '/images/curriculum/ncp.png'}
+                  alt="NCP Logo"
+                  className="course-logo"
+                />
               </button>
               <button
-                className={`course-button ${
-                  newCurriculum.type === "AWS" ? "selected" : ""
-                }`}
+                className={`course-button ${newCurriculum.type === "AWS" ? "selected" : ""}`}
                 onClick={() => handleCourseChange("AWS")}
               >
-                AWS
+                <img
+                  src={process.env.PUBLIC_URL + '/images/curriculum/aws.png'}
+                  alt="AWS Logo"
+                  className="course-logo"
+                />
               </button>
             </div>
+
             <div className="curriculum-input-group">
               <label>시작일</label>
               <input

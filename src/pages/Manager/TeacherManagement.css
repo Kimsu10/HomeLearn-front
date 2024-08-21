@@ -168,6 +168,10 @@
   cursor: pointer;
   padding: 10px;
 }
+.teacher-course-button img {
+  width: 70px;
+  height: 30px;
+}
 
 .teacher-course-button.selected {
   border-color: #757575;
