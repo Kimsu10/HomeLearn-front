@@ -38,9 +38,7 @@ const LectureVideo = ({ width, height }) => {
         const player = new window.YT.Player(iframeRef.current, {
           videoId: videoId,
           events: {
-            onReady: (event) => {
-              event.target.playVideo();
-            },
+            onReady: () => {},
             onStateChange: (event) => {
               if (event.data === window.YT.PlayerState.PLAYING) {
                 if (iframeRef.current.requestFullscreen) {
