@@ -45,33 +45,30 @@
 
 /* Pagination styles */
 .pagination {
+    font-size: 20px;
     display: flex;
+    align-items: center;
     justify-content: center;
-    margin-top: 20px;
-    gap: 10px;
+    gap: 16px;
+    padding: 20px 0;
 }
 
 .pagination button {
-    border: 1px solid var(--teacherMainColor);
-    background-color: white;
-    color: var(--teacherMainColor);
-    padding: 10px 20px;
-    border-radius: 5px;
+    font-size: 20px;
     cursor: pointer;
 }
 
 .pagination button:hover {
-    background-color: var(--teacherMainColor);
-    color: white;
-}
-
-.pagination button:disabled {
-    background-color: lightgray;
-    color: darkgray;
-    cursor: not-allowed;
+    color: var(--teacherMainColor);
 }
 
 .pagination button.active {
-    background-color: var(--teacherMainColor);
-    color: white;
+    font-weight: bold;
+    color: var(--teacherMainColor);
+    font-size: 20px;
+}
+
+.pagination button:disabled {
+    color: gray;
+    cursor: not-allowed;
 }
