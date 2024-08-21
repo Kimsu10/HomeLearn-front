@@ -9,7 +9,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./RecentVideo.css";
 
-const RecentVideo = ({ url, onClose, lectureId, username }) => {
+const RecentVideo = ({ url, onClose, lectureId, username, token }) => {
   const [player, setPlayer] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -26,12 +26,9 @@ const RecentVideo = ({ url, onClose, lectureId, username }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [isCompleted, setIsCompeleted] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
   const [lastPosition, setLastPosition] = useState(0);
-
-  console.log(lastPosition);
-  console.log(lectureId);
-  console.log(username);
+  const [completeTime, setCompleteTime] = useState("");
 
   useEffect(() => {
     if (url) {
@@ -62,14 +59,37 @@ const RecentVideo = ({ url, onClose, lectureId, username }) => {
     };
   }, [url, player]);
 
+  console.log(progress);
+
   useEffect(() => {
     const intervalId = setInterval(() => {
-      localStorage.setItem("lastPosition", duration);
-      localStorage.setItem("lectureId", lectureId);
+      const currentProgress = player
+        ? (player.getCurrentTime() / player.getDuration()) * 100
+        : 0;
+      setProgress(currentProgress);
+      setLastPosition(currentProgress);
+
+      const currentIsCompleted = currentProgress >= 100;
+      setIsCompleted(currentIsCompleted);
+
+      const currentCompleteTime = currentIsCompleted
+        ? new Date().toISOString()
+        : "";
+      setCompleteTime(currentCompleteTime);
+
+      const watchData = {
+        lastPosition: Math.round(currentProgress),
+        lectureId,
+        username,
+        isCompleted: currentIsCompleted,
+        completedDate: currentCompleteTime,
+      };
+
+      localStorage.setItem("watchData", JSON.stringify(watchData));
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, [duration, lectureId]);
+  }, [duration, lectureId, username, player]);
 
   useEffect(() => {
     const updateProgress = () => {
@@ -147,7 +167,7 @@ const RecentVideo = ({ url, onClose, lectureId, username }) => {
     progressInterval.current = setInterval(() => {
       if (player && player.getCurrentTime) {
         const currentProgress =
-          (player.getCurrentTime() / player.getDuration()) * 100;
+          (player.getCurrentTime() / player?.getDuration()) * 100;
         setProgress(currentProgress);
         setCurrentTime(player.getCurrentTime());
       }
@@ -220,6 +240,42 @@ const RecentVideo = ({ url, onClose, lectureId, username }) => {
     );
     return match ? match[1] : null;
   };
+
+  const sendLastViewData = async () => {
+    const watchData = JSON.parse(localStorage.getItem("watchData"));
+    console.log(watchData);
+
+    if (watchData) {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/students/lectures/last-view",
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              access: token,
+            },
+            body: JSON.stringify(watchData),
+          }
+        );
+
+        localStorage.removeItem("watchData");
+        window.location.reload();
+
+        if (!response.ok) {
+          throw new Error("Failed to update the last view data");
+        }
+      } catch (error) {
+        console.error("Error updating last view data:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      sendLastViewData();
+    };
+  }, []);
 
   return (
     <div

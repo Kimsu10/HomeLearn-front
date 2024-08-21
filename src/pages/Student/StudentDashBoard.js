@@ -12,7 +12,7 @@ import LectureVideo from "../../components/Lectures/LectureVideo";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-const StudentDashBoard = ({ username, baseUrl }) => {
+const StudentDashBoard = ({ username, baseUrl, token }) => {
   const navigate = useNavigate();
   const [videoDuration, setVideoDuration] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,7 +32,6 @@ const StudentDashBoard = ({ username, baseUrl }) => {
   const [teacherNotice, setTeacherNotice] = useState([]);
 
   const lectureId = recentLecture?.lectureId;
-  console.log(username);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -133,7 +132,7 @@ const StudentDashBoard = ({ username, baseUrl }) => {
                   </p>
                   <div className="recent_lecture_progress_container">
                     <CircularProgressbar
-                      value={recentLecture?.lastPosition / 100}
+                      value={recentLecture?.lastPosition}
                       styles={buildStyles({
                         pathColor: "#A7D7C5",
                         textColor: "#5C8D89",
@@ -141,7 +140,7 @@ const StudentDashBoard = ({ username, baseUrl }) => {
                       })}
                     />
                     <p className="recent_lecture_percentage">
-                      {recentLecture?.lastPosition / 100}%
+                      {recentLecture?.lastPosition}%
                     </p>
                   </div>
                 </div>
@@ -151,6 +150,7 @@ const StudentDashBoard = ({ username, baseUrl }) => {
                   url={recentLecture?.youtubeUrl}
                   lectureId={lectureId}
                   username={username}
+                  token={token}
                 />
               </RecentLectureModal>
             </div>

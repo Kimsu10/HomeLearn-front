@@ -46,7 +46,13 @@ const StudentMain = () => {
         <Routes>
           <Route
             path=""
-            element={<StudentDashBoard username={username} baseUrl={baseUrl} />}
+            element={
+              <StudentDashBoard
+                username={username}
+                baseUrl={baseUrl}
+                token={token}
+              />
+            }
           />
           <Route
             path=":subjectName/board"
