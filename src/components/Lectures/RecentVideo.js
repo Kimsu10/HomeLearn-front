@@ -9,7 +9,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./RecentVideo.css";
 
-const RecentVideo = ({ url, onClose }) => {
+const RecentVideo = ({ url, onClose, lectureId, username }) => {
   const [player, setPlayer] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -25,6 +25,13 @@ const RecentVideo = ({ url, onClose }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const [isCompleted, setIsCompeleted] = useState(false);
+  const [lastPosition, setLastPosition] = useState(0);
+
+  console.log(lastPosition);
+  console.log(lectureId);
+  console.log(username);
 
   useEffect(() => {
     if (url) {
@@ -56,6 +63,15 @@ const RecentVideo = ({ url, onClose }) => {
   }, [url, player]);
 
   useEffect(() => {
+    const intervalId = setInterval(() => {
+      localStorage.setItem("lastPosition", duration);
+      localStorage.setItem("lectureId", lectureId);
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [duration, lectureId]);
+
+  useEffect(() => {
     const updateProgress = () => {
       if (player && player.getCurrentTime && player.getDuration) {
         const currentTime = player.getCurrentTime();
@@ -64,7 +80,7 @@ const RecentVideo = ({ url, onClose }) => {
           const currentProgress = (currentTime / totalDuration) * 100;
           setProgress(currentProgress);
           setCurrentTime(currentTime);
-          setDuration(totalDuration); // 이 부분에서 상태를 업데이트 합니다.
+          setDuration(totalDuration);
         }
       }
       if (isPlaying) {
@@ -111,7 +127,7 @@ const RecentVideo = ({ url, onClose }) => {
             setVolume(event.target.getVolume());
             setIsMuted(event.target.isMuted());
             const duration = event.target.getDuration();
-            setDuration(duration); // 여기서도 상태를 설정합니다.
+            setDuration(duration);
           },
           onStateChange: (event) => {
             setIsPlaying(event.data === window.YT.PlayerState.PLAYING);
