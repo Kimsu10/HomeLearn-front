@@ -230,6 +230,7 @@ const RecentVideo = ({ url, onClose }) => {
               {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
             </button>
             <input
+              className="recent-progress-bar"
               type="range"
               min="0"
               max="100"
