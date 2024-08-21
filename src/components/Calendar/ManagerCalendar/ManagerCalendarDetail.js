@@ -49,11 +49,11 @@ const ManagerCalendarDetail = () => {
     );
   };
 
-  // curriculumId 색상 가져오기
   const getCurriculumColor = (curriculumId) => {
     const curriculum = curriculums.find(c => String(c.id) === String(curriculumId));
-    return curriculum ? curriculum.color : '#000'; // 기본 색상을 검정색으로 설정
+    return curriculum ? curriculum.color : '#000';
   };
+
 
   // 이벤트 삭제 핸들러
   const handleDeleteEvent = (id) => {
