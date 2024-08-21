@@ -255,7 +255,6 @@ const RecentVideo = ({ url, onClose }) => {
             <button onClick={toggleFullscreen}>
               {isFullscreen ? <Minimize size={24} /> : <Maximize size={24} />}
             </button>
-            <button onClick={onClose}>닫기</button>
           </div>
         </>
       )}
