@@ -71,6 +71,8 @@ const StudentDashBoard = ({ username, baseUrl }) => {
     fetchData();
   }, []);
 
+  console.log(recentLecture);
+
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const openSubmit = () => setSubmitModal(true);
@@ -140,9 +142,29 @@ const StudentDashBoard = ({ username, baseUrl }) => {
                   </div>
                 </div>
               </div>
-              <RecentLectureModal isOpen={isModalOpen} onClose={closeModal}>
-                <RecentVideo url={recentLecture?.youtubeUrl} />
-              </RecentLectureModal>
+              {/* <RecentLectureModal isOpen={isModalOpen} onClose={closeModal}> */}
+              {isModalOpen && (
+                <div className="recent-modal-overlay" onClick={closeModal}>
+                  <div
+                    className="recent-modal-content"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <button
+                      onClick={closeModal}
+                      className="recent-close-button"
+                    >
+                      X
+                    </button>
+                    <RecentVideo
+                      isOpen={isModalOpen}
+                      onClose={closeModal}
+                      url={recentLecture?.youtubeUrl}
+                      lectureId={recentLecture?.lectureId}
+                    />
+                    {/* </RecentLectureModal> */}
+                  </div>
+                </div>
+              )}
             </div>
             <div className="video_container">
               <h3 className="components_title">오늘의 IT</h3>
@@ -216,7 +238,7 @@ const StudentDashBoard = ({ username, baseUrl }) => {
             </div>
           </div>
           <div className="right_container">
-                <StudentCalendar />
+            <StudentCalendar />
             <div className="subject_container">
               <div className="title_box">
                 <h3 className="components_title">과제 목록</h3>

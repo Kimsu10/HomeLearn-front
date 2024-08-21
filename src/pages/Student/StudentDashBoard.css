@@ -7,6 +7,40 @@
   justify-content: center;
 }
 
+/* 모달 들어오면 이상하게 꺠지네 */
+
+.recent-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.recent-modal-content {
+  background: rgba(0, 0, 0);
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.recent-close-button {
+  position: absolute;
+  top: 16px;
+  left: 40px;
+  color: white;
+  font-size: 40px;
+  z-index: 2002;
+  cursor: pointer;
+  font-weight: 700;
+}
+
 /* 메인 스타일 */
 
 .dashboard_main_container {

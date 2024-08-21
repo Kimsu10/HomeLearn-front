@@ -1,7 +1,7 @@
 .student-calendar-container {
   border: 1px solid #74b49b;
   background-color: var(--studentAssistColor);
-  border-radius: 20px;
+  border-radius: 10px;
   box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.15);
   padding-top: 40px;
   height: 710px;

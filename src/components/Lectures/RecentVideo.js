@@ -1,6 +1,4 @@
 import {
-  ChevronLeft,
-  ChevronRight,
   Maximize,
   Minimize,
   Pause,
@@ -9,8 +7,9 @@ import {
   VolumeX,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import "./RecentVideo.css";
 
-const RecentVideo = ({ url }) => {
+const RecentVideo = ({ url, onClose }) => {
   const [player, setPlayer] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -24,7 +23,6 @@ const RecentVideo = ({ url }) => {
   const progressInterval = useRef(null);
   const requestAnimationFrameRef = useRef(null);
   const [currentTime, setCurrentTime] = useState(0);
-  const [links, setLinks] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -34,7 +32,6 @@ const RecentVideo = ({ url }) => {
 
       if (videoId) {
         loadYouTubeAPI(videoId);
-        setLinks(url);
       } else {
         setError(new Error("Invalid video URL"));
       }
@@ -207,39 +204,29 @@ const RecentVideo = ({ url }) => {
     return match ? match[1] : null;
   };
 
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
-  };
-
   return (
     <div
       ref={playerContainerRef}
-      className={`custom-youtube-player ${isFullscreen ? "fullscreen" : ""}`}
+      className={`recent-video-player-container ${
+        isFullscreen ? "fullscreen" : ""
+      }`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div id="youtube-player"></div>
-
-      <div className={`controls ${isHovering || !isPlaying ? "visible" : ""}`}>
-        <div className="controls-top">
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={progress}
-            onChange={handleProgressChange}
-            className="progress-slider"
-            style={{ "--value": `${progress}%` }}
-          />
-        </div>
-        <div className="controls-bottom">
-          <div className="controls-bottom-left">
-            <button onClick={togglePlay} className="control-btn">
+      {loading && <div>Loading...</div>}
+      {error && <div>Error: {error.message}</div>}
+      {!loading && !error && (
+        <>
+          <div id="youtube-player" className="recent-youtube-player" />
+          <div
+            className={`recent-video-controls ${
+              isHovering || isPlaying ? "" : "hidden"
+            }`}
+          >
+            <button onClick={togglePlay}>
               {isPlaying ? <Pause size={24} /> : <Play size={24} />}
             </button>
-            <button onClick={toggleMute} className="control-btn">
+            <button onClick={toggleMute}>
               {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
             </button>
             <input
@@ -248,44 +235,32 @@ const RecentVideo = ({ url }) => {
               max="100"
               value={volume}
               onChange={handleVolumeChange}
-              className="volume-slider"
-              style={{ "--value": `${volume}%` }}
             />
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={progress}
+              onChange={handleProgressChange}
+            />
+            <span>
+              {Math.floor(currentTime / 60)}:{Math.floor(currentTime % 60)}
+            </span>
+            <select value={playbackRate} onChange={handlePlaybackRateChange}>
+              <option value="0.5">0.5x</option>
+              <option value="1">1x</option>
+              <option value="1.5">1.5x</option>
+              <option value="2">2x</option>
+            </select>
+            <button onClick={toggleFullscreen}>
+              {isFullscreen ? <Minimize size={24} /> : <Maximize size={24} />}
+            </button>
+            <button onClick={onClose}>닫기</button>
           </div>
-          <div
-            style={{
-              display: "flex",
-              height: "50px",
-              alignItems: "center",
-              paddingRight: "10px",
-              color: "white",
-            }}
-          >
-            <div className="time-display">
-              {formatTime(currentTime)} / {formatTime(duration)}
-            </div>
-            <div className="controls-bottom-right">
-              <select
-                value={playbackRate}
-                onChange={handlePlaybackRateChange}
-                className="playback-rate-select"
-              >
-                <option value="0.25">0.25x</option>
-                <option value="0.5">0.5x</option>
-                <option value="0.75">0.75x</option>
-                <option value="1">Normal</option>
-                <option value="1.25">1.25x</option>
-                <option value="1.5">1.5x</option>
-                <option value="2">2x</option>
-              </select>
-              <button onClick={toggleFullscreen} className="control-btn">
-                {isFullscreen ? <Minimize size={24} /> : <Maximize size={24} />}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };
+
 export default RecentVideo;
