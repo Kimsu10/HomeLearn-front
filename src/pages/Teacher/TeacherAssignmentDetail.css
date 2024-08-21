@@ -7,6 +7,25 @@
   background-color: #fff;
 }
 
+.assignment_title_container{
+  display: flex;
+  justify-content: space-between;
+}
+
+.show_modify_box2{
+  position: absolute;
+  bottom: 63%;
+  right: 12%;
+  width: 116px;
+  height: 92px;
+  border: 1px solid var(--teacherMainColor);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  z-index: 10;
+  background-color: #fff;
+}
 .teacher_assignment_detail_page_title {
   margin-bottom: 75px;
   font-size: 48px;
@@ -21,7 +40,7 @@
 .teacher_assignment_board_content_box {
   color: black;
   font-size: 28px;
-  border-bottom: 1px solid #5c8d89;
+  border-bottom: 1px solid var(--teacherMainColor);
   padding-bottom: 50px;
 }
 
@@ -48,7 +67,7 @@
 .teacher_assignment_deadline,
 .teacher_assignment_participants_count,
 .teacher_assignment_board_writed_date {
-  color: #5c8d89;
+  color: var(--teacherMainColor);
 }
 
 .teacher_assignment_participants_count {
@@ -57,7 +76,7 @@
 }
 
 .non_participants_list_box {
-  border: 1px solid #5c8d89;
+  border: 1px solid var(--teacherMainColor);
   border-radius: 20px;
   background-color: white;
   position: absolute;
@@ -71,6 +90,7 @@
 
 .non_participants_name {
   padding: 7px;
+  color: black;
 }
 
 /* 과제 제출자 리스트 스타일 */
@@ -81,11 +101,20 @@
   padding: 30px;
   font-size: 32px;
   color: black;
-  border-bottom: 1px solid #5c8d89;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.teacher_similar_button{
+  font-size: 24px;
+  border: 1px solid var(--teacherSubColor);
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .teacher_assignment_participants_count {
-  color: #5c8d89;
+  color: var(--teacherMainColor);
 }
 
 /* 제출자 리스트 */
@@ -99,8 +128,8 @@
   height: 250px;
   padding: 40px;
   box-sizing: border-box;
-  border: 1px solid #5c8d89;
-  background-color: rgba(167, 215, 197, 0.25);
+  border: 1px solid var(--teacherMainColor);
+  background-color: rgba(210, 218, 255, 0.25);
   border-radius: 20px;
   margin: 0 auto 50px auto;
 }
@@ -114,7 +143,7 @@
   align-items: center;
   padding: 32px;
   font-size: 28px;
-  border-top: 1px solid #5c8d89;
+  border-top: 1px solid var(--teacherMainColor);
 }
 
 .submitted_number,
@@ -127,10 +156,74 @@
 .show_more_submitted_info {
   cursor: pointer;
   width: 20px;
+  font-size: 36px;
 }
 
 .show_more_submitted_detail_info_container {
   color: black;
+}
+
+.show_more_submitted_detail_info_container2{
+  width: 99%;
+  height: 200px;
+  padding: 20px;
+  box-sizing: border-box;
+  border: 1px solid var(--teacherSubColor);
+  border-radius: 20px;
+  margin: 0 auto 50px auto;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.show_more_submitted_detail_info_container2 > textarea {
+  width: 82%;
+  border: none;
+  padding: 10px;
+  font-size: 24px;
+  resize: none;
+  min-height: 100px;
+  border-radius: 20px;
+}
+
+/* 커서를 올렸을 때의 스타일 */
+.show_more_submitted_detail_info_container2 > textarea:hover {
+  border: 1px solid var(--teacherAssistColor);  /* 회색 테두리 */
+}
+
+/* 입력 중일 때의 스타일 */
+.show_more_submitted_detail_info_container2 > textarea:focus {
+  outline: none;  /* 기본 포커스 아웃라인 제거 */
+  border: none;
+}
+
+.teacher_detail_content_right{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.teacher_detail_date{
+  font-size: 18px;
+  align-self: end;
+}
+
+.teacher_detail_button_container{
+  display: flex;
+  gap: 10px;
+  align-self: end;
+}
+
+.teacher_detail_button_container > button{
+  padding: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  background-color: var(--teacherMainColor);
+  border-radius: 1rem;
+  cursor: pointer;
+  width: 100px;
+  height: 40px;
 }
 
 .teacher_submitted_title_box {
