@@ -61,8 +61,6 @@ const StudentAssignment = () => {
     fetchEndAssignments();
   }, [endAssignmentsPage]);
 
-  console.log(endAssignments);
-
   const totalPageNumber = curAssignment?.totalPages;
   const endAssignmentsTotalPages = endAssignments?.totalPages;
 

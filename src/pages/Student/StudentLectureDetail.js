@@ -5,8 +5,6 @@ import LectureVideo from "./StudentPlayer";
 import { useEffect } from "react";
 
 const StudentLectureDetail = ({ baseUrl }) => {
-  console.log(baseUrl);
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -17,16 +15,9 @@ const StudentLectureDetail = ({ baseUrl }) => {
     error: lectureVideoError,
   } = useGetFetch("/data/student/mainLecture/mainLectureDetail.json", "");
 
-  console.log(lectureVideo);
-
   return (
     <div className="subject_lecture_detail_main_container">
       <div className="subject_lecture_detail_video_container">
-        {/* <img
-          className="subject_lecture_video_box"
-          alt="유튜브 영상 들어올곳"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXSPDfbB-Obw1Q3vqbU0ge4e9RacV-l0n8Fg&s"
-        /> */}
         <LectureVideo />
         <div className="subject_lecutre_video_title_box">
           <h1 className="subject_lecutre_video_title">{lectureVideo.title}</h1>

@@ -17,9 +17,10 @@ const SurveyForm = () => {
         const config = {
           headers: { access: token },
         };
-        const response = await axios.get(`/students/survey/${surveyId}`, config);
-
-        console.log("Survey Data:", response.data);
+        const response = await axios.get(
+          `/students/survey/${surveyId}`,
+          config
+        );
 
         setSurveyData(response.data);
         setLoading(false);
@@ -68,7 +69,9 @@ const SurveyForm = () => {
       <form onSubmit={handleSubmit}>
         {surveyData.contents.map((question, index) => (
           <div key={index} className="survey-question">
-            <p>{index + 1}. {question.content}</p>
+            <p>
+              {index + 1}. {question.content}
+            </p>
             <div className="survey-options">
               {question.type === "RATING" ? (
                 <>
@@ -77,7 +80,9 @@ const SurveyForm = () => {
                       type="radio"
                       name={`question-${index}`}
                       value="1"
-                      onChange={(e) => handleInputChange(question.id, e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange(question.id, e.target.value)
+                      }
                       required
                     />
                     매우 불만족
@@ -87,7 +92,9 @@ const SurveyForm = () => {
                       type="radio"
                       name={`question-${index}`}
                       value="2"
-                      onChange={(e) => handleInputChange(question.id, e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange(question.id, e.target.value)
+                      }
                       required
                     />
                     불만족
@@ -97,7 +104,9 @@ const SurveyForm = () => {
                       type="radio"
                       name={`question-${index}`}
                       value="3"
-                      onChange={(e) => handleInputChange(question.id, e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange(question.id, e.target.value)
+                      }
                       required
                     />
                     보통
@@ -107,7 +116,9 @@ const SurveyForm = () => {
                       type="radio"
                       name={`question-${index}`}
                       value="4"
-                      onChange={(e) => handleInputChange(question.id, e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange(question.id, e.target.value)
+                      }
                       required
                     />
                     만족
@@ -117,7 +128,9 @@ const SurveyForm = () => {
                       type="radio"
                       name={`question-${index}`}
                       value="5"
-                      onChange={(e) => handleInputChange(question.id, e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange(question.id, e.target.value)
+                      }
                       required
                     />
                     매우 만족
@@ -125,13 +138,17 @@ const SurveyForm = () => {
                 </>
               ) : question.type === "TEXT" ? (
                 <textarea
-                  onChange={(e) => handleInputChange(question.id, e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange(question.id, e.target.value)
+                  }
                 ></textarea>
               ) : null}
             </div>
           </div>
         ))}
-        <button type="submit-survey" className="survey-submit-button">설문 제출</button>
+        <button type="submit-survey" className="survey-submit-button">
+          설문 제출
+        </button>
       </form>
     </div>
   );

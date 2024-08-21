@@ -278,11 +278,6 @@
   justify-content: space-around;
 }
 
-.calander {
-  height: 90%;
-  border: 1px solid var(--studentPrimaryColor);
-}
-
 /*  과제 목록 스타일 */
 .subject_container {
   width: 500px;

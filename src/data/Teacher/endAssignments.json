@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "title": "React로 Todo List 만들기",
+    "content": "React를 사용하여 간단한 Todo List 애플리케이션을 만들어보세요. 사용자는 할 일을 추가, 삭제, 완료 상태로 변경할 수 있어야 합니다.",
+    "deadline": "2024-02-21",
+    "participants": 30
+  },
+  {
+    "id": 2,
+    "title": "Node.js로 RESTful API 개발",
+    "content": "Node.js와 Express를 사용하여 간단한 RESTful API를 개발하세요. CRUD 기능을 구현하고, Postman을 사용하여 API를 테스트하세요.",
+    "deadline": "2024-03-11",
+    "participants": 28
+  },
+  {
+    "id": 3,
+    "title": "CSS Grid와 Flexbox 연습",
+    "content": "CSS Grid와 Flexbox를 사용하여 반응형 웹페이지 레이아웃을 만들어보세요. 다양한 화면 크기에서도 잘 동작하도록 디자인하세요.",
+    "deadline": "2024-03-21",
+    "participants": 17
+  },
+  {
+    "id": 4,
+    "title": "Python으로 데이터 분석",
+    "content": "Pandas와 Matplotlib 라이브러리를 사용하여 주어진 데이터셋을 분석하고 시각화하세요. 데이터의 통계적 특징을 설명하는 리포트를 작성하세요.",
+    "deadline": "2024-04-11",
+    "participants": 11
+  },
+  {
+    "id": 5,
+    "title": "React Native로 모바일 앱 개발",
+    "content": "React Native를 사용하여 간단한 모바일 앱을 개발하세요. 사용자가 사진을 업로드하고 갤러리에서 볼 수 있는 기능을 구현하세요.",
+    "deadline": "2024-04-26",
+    "participants": 3
+  },
+  {
+    "id": 6,
+    "title": "AWS로 웹 애플리케이션 배포",
+    "content": "AWS를 사용하여 간단한 웹 애플리케이션을 배포하세요. EC2, S3, RDS 등을 활용하여 서버를 구성하고, 배포 과정을 문서화하세요.",
+    "deadline": "2024-05-04",
+    "participants": 0
+  }
+]

@@ -44,10 +44,8 @@ const Main = () => {
   // 토큰이 있을 때 디코딩해서 role을 가져오기
   try {
     const decodedToken = jwtDecode(token);
-    console.log(decodedToken);
-    const userRole = decodedToken.role;
 
-    console.log(userRole);
+    const userRole = decodedToken.role;
 
     const roleComponent =
       userRole === "ROLE_STUDENT" ? (

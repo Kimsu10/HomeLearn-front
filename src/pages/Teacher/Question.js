@@ -1,9 +1,10 @@
 import React, { useState } from 'react'; // useState 훅-*백 연동할때 useEffect 추가 해야될듯*
 import './Question.css';
+import {useNavigate} from "react-router-dom";
 
 const Question = () => {
   const [activeButton, setActiveButton] = useState('NCP'); //상태 버튼 변수
-
+  const navigate = useNavigate();
   const handleButtonClick = (buttonName) => {  //버튼 클릭시 상태 업데이트
     setActiveButton(buttonName);
   };
@@ -20,9 +21,10 @@ const Question = () => {
     <div className="question">
       <div className="question-header">
         <h2>질문 게시판</h2>
-          <button className="question-view">
+          <span className="question-view"
+                onClick={() => navigate("/teachers/questionBoards")}>
             더보기 >
-          </button>
+          </span>
       </div>
 
       <ul className="question-list">

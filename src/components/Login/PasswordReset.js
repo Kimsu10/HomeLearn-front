@@ -18,9 +18,7 @@ function PasswordReset() {
   useEffect(() => {
     if (location.state?.username) {
       setUsername(location.state.username);
-      console.log("Received username:", location.state.username);
     } else {
-      console.log("No username found in location.state");
     }
   }, [location.state]);
 
@@ -64,10 +62,6 @@ function PasswordReset() {
     }
 
     try {
-      console.log("Submitting password reset request:");
-      console.log("Username:", username);
-      console.log("New password:", newPassword);
-
       const response = await axios.post("/account/reset-password", {
         username: username,
         password: newPassword,

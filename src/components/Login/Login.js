@@ -33,15 +33,12 @@ function Login() {
           }
         );
 
-        console.log("로그인 응답:", response);
-
         if (response.status === 200) {
           const token = response.headers["access"];
-          console.log("토큰:", token);
+
           localStorage.setItem("access-token", token); // 토큰을 로컬 스토리지에 저장
 
           const userType = response.data.userType; // 서버 응답에서 사용자 유형을 받아옴
-          console.log("사용자:", username);
 
           if (userType === "manager") {
             navigate("/managers"); // 매니저 페이지로 이동
@@ -95,10 +92,7 @@ function Login() {
           />
         </div>
         <div className="user-found">
-          <span
-            className="user-found-id"
-            onClick={() => navigate("/find-id")}
-          >
+          <span className="user-found-id" onClick={() => navigate("/find-id")}>
             아이디 찾기
           </span>
           /

@@ -1,11 +1,12 @@
 import "./TeacherMain.css";
+import TeacherCalendar from "../../components/Calendar/TeacherCalendar/TeacherCalendar";
 import Question from "./Question";
 import Lecture_State from "./Lecture_State";
-import TeacherCalendar from "../../components/Calendar/TeacherCalendar/TeacherCalendar";
-import SettingList from "./Today_It";
+import Today_It from "./Today_It";
 import Faq from "./Faq";
 import {useNavigate, Routes, Route, useLocation} from "react-router-dom";
 import React, { useEffect, useState } from "react";
+
 import TeacherSideBar from "../../components/SideBar/TeacherSideBar";
 import TeacherContact from "../Manager/TeacherContact";
 import StudentContact from "../Manager/StudentContact";
@@ -16,37 +17,42 @@ import TeacherHeader from "../../components/Nav/TeacherHeader";
 import TeacherLecture from "./TeacherLecture";
 import { jwtDecode } from "jwt-decode";
 import StudentLecture from "../Student/StudentLecture";
-import TeacherSubjectBoardDetail from "./TeacherSubjectBoardDetail";
 import TeacherLectureList from "./TeacherLectureList";
 import TeacherLectureDetail from "./TeacherLectureDetail";
 import TeacherNotice from "./TeacherNotice";
+import TeacherAssignment from "./TeacherAssignment";
+import TeacherAssignmentDetail from "./TeacherAssignmentDetail";
+import TeacherSubjectBoardDetail from "./TeacherSubjectBoardDetail";
+import StudentLectureList from "../Student/StudentLectureList";
+import StudentLectureDetail from "../Student/StudentLectureDetail";
+import TeacherQuestionBoard from "./TeacherQuestionBoard";
+import StudentQuestionBoardDetail from "../Student/StudentQuestionBoardDetail";
+import TeacherSubjectBoardList from "./TeacherSubjectBoardList";
 
-function Dashboard() {
-  return (
-      <>
-        <h1>대시보드</h1>
-        <div className="teacher-dashboard-grid-container">
-          <div className="teacher-dashboard-grid">
-            <Lecture_State />
-            <Question />
-            <Faq />
-          </div>
-          <div className="teacher-dashboard-grid2">
-            <TeacherCalendar />
-            <SettingList />
-          </div>
+
+function TeacherDashBoard() {
+    return (
+        <div className="teacher-dashboard-container">
+            <div className="teacher-dashboard-title">대시보드</div>
+            <div className="teacher-dashboard-grid-container">
+                <div className="teacher-dashboard-grid">
+                    <Lecture_State />
+                    <Question />
+                    <Faq />
+                </div>
+                <div className="teacher-dashboard-grid2">
+                    <TeacherCalendar />
+                    <Today_It />
+                </div>
+            </div>
         </div>
-      </>
-  );
+    );
 }
 
-function TeacherMain() {
-
+const TeacherMain = () => {
     const [selectedSubject, setSelectedSubject] = useState(null);
     const [username, setUsername] = useState("");
-    const location = useLocation();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const baseUrl = process.env.REACT_APP_BASE_URL;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -60,47 +66,97 @@ function TeacherMain() {
         }
     }, []);
 
-    console.log(username); // 잘들어옴
+    console.log(username);
 
-  return (
-        <div className="teacher-dashboard-body" id="container">
-            <TeacherHeader />  {/* 모달이 열려있지 않을 때만 헤더 표시 */}
-            <TeacherSideBar />
-          <div className="teacher-content-area">
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-                <Route
-                    path=":subjectName/board"
-                    element={
-                        <TeacherLecture subject={selectedSubject} username={username} />
-                    }
-                />
-                <Route
-                    path="/:subjectName/boardDetail/:id"
-                    element={<TeacherSubjectBoardDetail username={username} />}
-                />
-                <Route
-                    path="/lecture"
-                    element={<TeacherLectureList username={username} />}
-                />
-                <Route
-                    path="/:subjectName/lecture/:lecutreId"
-                    element={<TeacherLectureDetail username={username} />}
-                />
-                <Route
-                    path="/notice/teacherNotice"
-                    element={<TeacherNotice username={username} />}
-                />
-              <Route path="manage-curriculums" element={<CurriculumManagement />} />
-              <Route path="manage-teachers" element={<TeacherManagement />} />
-              <Route path="notice" element={<Notice />} />
-              <Route path="notice/teacherNotice" element={<TeacherNotice />} />
-              <Route path="contact-students" element={<StudentContact />} />
-              <Route path="contact-teachers" element={<TeacherContact />} />
-            </Routes>
-          </div>
+    return (
+        <div className="teacher-App">
+            <TeacherHeader />
+            <div className="teacher-main-content">
+                <TeacherSideBar />
+                <div className="teacher-content-dashboard">
+                    <Routes>
+                        <Route path="" element={<TeacherDashBoard />} />
+                        {/* 과목 */}
+                        <Route
+                            path=":subjectName/board"
+                            element={
+                                <TeacherLecture subject={selectedSubject} username={username}  baseUrl={baseUrl}/>
+                            }
+                        />
+                        <Route
+                            path="/:subjectName/board/list"
+                            element={
+                                <TeacherSubjectBoardList username={username} baseUrl={baseUrl} />
+                            }
+                        />
+                        <Route
+                            path="/:subjectName/boardDetail/:id"
+                            element={<TeacherSubjectBoardDetail username={username} />}
+                        />
+
+                        {/* 과제 */}
+                        <Route
+                            path="assignment"
+                            element={<TeacherAssignment username={username} />}
+                        />
+                        <Route
+                            path="/assignmentDetail/:homeworkId"
+                            element={<TeacherAssignmentDetail username={username} />}
+                        />
+
+                        {/* 강의 */}
+                        {/*<Route*/}
+                        <Route
+                            path="/lecture"
+                            element={<TeacherLectureList username={username} />}
+                        />
+                        <Route
+                            path="/:subjectName/lecture/:lecutreId"
+                            element={<TeacherLectureDetail username={username} />}
+                        />
+
+                        {/* 질문 게시판 */}
+                        <Route
+                            path="/questionBoards"
+                            element={<TeacherQuestionBoard username={username} />}
+                        />
+                        {/*<Route*/}
+                        {/*    path="/questionBoards/:questionBoardId"*/}
+                        {/*    element={<TeacherQuestionBoardDetail username={username} />}*/}
+                        {/*/>*/}
+
+                        {/* 공지사항 */}
+                        <Route
+                            path="/notice/teacherNotice"
+                            element={<TeacherNotice username={username} />}
+                        />
+                        {/*<Route*/}
+                        {/*    path="/managerNotice"*/}
+                        {/*    element={<TeacherManagerNotice username={username} />}*/}
+                        {/*/>*/}
+
+                        {/* 문의 */}
+                        {/*<Route*/}
+                        {/*    path="/teacherContact"*/}
+                        {/*    element={<TeacherTeacherContact username={username} />}*/}
+                        {/*/>*/}
+                        {/*<Route*/}
+                        {/*    path="/managerContact"*/}
+                        {/*    element={<TeacherManagerContact username={username} />}*/}
+                        {/*/>*/}
+
+                        {/* 투표 */}
+                        {/*<Route*/}
+                        {/*    path="/teacherVote"*/}
+                        {/*    element={<TeacherVote username={username} />}*/}
+                        {/*/>*/}
+
+                    </Routes>
+                </div>
+            </div>
         </div>
-
-  );
-}
+    );
+};
 export default TeacherMain;
+
+

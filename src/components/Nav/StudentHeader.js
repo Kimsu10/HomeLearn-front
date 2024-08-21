@@ -52,8 +52,6 @@ const StudentHeader = () => {
           config
         );
         setNotifications(notificationResponse.data.notifications || []);
-
-        console.log("알림 정보:", notificationResponse.data.notifications);
       } catch (error) {
         console.error("데이터 가져오기 오류:", error.response);
       }

@@ -11,7 +11,6 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const RecentVideo = ({ url }) => {
-  console.log(url);
   const [player, setPlayer] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -32,7 +31,7 @@ const RecentVideo = ({ url }) => {
   useEffect(() => {
     if (url) {
       const videoId = extractVideoId(url);
-      console.log(videoId);
+
       if (videoId) {
         loadYouTubeAPI(videoId);
         setLinks(url);
@@ -89,7 +88,6 @@ const RecentVideo = ({ url }) => {
   }, [isPlaying, player]);
 
   const loadYouTubeAPI = (videoId) => {
-    console.log(videoId);
     const tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
     const firstScriptTag = document.getElementsByTagName("script")[0];
@@ -203,7 +201,6 @@ const RecentVideo = ({ url }) => {
   };
 
   const extractVideoId = (link) => {
-    console.log(link);
     const match = link.match(
       /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
     );
