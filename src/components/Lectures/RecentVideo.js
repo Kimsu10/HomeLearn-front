@@ -9,7 +9,14 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./RecentVideo.css";
 
-const RecentVideo = ({ url, onClose, lectureId, username, token }) => {
+const RecentVideo = ({
+  url,
+  onClose,
+  lectureId,
+  username,
+  token,
+  lastViewPoint,
+}) => {
   const [player, setPlayer] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -25,10 +32,11 @@ const RecentVideo = ({ url, onClose, lectureId, username, token }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const [isCompleted, setIsCompleted] = useState(false);
   const [lastPosition, setLastPosition] = useState(0);
   const [completeTime, setCompleteTime] = useState("");
+
+  console.log(lastViewPoint);
 
   useEffect(() => {
     if (url) {
@@ -148,6 +156,12 @@ const RecentVideo = ({ url, onClose, lectureId, username, token }) => {
             setIsMuted(event.target.isMuted());
             const duration = event.target.getDuration();
             setDuration(duration);
+
+            if (lastViewPoint > 0) {
+              const lastViewTime = (lastViewPoint / 100) * duration;
+              event.target.seekTo(lastViewTime, true);
+              setProgress(lastViewPoint);
+            }
           },
           onStateChange: (event) => {
             setIsPlaying(event.data === window.YT.PlayerState.PLAYING);
@@ -266,7 +280,7 @@ const RecentVideo = ({ url, onClose, lectureId, username, token }) => {
           throw new Error("Failed to update the last view data");
         }
       } catch (error) {
-        console.error("Error updating last view data:", error);
+        console.error("recentLecture error :", error);
       }
     }
   };

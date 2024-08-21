@@ -151,6 +151,7 @@ const StudentDashBoard = ({ username, baseUrl, token }) => {
                   lectureId={lectureId}
                   username={username}
                   token={token}
+                  lastViewPoint={recentLecture?.lastPosition}
                 />
               </RecentLectureModal>
             </div>
