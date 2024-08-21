@@ -223,18 +223,31 @@ const CurriculumManagement = () => {
       </div>
       <div className="curriculum-container">
         <div className="curriculum-column">
-          <h2>NCP 과정</h2>
+          <h2>
+            <img
+              src={process.env.PUBLIC_URL + '/images/curriculum/ncp.png'}
+              alt="NCP 과정"
+              className="curriculum-logo"
+            />
+          </h2>
           <div className="curriculum-list">
             {renderCurriculumList(ncpCurriculums)}
           </div>
         </div>
         <div className="curriculum-column">
-          <h2>AWS 과정</h2>
+          <h2>
+            <img
+              src={process.env.PUBLIC_URL + '/images/curriculum/aws.png'}
+              alt="AWS 과정"
+              className="curriculum-logo"
+            />
+          </h2>
           <div className="curriculum-list">
             {renderCurriculumList(awsCurriculums)}
           </div>
         </div>
       </div>
+
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
