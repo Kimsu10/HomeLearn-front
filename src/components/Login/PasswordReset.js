@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import swal from "sweetalert";
 import axios from "../../utils/axios";
 import "./PasswordReset.css";
-import {ReCAPTCHA} from "react-google-recaptcha";
+import ReCAPTCHA from "react-google-recaptcha";
 
 function PasswordReset() {
   const [username, setUsername] = useState("");
@@ -125,7 +125,6 @@ function PasswordReset() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
             />
             <div className="g-recaptcha">
-              {/* 구글 리캡챠 컴포넌트 추가 */}
               <ReCAPTCHA
                   sitekey="6Lfv5iYqAAAAAAfw_OxSLJbsnxFJQ70UR73T0bH7"
                   onChange={handleRecaptchaChange}
