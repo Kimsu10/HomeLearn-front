@@ -16,9 +16,7 @@ import { useNavigate } from "react-router-dom";
 import useGetFetch from "../../hooks/useGetFetch";
 import axios from "../../utils/axios";
 
-
 const LectureVideo = ({ url, subjectVideos }) => {
-  console.log(url);
   const [player, setPlayer] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -42,10 +40,11 @@ const LectureVideo = ({ url, subjectVideos }) => {
 
   // 컴파일러 관련 상태
   const [code, setCode] = useState(
-      'public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}'
+    'public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}'
   );
   const [language, setLanguage] = useState("java");
-  const [compilerOutput, setCompilerOutput] = useState("출력이 여기에 표시됩니다.");
+  const [compilerOutput, setCompilerOutput] =
+    useState("출력이 여기에 표시됩니다.");
 
   const languageTemplates = {
     java: `public class Main {
@@ -66,12 +65,10 @@ const LectureVideo = ({ url, subjectVideos }) => {
   const handleMouseEnter = () => setIsHovering(true);
   const handleMouseLeave = () => setIsHovering(false);
 
-  console.log(url);
-  console.log(subjectVideos);
   useEffect(() => {
     if (url) {
       const videoId = extractVideoId(url);
-      console.log(videoId);
+
       if (videoId) {
         loadYouTubeAPI(videoId);
         setLinks(url);
@@ -111,7 +108,8 @@ const LectureVideo = ({ url, subjectVideos }) => {
         }
       }
       if (isPlaying) {
-        requestAnimationFrameRef.current = requestAnimationFrame(updateProgress);
+        requestAnimationFrameRef.current =
+          requestAnimationFrame(updateProgress);
       }
     };
 
@@ -129,7 +127,7 @@ const LectureVideo = ({ url, subjectVideos }) => {
   useEffect(() => {
     if (currentUrl) {
       const videoId = extractVideoId(currentUrl);
-      console.log(videoId);
+
       if (videoId) {
         loadYouTubeAPI(videoId);
         setLinks(currentUrl);
@@ -285,7 +283,6 @@ const LectureVideo = ({ url, subjectVideos }) => {
   };
 
   const extractVideoId = (link) => {
-    console.log(link);
     const match = link.match(
       /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
     );
@@ -314,12 +311,11 @@ const LectureVideo = ({ url, subjectVideos }) => {
   const runCode = async () => {
     setCompilerOutput("코드 실행 중...");
     try {
-      console.log("API 요청 시작");
       const response = await axios.post("/students/compile", {
         sourceCode: code,
         language: language,
       });
-      console.log("API 응답:", response.data);
+
       setCompilerOutput(response.data);
     } catch (error) {
       console.error("코드 실행 중 오류 발생:", error);
@@ -328,8 +324,6 @@ const LectureVideo = ({ url, subjectVideos }) => {
   };
 
   const renderSidebarContent = () => {
-    console.log(subjectVideos);
-
     const getYouTubeThumbnail = (url) => {
       const videoIdMatch = url.match(
         /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
@@ -340,15 +334,12 @@ const LectureVideo = ({ url, subjectVideos }) => {
     };
 
     const handleLectureClick = (link) => {
-      console.log(link);
       setCurrentUrl(link);
     };
 
     switch (sidebarContent) {
       case "info":
         return (
-
-
           <div className="player_sidebar-content">
             <p className="player_category">동영상 정보</p>
             <div className="player_line"></div>
@@ -387,34 +378,34 @@ const LectureVideo = ({ url, subjectVideos }) => {
         );
       case "compiler":
         return (
-            <div className="player-sidebar-content compiler-container">
-              <p className="compiler-title">컴파일러</p>
-              <div className="player_line"></div>
-              <div className="compiler-header">
-                <select
-                    value={language}
-                    onChange={handleLanguageChange}
-                    className="compiler-language-select"
-                >
-                  <option value="java">Java</option>
-                  <option value="python">Python</option>
-                  <option value="javascript">JavaScript</option>
-                </select>
-                <button onClick={runCode} className="compiler-run-button">
-                  <Play size={16} className="compiler-run-icon" />
-                  Run
-                </button>
-              </div>
-              <textarea
-                  value={code}
-                  onChange={handleCodeChange}
-                  className="compiler-code-editor"
-                  placeholder="여기에 코드를 입력하세요"
-              />
-              <div className="compiler-output-container">
-                <pre className="compiler-output-content">{compilerOutput}</pre>
-              </div>
+          <div className="player-sidebar-content compiler-container">
+            <p className="compiler-title">컴파일러</p>
+            <div className="player_line"></div>
+            <div className="compiler-header">
+              <select
+                value={language}
+                onChange={handleLanguageChange}
+                className="compiler-language-select"
+              >
+                <option value="java">Java</option>
+                <option value="python">Python</option>
+                <option value="javascript">JavaScript</option>
+              </select>
+              <button onClick={runCode} className="compiler-run-button">
+                <Play size={16} className="compiler-run-icon" />
+                Run
+              </button>
             </div>
+            <textarea
+              value={code}
+              onChange={handleCodeChange}
+              className="compiler-code-editor"
+              placeholder="여기에 코드를 입력하세요"
+            />
+            <div className="compiler-output-container">
+              <pre className="compiler-output-content">{compilerOutput}</pre>
+            </div>
+          </div>
         );
       default:
         return null;
@@ -433,7 +424,6 @@ const LectureVideo = ({ url, subjectVideos }) => {
     console.log(links);
     return <p>잘못된 링크로 비디오를 찾을 수 없습니다.</p>;
   }
-
 
   return (
     <div

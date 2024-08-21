@@ -47,7 +47,7 @@ const StudentManagement = () => {
   const fetchStudents = async () => {
     try {
       const response = await axios.get("/managers/manage-students");
-      console.log("학생 데이터 응답:", response.data);  // 데이터 확인
+
       if (response.data && response.data.content) {
         setStudents(response.data.content);
       } else {
@@ -118,8 +118,6 @@ const StudentManagement = () => {
         curriculumFullName: curriculumFullName,
       };
 
-      console.log("등록할 학생 데이터:", studentData);
-
       const response = await axios.post(
         "/managers/manage-students/enroll",
         studentData,
@@ -127,7 +125,7 @@ const StudentManagement = () => {
           headers: { access: token },
         }
       );
-      console.log("학생 등록 응답:", response.data);
+
       if (response.status === 200) {
         setIsModalOpen(false);
         fetchStudents();
@@ -141,7 +139,6 @@ const StudentManagement = () => {
 
   const handleFileUpload = async () => {
     if (!selectedFile) {
-      console.log("파일이 선택되지 않았습니다.");
       return;
     }
     try {
@@ -161,7 +158,7 @@ const StudentManagement = () => {
           },
         }
       );
-      console.log("파일 업로드 응답:", response.data);
+
       setSelectedFile(null);
       setIsProgressModalOpen(false);
 
@@ -284,12 +281,19 @@ const StudentManagement = () => {
                 NCP
               </button>
               <button
-                className={selectedCourse === "AWS 클라우드 자바 웹 개발자 과정" ? "selected" : ""}
+                className={
+                  selectedCourse === "AWS 클라우드 자바 웹 개발자 과정"
+                    ? "selected"
+                    : ""
+                }
                 onClick={() => handleCourseChange("AWS")}
               >
                 AWS
               </button>
-              <select value={selectedGeneration} onChange={handleGenerationChange}>
+              <select
+                value={selectedGeneration}
+                onChange={handleGenerationChange}
+              >
                 <option value="전체">전체</option>
                 {filteredGenerations.map((th) => (
                   <option key={`${th}`} value={th}>{`${th}기`}</option>
@@ -306,7 +310,10 @@ const StudentManagement = () => {
                 />
                 <i className="fas fa-search student-search-icon"></i>
               </div>
-              <button onClick={handleRefresh} className="student-refresh-button">
+              <button
+                onClick={handleRefresh}
+                className="student-refresh-button"
+              >
                 <i className="fas fa-sync"></i>
               </button>
             </div>
@@ -342,7 +349,9 @@ const StudentManagement = () => {
                         <input
                           type="checkbox"
                           checked={selectedStudents.includes(student.studentId)}
-                          onChange={() => handleCheckboxChange(student.studentId)}
+                          onChange={() =>
+                            handleCheckboxChange(student.studentId)
+                          }
                           onClick={(e) => e.stopPropagation()}
                         />
                       </td>
@@ -442,7 +451,9 @@ const StudentManagement = () => {
             </button>
             <button
               className={`student-course-button ${
-                newStudent.curriculum === "AWS 클라우드 자바 웹 개발자 과정" ? "selected" : ""
+                newStudent.curriculum === "AWS 클라우드 자바 웹 개발자 과정"
+                  ? "selected"
+                  : ""
               }`}
               onClick={() =>
                 setNewStudent({

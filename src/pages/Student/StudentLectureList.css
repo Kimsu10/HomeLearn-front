@@ -25,12 +25,12 @@
 }
 
 /* select box */
-.custom-select {
+.student-custom-select {
   position: relative;
   font-family: Arial, sans-serif;
 }
 
-.select-selected {
+.student-select-selected {
   background-color: #fff;
   width: 200px;
   padding: 10px;
@@ -41,7 +41,7 @@
   font-size: 20px;
 }
 
-.select-items {
+.student-select-items {
   margin-top: 10px;
   position: absolute;
   background-color: #fff;
@@ -54,18 +54,19 @@
   overflow: hidden;
 }
 
-.select-items div {
+.student-select-items div {
   padding: 10px;
   cursor: pointer;
 }
 
-.select-items div:hover {
+.student-select-items div:hover {
   background-color: #f0f0f0;
 }
 
-.select-hide {
+.student-select-hide {
   display: none;
 }
+
 /*  */
 .subject_lecture_list_container {
   padding: 0px 0;

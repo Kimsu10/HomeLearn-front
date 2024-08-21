@@ -12,10 +12,6 @@ const StudentQuestionBoardDetail = () => {
 
   const { data: questionBoards } = useAxiosGet(`/students/question-boards`, []);
 
-  console.log(questionBoards);
-
-  // console.log(questionBoards.content[0].commentCount);
-
   const boardContent = questionBoards?.content || [];
 
   useEffect(() => {
@@ -53,7 +49,6 @@ const StudentQuestionBoardDetail = () => {
   };
 
   return (
-    // <div className="student_inquiry_board_container">
     <div className="student_inquiry_board_main_container">
       <div className="student_inquiry_board_title_box">
         <h1 className="student_inquiry_board_title">질문 게시판</h1>

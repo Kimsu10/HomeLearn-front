@@ -60,7 +60,7 @@ const StudentAssignmentDetail = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("모달 데이터:", formData);
+
     closeModal();
   };
 
@@ -84,7 +84,6 @@ const StudentAssignmentDetail = () => {
     try {
       await axios.delete(`/students/homeworks/${assignment.mySubmitId}`);
       window.location.reload();
-      console.log("과제 삭제 성공");
     } catch (err) {
       console.error("과제 삭제 중 오류 발생:", err);
     }

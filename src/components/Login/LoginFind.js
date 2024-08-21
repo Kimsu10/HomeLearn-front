@@ -26,9 +26,6 @@ function LoginFind() {
     setIsSubmitting(true);
 
     try {
-      console.log("Sending email request to /account/send-code");
-      console.log("Email:", email);
-
       // 서버로 이메일 전송, 응답 처리
       const response = await axios.post("/account/send-code", { email });
 
@@ -63,13 +60,11 @@ function LoginFind() {
     setIsSubmitting(true);
 
     try {
-      console.log("Sending code verification request to /account/verify-code");
-      console.log("Code:", code);
-
       // 서버로 인증 코드 전송, 응답 처리
-      const response = await axios.post("/account/verify-code", { email, code });
-
-      console.log("Response:", response);
+      const response = await axios.post("/account/verify-code", {
+        email,
+        code,
+      });
 
       if (response.status === 200) {
         swal("인증 성공", "코드 인증이 성공했습니다.", "success");

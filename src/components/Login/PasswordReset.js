@@ -16,9 +16,7 @@ function PasswordReset() {
   useEffect(() => {
     if (location.state?.username) {
       setUsername(location.state.username);
-      console.log("Received username:", location.state.username);
     } else {
-      console.log("No username found in location.state");
     }
   }, [location.state]);
 
@@ -29,26 +27,6 @@ function PasswordReset() {
   useEffect(() => {
     validatePassword(newPassword);
   }, [newPassword]);
-
-  // reCAPTCHA 확인 로직 추가
-  useEffect(() => {
-    const form = document.querySelector("form");
-    form.addEventListener("submit", function (event) {
-      const recaptchaResponse = document.querySelector(
-        ".g-recaptcha-response"
-      ).value;
-      if (!recaptchaResponse) {
-        alert("reCAPTCHA를 완료해 주세요.");
-        event.preventDefault();
-        return false;
-      }
-      document.getElementById("gRecaptchaResponse").value = recaptchaResponse;
-    });
-
-    return () => {
-      form.removeEventListener("submit", function () {});
-    };
-  }, []);
 
   const validatePassword = (password) => {
     const passwordRegex =
@@ -71,11 +49,17 @@ function PasswordReset() {
       return;
     }
 
-    try {
-      console.log("Submitting password reset request:");
-      console.log("Username:", username);
-      console.log("New password:", newPassword);
+    // reCAPTCHA 확인 로직 추가
+    const recaptchaResponse = document.querySelector(
+        ".g-recaptcha-response"
+    ).value;
+    if (!recaptchaResponse) {
+      alert("reCAPTCHA를 완료해 주세요.");
+      return;
+    }
+    document.getElementById("gRecaptchaResponse").value = recaptchaResponse;
 
+    try {
       const response = await axios.post("/account/reset-password", {
         username: username,
         password: newPassword,

@@ -16,15 +16,11 @@ const StudentModal = ({
 }) => {
   const { homeworkId } = useParams();
 
-  console.log(homeworkId);
-
   const [formData, setFormData] = useState({
     homeworkId: homeworkId,
     description: "",
     file: null,
   });
-
-  console.log(formData);
 
   const [selectedFileName, setSelectedFileName] = useState("");
 

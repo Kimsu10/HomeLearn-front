@@ -1,10 +1,13 @@
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import "./TeacherLecture.css";
 import useGetFetch from "../../hooks/useGetFetch";
 import { useEffect } from "react";
+import useAxiosGet from "../../hooks/useAxiosGet";
 
-const TeacherLecture = () => {
+const TeacherLecture = ({baseUrl}) => {
   const navigate = useNavigate();
+  const { "*": subjectId } = useParams();
+  const mainSubjectId = subjectId.split("/")[0];
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -13,7 +16,8 @@ const TeacherLecture = () => {
   // 강의 영상
   const {
     data: mainLectures
-  } = useGetFetch("/data/teacher/mainLecture/mainLecture.json", "");
+  } = useAxiosGet( `/teachers/subjects/${mainSubjectId}`,"");
+  console.log(mainLectures);
 
   // 과목 게시판
   const {
@@ -31,7 +35,7 @@ const TeacherLecture = () => {
     const videoId = url.split("v=")[1]?.split("&")[0];
     return `https://www.youtube.com/embed/${videoId}`;
   };
-
+console.log(baseUrl);
   const formatFilePath = (filePath) => {
     const lastDotIndex = filePath.lastIndexOf(".");
     const fileName = filePath.slice(
@@ -55,7 +59,7 @@ const TeacherLecture = () => {
     const leftTime = lectureDate - today;
     return Math.ceil(leftTime / (1000 * 60 * 60 * 24));
   };
-
+console.log(`${baseUrl}/image/${mainLectures?.imagePath}`);
   return (
     <div className="teacher_lecture_container">
       <div className="teacher_main_container">
@@ -63,10 +67,10 @@ const TeacherLecture = () => {
           <img
             className="teacher_lecture_type_image"
             alt="과목이미지"
-            src={mainLectures.imgPath}
+            src={`${baseUrl}/image/${mainLectures?.imagePath}`}
           />
           <div className="teacher_lecture_description_box">
-            <h1 className="teacher_lecture_type_name">{mainLectures.title}</h1>
+            <h1 className="teacher_lecture_type_name">{mainLectures.name}</h1>
             <p className="teacher_lecture_type_description">
               {mainLectures.description}
             </p>
@@ -80,7 +84,7 @@ const TeacherLecture = () => {
               <span
                 className="teacher_go_to_show_more_page"
                 onClick={() =>
-                  navigate(`/teachers/${mainLectures.title}/boardList`)
+                  navigate(`/teachers/${mainLectures.title}/board/list`)
                 }
               >
                 더보기 ⟩
@@ -114,7 +118,7 @@ const TeacherLecture = () => {
               <h3 className="teacher_board_title">질문 게시판</h3>
               <span
                 className="teacher_go_to_show_more_page"
-                onClick={() => navigate("/students/inquiryBoard")}
+                onClick={() => navigate("/teachers/questionBoards")}
               >
                 더보기 ⟩
               </span>
@@ -124,7 +128,7 @@ const TeacherLecture = () => {
                 <div
                   className="teacher_inquiry_list"
                   key={idx}
-                  onClick={() => navigate(`/students/inquiryDetail/${el.id}`)}
+                  onClick={() => navigate(`/teachers/questionDetail/${el.id}`)}
                 >
                   <div className="teacher_inquiry_title_box">
                     <div className="teacher_inquiry_type">{el.type}</div>
@@ -145,7 +149,7 @@ const TeacherLecture = () => {
             </div>
           </div>
         </div>
-        <div className="teacher_lecture_list_container">
+        <div className="teacher_lecture_playlist_container">
           <div className="teacher_lecture_title_box">
             <h3 className="teacher_lecture_list_title">강의영상</h3>
             <div className="teacher_button_box">

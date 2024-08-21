@@ -2,11 +2,6 @@ import axios from "axios";
 import { useEffect } from "react";
 
 const YouTubeVideoDuration = ({ youtubeUrl, onDurationFetched, apiKey }) => {
-  console.log(apiKey);
-  console.log(youtubeUrl);
-  console.log(onDurationFetched);
-  // cors에러 cors 에러..뭐가 무제지
-
   useEffect(() => {
     const fetchVideoDuration = async () => {
       if (!youtubeUrl) return;
@@ -31,11 +26,9 @@ const YouTubeVideoDuration = ({ youtubeUrl, onDurationFetched, apiKey }) => {
         if (response.data.items.length > 0) {
           const isoDuration = response.data.items[0].contentDetails.duration;
 
-          console.log("ISO Duration:", isoDuration);
-
           const totalSeconds = parseISODuration(isoDuration);
 
-          // 동영상 초단위 부모 컴포넌트로 전달
+          // 동영상 초단위 부모 컴포넌트로 전달 -> cors 에러
           onDurationFetched(totalSeconds);
         }
       } catch (error) {
