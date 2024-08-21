@@ -93,7 +93,7 @@ const ProgressModal = ({ isOpen, onClose }) => {
       <div className="file-progress-modal">
         {!isCompleted ? (
           <>
-            <h2>파일 업로드 중...</h2>
+            <h2>메일 전송 중...</h2>
             <div id="file-progress">
               <div id="file-bar" style={{ width: `${uploadProgress}%` }}>
                 {Math.round(uploadProgress)}%
