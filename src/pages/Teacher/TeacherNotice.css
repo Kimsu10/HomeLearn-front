@@ -32,6 +32,17 @@
     height: 40px;
 }
 
+/* 업로드, 다운로드 */
+.download-link {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.download-link:hover {
+    color: darkblue;
+}
+
+
 /* Pagination styles */
 .pagination {
     display: flex;
