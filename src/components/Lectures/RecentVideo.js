@@ -64,7 +64,7 @@ const RecentVideo = ({ url, onClose }) => {
           const currentProgress = (currentTime / totalDuration) * 100;
           setProgress(currentProgress);
           setCurrentTime(currentTime);
-          setDuration(totalDuration);
+          setDuration(totalDuration); // 이 부분에서 상태를 업데이트 합니다.
         }
       }
       if (isPlaying) {
@@ -110,7 +110,8 @@ const RecentVideo = ({ url, onClose }) => {
             setPlayer(event.target);
             setVolume(event.target.getVolume());
             setIsMuted(event.target.isMuted());
-            setDuration(event.target.getDuration());
+            const duration = event.target.getDuration();
+            setDuration(duration); // 여기서도 상태를 설정합니다.
           },
           onStateChange: (event) => {
             setIsPlaying(event.data === window.YT.PlayerState.PLAYING);
@@ -223,10 +224,10 @@ const RecentVideo = ({ url, onClose }) => {
               isHovering || isPlaying ? "" : "hidden"
             }`}
           >
-            <button onClick={togglePlay}>
+            <button onClick={togglePlay} className="recent-play-button">
               {isPlaying ? <Pause size={24} /> : <Play size={24} />}
             </button>
-            <button onClick={toggleMute}>
+            <button onClick={toggleMute} className="recent-mute-button">
               {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
             </button>
             <input
@@ -238,22 +239,28 @@ const RecentVideo = ({ url, onClose }) => {
               onChange={handleVolumeChange}
             />
             <input
+              className="recent-progress-bar-track"
               type="range"
               min="0"
               max="100"
               value={progress}
               onChange={handleProgressChange}
             />
-            <span>
-              {Math.floor(currentTime / 60)}:{Math.floor(currentTime % 60)}
+            <span className="recent-video-time">
+              {Math.floor(currentTime / 60)} : {Math.floor(currentTime % 60)}
+              &nbsp; / {Math.floor(duration / 60)} : {Math.floor(duration % 60)}
             </span>
-            <select value={playbackRate} onChange={handlePlaybackRateChange}>
+            <select
+              value={playbackRate}
+              onChange={handlePlaybackRateChange}
+              className="recent-select-button"
+            >
               <option value="0.5">0.5x</option>
               <option value="1">1x</option>
               <option value="1.5">1.5x</option>
               <option value="2">2x</option>
             </select>
-            <button onClick={toggleFullscreen}>
+            <button onClick={toggleFullscreen} className="recent-full-button">
               {isFullscreen ? <Minimize size={24} /> : <Maximize size={24} />}
             </button>
           </div>

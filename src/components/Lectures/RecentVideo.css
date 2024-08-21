@@ -55,27 +55,47 @@
 
 .recent-video-controls {
   position: absolute;
-  bottom: 10px;
+  bottom: 0;
   left: 0;
   right: 10px;
   display: flex;
   align-items: center;
   gap: 10px;
   background: rgba(0, 0, 0, 0.5);
-  padding: 16px;
+  padding-top: 16px;
   border-radius: 5px;
   opacity: 1;
   transition: opacity 0.3s;
   color: white;
   width: 102%;
+  gap: 4px;
 }
 
 .recent-video-controls.hidden {
   opacity: 0;
 }
 
+.recent-progress-bar-track,
 .recent-progress-bar {
   position: absolute;
-  width: 98%;
-  top: -20px;
+  width: 98.5%;
+  top: -10px;
+}
+
+.recent-full-button,
+.recent-video-time,
+.recent-play-button,
+.recent-mute-button {
+  padding-left: 20px;
+  color: white;
+}
+
+.recent-select-button {
+  margin-left: 1020px;
+  background-color: transparent;
+  color: white;
+
+  outline: none;
+  border-radius: 10px;
+  padding: 5px;
 }
