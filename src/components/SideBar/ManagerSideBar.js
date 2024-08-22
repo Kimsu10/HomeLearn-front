@@ -18,7 +18,7 @@ const ManagerSideBar = () => {
   }, []);
 
   useEffect(() => {
-    setDropdownOpen(location.pathname.includes("/managers/contact-"));
+    setDropdownOpen(location.pathname.includes("/managers/inquiry-"));
   }, [location]);
 
   const toggleDropdown = () => {
@@ -110,7 +110,7 @@ const ManagerSideBar = () => {
             >
               <div
                 className={`manager_sideBar_dropdownHeader ${
-                  isActive("/managers/contact-") ? "active" : ""
+                  isActive("/managers/inquiry-") ? "active" : ""
                 }`}
                 onClick={toggleDropdown}
               >
@@ -130,7 +130,7 @@ const ManagerSideBar = () => {
               >
                 <li>
                   <NavLink
-                    to="/managers/contact-students"
+                    to="/managers/inquiry/student"
                     className={({ isActive }) =>
                       isActive
                         ? "manager_sideBar_link active"
@@ -142,7 +142,7 @@ const ManagerSideBar = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/managers/contact-teachers"
+                    to="/managers/inquiry/teacher"
                     className={({ isActive }) =>
                       isActive
                         ? "manager_sideBar_link active"
