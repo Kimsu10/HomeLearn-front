@@ -9,14 +9,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./RecentVideo.css";
 
-const RecentVideo = ({
-  url,
-  onClose,
-  lectureId,
-  username,
-  token,
-  lastViewPoint,
-}) => {
+const RecentVideo = ({ url, lectureId, username, token, lastViewPoint }) => {
   const [player, setPlayer] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -180,7 +173,7 @@ const RecentVideo = ({
     progressInterval.current = setInterval(() => {
       if (player && player.getCurrentTime) {
         const currentProgress =
-          (player.getCurrentTime() / player?.getDuration()) * 100;
+          (player.getCurrentTime() / player.getDuration()) * 100;
         setProgress(currentProgress);
         setCurrentTime(player.getCurrentTime());
       }
@@ -340,9 +333,13 @@ const RecentVideo = ({
               onChange={handlePlaybackRateChange}
               className="recent-select-button"
             >
+              <option value="0.25">0.25x</option>
               <option value="0.5">0.5x</option>
+              <option value="0.75">0.75x</option>
               <option value="1">1x</option>
+              <option value="1.25">1.25x</option>
               <option value="1.5">1.5x</option>
+              <option value="1.75">1.75x</option>
               <option value="2">2x</option>
             </select>
             <button onClick={toggleFullscreen} className="recent-full-button">

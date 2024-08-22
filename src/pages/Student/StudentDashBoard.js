@@ -40,33 +40,57 @@ const StudentDashBoard = ({ username, baseUrl, token }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const recentLectureData = await axios.get(
-          `/students/dash-boards/recent-lecture`
-        );
-        setRecentLecture(recentLectureData?.data);
+        const [
+          recentLectureResult,
+          questionResult,
+          assignmentResult,
+          badgeResult,
+          adminNoticeResult,
+          teacherNoticeResult,
+        ] = await Promise.allSettled([
+          axios.get(`/students/dash-boards/recent-lecture`),
+          axios.get(`/students/dash-boards/questions`),
+          axios.get(`/students/dash-boards/homeworks`),
+          axios.get(`/students/dash-boards/badges`),
+          axios.get(`/students/dash-boards/manager-boards`),
+          axios.get(`/students/dash-boards/teacher-boards`),
+        ]);
 
-        const questionData = await axios.get(`/students/dash-boards/questions`);
-        setQuestion(questionData.data);
+        if (recentLectureResult.status === "fulfilled") {
+          setRecentLecture(recentLectureResult.value.data);
+        } else {
+          console.warn(recentLectureResult.reason);
+        }
 
-        const assignmentData = await axios.get(
-          `/students/dash-boards/homeworks`
-        );
-        setAssignment(assignmentData.data);
+        if (questionResult.status === "fulfilled") {
+          setQuestion(questionResult.value.data);
+        } else {
+          console.warn(questionResult.reason);
+        }
 
-        const badgeData = await axios.get(`/students/dash-boards/badges`);
-        setBadge(badgeData.data);
+        if (assignmentResult.status === "fulfilled") {
+          setAssignment(assignmentResult.value.data);
+        } else {
+          console.warn(assignmentResult.reason);
+        }
 
-        console.log(badge);
+        if (badgeResult.status === "fulfilled") {
+          setBadge(badgeResult.value.data);
+        } else {
+          console.warn(badgeResult.reason);
+        }
 
-        const adminNoticeData = await axios.get(
-          `/students/dash-boards/manager-boards`
-        );
-        setAdminNotice(adminNoticeData.data);
+        if (adminNoticeResult.status === "fulfilled") {
+          setAdminNotice(adminNoticeResult.value.data);
+        } else {
+          console.warn(adminNoticeResult.reason);
+        }
 
-        const teacherNoticeData = await axios.get(
-          `/students/dash-boards/teacher-boards`
-        );
-        setTeacherNotice(teacherNoticeData.data);
+        if (teacherNoticeResult.status === "fulfilled") {
+          setTeacherNotice(teacherNoticeResult.value.data);
+        } else {
+          console.warn(teacherNoticeResult.reason);
+        }
       } catch (error) {
         console.error("Error fetching data", error);
       }
@@ -124,7 +148,6 @@ const StudentDashBoard = ({ username, baseUrl, token }) => {
                 <h3 className="recent_lecture_type">
                   {recentLecture?.subjectName}
                 </h3>
-
                 <div className="recent_video_box">
                   <i className="bi bi-play-btn play_recent_video_icon"></i>
                   <p className="recent_lecture_video_title">
