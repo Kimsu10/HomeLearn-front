@@ -117,6 +117,7 @@ const TeacherLectureRegister = ({ onClose }) => {
                     </div>
                 </form>
             </div>
+
         </div>
     );
 };

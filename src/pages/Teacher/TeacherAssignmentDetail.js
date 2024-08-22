@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./TeacherAssignmentDetail.css";
+import { NavLink, useLocation } from "react-router-dom";
+import TeacherSimilarModal from "../../components/Modal/TeacherModal/TeacherSimilarModal";
 
 const TeacherAssignmentDetail = () => {
   const [expandedItems, setExpandedItems] = useState({});
@@ -7,6 +9,15 @@ const TeacherAssignmentDetail = () => {
   const [newComments, setNewComments] = useState({});
   const [showNameList, setShowNameList] = useState(false);
   const [isModifyBoxOpen, setIsModifyBoxOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const toggleExpand = (index) => {
     setExpandedItems(prev => ({
@@ -75,18 +86,18 @@ const TeacherAssignmentDetail = () => {
         </div>
         <div className="teacher_assignment_board_content_box">
           <div className="teacher_assignment_board_title_box">
-            <span className="teacher_assignment_title">부트 오늘한거</span>
+            <span className="teacher_assignment_title">Spring으로 게시판 생성</span>
             <span className="assignment_download_file_name">
-            boot01.zip
+            spring01.zip
           </span>
           </div>
           <div className="teacher_assignment_board_content">
-            querydsl 코드 구현해주세요
+            Spring MVC로 CRUD를 고려하여 게시판 생성
           </div>
           <div className="teacher_assignment_board_info_box">
             <div className="important_notice_box">
             <span className="teacher_assignment_deadline">
-              2024.07.05 23:59
+              2024.08.26 23:59
             </span>
               &nbsp;까지 &nbsp;<b>|</b>&nbsp;
               <span>
@@ -96,19 +107,18 @@ const TeacherAssignmentDetail = () => {
                     onClick={toggleNameList}
                     style={{ cursor: 'pointer' }}
                 >
-                5명
+                2명
                   {showNameList && (
                       <div className="non_participants_list_box">
-                        <p className="non_participants_name">학생1</p>
-                        <p className="non_participants_name">학생2</p>
-                        <p className="non_participants_name">학생3</p>
+                        <p className="non_participants_name">김철수</p>
+                        <p className="non_participants_name">이민아</p>
                       </div>
                   )}
                 </span>
             </span>
             </div>
             <p className="teacher_assignment_board_writed_date">
-              2024-07-04 &nbsp;
+              2024-08-22 &nbsp;
               <span style={{ color: "black" }}>작성</span>
             </p>
           </div>
@@ -118,24 +128,28 @@ const TeacherAssignmentDetail = () => {
           <div>
             제출 &nbsp;
             <span className="teacher_assignment_participants_count">
-          10명
+          5명
               </span>
           </div>
-          <button className="teacher_similar_button">유사도 확인</button>
 
-
+          <span
+              className="teacher_similar_button"
+              onClick={openModal}  // 클릭 이벤트 추가
+          >
+                            유사도 확인
+          </span>
 
         </div>
         <div className="subject_board_lists_container">
-          {[1, 2, 3].map((item, index) => (
+          {[1, 2, 3, 4, 5].map((item, index) => (
               <div key={index} className="subject_board_list_one_box">
                 <div className="subject_submitted_lists">
                   <p className="submitted_number">{item}</p>
                   <p className="submitted_name">
-                    {index === 0 ? "서준명" : index === 1 ? "김민수" : "이지원"}
+                    {index === 0 ? "서준명" : index === 1 ? "김민수" : index === 2 ? "이지원" : index === 3 ? "박수현" : index === 4 ? "조이현" : "조이현" }
                   </p>
                   <p className="submitted_date">
-                    {index === 0 ? "2023-12-15" : index === 1 ? "2023-12-16" : "2023-12-17"}
+                    {index === 0 ? "2024-08-23" : index === 1 ? "2024-08-23" : index === 2 ? "2024-08-24" : index === 3 ? "2024-08-24" : index === 4 ? "2024-08-24" : "2024-08-24"}
                   </p>
                   <button
                       className="show_more_submitted_info"
@@ -156,7 +170,7 @@ const TeacherAssignmentDetail = () => {
                           </p>
                         </div>
                         <p className="teacher_submitted_content">
-                          네이버 데브옵스 10기 {index === 0 ? "서준명" : index === 1 ? "김승민" : "정성진"} Spring 과제 제출
+                          네이버 데브옵스 10기 {index === 0 ? "서준명" : index === 1 ? "김민수" : index === 2 ? "이지원" : index === 3 ? "박수현" : index === 4 ? "조이현" : "조이현"} Spring 과제 제출
                         </p>
                       </div>
                       <div className="show_more_submitted_detail_info_container2">
@@ -173,6 +187,12 @@ const TeacherAssignmentDetail = () => {
               </div>
           ))}
         </div>
+        {isModalOpen && (
+            <TeacherSimilarModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+            />
+        )}
       </div>
   );
 };
