@@ -147,7 +147,7 @@ const StudentQuestionBoardDetail = () => {
             <tr key={idx}>
               <td className="student_question_board_number">{idx + 1}</td>
               <td className="student_question_board_subject_">
-                {el.subjectName}
+                {el.subjectName || "공통"}
               </td>
               <td
                 className="student_question_board_writed_title"

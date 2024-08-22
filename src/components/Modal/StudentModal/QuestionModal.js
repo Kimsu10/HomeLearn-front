@@ -131,7 +131,6 @@ const QuestionModal = ({
               ))}
             </ul>
           </div>
-
           {contentTitle && (
             <label>
               <p className="student_modal_name_tag">{contentTitle}</p>
