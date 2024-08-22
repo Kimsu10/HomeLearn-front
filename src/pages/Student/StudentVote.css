@@ -1,0 +1,71 @@
+.student-vote-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.votes-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.votes-section {
+  flex: 1;
+  background-color: #e0f7f4;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.vote-card {
+  background-color: #ffffff;
+  border: 1px solid #d4d4d4;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.vote-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.vote-card-header h4 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.vote-card-header a {
+  font-size: 14px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.vote-card-header a:hover {
+  text-decoration: underline;
+}
+
+.vote-card p {
+  margin: 5px 0;
+}
+
+.no-votes {
+  text-align: center;
+  padding: 20px;
+  color: #6c757d;
+  font-size: 16px;
+  background-color: #ffffff;
+  border-radius: 10px;
+}
