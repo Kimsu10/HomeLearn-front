@@ -32,7 +32,7 @@ const ManagerCalendarDetail = () => {
       try {
         const response = await axios.get('/managers/calendar/modal');
         setCurriculums(response.data);
-         console.log('데이터 가져오기:', response.data);
+        console.log('데이터 가져오기:', response.data);
       } catch (error) {
         console.error('커리큘럼 정보 가져오기 실패:', error);
       }
@@ -53,7 +53,6 @@ const ManagerCalendarDetail = () => {
     const curriculum = curriculums.find(c => String(c.id) === String(curriculumId));
     return curriculum ? curriculum.color : '#000';
   };
-
 
   // 이벤트 삭제 핸들러
   const handleDeleteEvent = (id) => {

@@ -27,13 +27,15 @@ const ManagerCalendar = () => {
     const fetchCurriculums = async () => {
       try {
         const token = getToken();
+
         // NCP 및 AWS 커리큘럼 정보 가져오기
-        const ncpResponse = await axios.get("/managers/manage-curriculums/NCP", {
+        const ncpResponse = await axios.get("/managers/dash-boards/curriculum/NCP", {
           headers: { access: token },
         });
-        const awsResponse = await axios.get("/managers/manage-curriculums/AWS", {
+        const awsResponse = await axios.get("/managers/dash-boards/curriculum/AWS", {
           headers: { access: token },
         });
+
         // 두 커리큘럼 정보를 하나로 합침
         const combinedCurriculums = [...ncpResponse.data, ...awsResponse.data];
         setCurriculums(combinedCurriculums); // 상태 업데이트
@@ -45,10 +47,21 @@ const ManagerCalendar = () => {
     fetchCurriculums(); // 커리큘럼 정보 가져오기 실행
   }, []);
 
+  // 일정 데이터 가져오기
   useEffect(() => {
-    const storedEvents =
-      JSON.parse(localStorage.getItem("calendarEvents")) || [];
-    setEvents(storedEvents);
+    const fetchEvents = async () => {
+      try {
+        const token = getToken();
+        const response = await axios.get("/managers/dash-boards/calendar", {
+          headers: { access: token },
+        });
+        setEvents(response.data);
+      } catch (error) {
+        console.error("일정 데이터를 가져오는 데 실패했습니다:", error);
+      }
+    };
+
+    fetchEvents();
   }, []);
 
   useEffect(() => {
@@ -60,8 +73,7 @@ const ManagerCalendar = () => {
     const fetchHolidays = async () => {
       const year = currentDate.getFullYear();
       const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-      const serviceKey =
-        "t21Zxd4T5l%2FCFpu9dpVZ2U4nEIv06W14hNeu7Op7HA0yIBHYgMu23%2FL6JHBWQ%2Bp9HNG%2B93RJwgq7zANzmn%2B2%2BA%3D%3D";
+      const serviceKey = "t21Zxd4T5l%2FCFpu9dpVZ2U4nEIv06W14hNeu7Op7HA0yIBHYgMu23%2FL6JHBWQ%2Bp9HNG%2B93RJwgq7zANzmn%2B2%2BA%3D%3D";
       const url = `http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?serviceKey=${serviceKey}&pageNo=1&numOfRows=100&solYear=${year}&solMonth=${month}`;
 
       try {
@@ -69,21 +81,14 @@ const ManagerCalendar = () => {
         if (response.ok) {
           const responseText = await response.text();
           const parser = new DOMParser();
-          const xmlDoc = parser.parseFromString(
-            responseText,
-            "application/xml"
-          );
+          const xmlDoc = parser.parseFromString(responseText, "application/xml");
           const items = xmlDoc.getElementsByTagName("item");
           const holidays = Array.from(items)
             .map((item) => {
-              const locdate =
-                item.getElementsByTagName("locdate")[0].textContent;
+              const locdate = item.getElementsByTagName("locdate")[0].textContent;
               return locdate;
             })
-            .filter((date) => {
-              const monthDay = date.substr(4, 4);
-              return monthDay !== "0717";
-            });
+            .filter((date) => date.substr(4, 4) !== "0717");
           setHolidays(holidays); // 공휴일 상태 업데이트
         } else {
           console.error("공휴일 데이터 가져오기 실패:", response.statusText);
@@ -97,39 +102,19 @@ const ManagerCalendar = () => {
   }, [currentDate]);
 
   // 현재 달의 날짜 생성
-  const daysInMonth = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth() + 1,
-    0
-  ).getDate();
-  const firstDayOfMonth = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth(),
-    1
-  ).getDay();
+  const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
 
   // 달력에 표시될 날짜
   const generateCalendarDates = () => {
     const dates = [];
-    const prevMonthLastDate = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      0
-    );
-    const nextMonthFirstDate = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth() + 1,
-      1
-    );
+    const prevMonthLastDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
+    const nextMonthFirstDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
 
     // 이전 달 마지막 날들 추가
     for (let i = firstDayOfMonth - 1; i >= 0; i--) {
       dates.push({
-        date: new Date(
-          prevMonthLastDate.getFullYear(),
-          prevMonthLastDate.getMonth(),
-          prevMonthLastDate.getDate() - i
-        ),
+        date: new Date(prevMonthLastDate.getFullYear(), prevMonthLastDate.getMonth(), prevMonthLastDate.getDate() - i),
         isCurrentMonth: false,
       });
     }
@@ -147,11 +132,7 @@ const ManagerCalendar = () => {
     if (remainingDays < 7) {
       for (let i = 0; i < remainingDays; i++) {
         dates.push({
-          date: new Date(
-            nextMonthFirstDate.getFullYear(),
-            nextMonthFirstDate.getMonth(),
-            i + 1
-          ),
+          date: new Date(nextMonthFirstDate.getFullYear(), nextMonthFirstDate.getMonth(), i + 1),
           isCurrentMonth: false,
         });
       }
@@ -207,9 +188,7 @@ const ManagerCalendar = () => {
 
   // 날짜 클릭
   const handleDateClick = (date) => {
-    const adjustedDate = new Date(
-      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
-    );
+    const adjustedDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
     setSelectedDate(adjustedDate);
     const eventsForDate = getEventsForDate(date);
     if (eventsForDate.length > 0) {
@@ -310,7 +289,7 @@ const ManagerCalendar = () => {
                         to={`/managers/calendar/${event.id}`}
                         className="event-dot-link"
                       >
-                        <div className="event-dot"></div>
+                        <div className="event-dot" style={{ backgroundColor: event.color }}></div>
                       </Link>
                     ))}
                 </div>
