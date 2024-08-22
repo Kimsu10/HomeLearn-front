@@ -4,8 +4,9 @@ import Question from "./Question";
 import Lecture_State from "./Lecture_State";
 import Today_It from "./Today_It";
 import Faq from "./Faq";
-import { useNavigate, Routes, Route, useLocation } from "react-router-dom";
+import {useNavigate, Routes, Route, useLocation} from "react-router-dom";
 import React, { useEffect, useState } from "react";
+
 import TeacherSideBar from "../../components/SideBar/TeacherSideBar";
 import TeacherContact from "../Manager/TeacherContact";
 import StudentContact from "../Manager/StudentContact";
@@ -27,7 +28,7 @@ import StudentLectureDetail from "../Student/StudentLectureDetail";
 import TeacherQuestionBoard from "./TeacherQuestionBoard";
 import StudentQuestionBoardDetail from "../Student/StudentQuestionBoardDetail";
 import TeacherSubjectBoardList from "./TeacherSubjectBoardList";
-import TeacherVote from "./TeacherVote";
+
 
 function TeacherDashBoard() {
     return (
@@ -64,6 +65,8 @@ const TeacherMain = () => {
             console.error("jwt token 해석 실패 : ", error);
         }
     }, []);
+
+    console.log(username);
 
     return (
         <div className="teacher-App">
@@ -102,6 +105,7 @@ const TeacherMain = () => {
                         />
 
                         {/* 강의 */}
+                        {/*<Route*/}
                         <Route
                             path="/lecture"
                             element={<TeacherLectureList username={username} />}
@@ -116,19 +120,43 @@ const TeacherMain = () => {
                             path="/questionBoards"
                             element={<TeacherQuestionBoard username={username} />}
                         />
+                        {/*<Route*/}
+                        {/*    path="/questionBoards/:questionBoardId"*/}
+                        {/*    element={<TeacherQuestionBoardDetail username={username} />}*/}
+                        {/*/>*/}
 
                         {/* 공지사항 */}
                         <Route
                             path="/notice/teacherNotice"
                             element={<TeacherNotice username={username} />}
                         />
+                        {/*<Route*/}
+                        {/*    path="/managerNotice"*/}
+                        {/*    element={<TeacherManagerNotice username={username} />}*/}
+                        {/*/>*/}
+
+                        {/* 문의 */}
+                        {/*<Route*/}
+                        {/*    path="/teacherContact"*/}
+                        {/*    element={<TeacherTeacherContact username={username} />}*/}
+                        {/*/>*/}
+                        {/*<Route*/}
+                        {/*    path="/managerContact"*/}
+                        {/*    element={<TeacherManagerContact username={username} />}*/}
+                        {/*/>*/}
 
                         {/* 투표 */}
-                        <Route path="/teachers/vote" element={<TeacherVote username={username} />} />
+                        {/*<Route*/}
+                        {/*    path="/teacherVote"*/}
+                        {/*    element={<TeacherVote username={username} />}*/}
+                        {/*/>*/}
+
                     </Routes>
                 </div>
             </div>
         </div>
+    );
+};
     );
 };
 

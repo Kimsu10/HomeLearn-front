@@ -32,12 +32,12 @@ const StudentInquiryBoard = () => {
 
             const response = await axios.get('/managers/students-inquiries', {
                 params: {
-                    curriculumName: filters.curriculum !== "all"
+                    curriculumName: filters.curriculum && filters.curriculum !== "all"
                     ? filters.curriculum: null,
                     curriculumTh: filters.batch || null
                 },
             });
-            setInquiries(response.data);
+            setInquiries(response.data || []);
         } catch (error) {
             setError("문의 내역을 가져오는데 실패 했습니다");
             console.error("Error fetching inquiries", error);
@@ -58,21 +58,21 @@ const StudentInquiryBoard = () => {
                     src="/"
                     alt="Naver"
                     className="filter-logo"
-                    onClick={() => handleFilterChange("curriculum", "네이버 데브옵스")}
+                    onClick={(e) => handleFilterChange("curriculum", "네이버 데브옵스")}
                 />
                 <img
                     src="/"
                     alt="AWS"
                     className="filter-logo"
-                    onClick={() => handleFilterChange("curriculum", "AWS")}
+                    onClick={(e) => handleFilterChange("curriculum", "AWS")}
                 />
                 <select
                     className="curriculum-filter"
                     onChange={(e) => handleFilterChange("curriculum", e.target.value)}
                 >
                     <option value="all">모든 과정</option>
-                    <option value="네이버 데브옵스">네이버 데브옵스</option>
-                    <option value="AWS">AWS</option>
+                    <option value="">네이버 데브옵스</option>
+                    <option value="">AWS</option>
                 </select>
                 <select
                     className="status-filter"
@@ -103,7 +103,7 @@ const StudentInquiryBoard = () => {
                             <span className="inquiry-batch">{filters.batch || "기수 미지정"}</span>
                             <span className="inquiry-course">{filters.curriculum}</span>
                             <i className="fas fa-user"></i>{" "}
-                            <span className="inquiry-instructor">{inquiry.userId.name}</span>
+                            <span className="inquiry-instructor">{inquiry.user.name}</span>
                             <i className="fas fa-calendar-alt"></i>{" "}
                             <span className="inquiry-date">{new Date(inquiry.createDate).toLocaleDateString()}</span>
                           </div>
