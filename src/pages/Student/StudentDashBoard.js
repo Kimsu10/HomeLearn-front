@@ -12,7 +12,7 @@ import LectureVideo from "../../components/Lectures/LectureVideo";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-const StudentDashBoard = ({ username, baseUrl }) => {
+const StudentDashBoard = ({ username, baseUrl, token }) => {
   const navigate = useNavigate();
   const [videoDuration, setVideoDuration] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,7 +32,6 @@ const StudentDashBoard = ({ username, baseUrl }) => {
   const [teacherNotice, setTeacherNotice] = useState([]);
 
   const lectureId = recentLecture?.lectureId;
-  console.log(username);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -41,33 +40,57 @@ const StudentDashBoard = ({ username, baseUrl }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const recentLectureData = await axios.get(
-          `/students/dash-boards/recent-lecture`
-        );
-        setRecentLecture(recentLectureData?.data);
+        const [
+          recentLectureResult,
+          questionResult,
+          assignmentResult,
+          badgeResult,
+          adminNoticeResult,
+          teacherNoticeResult,
+        ] = await Promise.allSettled([
+          axios.get(`/students/dash-boards/recent-lecture`),
+          axios.get(`/students/dash-boards/questions`),
+          axios.get(`/students/dash-boards/homeworks`),
+          axios.get(`/students/dash-boards/badges`),
+          axios.get(`/students/dash-boards/manager-boards`),
+          axios.get(`/students/dash-boards/teacher-boards`),
+        ]);
 
-        const questionData = await axios.get(`/students/dash-boards/questions`);
-        setQuestion(questionData.data);
+        if (recentLectureResult.status === "fulfilled") {
+          setRecentLecture(recentLectureResult.value.data);
+        } else {
+          console.warn(recentLectureResult.reason);
+        }
 
-        const assignmentData = await axios.get(
-          `/students/dash-boards/homeworks`
-        );
-        setAssignment(assignmentData.data);
+        if (questionResult.status === "fulfilled") {
+          setQuestion(questionResult.value.data);
+        } else {
+          console.warn(questionResult.reason);
+        }
 
-        const badgeData = await axios.get(`/students/dash-boards/badges`);
-        setBadge(badgeData.data);
+        if (assignmentResult.status === "fulfilled") {
+          setAssignment(assignmentResult.value.data);
+        } else {
+          console.warn(assignmentResult.reason);
+        }
 
-        console.log(badge);
+        if (badgeResult.status === "fulfilled") {
+          setBadge(badgeResult.value.data);
+        } else {
+          console.warn(badgeResult.reason);
+        }
 
-        const adminNoticeData = await axios.get(
-          `/students/dash-boards/manager-boards`
-        );
-        setAdminNotice(adminNoticeData.data);
+        if (adminNoticeResult.status === "fulfilled") {
+          setAdminNotice(adminNoticeResult.value.data);
+        } else {
+          console.warn(adminNoticeResult.reason);
+        }
 
-        const teacherNoticeData = await axios.get(
-          `/students/dash-boards/teacher-boards`
-        );
-        setTeacherNotice(teacherNoticeData.data);
+        if (teacherNoticeResult.status === "fulfilled") {
+          setTeacherNotice(teacherNoticeResult.value.data);
+        } else {
+          console.warn(teacherNoticeResult.reason);
+        }
       } catch (error) {
         console.error("Error fetching data", error);
       }
@@ -125,7 +148,6 @@ const StudentDashBoard = ({ username, baseUrl }) => {
                 <h3 className="recent_lecture_type">
                   {recentLecture?.subjectName}
                 </h3>
-
                 <div className="recent_video_box">
                   <i className="bi bi-play-btn play_recent_video_icon"></i>
                   <p className="recent_lecture_video_title">
@@ -133,7 +155,7 @@ const StudentDashBoard = ({ username, baseUrl }) => {
                   </p>
                   <div className="recent_lecture_progress_container">
                     <CircularProgressbar
-                      value={recentLecture?.lastPosition / 100}
+                      value={recentLecture?.lastPosition}
                       styles={buildStyles({
                         pathColor: "#A7D7C5",
                         textColor: "#5C8D89",
@@ -141,7 +163,7 @@ const StudentDashBoard = ({ username, baseUrl }) => {
                       })}
                     />
                     <p className="recent_lecture_percentage">
-                      {recentLecture?.lastPosition / 100}%
+                      {recentLecture?.lastPosition}%
                     </p>
                   </div>
                 </div>
@@ -151,6 +173,8 @@ const StudentDashBoard = ({ username, baseUrl }) => {
                   url={recentLecture?.youtubeUrl}
                   lectureId={lectureId}
                   username={username}
+                  token={token}
+                  lastViewPoint={recentLecture?.lastPosition}
                 />
               </RecentLectureModal>
             </div>

@@ -7,7 +7,7 @@
   justify-content: center;
 }
 
-/* 모달 들어오면 이상하게 꺠지네 */
+/* 최근 강의 모달*/
 
 .recent-modal-overlay {
   position: absolute;
@@ -81,7 +81,7 @@
 }
 
 .recent_lecture_container {
-  width: 500px; /* 이전 620px */
+  width: 500px;
   height: 370px;
   padding: 0.9375em;
   border: 1px solid var(--studentSubColor);
@@ -146,11 +146,14 @@
 }
 
 .recent_lecture_percentage {
-  font-size: 28px;
+  width: 90px;
+  height: 90px;
+  font-size: 24px;
   font-weight: 700;
   position: absolute;
-  top: 27%;
-  left: 19%;
+  text-align: center;
+  top: 28%;
+  left: 0;
 }
 
 .video_container h3 {
