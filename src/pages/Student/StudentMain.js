@@ -46,7 +46,13 @@ const StudentMain = () => {
         <Routes>
           <Route
             path=""
-            element={<StudentDashBoard username={username} baseUrl={baseUrl} />}
+            element={
+              <StudentDashBoard
+                username={username}
+                baseUrl={baseUrl}
+                token={token}
+              />
+            }
           />
           <Route
             path=":subjectName/board"
@@ -89,6 +95,10 @@ const StudentMain = () => {
           <Route
             path="/questionBoards"
             element={<StudentQuestionBoard username={username} />}
+          />
+          <Route
+            path="/questionBoards/:questionId"
+            element={<StudentQuestionBoardDetail />}
           />
           <Route
             path="/questionBoards/:questionBoardId"

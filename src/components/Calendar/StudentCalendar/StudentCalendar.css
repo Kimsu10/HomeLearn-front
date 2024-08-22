@@ -1,7 +1,7 @@
 .student-calendar-container {
-  border: 1px solid #A7D7C5;
-  background-color: rgba(244, 249, 244, 0.25);
-  border-radius: 20px;
+  border: 1px solid #74b49b;
+  background-color: var(--studentAssistColor);
+  border-radius: 10px;
   box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.15);
   padding-top: 40px;
   height: 710px;
@@ -16,7 +16,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 100px;
 }
 
 .student-calendar-header button {
@@ -26,7 +26,7 @@
   cursor: pointer;
   margin-left: 20px;
   margin-right: 20px;
-  color: #74B49B;
+  color: #74b49b;
 }
 
 .student-weekdays {
@@ -37,7 +37,7 @@
   margin-bottom: 10px;
   font-size: 20px;
   margin: 0 10px 0 10px;
-  color: #5C8D89;
+  color: #5c8d89;
 }
 
 .student-days {
@@ -51,7 +51,7 @@
   text-align: center;
   padding: 10px;
   cursor: pointer;
-  border: 1px solid #74B49B;
+  border: 1px solid #74b49b;
   position: relative;
   min-width: 60px;
   min-height: 50px;
@@ -62,11 +62,11 @@
 }
 
 .student-day:hover {
-  background-color: #A7D7C5;
+  background-color: #a7d7c5;
 }
 
 .student-day.selected {
-  background-color: #5C8D89;
+  background-color: #5c8d89;
   color: #ffffff;
 }
 
@@ -92,7 +92,7 @@
   justify-content: center;
   overflow: hidden;
   text-overflow: ellipsis;
-  background-color: #74B49B;
+  background-color: #74b49b;
 }
 
 .student-event-title {
@@ -107,7 +107,7 @@
 .student-event-form input,
 .student-event-form textarea {
   border-radius: 20px;
-  border: 1px solid #A7D7C5;
+  border: 1px solid #a7d7c5;
   width: 50%;
   margin-bottom: 10px;
   padding: 10px;
@@ -137,7 +137,7 @@
 
 .student-event-form .date-input-container input {
   border-radius: 20px;
-  border: 1px solid #A7D7C5;
+  border: 1px solid #a7d7c5;
   width: 100%;
   padding: 10px;
   font-size: 16px;
@@ -151,7 +151,7 @@
   font-size: 16px;
   resize: none;
   cursor: pointer;
-  background-color: #74B49B;
+  background-color: #74b49b;
   color: white;
   border: none;
   border-radius: 5px;
@@ -183,7 +183,7 @@
 .student-add-list button {
   font-size: 15px;
   cursor: pointer;
-  background-color: #A7D7C5;
+  background-color: #a7d7c5;
   color: white;
   border: none;
   border-radius: 5px;
@@ -192,7 +192,7 @@
 }
 
 .student-add-list button:hover {
-  background-color: #74B49B;
+  background-color: #74b49b;
 }
 
 .student-calendar-submit {
@@ -205,7 +205,7 @@
 .student-calendar-submit button {
   font-size: 18px;
   cursor: pointer;
-  background-color: #5C8D89;
+  background-color: #5c8d89;
   color: white;
   border: none;
   border-radius: 5px;
@@ -215,7 +215,7 @@
 }
 
 .student-calendar-submit button:hover {
-  background-color: #74B49B;
+  background-color: #74b49b;
 }
 
 .student-modal-add {
@@ -224,7 +224,7 @@
   justify-content: center;
   font-size: 30px;
   margin-bottom: 20px;
-  color: #5C8D89;
+  color: #5c8d89;
 }
 
 .student-day .student-day-number {
@@ -235,7 +235,7 @@
 }
 
 .student-day.current-date .student-day-number {
-  background-color: #74B49B;
+  background-color: #74b49b;
   color: white;
   border-radius: 50%;
   padding: 5px;

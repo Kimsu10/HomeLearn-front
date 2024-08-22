@@ -6,13 +6,13 @@ import StudentModal from "../../components/Modal/StudentModal/StudentModal";
 import RecentVideo from "../../components/Lectures/RecentVideo";
 import RecentLectureModal from "../../components/Modal/StudentModal/RecentLectureModal";
 import axios from "axios";
+import StudentCalendar from "../../components/Calendar/StudentCalendar/StudentCalendar";
 import RandomVideo from "../../components/Lectures/RandomVideo";
 import LectureVideo from "../../components/Lectures/LectureVideo";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import StudentCalendar from "../../components/Calendar/StudentCalendar/StudentCalendar"; // StudentCalendar 컴포넌트를 임포트
 
-const StudentDashBoard = ({ username, baseUrl }) => {
+const StudentDashBoard = ({ username, baseUrl, token }) => {
   const navigate = useNavigate();
   const [videoDuration, setVideoDuration] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,6 +31,8 @@ const StudentDashBoard = ({ username, baseUrl }) => {
   const [adminNotice, setAdminNotice] = useState([]);
   const [teacherNotice, setTeacherNotice] = useState([]);
 
+  const lectureId = recentLecture?.lectureId;
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -38,31 +40,57 @@ const StudentDashBoard = ({ username, baseUrl }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const recentLectureData = await axios.get(
-          `/students/dash-boards/recent-lecture`
-        );
-        setRecentLecture(recentLectureData?.data);
+        const [
+          recentLectureResult,
+          questionResult,
+          assignmentResult,
+          badgeResult,
+          adminNoticeResult,
+          teacherNoticeResult,
+        ] = await Promise.allSettled([
+          axios.get(`/students/dash-boards/recent-lecture`),
+          axios.get(`/students/dash-boards/questions`),
+          axios.get(`/students/dash-boards/homeworks`),
+          axios.get(`/students/dash-boards/badges`),
+          axios.get(`/students/dash-boards/manager-boards`),
+          axios.get(`/students/dash-boards/teacher-boards`),
+        ]);
 
-        const questionData = await axios.get(`/students/dash-boards/questions`);
-        setQuestion(questionData.data);
+        if (recentLectureResult.status === "fulfilled") {
+          setRecentLecture(recentLectureResult.value.data);
+        } else {
+          console.warn(recentLectureResult.reason);
+        }
 
-        const assignmentData = await axios.get(
-          `/students/dash-boards/homeworks`
-        );
-        setAssignment(assignmentData.data);
+        if (questionResult.status === "fulfilled") {
+          setQuestion(questionResult.value.data);
+        } else {
+          console.warn(questionResult.reason);
+        }
 
-        const badgeData = await axios.get(`/students/dash-boards/badges`);
-        setBadge(badgeData.data);
+        if (assignmentResult.status === "fulfilled") {
+          setAssignment(assignmentResult.value.data);
+        } else {
+          console.warn(assignmentResult.reason);
+        }
 
-        const adminNoticeData = await axios.get(
-          `/students/dash-boards/manager-boards`
-        );
-        setAdminNotice(adminNoticeData.data);
+        if (badgeResult.status === "fulfilled") {
+          setBadge(badgeResult.value.data);
+        } else {
+          console.warn(badgeResult.reason);
+        }
 
-        const teacherNoticeData = await axios.get(
-          `/students/dash-boards/teacher-boards`
-        );
-        setTeacherNotice(teacherNoticeData.data);
+        if (adminNoticeResult.status === "fulfilled") {
+          setAdminNotice(adminNoticeResult.value.data);
+        } else {
+          console.warn(adminNoticeResult.reason);
+        }
+
+        if (teacherNoticeResult.status === "fulfilled") {
+          setTeacherNotice(teacherNoticeResult.value.data);
+        } else {
+          console.warn(teacherNoticeResult.reason);
+        }
       } catch (error) {
         console.error("Error fetching data", error);
       }
@@ -127,7 +155,7 @@ const StudentDashBoard = ({ username, baseUrl }) => {
                   </p>
                   <div className="recent_lecture_progress_container">
                     <CircularProgressbar
-                      value={recentLecture?.lastPosition / 100}
+                      value={recentLecture?.lastPosition}
                       styles={buildStyles({
                         pathColor: "#A7D7C5",
                         textColor: "#5C8D89",
@@ -135,13 +163,19 @@ const StudentDashBoard = ({ username, baseUrl }) => {
                       })}
                     />
                     <p className="recent_lecture_percentage">
-                      {recentLecture?.lastPosition / 100}%
+                      {recentLecture?.lastPosition}%
                     </p>
                   </div>
                 </div>
               </div>
               <RecentLectureModal isOpen={isModalOpen} onClose={closeModal}>
-                <RecentVideo url={recentLecture?.youtubeUrl} />
+                <RecentVideo
+                  url={recentLecture?.youtubeUrl}
+                  lectureId={lectureId}
+                  username={username}
+                  token={token}
+                  lastViewPoint={recentLecture?.lastPosition}
+                />
               </RecentLectureModal>
             </div>
             <div className="video_container">
@@ -216,7 +250,7 @@ const StudentDashBoard = ({ username, baseUrl }) => {
             </div>
           </div>
           <div className="right_container">
-                <StudentCalendar />
+            <StudentCalendar />
             <div className="subject_container">
               <div className="title_box">
                 <h3 className="components_title">과제 목록</h3>

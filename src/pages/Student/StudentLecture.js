@@ -38,7 +38,6 @@ const StudentLecture = ({ baseUrl }) => {
   const { data: lectures } = useAxiosGet(`/students/lectures/sub`);
 
   useEffect(() => {
-    // 현재 페이지에 해당하는 데이터를 설정합니다.
     setLecture(lectures.content);
   }, [currentPage, lectures]);
 

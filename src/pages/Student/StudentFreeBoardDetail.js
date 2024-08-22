@@ -1,338 +1,110 @@
+import "./StudentSubjectBoardDetail.css";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import "./StudentFreeBoardDetail.css";
+import useGetFetch from "../../hooks/useGetFetch";
+import { useLocation, useNavigate } from "react-router-dom";
 import useAxiosGet from "../../hooks/useAxiosGet";
-import StudentPatchModal from "../../components/Modal/StudentModal/StudentPatchModal";
-import useAxiosPost from "../../hooks/useAxiosPost";
-import useAxiosDelete from "../../hooks/useAxiosDelete";
-import axios from "axios";
 
-const StudentFreeBoardDetail = ({ username, baseUrl }) => {
-  const { boardId } = useParams();
-
-  const [openReModal, setOpenReModal] = useState({});
-
-  const toggleReModal = (index) => {
-    setOpenReModal((prev) => ({
-      ...prev,
-      [index]: !prev[index],
-    }));
-  };
-
-  // 작성글 GET 요청
-  const { data: freeboardDetail } = useAxiosGet(`/students/boards/${boardId}`);
-
-  // 댓글 GET 요청
-  const { data: comments } = useAxiosGet(
-    `/students/boards/${boardId}/comments`
-  );
-
-  // Post 요청
-  const { postRequest } = useAxiosPost(`/students/boards/${boardId}/comments`);
-
-  // Delete 요청
-  const { deleteRequest } = useAxiosDelete(`/students/boards/${boardId}`);
-
-  //
-  const [formData, setFormData] = useState({
-    title: "",
-    content: "",
-    file: null,
-    username: username,
-  });
-
-  const [error, setError] = useState(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
-  const [text, setText] = useState("");
-  const maxLength = 500;
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedFileName, setSelectedFileName] = useState("");
-
-  useEffect(() => {
-    if (freeboardDetail) {
-      setFormData({
-        title: freeboardDetail.title || "",
-        content: freeboardDetail.content || "",
-        file: freeboardDetail.filename || "",
-      });
-    }
-  }, [freeboardDetail]);
-
-  const handleCheckTextCount = (e) => {
-    const textarea = e.target;
-    textarea.style.height = "auto";
-    textarea.style.height = textarea.scrollHeight + "px";
-
-    const curText = e.target.value;
-    if (curText.length <= maxLength) {
-      setText(curText);
-    }
-  };
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === "file" && files.length > 0) {
-      setFormData((prevState) => ({
-        ...prevState,
-        [name]: files[0],
-      }));
-    } else {
-      setFormData((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }));
-    }
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedFileName(file.name);
-      handleChange(e);
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    closeModal();
-  };
-
-  const handleDelete = () => {
-    if (window.confirm("정말로 이 게시물을 삭제하시겠습니까?")) {
-      deleteRequest()
-        .then(() => {
-          alert("게시물이 삭제되었습니다.");
-        })
-        .catch((err) => {
-          console.error("게시물 삭제 실패:", err);
-          alert("게시물 삭제에 실패했습니다.");
-        });
-    }
-  };
-
-  const handleCommentSubmit = () => {
-    const commentData = { content: text };
-    postRequest(commentData);
-  };
-
-  const formatTime = (time) => {
-    const date = new Date(time);
-    return date.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
-  };
-
-  const splitDate = (writeDate) => {
-    if (writeDate) {
-      return writeDate.split("T")[0];
-    }
-    return "날짜 불러오기 실패";
-  };
+// 과목 게시판상세
+const StudentSubjectBoardDetail = ({ baseUrl }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (error) return <p>Error: {error.message}</p>;
+  const mainLectures = location.state?.mainLectures || {
+    name: "",
+    description: "",
+    imagePath: "",
+  };
+
+  const { data: subjectBoardDetail } = useAxiosGet(
+    `/students/subjects/1/boards/19`
+  );
+
+  const { data: subjectBoards } = useGetFetch(
+    "/data/student/mainLecture/subjectBoard.json",
+    []
+  );
 
   return (
-    <div className="main_container">
-      <div className="student_freeboard_detail_page_title_box">
-        <h1 className="student_freeboard_detail_page_title">자유 게시판</h1>
-        {freeboardDetail?.username === username && (
-          <>
-            <i
-              className="bi bi-three-dots-vertical freeboard_three_dot"
-              onClick={toggleMenu}
-            ></i>
-            {isMenuOpen && (
-              <div className="student_freeboard_detail_box">
-                <button
-                  className="student_freeboard_detail"
-                  onClick={() => openModal}
-                >
-                  수정
-                </button>
-                <hr className="devide_button_border" />
-                <button
-                  className="student_freeboard_detail"
-                  onClick={() => handleDelete()}
-                >
-                  삭제
-                </button>
-                <hr className="devide_button_border" />
-                <button className="student_freeboard_detail">스크랩</button>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-      {/* 조회한 자유 게시판 글 */}
-      <div className="freeboard_detail_container">
-        <h1 className="freeboard_detail_title">{freeboardDetail?.title}</h1>
-        <p className="freeboard_detail_content">{freeboardDetail?.content}</p>
-        <div className="freeboard_detail_info_box">
-          <div className="freeboard_watcher_info_box">
-            <i className="bi bi-eye"></i>&nbsp;
-            <span className="freeboard_view_count">
-              {freeboardDetail?.viewCount}
-            </span>
-            &nbsp;&nbsp;
-            <i className="bi bi-star"></i>&nbsp;
-            <span className="freeboard_view_like_count">
-              {freeboardDetail?.likeCount}
-            </span>
-          </div>
-          <div className="freeboard_writer_info_box">
-            <span className="freeboard_writer_name">
-              {freeboardDetail?.author}&nbsp;
-            </span>
-            | &nbsp;
-            <span className="freeboard_writer_date">
-              {splitDate(freeboardDetail?.createTime)} &nbsp;
-            </span>
-            작성
-          </div>
+    <div className="subject_board_detail_main_container">
+      <div className="lecutre_type_container">
+        <img
+          className="subject_board_type_image"
+          alt="과목이미지"
+          src={`${baseUrl}/image/${mainLectures.imagePath}`}
+        />
+        <div className="lecture_description_box">
+          <h1 className="lecture_type_name">{mainLectures.name}</h1>
+          <p className="lecture_type_description">{mainLectures.description}</p>
         </div>
       </div>
-      {/* 댓글 리스트 */}
-      <div className="freeboard_writer_comment_box">
-        <i className="bi bi-chat"></i> &nbsp;
-        <span className="freeboard_comment_count">
-          {freeboardDetail?.commentCount}
+      <h2 className="student_subject_board_page_title">과목 게시판</h2>
+      {/* 여기부터 과목 게시글 내용 */}
+      <div className="student_subject_board_title_box">
+        <span className="student_subject_board_title">
+          {subjectBoardDetail.title}
+        </span>
+        <span
+          className="student_subject_board_view_count"
+          style={{ fontSize: "28px" }}
+        >
+          <i className="bi bi-eye student_subject_board_view_count_icon"></i>
+          &nbsp; {subjectBoardDetail.viewCount}
         </span>
       </div>
-      {/* 댓글 작성 및 목록 */}
-      <div className="freeboard_comment_list_container">
-        <div className="freeboard_comment_write_form">
-          <div className="freeboard_user_info_box">
-            <img
-              src="https://s3.ap-northeast-2.amazonaws.com/elasticbeanstalk-ap-northeast-2-176213403491/media/magazine_img/magazine_270/%EC%8D%B8%EB%84%A4%EC%9D%BC.jpg"
-              className="freeboard_user_profile"
-              alt=""
-            />
-            &nbsp;&nbsp;&nbsp;
-            <span className="freeboard_user_name">{username}</span>
-          </div>
-          <textarea
-            className="freeboard_current_write_textarea"
-            value={text}
-            onChange={handleCheckTextCount}
-            maxLength={maxLength}
-          ></textarea>
-          <div className="freeboard_current_write_setting_box">
-            <div className="textarea_letter_count_box">
-              <span className="textarea_letter_count">{text.length}</span>
-              &nbsp;/&nbsp;
-              {maxLength}
-            </div>
-            <button
-              className="student_submit_btn"
-              onClick={handleCommentSubmit}
-            >
-              답변 등록
-            </button>
-          </div>
-        </div>
+      <div className="student_subject_board_body_container">
+        <a
+          href={subjectBoardDetail.filePath}
+          download={subjectBoardDetail.fileName}
+        >
+          <p className="subject_board_download_file_name">
+            {subjectBoardDetail.fileName}
+          </p>
+        </a>
+        <p className="student_subject_board_content">
+          {subjectBoardDetail.content}
+        </p>
+        <img
+          className="student_subject_board_content_image"
+          src={subjectBoardDetail.filePath}
+          alt=""
+        />
       </div>
-      {/* 기존 댓글 목록 */}
-      {comments?.map((el, index) => (
-        <div key={index} className="student_freeboard_comment_list">
-          <div className="freeboard_written_user_info_box">
-            <div className="freeboard_user_info_box">
-              <img
-                src={`${baseUrl}/image/${el.userProfileImage}`}
-                className="freeboard_user_profile"
-                alt=""
-              />
-              &nbsp;
-              <span className="freeboard_user_name">{el.author}</span>
-            </div>
-            <i
-              className="bi bi-three-dots-vertical freeboard_three_dot recomment_btn"
-              onClick={() => toggleReModal(index)}
-            ></i>
-            {openReModal[index] && (
-              <div className="freeboard_recomment_modify_box">
-                <button className="student_freeboard_detail">수정</button>
-                <hr className="devide_button_border" />
-                <button className="student_freeboard_detail">삭제</button>
-              </div>
-            )}
-          </div>
-          <textarea className="freeboard_write_textarea" readOnly>
-            {el.content}
-          </textarea>
-          <div className="freeboard_writedate_box">
-            <span className="freeboard_written_date">
-              {splitDate(el?.createTime)}&nbsp;
-              {formatTime(el?.createTime)}
-            </span>
-          </div>
-        </div>
-      ))}
-      {/* 대댓글 목록 */}
-      {freeboardDetail?.recomments &&
-        freeboardDetail?.recomments.map((recomment, index) => (
-          <div key={index} className="freeboard_recoment_list">
-            <div className="freeboard_recoment_box">
-              <div className="freeboard_written_user_info_box">
-                <div className="freeboard_user_info_box">
-                  <img
-                    src={recomment?.userProfileImage}
-                    className="freeboard_user_profile"
-                    alt=""
-                  />
-                  &nbsp;
-                  <span className="freeboard_user_name">
-                    {recomment?.username}
-                  </span>
-                </div>
-                <i className="bi bi-three-dots-vertical freeboard_three_dot"></i>
-                <div className="freeboard_recomment_modify_box">
-                  <button className="student_freeboard_detail">수정</button>
-                  <hr className="devide_button_border" />
-                  <button className="student_freeboard_detail">삭제</button>
-                </div>
-              </div>
-              <textarea className="freeboard_write_textarea" readOnly>
-                {recomment?.text}
-              </textarea>
-              <div className="freeboard_writedate_box">
-                <span className="freeboard_written_date">
-                  {recomment?.date}
-                </span>
-              </div>
-            </div>
-          </div>
-        ))}
-      <StudentPatchModal
-        isOpen={isModalOpen}
-        closeModal={closeModal}
-        formData={formData}
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-        handleFileChange={handleFileChange}
-        selectedFileName={selectedFileName}
-        modalName="게시글 수정"
-        contentTitle="제목"
-        contentBody="내용"
-        contentFile="이미지 첨부"
-        url={`/students/boards/${boardId}`}
-        submitName="게시글 수정"
-        cancelName="수정 취소"
-      />
+      {/* 과목 게시판 리스트들 */}
+      <div className="subject_board_main_body_container">
+        <h3 className="subject_board_main_title">과목 게시판</h3>
+        <table className="subject_board_list_table">
+          <tr className="subject_board_table_tab_names">
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성일</th>
+            <th>조회수</th>
+          </tr>
+          {subjectBoards.slice(0, 5).map((el, idx) => (
+            <tr className="writed_subject_board_lists" key={idx}>
+              <td>{idx + 1}</td>
+              <td
+                className="writed_subject_board_title_one"
+                style={{ cursor: "pointer" }}
+                onClick={() =>
+                  navigate(`/students/subjectBoardDetail/${el.id}`)
+                }
+              >
+                {el.title}
+              </td>
+              <td>{el.writer}</td>
+              <td>{el.writeDate}</td>
+              <td>{el.viewCount}</td>
+            </tr>
+          ))}
+        </table>
+      </div>
     </div>
   );
 };
 
-export default StudentFreeBoardDetail;
+export default StudentSubjectBoardDetail;
