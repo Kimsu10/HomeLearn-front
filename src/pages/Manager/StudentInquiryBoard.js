@@ -3,12 +3,7 @@ import axios from "../../utils/axios";
 import './InquiryStyle.css';
 
 const StudentInquiryBoard = () => {
-    // const [curriculum, setCurriculum] = useState("all");
-    // const [status, setStatus] = useState("all");
     const [inquiries, setInquiries] = useState([]);
-    const [curriculumName, setCurriculumName] = useState('');
-    const [curriculumTh, setCurriculumTh] = useState('');
-
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -33,7 +28,7 @@ const StudentInquiryBoard = () => {
             const response = await axios.get('/managers/students-inquiries', {
                 params: {
                     curriculumName: filters.curriculum && filters.curriculum !== "all"
-                    ? filters.curriculum: null,
+                        ? filters.curriculum : null,
                     curriculumTh: filters.batch || null
                 },
             });
@@ -48,34 +43,34 @@ const StudentInquiryBoard = () => {
 
     useEffect(() => {
         fetchInquiries();
-    },[filters]);
+    }, [filters]);
 
     return (
-        <div className="student-contact">
+        <div className="inquiry-board-container">
             <h2>학생 문의</h2>
-            <div className="filter-container">
+            <div className="inquiry-filter-container">
                 <img
-                    src="/"
+                    src="/images/curriculum/ncp.png"
                     alt="Naver"
-                    className="filter-logo"
-                    onClick={(e) => handleFilterChange("curriculum", "네이버 데브옵스")}
+                    className="inquiry-filter-logo"
+                    onClick={() => handleFilterChange("curriculum", "네이버 데브옵스")}
                 />
                 <img
-                    src="/"
+                    src="/images/curriculum/aws.png"
                     alt="AWS"
-                    className="filter-logo"
-                    onClick={(e) => handleFilterChange("curriculum", "AWS")}
+                    className="inquiry-filter-logo"
+                    onClick={() => handleFilterChange("curriculum", "AWS")}
                 />
                 <select
-                    className="curriculum-filter"
+                    className="inquiry-curriculum-filter"
                     onChange={(e) => handleFilterChange("curriculum", e.target.value)}
                 >
                     <option value="all">모든 과정</option>
-                    <option value="">네이버 데브옵스</option>
-                    <option value="">AWS</option>
+                    <option value="네이버 데브옵스">네이버 데브옵스</option>
+                    <option value="AWS">AWS</option>
                 </select>
                 <select
-                    className="status-filter"
+                    className="inquiry-status-filter"
                     onChange={(e) => handleFilterChange("status", e.target.value)}
                 >
                     <option value="all">전체</option>
@@ -86,51 +81,51 @@ const StudentInquiryBoard = () => {
 
             {loading ? (
                 <div>로딩중...</div>
-            ) : error? (
+            ) : error ? (
                 <div>{error}</div>
             ) : (
-                <div className="inquiries-border">
-                  <div className="inquiries-container">
-                    {inquiries.length > 0 ? (
-                      inquiries.map((inquiry) => (
-                        <div
-                          key={inquiry.id || inquiry.inquiryId}
-                          className={`inquiry-card ${
-                          inquiry.status === "답변완료" ? "answered" : "unanswered"
-                          }`}
-                        >
-                          <div className="inquiry-header">
-                            <span className="inquiry-batch">{filters.batch || "기수 미지정"}</span>
-                            <span className="inquiry-course">{filters.curriculum}</span>
-                            <i className="fas fa-user"></i>{" "}
-                            <span className="inquiry-instructor">{inquiry.user.name}</span>
-                            <i className="fas fa-calendar-alt"></i>{" "}
-                            <span className="inquiry-date">{new Date(inquiry.createDate).toLocaleDateString()}</span>
-                          </div>
-                          <div className="inquiry-footer">
-                            <p className="inquiry-question">{inquiry.content}</p>
-                            <span
-                              className={`inquiry-status ${
-                                inquiry.status === "답변완료"
-                                  ? "status-answered"
-                                  : "status-unanswered"
-                              }`}
-                            >
-                              {inquiry.status}
-                              <i
-                                className={`fas fa-${
-                                inquiry.status === "답변 완료" ? "check" : "times"
-                                }`}
-                              ></i>
-                            </span>
-                          </div>
-                        </div>
-                        ))
+                <div className="inquiry-list-border">
+                    <div className="inquiry-list-container">
+                        {inquiries.length > 0 ? (
+                            inquiries.map((inquiry) => (
+                                <div
+                                    key={inquiry.id}
+                                    className={`inquiry-item-card ${
+                                        inquiry.status === "답변 완료" ? "answered" : "unanswered"
+                                    }`}
+                                >
+                                    <div className="inquiry-item-header">
+                                        <span className="inquiry-item-batch">{filters.batch || "기수 미지정"}</span>
+                                        <span className="inquiry-item-course">{filters.curriculum}</span>
+                                        <i className="fas fa-user"></i>{" "}
+                                        <span className="inquiry-item-instructor">{inquiry.user.name}</span>
+                                        <i className="fas fa-calendar-alt"></i>{" "}
+                                        <span className="inquiry-item-date">{new Date(inquiry.createdDate).toLocaleDateString()}</span>
+                                    </div>
+                                    <div className="inquiry-item-footer">
+                                        <p className="inquiry-item-question">{inquiry.content}</p>
+                                        <span
+                                            className={`inquiry-item-status ${
+                                                inquiry.status === "답변 완료"
+                                                    ? "status-answered"
+                                                    : "status-unanswered"
+                                            }`}
+                                        >
+                                            {inquiry.status}
+                                            <i
+                                                className={`fas fa-${
+                                                    inquiry.status === "답변 완료" ? "check" : "times"
+                                                }`}
+                                            ></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            ))
                         ) : (
-                      <div>문의 내역이 없습니다.</div>
-                    )}
+                            <div>문의 내역이 없습니다.</div>
+                        )}
+                    </div>
                 </div>
-              </div>
             )}
         </div>
     );

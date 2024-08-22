@@ -157,7 +157,4 @@ const TeacherMain = () => {
         </div>
     );
 };
-    );
-};
-
 export default TeacherMain;
