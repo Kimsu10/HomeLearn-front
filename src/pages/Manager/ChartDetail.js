@@ -84,7 +84,7 @@ const ChartDetail = () => {
         },
       },
        datalabels: {
-        display: false, // 데이터 라벨을 비활성화하여 숫자를 제거
+        display: false,
         },
     },
     elements: {
