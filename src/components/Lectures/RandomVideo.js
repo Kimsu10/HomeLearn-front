@@ -7,7 +7,6 @@ const RandomVideo = ({ width, height }) => {
   const maxCount = 100;
 
   const [videoUrl, setVideoUrl] = useState("");
-  console.log(videoUrl);
   const [videoArray, setVideoArray] = useState([]);
 
   const getRandomVideoId = (arr) => {

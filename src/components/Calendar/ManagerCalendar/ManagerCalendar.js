@@ -1,41 +1,79 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaCalendarPlus } from "react-icons/fa";
+import axios from "../../../utils/axios";
 import "./ManagerCalendar.css";
 import ManagerModal from "../../Modal/ManagerModal/ManagerModal";
-// import ManagerModal from '../../Modal/ManagerModal/ManagerModal';
 
 const ManagerCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [events, setEvents] = useState([]);
   const [holidays, setHolidays] = useState([]);
+  const [curriculums, setCurriculums] = useState([]);
   const [newEvent, setNewEvent] = useState({
     title: "",
-    start: null,
-    end: null,
-    color: "#FF9999",
-    content: "",
+    startDate: null,
+    endDate: null,
+    curriculumId: "",  // 기수 선택을 위한 필드
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
+  const getToken = () => localStorage.getItem('access-token');
+
+  // 교육과정 정보 가져오기
   useEffect(() => {
-    const storedEvents =
-      JSON.parse(localStorage.getItem("calendarEvents")) || [];
-    setEvents(storedEvents);
+    const fetchCurriculums = async () => {
+      try {
+        const token = getToken();
+
+        // NCP 및 AWS 커리큘럼 정보 가져오기
+        const ncpResponse = await axios.get("/managers/dash-boards/curriculum/NCP", {
+          headers: { access: token },
+        });
+        const awsResponse = await axios.get("/managers/dash-boards/curriculum/AWS", {
+          headers: { access: token },
+        });
+
+        // 두 커리큘럼 정보를 하나로 합침
+        const combinedCurriculums = [...ncpResponse.data, ...awsResponse.data];
+        setCurriculums(combinedCurriculums); // 상태 업데이트
+      } catch (error) {
+        console.error("커리큘럼 정보 가져오기 실패:", error);
+      }
+    };
+
+    fetchCurriculums(); // 커리큘럼 정보 가져오기 실행
+  }, []);
+
+  // 일정 데이터 가져오기
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const token = getToken();
+        const response = await axios.get("/managers/dash-boards/calendar", {
+          headers: { access: token },
+        });
+        setEvents(response.data);
+      } catch (error) {
+        console.error("일정 데이터를 가져오는 데 실패했습니다:", error);
+      }
+    };
+
+    fetchEvents();
   }, []);
 
   useEffect(() => {
     localStorage.setItem("calendarEvents", JSON.stringify(events));
   }, [events]);
 
+  // 공휴일 정보
   useEffect(() => {
     const fetchHolidays = async () => {
       const year = currentDate.getFullYear();
       const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-      const serviceKey =
-        "t21Zxd4T5l%2FCFpu9dpVZ2U4nEIv06W14hNeu7Op7HA0yIBHYgMu23%2FL6JHBWQ%2Bp9HNG%2B93RJwgq7zANzmn%2B2%2BA%3D%3D";
+      const serviceKey = "t21Zxd4T5l%2FCFpu9dpVZ2U4nEIv06W14hNeu7Op7HA0yIBHYgMu23%2FL6JHBWQ%2Bp9HNG%2B93RJwgq7zANzmn%2B2%2BA%3D%3D";
       const url = `http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?serviceKey=${serviceKey}&pageNo=1&numOfRows=100&solYear=${year}&solMonth=${month}`;
 
       try {
@@ -43,22 +81,15 @@ const ManagerCalendar = () => {
         if (response.ok) {
           const responseText = await response.text();
           const parser = new DOMParser();
-          const xmlDoc = parser.parseFromString(
-            responseText,
-            "application/xml"
-          );
+          const xmlDoc = parser.parseFromString(responseText, "application/xml");
           const items = xmlDoc.getElementsByTagName("item");
           const holidays = Array.from(items)
             .map((item) => {
-              const locdate =
-                item.getElementsByTagName("locdate")[0].textContent;
+              const locdate = item.getElementsByTagName("locdate")[0].textContent;
               return locdate;
             })
-            .filter((date) => {
-              const monthDay = date.substr(4, 4);
-              return monthDay !== "0717";
-            });
-          setHolidays(holidays);
+            .filter((date) => date.substr(4, 4) !== "0717");
+          setHolidays(holidays); // 공휴일 상태 업데이트
         } else {
           console.error("공휴일 데이터 가져오기 실패:", response.statusText);
         }
@@ -67,44 +98,28 @@ const ManagerCalendar = () => {
       }
     };
 
-    fetchHolidays();
+    fetchHolidays(); // 공휴일 정보 가져오기 실행
   }, [currentDate]);
 
-  const daysInMonth = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth() + 1,
-    0
-  ).getDate();
-  const firstDayOfMonth = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth(),
-    1
-  ).getDay();
+  // 현재 달의 날짜 생성
+  const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
 
+  // 달력에 표시될 날짜
   const generateCalendarDates = () => {
     const dates = [];
-    const prevMonthLastDate = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      0
-    );
-    const nextMonthFirstDate = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth() + 1,
-      1
-    );
+    const prevMonthLastDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
+    const nextMonthFirstDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
 
+    // 이전 달 마지막 날들 추가
     for (let i = firstDayOfMonth - 1; i >= 0; i--) {
       dates.push({
-        date: new Date(
-          prevMonthLastDate.getFullYear(),
-          prevMonthLastDate.getMonth(),
-          prevMonthLastDate.getDate() - i
-        ),
+        date: new Date(prevMonthLastDate.getFullYear(), prevMonthLastDate.getMonth(), prevMonthLastDate.getDate() - i),
         isCurrentMonth: false,
       });
     }
 
+    // 현재달 날짜 추가
     for (let i = 1; i <= daysInMonth; i++) {
       dates.push({
         date: new Date(currentDate.getFullYear(), currentDate.getMonth(), i),
@@ -112,23 +127,21 @@ const ManagerCalendar = () => {
       });
     }
 
+    // 다음달 날짜 추가
     const remainingDays = 7 - (dates.length % 7);
     if (remainingDays < 7) {
       for (let i = 0; i < remainingDays; i++) {
         dates.push({
-          date: new Date(
-            nextMonthFirstDate.getFullYear(),
-            nextMonthFirstDate.getMonth(),
-            i + 1
-          ),
+          date: new Date(nextMonthFirstDate.getFullYear(), nextMonthFirstDate.getMonth(), i + 1),
           isCurrentMonth: false,
         });
       }
     }
 
-    return dates;
+    return dates; // 생성된 날짜 리스트 반환
   };
 
+  // 월 변경
   const handleMonthChange = (direction) => {
     setCurrentDate(
       new Date(currentDate.getFullYear(), currentDate.getMonth() + direction, 1)
@@ -138,36 +151,44 @@ const ManagerCalendar = () => {
   const handleOpenModal = () => {
     setNewEvent({
       title: "",
-      start: selectedDate,
-      end: selectedDate,
-      color: "#FF9999",
-      content: "",
+      startDate: selectedDate,
+      endDate: selectedDate,
+      curriculumId: "", // 기수 필드 초기화
     });
     setIsModalOpen(true);
   };
 
+  // 모달 닫기 핸들러
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setNewEvent({
       title: "",
-      start: null,
-      end: null,
-      color: "#FF9999",
-      content: "",
+      startDate: null,
+      endDate: null,
+      curriculumId: "", // 기수 필드 초기화
     });
   };
 
-  const handleSaveEvent = () => {
-    if (newEvent.title && newEvent.start && newEvent.end) {
-      setEvents([...events, { ...newEvent, id: Date.now() }]);
-      handleCloseModal();
+  // 저장
+  const handleSaveEvent = async () => {
+    if (newEvent.title && newEvent.startDate) {
+      try {
+        const response = await axios.post("/managers/calendar", newEvent);
+        if (response.status === 200) {
+          setEvents([...events, { ...newEvent, id: Date.now() }]);
+          handleCloseModal();
+        } else {
+          console.error("일정 등록 실패:", response.statusText);
+        }
+      } catch (error) {
+        console.error("일정 등록 중 오류 발생:", error);
+      }
     }
   };
 
+  // 날짜 클릭
   const handleDateClick = (date) => {
-    const adjustedDate = new Date(
-      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
-    );
+    const adjustedDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
     setSelectedDate(adjustedDate);
     const eventsForDate = getEventsForDate(date);
     if (eventsForDate.length > 0) {
@@ -175,14 +196,16 @@ const ManagerCalendar = () => {
     }
   };
 
+  // 특정 날짜
   const getEventsForDate = (date) => {
     return events.filter(
       (event) =>
-        new Date(event.start).toDateString() === date.toDateString() ||
-        (new Date(event.start) <= date && new Date(event.end) >= date)
+        new Date(event.startDate).toDateString() === date.toDateString() ||
+        (new Date(event.startDate) <= date && new Date(event.endDate) >= date)
     );
   };
 
+  // 오늘 날짜 확인
   const isCurrentDate = (date) => {
     const today = new Date();
     return (
@@ -193,6 +216,7 @@ const ManagerCalendar = () => {
     );
   };
 
+  // 공휴일 확인
   const isHoliday = (date) => {
     return holidays.some((holiday) => {
       const holidayDate = new Date(
@@ -204,6 +228,7 @@ const ManagerCalendar = () => {
     });
   };
 
+  // 주말 확인
   const isWeekend = (date) => {
     const day = date.getDay();
     return { isSunday: day === 0, isSaturday: day === 6 };
@@ -264,7 +289,7 @@ const ManagerCalendar = () => {
                         to={`/managers/calendar/${event.id}`}
                         className="event-dot-link"
                       >
-                        <div className="event-dot"></div>
+                        <div className="event-dot" style={{ backgroundColor: event.color }}></div>
                       </Link>
                     ))}
                 </div>
@@ -292,12 +317,15 @@ const ManagerCalendar = () => {
               <input
                 type="date"
                 value={
-                  newEvent.start
-                    ? newEvent.start.toISOString().substr(0, 10)
+                  newEvent.startDate
+                    ? newEvent.startDate.toISOString().substr(0, 10)
                     : ""
                 }
                 onChange={(e) =>
-                  setNewEvent({ ...newEvent, start: new Date(e.target.value) })
+                  setNewEvent({
+                    ...newEvent,
+                    startDate: new Date(e.target.value),
+                  })
                 }
               />
             </div>
@@ -306,24 +334,31 @@ const ManagerCalendar = () => {
               <input
                 type="date"
                 value={
-                  newEvent.end ? newEvent.end.toISOString().substr(0, 10) : ""
+                  newEvent.endDate ? newEvent.endDate.toISOString().substr(0, 10) : ""
                 }
                 onChange={(e) =>
-                  setNewEvent({ ...newEvent, end: new Date(e.target.value) })
+                  setNewEvent({
+                    ...newEvent,
+                    endDate: new Date(e.target.value),
+                  })
                 }
               />
             </div>
-            <div className="color-picker">
-              {["#FF9999", "#99FF99", "#9999FF"].map((color) => (
-                <div
-                  key={color}
-                  className={`color-option ${
-                    newEvent.color === color ? "selected" : ""
-                  }`}
-                  style={{ backgroundColor: color }}
-                  onClick={() => setNewEvent({ ...newEvent, color })}
-                ></div>
-              ))}
+            <div className="date-input-container">
+              <label>기수 선택</label>
+              <select
+                value={newEvent.curriculumId}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, curriculumId: e.target.value })
+                }
+              >
+                <option value="">기수를 선택하세요</option>
+                {curriculums.map((curriculum) => (
+                  <option key={curriculum.id} value={curriculum.id}>
+                    {curriculum.name} {curriculum.th}기
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="calendar-submit">
               <button onClick={handleSaveEvent}>등록</button>

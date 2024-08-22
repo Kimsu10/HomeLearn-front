@@ -33,13 +33,13 @@
   font-weight: bold;
   margin-bottom: 10px;
   font-size: 20px;
-  margin: 0 20px 0 20px; /*양옆 margin값 설정*/
+  margin: 0 10px 0 10px;
 }
 
 .days {
   display: grid;
   grid-template-columns: repeat(7, 1fr); /*1열에 7개씩*/
-  padding: 20px;
+  padding: 5px;
   column-gap: 0px;
 }
 
@@ -50,7 +50,7 @@
   border: 1px solid #c7c8cc;
   position: relative;
   min-width: 60px;
-  min-height: 90px;
+  min-height: 50px;
   display: flex;
   flex-direction: column;
 }
@@ -294,4 +294,24 @@
 }
 .event-dot-link {
   text-decoration: none;
+}
+
+/* select 요소를 스타일링 */
+.calendar-event-form-edit .date-input-container select {
+  border-radius: 20px;
+  border: 1px solid #757575;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  color: #333;
+}
+
+/* option 요소 스타일 */
+.calendar-event-form-edit .date-input-container select option {
+  padding: 8px;
+  font-size: 16px;
+  background-color: #fff;
+  color: #333;
 }

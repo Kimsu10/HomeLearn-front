@@ -6,7 +6,6 @@ import useGetFetch from "../../hooks/useGetFetch";
 
 // 과목 게시판
 const StudentSubjectBoardList = ({ baseUrl }) => {
-  console.log(baseUrl);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -23,8 +22,6 @@ const StudentSubjectBoardList = ({ baseUrl }) => {
     description: "",
     imagePath: "",
   };
-
-  console.log(mainLectures);
 
   useEffect(() => {
     window.scrollTo(0, 0);

@@ -40,7 +40,8 @@
 }
 
 .student_h-logo a {
-  width: 100%;
+  width: 112%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -75,7 +76,7 @@
 }
 .student_h-progress-text {
   position: absolute;
-  right: 260px;
+  right: 340px;
   top: 70px;
   transform: translateY(-50%);
   font-size: 12px;

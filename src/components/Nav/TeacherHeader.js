@@ -22,7 +22,7 @@ const TeacherHeader = () => {
 
   const deleteToken = () => {
     localStorage.removeItem("access-token");
-    navigate("/login");
+    navigate("");
   };
 
   useEffect(() => {
@@ -36,10 +36,11 @@ const TeacherHeader = () => {
         const commonResponse = await axios.get("/header/common", config);
         setCurriculum(commonResponse.data);
 
-        const notificationResponse = await axios.get("/header/notifications", config);
+        const notificationResponse = await axios.get(
+          "/header/notifications",
+          config
+        );
         setNotifications(notificationResponse.data.notifications || []);
-
-        console.log("알림 정보:", notificationResponse.data.notifications);
       } catch (error) {
         console.error("데이터 가져오기 오류:", error.response);
       }
@@ -169,7 +170,7 @@ const TeacherHeader = () => {
               <div>
                 <img
                   className="teacher_h-profile_img"
-                  src={teacher.imagePath || "/default-profile.png"}
+                  src={teacher.imagePath || "/images/TeacherProfile.png"} // 기본 이미지 사용
                   alt="프로필"
                 />
               </div>

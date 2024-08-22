@@ -19,6 +19,7 @@ const TeacherLectureList = () => {
   const [subjectName, setSubjectName] = useState([]);
   const [subjectNamesError, setSubjectNamesError] = useState(null);
   const [selectedLectureId, setSelectedLectureId] = useState("all");
+  const [selectedSubjectName, setSelectedSubjectName] = useState("전체");
 
   const { data: subjectData, error: subjectError, loading: subjectLoading } = useGetFetch("/data/student/mainpage/sidebar.json", []);
 
@@ -74,6 +75,8 @@ const TeacherLectureList = () => {
     fetchSubjectVideos(selectedLectureId);
   }, [selectedLectureId]);
 
+console.log(subjectVideosData);
+
   useEffect(() => {
     fetchSubjectNames();
   }, []);
@@ -116,67 +119,60 @@ const TeacherLectureList = () => {
   }, [setIsModalOpen]);
 
 
-  const toggleDropdown = useCallback((menu) => {
-    setDropdownOpen(prevState => prevState === menu ? null : menu);
-  }, []);
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
-  const handleSubjectSelect = useCallback((subjectName) => {
-    setSelectedSubject(subjectName);
+  const handleOptionClick = (lectureId, subjectName) => {
+    setSelectedLectureId(lectureId);
+    setSelectedSubjectName(subjectName);
     setIsDropdownOpen(false);
-  }, []);
+  };
 
-  const filteredVideos = useMemo(() => {
-    return subjectVideosData.filter(video =>
-        selectedSubject === "전체" || video.subject === selectedSubject
-    );
-  }, [subjectVideosData, selectedSubject]);
+  
 
   if (subjectLoading) {
     return <div className="loading">데이터를 불러오는 중입니다...</div>;
   }
 
-  if (subjectVideosError || subjectError) {
-    return (
-        <div className="error">
-          <p>데이터 로딩에 실패하였습니다.</p>
-          <button onClick={fetchSubjectVideos}>다시 시도</button>
-        </div>
-    );
-  }
-
+  
+console.log(subjectName);
   return (
       <div className="teacher_lecture_list_body">
         <div className="teacher_lecture_list_main_container">
           <div className="teacher_lecture_list_page_title_box">
             <h1 className="teacher_lecture_list_page_title">강의 영상</h1>
-            <div className="custom-select">
-              <div className={`teacher_lecture_dropdown ${dropdownOpen === 'subject' ? 'open' : ''}`}>
+            <div className="teacher-custom-select-container">
+              <div className="teacher-custom-selected">
+            <div className="teacher-select-selected" onClick={toggleDropdown}>
+              {selectedSubjectName}
+            </div>
+            <div
+              className={`teacher-select-items ${isDropdownOpen ? "" : "select-hide"}`}
+            >
+              <div
+                data-value="all"
+                onClick={() => handleOptionClick("all", "전체")}
+              >
+                전체
+              </div>
+              {subjectName.map((el) => (
                 <div
-                    className={`teacher_lecture_dropdownHeader ${isActive('/teachers/subject') ? 'active' : ''}`}
-                    onClick={() => toggleDropdown('subject')}>
-                  과목
-                  <span className={`teacher_lecture_dropdownArrow ${dropdownOpen === 'subject' ? 'open' : ''}`}>
-                  <i className="fa-solid fa-caret-down"></i>
-                </span>
+                  data-value={el.subjectId}
+                  key={el.subjectId}
+                  onClick={() => handleOptionClick(el.subjectId, el.name)}
+                >
+                  {el.name}
                 </div>
-                <ul className={`teacher_lecture_subMenu ${dropdownOpen === 'subject' ? 'open' : ''}`}>
-                  {subjectData?.subject?.map((el) => (
-                      <li key={el.id}>
-                        <div
-                            className={isActive(`/teachers/${el.name}/board`) ? 'teacher_sideBar_link active' : 'teacher_sideBar_link'}
-                            onClick={() => handleSubjectSelect(el.name)}
-                        >
-                          {el.name}
-                        </div>
-                      </li>
                   ))}
-                </ul>
+                
+              </div>
               </div>
               <button className="teacher_lecture_register">등록</button>
             </div>
           </div>
           <div className="teacher_lecture_list_container">
-            {filteredVideos.map((el, idx) => (
+            {subjectVideosData.map((el, idx) => (
                 <div
                     className="teacher_lecture_list_content"
                     key={idx}

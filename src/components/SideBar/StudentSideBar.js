@@ -10,8 +10,10 @@ const StudentSideBar = () => {
   const [user, setUser] = useState({});
   const location = useLocation();
 
+  // REACT_APP_BASE_URL 환경 변수를 통해 기본 URL을 설정합니다.
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+
   const { data: subjects, error: subjectError } = useAxiosGet("/side-bar", []);
-  console.log(subjects);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,8 +26,6 @@ const StudentSideBar = () => {
     };
     fetchData();
   }, []);
-
-  console.log(user);
 
   useEffect(() => {
     const path = location.pathname;
@@ -68,7 +68,8 @@ const StudentSideBar = () => {
             <div className="student_sideBar_profile_image">
               <img
                 className="student_sideBar_profile_img"
-                src={user.imagePath}
+                // 이미지 경로를 baseUrl과 결합하여 사용합니다.
+                src={user.imagePath ? `${baseUrl}/image/${user.imagePath}` : "/images/StudentProfile.png"}
                 alt="프로필"
               />
             </div>

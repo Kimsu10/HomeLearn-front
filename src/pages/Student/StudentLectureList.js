@@ -16,13 +16,8 @@ const StudentLectureList = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [page, setPage] = useState(0);
   const [selectedSubjectName, setSelectedSubjectName] = useState("전체");
-  // const [selectedVideodata, setSelectedVideoData] = useState([]);
-
-  console.log(subjectVideosData);
-  console.log(selectedVideoUrl);
 
   const fetchSubjectVideos = async (lectureId) => {
-    console.log(lectureId);
     try {
       const url =
         lectureId === "all"
@@ -113,12 +108,14 @@ const StudentLectureList = () => {
       <div className="subject_lecture_list_main_container">
         <div className="subject_lecture_list_page_title_box">
           <h1 className="subject_lecture_list_page_title">강의 영상</h1>
-          <div className="custom-select">
-            <div className="select-selected" onClick={toggleDropdown}>
+          <div className="student-custom-select">
+            <div className="student-select-selected" onClick={toggleDropdown}>
               {selectedSubjectName}
             </div>
             <div
-              className={`select-items ${isDropdownOpen ? "" : "select-hide"}`}
+              className={`student-select-items ${
+                isDropdownOpen ? "" : "student-select-hide"
+              }`}
             >
               <div
                 data-value="all"

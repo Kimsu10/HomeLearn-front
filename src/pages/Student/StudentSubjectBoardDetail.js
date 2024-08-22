@@ -9,8 +9,6 @@ const StudentSubjectBoardDetail = ({ baseUrl }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log(baseUrl);
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -21,21 +19,14 @@ const StudentSubjectBoardDetail = ({ baseUrl }) => {
     imagePath: "",
   };
 
-  console.log(mainLectures);
-
   const { data: subjectBoardDetail } = useAxiosGet(
     `/students/subjects/1/boards/19`
   );
 
-  console.log(subjectBoardDetail);
-
-  // 아래는  백통신으로 고쳐야해 => 왜 얘만 유효하지않은 토큰인지 물어보자
   const { data: subjectBoards } = useGetFetch(
     "/data/student/mainLecture/subjectBoard.json",
     []
   );
-
-  console.log(subjectBoards);
 
   return (
     <div className="subject_board_detail_main_container">

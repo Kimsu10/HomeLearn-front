@@ -24,12 +24,7 @@ function LoginFindId() {
     setIsSubmitting(true);
 
     try {
-      console.log("Sending email request to /account/find-id");
-      console.log("Email:", email);
-
       const response = await axios.post("/account/find-id", { email });
-
-      console.log("Response:", response);
 
       if (response.status === 200) {
         swal("아이디 찾기 성공", `아이디: ${response.data}`, "success");

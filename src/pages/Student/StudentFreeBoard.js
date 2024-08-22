@@ -40,7 +40,7 @@ const StudentFreeBoard = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("모달 데이터 : ", formData);
+
     closeModal();
   };
 

@@ -19,6 +19,8 @@ const StudentHeader = () => {
   const [notifications, setNotifications] = useState([]);
 
   const getToken = () => localStorage.getItem("access-token");
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  console.log(baseUrl);
 
   const deleteToken = () => {
     localStorage.removeItem("access-token");
@@ -27,6 +29,7 @@ const StudentHeader = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+
         const token = getToken();
         const config = {
           headers: { access: token },
@@ -34,14 +37,21 @@ const StudentHeader = () => {
         const commonResponse = await axios.get("/header/common", config);
         setCurriculum(commonResponse.data);
 
+        // 여기서 `imagePath` 값이 올바르게 설정되어 있는지 확인
+        console.log("Received imagePath:", commonResponse.data.imagePath);
+
+        // 학생 정보 설정
+        setStudent({
+          name: commonResponse.data.name,
+          imagePath: commonResponse.data.imagePath,
+        });
+
         // 알림 정보 가져오기
         const notificationResponse = await axios.get(
           "/header/notifications",
           config
         );
         setNotifications(notificationResponse.data.notifications || []);
-
-        console.log("알림 정보:", notificationResponse.data.notifications);
       } catch (error) {
         console.error("데이터 가져오기 오류:", error.response);
       }
@@ -49,6 +59,7 @@ const StudentHeader = () => {
 
     fetchData();
   }, []);
+
 
   const [openDropdown, setOpenDropdown] = useState(null);
   const alarmRef = useRef(null);
@@ -171,7 +182,7 @@ const StudentHeader = () => {
               <div>
                 <img
                   className="student_h-profile_img"
-                  src={student.imagePath || "/default-profile.png"}
+                  src={student.imagePath ? `${baseUrl}/image/${student.imagePath}` : "/images/StudentProfile.png"}
                   alt="프로필"
                 />
               </div>

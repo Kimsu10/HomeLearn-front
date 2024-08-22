@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "../../utils/axios";
-import { Radar } from 'react-chartjs-2';
-import 'chart.js/auto';
-import './ChartDetail.css';
+import { Radar } from "react-chartjs-2";
+import "chart.js/auto";
+import "./ChartDetail.css";
 
 const ChartDetail = () => {
   const { curriculumId, surveyId } = useParams();
-  const [surveyTitle, setSurveyTitle] = useState('');
+  const [surveyTitle, setSurveyTitle] = useState("");
   const [choiceResponses, setChoiceResponses] = useState([]);
   const [textResponses, setTextResponses] = useState([]);
   const [error, setError] = useState(null);
@@ -20,20 +20,28 @@ const ChartDetail = () => {
         const token = getToken();
         const config = { headers: { access: token } };
 
-        const surveyResponse = await axios.get(`/managers/curriculum/${curriculumId}/survey/${surveyId}/basic`, config);
+        const surveyResponse = await axios.get(
+          `/managers/curriculum/${curriculumId}/survey/${surveyId}/basic`,
+          config
+        );
         setSurveyTitle(surveyResponse.data.surveyTitle);
 
-        const choiceResponse = await axios.get(`/managers/curriculum/${curriculumId}/survey/${surveyId}/choice-response`, config);
-        console.log("Choice Responses:", choiceResponse.data);
+        const choiceResponse = await axios.get(
+          `/managers/curriculum/${curriculumId}/survey/${surveyId}/choice-response`,
+          config
+        );
+
         setChoiceResponses(choiceResponse.data);
 
-        const textResponse = await axios.get(`/managers/curriculum/${curriculumId}/survey/${surveyId}/text-response`, config);
-        console.log("Text Responses:", textResponse.data.content);
-        setTextResponses(textResponse.data.content);
+        const textResponse = await axios.get(
+          `/managers/curriculum/${curriculumId}/survey/${surveyId}/text-response`,
+          config
+        );
 
+        setTextResponses(textResponse.data.content);
       } catch (error) {
         setError("데이터 가져오기 오류");
-        console.error('Error fetching data for ChartDetail:', error);
+        console.error("Error fetching data for ChartDetail:", error);
       }
     };
 
@@ -68,12 +76,12 @@ const ChartDetail = () => {
       legend: { display: false },
       tooltip: {
         callbacks: {
-          label: function(tooltipItem) {
-            const value = tooltipItem.raw;  // 데이터를 가져옵니다.
-            return `${value} 명`;  // '명'을 추가하여 반환합니다.
-          }
-        }
-      }
+          label: function (tooltipItem) {
+            const value = tooltipItem.raw; // 데이터를 가져옵니다.
+            return `${value} 명`; // '명'을 추가하여 반환합니다.
+          },
+        },
+      },
     },
     elements: {
       line: {
@@ -89,10 +97,9 @@ const ChartDetail = () => {
     },
   };
 
-
   const createRadarData = (choice) => {
     const filteredData = [];
-    const labels = ['1', '2', '3', '4', '5'];
+    const labels = ["1", "2", "3", "4", "5"];
 
     labels.forEach((label, index) => {
       const value = choice.scoreResponseCount[index + 1];
@@ -103,11 +110,13 @@ const ChartDetail = () => {
 
     return {
       labels: labels.slice(0, filteredData.length),
-      datasets: [{
-        label: '',
-        data: filteredData,
-        fill: true,
-      }]
+      datasets: [
+        {
+          label: "",
+          data: filteredData,
+          fill: true,
+        },
+      ],
     };
   };
 
@@ -121,7 +130,10 @@ const ChartDetail = () => {
             {choiceResponses.map((choice, index) => (
               <div key={index} className="radar-chart-wrapper">
                 <h3>{choice.content}</h3>
-                <Radar data={createRadarData(choice, index)} options={radarOptions} />
+                <Radar
+                  data={createRadarData(choice, index)}
+                  options={radarOptions}
+                />
               </div>
             ))}
           </div>

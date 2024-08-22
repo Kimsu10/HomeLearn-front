@@ -119,7 +119,9 @@ const StudentQuestionBoardDetail = () => {
               </td>
               <td
                 className="student_question_board_writed_title"
-                onClick={() => navigate(``)}
+                onClick={() =>
+                  navigate(`/students/questionBoards/${el.questionBoardId}`)
+                }
               >
                 {el.title}
               </td>

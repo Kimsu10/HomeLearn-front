@@ -47,7 +47,7 @@ const StudentManagement = () => {
   const fetchStudents = async () => {
     try {
       const response = await axios.get("/managers/manage-students");
-      console.log("학생 데이터 응답:", response.data);  // 데이터 확인
+
       if (response.data && response.data.content) {
         setStudents(response.data.content);
       } else {
@@ -118,8 +118,6 @@ const StudentManagement = () => {
         curriculumFullName: curriculumFullName,
       };
 
-      console.log("등록할 학생 데이터:", studentData);
-
       const response = await axios.post(
         "/managers/manage-students/enroll",
         studentData,
@@ -127,7 +125,7 @@ const StudentManagement = () => {
           headers: { access: token },
         }
       );
-      console.log("학생 등록 응답:", response.data);
+
       if (response.status === 200) {
         setIsModalOpen(false);
         fetchStudents();
@@ -141,7 +139,6 @@ const StudentManagement = () => {
 
   const handleFileUpload = async () => {
     if (!selectedFile) {
-      console.log("파일이 선택되지 않았습니다.");
       return;
     }
     try {
@@ -161,7 +158,7 @@ const StudentManagement = () => {
           },
         }
       );
-      console.log("파일 업로드 응답:", response.data);
+
       setSelectedFile(null);
       setIsProgressModalOpen(false);
 
@@ -202,22 +199,45 @@ const StudentManagement = () => {
   const handleFileChange = (e) => setSelectedFile(e.target.files[0]);
 
   const handleDeleteStudent = async () => {
-    try {
-      const token = getToken();
-      const deletePromises = selectedStudents.map((studentId) =>
-        axios.delete(`/managers/manage-students/${studentId}`, {
-          headers: { access: token },
-        })
-      );
-      await Promise.all(deletePromises);
-      console.log("학생 삭제 응답:", deletePromises);
-      fetchStudents();
-      setSelectedStudents([]);
-    } catch (error) {
-      console.error("삭제 에러:", error);
-    }
-  };
+      if (selectedStudents.length === 0) {
+          swal({
+              title: "학생 삭제",
+              text: "선택된 학생이 없습니다. 삭제할 학생을 선택하세요.",
+              icon: "warning",
+              button: "확인",
+          });
+          return;
+      }
 
+      try {
+          const token = getToken();
+          const deletePromises = selectedStudents.map((id) =>
+              axios.delete(`/managers/manage-students/${id}`, {
+                  headers: { "access-token": token },
+              })
+          );
+          await Promise.all(deletePromises);
+          console.log("학생 삭제 응답:", deletePromises);
+          fetchStudents();
+          setSelectedStudents([]);
+
+          swal({
+              title: "삭제 완료",
+              text: "선택된 학생이 삭제되었습니다.",
+              icon: "success",
+              button: "확인",
+          });
+      } catch (error) {
+          console.error("삭제 에러:", error);
+
+          swal({
+              title: "삭제 실패",
+              text: "학생 삭제 중 오류가 발생했습니다.",
+              icon: "error",
+              button: "확인",
+          });
+      }
+  };
   const handleCheckboxChange = (studentId) =>
     setSelectedStudents(
       selectedStudents.includes(studentId)
@@ -251,22 +271,29 @@ const StudentManagement = () => {
           <div className="student-controls">
             <div className="student-program-buttons">
               <button
-                className={
-                  selectedCourse === "네이버 클라우드 데브옵스 과정"
-                    ? "selected"
-                    : ""
-                }
-                onClick={() => handleCourseChange("NCP")}
+                  className={`student-course-button ${selectedCourse === "네이버 클라우드 데브옵스 과정" ? "selected" : ""}`}
+                  onClick={() => handleCourseChange("NCP")}
+                >
+                  <img
+                    src={process.env.PUBLIC_URL + '/images/curriculum/ncp.png'}
+                    alt="NCP"
+                    className="course-logo"
+                  />
+                </button>
+                <button
+                  className={`student-course-button ${selectedCourse === "AWS 클라우드 자바 웹 개발자 과정" ? "selected" : ""}`}
+                  onClick={() => handleCourseChange("AWS")}
+                >
+                  <img
+                    src={process.env.PUBLIC_URL + '/images/curriculum/aws.png'}
+                    alt="AWS"
+                    className="course-logo"
+                  />
+                </button>
+              <select
+                value={selectedGeneration}
+                onChange={handleGenerationChange}
               >
-                NCP
-              </button>
-              <button
-                className={selectedCourse === "AWS 클라우드 자바 웹 개발자 과정" ? "selected" : ""}
-                onClick={() => handleCourseChange("AWS")}
-              >
-                AWS
-              </button>
-              <select value={selectedGeneration} onChange={handleGenerationChange}>
                 <option value="전체">전체</option>
                 {filteredGenerations.map((th) => (
                   <option key={`${th}`} value={th}>{`${th}기`}</option>
@@ -283,7 +310,10 @@ const StudentManagement = () => {
                 />
                 <i className="fas fa-search student-search-icon"></i>
               </div>
-              <button onClick={handleRefresh} className="student-refresh-button">
+              <button
+                onClick={handleRefresh}
+                className="student-refresh-button"
+              >
                 <i className="fas fa-sync"></i>
               </button>
             </div>
@@ -319,7 +349,9 @@ const StudentManagement = () => {
                         <input
                           type="checkbox"
                           checked={selectedStudents.includes(student.studentId)}
-                          onChange={() => handleCheckboxChange(student.studentId)}
+                          onChange={() =>
+                            handleCheckboxChange(student.studentId)
+                          }
                           onClick={(e) => e.stopPropagation()}
                         />
                       </td>
@@ -331,7 +363,6 @@ const StudentManagement = () => {
                       <td>{student.email}</td>
                       <td>{student.phone}</td>
                       <td>
-                        {/* attend 필드로 수정 */}
                         {student.attend === true ? (
                           <span className="status present">✔</span>
                         ) : (
@@ -420,7 +451,9 @@ const StudentManagement = () => {
             </button>
             <button
               className={`student-course-button ${
-                newStudent.curriculum === "AWS 클라우드 자바 웹 개발자 과정" ? "selected" : ""
+                newStudent.curriculum === "AWS 클라우드 자바 웹 개발자 과정"
+                  ? "selected"
+                  : ""
               }`}
               onClick={() =>
                 setNewStudent({
