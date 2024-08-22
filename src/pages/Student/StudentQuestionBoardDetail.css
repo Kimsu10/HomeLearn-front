@@ -42,7 +42,6 @@
 
 .student_question_detail {
   height: 40px;
-
   color: var(--studentMainColor);
 }
 
@@ -64,6 +63,11 @@
 
 .question_detail_content {
   font-size: 20px;
+}
+
+.question_detail_image {
+  margin-top: 36px;
+  width: 960px;
 }
 
 .question_detail_info_box {

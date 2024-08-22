@@ -9,6 +9,7 @@ import useAxiosDelete from "../../hooks/useAxiosDelete";
 const StudentQuestionBoardDetail = ({ username, baseUrl }) => {
   const { boardId } = useParams();
 
+  const loginUserName = localStorage.getItem("loginedUser");
   const [openReModal, setOpenReModal] = useState({});
 
   const toggleReModal = (index) => {
@@ -23,24 +24,12 @@ const StudentQuestionBoardDetail = ({ username, baseUrl }) => {
     `/students/question-boards/${boardId}`
   );
 
-  console.log(questionBoardDetail);
-
-  // 댓글 GET 요청
-  const { data: comments } = useAxiosGet(
-    `/students/question-boards/${boardId}/comments`
-  );
-
-  console.log(comments);
-
-  // Post 요청
-  const { postRequest } = useAxiosPost(`/students/question-boards/${boardId}`);
-
-  // Delete 요청
+  // 글 삭제 요청
   const { deleteRequest } = useAxiosDelete(
     `/students/question-boards/${boardId}`
   );
 
-  //
+  // 글 수정 폼
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -48,6 +37,23 @@ const StudentQuestionBoardDetail = ({ username, baseUrl }) => {
     username: username,
   });
 
+  // 댓글 GET 요청
+  const { data: comments } = useAxiosGet(
+    `/students/question-boards/${boardId}/comments`
+  );
+
+  // 댓글 작성 요청
+  const { postRequest } = useAxiosPost(
+    `/students/question-boards/${boardId}/comments`
+  );
+
+  // 댓글 삭제
+  const { deleteRequest: deleteComment } = useAxiosDelete(
+    `/students/question-boards/${questionBoardId}/comments/${commentId}`
+  );
+
+  const questionBoardId = questionBoardDetail.questionBoardId;
+  const commentId = comments[0].commentId;
   const [error, setError] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -138,9 +144,23 @@ const StudentQuestionBoardDetail = ({ username, baseUrl }) => {
     }
   };
 
+  const handleDeleteComment = () => {
+    if (window.confirm("정말로 이 게시물을 삭제하시겠습니까?")) {
+      deleteComment()
+        .then(() => {
+          alert("게시물이 삭제되었습니다.");
+        })
+        .catch((err) => {
+          console.error("게시물 삭제 실패:", err);
+          alert("게시물 삭제에 실패했습니다.");
+        });
+    }
+  };
+
   const handleCommentSubmit = () => {
     const commentData = { content: text };
     postRequest(commentData);
+    window.location.reload();
   };
 
   const formatTime = (time) => {
@@ -169,7 +189,7 @@ const StudentQuestionBoardDetail = ({ username, baseUrl }) => {
     <div className="main_container">
       <div className="student_question_detail_page_title_box">
         <h1 className="student_question_detail_page_title">질문 게시판</h1>
-        {questionBoardDetail?.username === username && (
+        {questionBoardDetail?.author === loginUserName && (
           <>
             <i
               className="bi bi-three-dots-vertical question_three_dot"
@@ -250,7 +270,9 @@ const StudentQuestionBoardDetail = ({ username, baseUrl }) => {
               alt=""
             />
             &nbsp;&nbsp;&nbsp;
-            <span className="question_user_name">{username}</span>
+            <span className="question_user_name">
+              {questionBoardDetail?.author}
+            </span>
           </div>
           <textarea
             className="question_current_write_textarea"
@@ -282,7 +304,9 @@ const StudentQuestionBoardDetail = ({ username, baseUrl }) => {
                 src={
                   comments[index]?.author === "ChatGPT"
                     ? "/images/AIProfile.png"
-                    : `${baseUrl}/image/${comments?.userProfileImage}`
+                    : comments[index]?.profileImageName === null
+                    ? "/images/StudentProfile.png"
+                    : `${baseUrl}/image/${comments?.profileImageName}`
                 }
                 className="question_comment_user_profile"
                 alt=""
@@ -290,15 +314,22 @@ const StudentQuestionBoardDetail = ({ username, baseUrl }) => {
               &nbsp;
               <span className="question_comment_user_name">{el.author}</span>
             </div>
-            {/* <i
-              className="bi bi-three-dots-vertical question_comment_three_dot recomment_btn"
-              onClick={() => toggleReModal(index)}
-            ></i> */}
+            {comments[index]?.author === loginUserName && (
+              <i
+                className="bi bi-three-dots-vertical question_comment_three_dot recomment_btn"
+                onClick={() => toggleReModal(index)}
+              ></i>
+            )}
             {openReModal[index] && (
               <div className="question_recomment_modify_box">
                 <button className="student_question_detail">수정</button>
                 <hr className="devide_button_border" />
-                <button className="student_question_detail">삭제</button>
+                <button
+                  className="student_question_detail"
+                  onClick={handleDeleteComment}
+                >
+                  삭제
+                </button>
               </div>
             )}
           </div>

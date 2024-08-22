@@ -69,14 +69,14 @@
 
 /* 버튼 */
 .student_control_box {
-  width: 100%;
+  width: 98%;
   display: flex;
   justify-content: flex-end;
 }
 
 .student_write_question_button {
-  width: 120px;
-  height: 50px;
+  width: 140px;
+  height: 56px;
   background-color: #5d8d89;
   border-radius: 20px;
   color: white;

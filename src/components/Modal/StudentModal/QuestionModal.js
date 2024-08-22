@@ -83,6 +83,7 @@ const QuestionModal = ({
       if (response.status === 200) {
         alert(`${modalName}(이)가 완료!`);
         handleClose();
+        window.location.reload();
       }
     } catch (error) {
       console.error(`${modalName} 중 오류 발생:`, error);
@@ -116,7 +117,7 @@ const QuestionModal = ({
             <ul
               className={`custom-select-options ${dropdownOpen ? "open" : ""}`}
             >
-              <li key="all" onClick={() => handleSubjectChange("공통", null)}>
+              <li key="common" onClick={() => handleSubjectChange("", null)}>
                 공통
               </li>
               {subjects?.map((subject) => (
@@ -151,31 +152,6 @@ const QuestionModal = ({
               onChange={handleChange}
               className="student_modal_input_content"
             ></textarea>
-          </label>
-          <label className="student_modal_file_label">
-            <p className="student_modal_file_tag">{contentFile}</p>
-            <div className="student_modal_file_input_wrapper">
-              <input
-                type="text"
-                readOnly
-                value={formData.file ? formData.file.name : ""}
-                className="student_modal_input_file_display"
-              />
-              {formData.file && (
-                <span className="delete_submit_file" onClick={handleFileDelete}>
-                  <i className="bi bi-x-lg"></i>
-                </span>
-              )}
-              <label className="student_modal_file_button">
-                {contentFile}
-                <input
-                  type="file"
-                  name="file"
-                  onChange={handleFileChange}
-                  className="student_modal_input_file"
-                />
-              </label>
-            </div>
           </label>
           <div className="student_modal_submit_button_box">
             <button type="submit" className="student_modal_submit_button">

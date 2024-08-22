@@ -27,6 +27,9 @@ const StudentSideBar = () => {
     fetchData();
   }, []);
 
+  const loginUserName = user.name;
+  localStorage.setItem("loginedUser", loginUserName);
+
   useEffect(() => {
     const path = location.pathname;
     if (path.startsWith("/students/subject")) {

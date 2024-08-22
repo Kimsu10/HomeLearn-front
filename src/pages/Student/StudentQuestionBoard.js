@@ -98,6 +98,8 @@ const StudentQuestionBoardDetail = () => {
     return pages;
   };
 
+  //
+
   return (
     <div className="student_question_board_main_container">
       <div className="student_question_board_title_box">
