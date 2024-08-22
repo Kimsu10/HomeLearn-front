@@ -67,6 +67,25 @@
   transform: translateY(-50%);
 }
 
+/* 버튼 */
+.student_control_box {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.student_write_question_button {
+  width: 120px;
+  height: 50px;
+  background-color: #5d8d89;
+  border-radius: 20px;
+  color: white;
+}
+
+.student_write_question_button:hover {
+  background-color: #5d8d89c5;
+}
+
 /* 테이블  */
 
 .student_question_board_table {
