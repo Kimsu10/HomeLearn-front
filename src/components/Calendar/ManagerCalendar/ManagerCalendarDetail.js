@@ -32,7 +32,7 @@ const ManagerCalendarDetail = () => {
       try {
         const response = await axios.get('/managers/calendar/modal');
         setCurriculums(response.data);
-         console.log('데이터 가져오기:', response.data);
+        console.log('데이터 가져오기:', response.data);
       } catch (error) {
         console.error('커리큘럼 정보 가져오기 실패:', error);
       }
@@ -50,10 +50,10 @@ const ManagerCalendarDetail = () => {
   };
 
   const getCurriculumColor = (curriculumId) => {
+    if (!curriculums || curriculums.length === 0) return '#000'; // 기본 색상
     const curriculum = curriculums.find(c => String(c.id) === String(curriculumId));
     return curriculum ? curriculum.color : '#000';
   };
-
 
   // 이벤트 삭제 핸들러
   const handleDeleteEvent = (id) => {
@@ -157,9 +157,12 @@ const ManagerCalendarDetail = () => {
                   <div className="detail-event-info">
                     <div className="detail-event-title-container">
                       <div className="detail-event-color" style={{ backgroundColor: getCurriculumColor(evt.curriculumId) }}></div>
-                      <span className="detail-event-title" style={{ color: getCurriculumColor(evt.curriculumId) }}>
-                        {evt.title}
-                      </span>
+                      {curriculums.length > 0 && (
+                        <span className="detail-event-title" style={{ color: getCurriculumColor(evt.curriculumId) }}>
+                          {evt.title}
+                        </span>
+                      )}
+
                       <div className="detail-event-actions">
                         <button onClick={() => handleEditEvent(evt)}>
                           <i className="fas fa-pencil-alt"></i>

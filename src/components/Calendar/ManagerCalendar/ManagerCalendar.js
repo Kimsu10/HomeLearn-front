@@ -189,21 +189,30 @@ const ManagerCalendar = () => {
   };
 
   // 저장
-  const handleSaveEvent = async () => {
-    if (newEvent.title && newEvent.startDate) {
-      try {
-        const response = await axios.post("/managers/calendar", newEvent);
-        if (response.status === 200) {
-          setEvents([...events, { ...newEvent, id: Date.now() }]);
-          handleCloseModal();
-        } else {
-          console.error("일정 등록 실패:", response.statusText);
-        }
-      } catch (error) {
-        console.error("일정 등록 중 오류 발생:", error);
-      }
-    }
-  };
+ const handleSaveEvent = async () => {
+   if (newEvent.title && newEvent.startDate) {
+     try {
+       // 디버깅용으로 newEvent를 콘솔에 출력해보기
+       const eventToSave = {
+         ...newEvent,
+         startDate: new Date(newEvent.startDate),
+         endDate: newEvent.endDate ? new Date(newEvent.endDate) : null,
+       };
+
+       console.log('일정 데이터 저장:', eventToSave);
+
+       const response = await axios.post("/managers/calendar", eventToSave);
+       if (response.status === 200) {
+         setEvents([...events, { ...eventToSave, id: Date.now() }]);
+         handleCloseModal();
+       } else {
+         console.error("일정 등록 실패:", response.statusText);
+       }
+     } catch (error) {
+       console.error("일정 등록 중 오류 발생:", error);
+     }
+   }
+ };
 
   // 날짜 클릭
   const handleDateClick = (date) => {
@@ -212,6 +221,8 @@ const ManagerCalendar = () => {
     );
     setSelectedDate(adjustedDate);
     const eventsForDate = getEventsForDate(date);
+    console.log("선택날짜:", adjustedDate);
+    console.log("선택날짜에서 데이터 전달:", eventsForDate);
     if (eventsForDate.length > 0) {
       navigate(`/managers/calendar/${eventsForDate[0].id}`);
     }
