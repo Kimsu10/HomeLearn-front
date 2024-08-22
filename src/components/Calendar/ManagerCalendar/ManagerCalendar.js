@@ -189,30 +189,29 @@ const ManagerCalendar = () => {
   };
 
   // 저장
- const handleSaveEvent = async () => {
-   if (newEvent.title && newEvent.startDate) {
-     try {
-       // 디버깅용으로 newEvent를 콘솔에 출력해보기
-       const eventToSave = {
-         ...newEvent,
-         startDate: new Date(newEvent.startDate),
-         endDate: newEvent.endDate ? new Date(newEvent.endDate) : null,
-       };
+  const handleSaveEvent = async () => {
+    if (newEvent.title && newEvent.startDate) {
+      try {
+        const eventToSave = {
+          ...newEvent,
+          startDate: new Date(newEvent.startDate),
+          endDate: newEvent.endDate ? new Date(newEvent.endDate) : null,
+        };
 
-       console.log('일정 데이터 저장:', eventToSave);
+        console.log('일정 데이터 저장:', eventToSave);
 
-       const response = await axios.post("/managers/calendar", eventToSave);
-       if (response.status === 200) {
-         setEvents([...events, { ...eventToSave, id: Date.now() }]);
-         handleCloseModal();
-       } else {
-         console.error("일정 등록 실패:", response.statusText);
-       }
-     } catch (error) {
-       console.error("일정 등록 중 오류 발생:", error);
-     }
-   }
- };
+        const response = await axios.post("/managers/calendar", eventToSave);
+        if (response.status === 200) {
+          setEvents([...events, { ...eventToSave, id: Date.now() }]);
+          handleCloseModal();
+        } else {
+          console.error("일정 등록 실패:", response.statusText);
+        }
+      } catch (error) {
+        console.error("일정 등록 중 오류 발생:", error);
+      }
+    }
+  };
 
   // 날짜 클릭
   const handleDateClick = (date) => {
@@ -264,6 +263,11 @@ const ManagerCalendar = () => {
   const isWeekend = (date) => {
     const day = date.getDay();
     return { isSunday: day === 0, isSaturday: day === 6 };
+  };
+
+  const getCurriculumColor = (curriculumId) => {
+    const curriculum = curriculums.find(c => String(c.id) === String(curriculumId));
+    return curriculum ? curriculum.color : '#000';
   };
 
   return (
@@ -321,7 +325,7 @@ const ManagerCalendar = () => {
                         to={`/managers/calendar/${event.id}`}
                         className="event-dot-link"
                       >
-                        <div className="event-dot"></div>
+                        <div className="event-dot" style={{ backgroundColor: getCurriculumColor(event.curriculumId) }}></div>
                       </Link>
                     ))}
                 </div>
