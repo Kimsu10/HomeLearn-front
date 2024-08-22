@@ -47,13 +47,14 @@ const StudentQuestionBoardDetail = ({ username, baseUrl }) => {
     `/students/question-boards/${boardId}/comments`
   );
 
+  const questionBoardId = questionBoardDetail?.questionBoardId;
+  const commentId = comments[0]?.commentId;
+
   // 댓글 삭제
   const { deleteRequest: deleteComment } = useAxiosDelete(
     `/students/question-boards/${questionBoardId}/comments/${commentId}`
   );
 
-  const questionBoardId = questionBoardDetail.questionBoardId;
-  const commentId = comments[0].commentId;
   const [error, setError] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
