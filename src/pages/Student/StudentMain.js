@@ -20,7 +20,6 @@ import SurveyForm from "./SurveyForm";
 import StudentQuestionBoardDetail from "./StudentQuestionBoardDetail";
 
 const StudentMain = () => {
-  // const [showSection, setShowSection] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [username, setUsername] = useState("");
 
@@ -67,7 +66,9 @@ const StudentMain = () => {
           />
           <Route
             path="assignment"
-            element={<StudentAssignment username={username} />}
+            element={
+              <StudentAssignment username={username} baseUrl={baseUrl} />
+            }
           />
           <Route
             path="/:subjectName/board/list"
@@ -111,7 +112,9 @@ const StudentMain = () => {
           />
           <Route
             path="/assignmentDetail/:homeworkId"
-            element={<StudentAssignmentDetail username={username} />}
+            element={
+              <StudentAssignmentDetail username={username} baseUrl={baseUrl} />
+            }
           />
           <Route
             path="/:studentId/badge"

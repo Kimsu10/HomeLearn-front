@@ -130,6 +130,14 @@
   border-bottom: 1px solid #5c8d89;
 }
 
+.student_submit_assignment_detail_file:hover {
+  cursor: pointer;
+}
+
+.student_assignment_detail_notice_file:hover {
+  cursor: pointer;
+}
+
 .student_submit_assignment_detail_content {
   font-size: 24px;
 }
