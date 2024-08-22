@@ -10,7 +10,6 @@ import StudentManagement from "./StudentManagement";
 import CurriculumManagement from "./CurriculumManagement";
 import TeacherManagement from "./TeacherManagement";
 import Notice from "./Notice";
-import StudentContact from "./StudentContact";
 import TeacherContact from "./TeacherContact";
 import CurriculumDetail from "./CurriculumDetail";
 import SurveyDetail from "./SurveyDetail";
@@ -18,6 +17,7 @@ import StudentDetail from "./StudentDetail";
 import ChartDetail from "./ChartDetail";
 import "./ManagerMain.css";
 import ManagerHeader from "../../components/Nav/ManagerHeader";
+import StudentInquiryBoard from "./StudentInquiryBoard";
 
 function Dashboard() {
   return (
@@ -52,7 +52,7 @@ function ManagerMain() {
             <Route path="manage-curriculums/:id" element={<CurriculumDetail />} />
             <Route path="manage-teachers" element={<TeacherManagement />} />
             <Route path="notice" element={<Notice />} />
-            <Route path="contact-students" element={<StudentContact />} />
+            <Route path="contact-students" element={<StudentInquiryBoard />} />
             <Route path="contact-teachers" element={<TeacherContact />} />
             <Route path="calendar/:eventId" element={<CalendarDetail />} />
             <Route path="curriculum/:curriculumId/survey/:surveyId/detail" element={<SurveyDetail />} />
