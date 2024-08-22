@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./TeacherAssignment.css";
 import TeacherModal from "../../components/Modal/TeacherModal/TeacherModal";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,31 @@ const TeacherAssignment = () => {
         navigate(`/teachers/assignmentDetail/${assignmentId}`);
     };
 
+    const [fileName, setFileName] = useState('');
+    const fileInputRef = useRef(null);
+
+    const handleFileButtonClick = () => {
+        fileInputRef.current.click();
+    };
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setFileName(file.name);
+        }
+    };
+
+    const [selectedDate, setSelectedDate] = useState('');
+    const dateInputRef = useRef(null);
+
+    const handleIconClick = () => {
+        dateInputRef.current.showPicker();
+    };
+
+    const handleDateChange = (event) => {
+        setSelectedDate(event.target.value);
+    };
+
     return (
         <div className="teacher_assignment_main_container">
             <div className="teacher_assignment_page_title_box">
@@ -24,7 +49,7 @@ const TeacherAssignment = () => {
             </div>
             <div className="teacher_current_proceeding_assignment_container">
                 <div className="teacher_current_proceeding_assignment_title_box">
-                    <h3 className="teacher_current_proceeding_assignment_box_name">
+                <h3 className="teacher_current_proceeding_assignment_box_name">
                         진행 중인 과제
                     </h3>
                     <div className="teacher_control_box_with_both_side">
@@ -143,8 +168,9 @@ const TeacherAssignment = () => {
 
             {/* Enroll Modal */}
             <TeacherModal isOpen={isModalOpen} onClose={closeModal}>
-                <span className="teacher_assignment_modalTitle">과제 등록</span>
-                <div className="teacher_assignment_enroll_form">
+                <div className="teacher-assignment-register-content">
+                    <span className="teacher_assignment_modalTitle">과제 등록</span>
+
                     <div className="teacher_assignment_input_group">
                         <label>제목</label>
                         <input
@@ -163,40 +189,44 @@ const TeacherAssignment = () => {
 
                     <div className="teacher_assignment_date_group">
                         <label>마감일</label>
-                        <input
-                            type="date"
-                            name="deadline"
-                        />
-                    </div>
+                        <div className="date-input-wrapper">
+                            <input
+                                type="text"
+                                value={selectedDate}
+                                readOnly
+                                placeholder="YYYY-MM-DD"
+                                className="teacher-date-input"
+                            />
 
-                    <div className="teacher_assignment_file_radioBtn_group">
-                        <label>파일 첨부 필수 여부</label>
-                        <div className="teacher_assignment_file_radioBtn">
-                            <button className="teacher_file_button">O</button>
-                            <button className="teacher_file_button">X</button>
+                            <input
+                                type="date"
+                                ref={dateInputRef}
+                                onChange={handleDateChange}
+                                className="hidden-date-input"
+                            />
+                            <i className="fa-solid fa-calendar-days" onClick={handleIconClick}></i>
+
                         </div>
-                    </div>
-
-                    <div className="teacher_assignment_selectBox_group">
-                        <label>파일 형식</label>
-                        <select name="fileType">
-                            <option value="">기타</option>
-                            <option value=".java">.java</option>
-                            <option value=".sql">.sql</option>
-                            <option value=".pdf">.pdf</option>
-                            <option value=".zip">.zip</option>
-                            <option value=".html">.html</option>
-                            <option value=".js">.js</option>
-                            <option value=".txt">.txt</option>
-                        </select>
                     </div>
 
                     <div className="teacher_assignment_file_group">
                         <label>파일 첨부</label>
-                        <input
-                            type="file"
-                            name="file"
-                        />
+                        <div className="teacher-assignment-register-file">
+                            <input
+                                type="text"
+                                className="teacher-lecture-register-filename"
+                                value={fileName}
+                                readOnly
+                                placeholder="선택된 파일 없음"
+                            />
+                            <button type="button" onClick={handleFileButtonClick}>파일첨부</button>
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                onChange={handleFileChange}
+                                style={{display: 'none'}}
+                            />
+                        </div>
                     </div>
 
                     <div className="teacher_assignment_modal_buttons">
@@ -208,6 +238,7 @@ const TeacherAssignment = () => {
                         </button>
                     </div>
                 </div>
+
             </TeacherModal>
         </div>
     );
