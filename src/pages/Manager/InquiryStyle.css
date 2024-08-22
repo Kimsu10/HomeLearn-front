@@ -1,0 +1,28 @@
+.inquiry-board {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.filter-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.lists {
+    display: flex;
+    justify-content: space-between;
+}
+
+.inquiry-list, .response-list {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.inquiry-item, .response-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
