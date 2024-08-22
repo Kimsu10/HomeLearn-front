@@ -14,31 +14,46 @@ const ManagerCalendarDetail = () => {
   const [editMode, setEditMode] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [curriculums, setCurriculums] = useState([]);
+  const [colorAssignments, setColorAssignments] = useState({}); // 이벤트 ID와 색상 매핑
+
+  // 색상 배열 정의
+  const colors = [
+    "#F3C41E", "#F58D11", "#B85B27", "#A90C57", "#F45CE5",
+    "#AE59F0", "#0A8735", "#6F961E", "#19E308", "#1D1AA6",
+    "#20CFF5", "#98B3E5"
+  ];
 
   useEffect(() => {
-    // 로컬 스토리지에서 이벤트 데이터를 가져옴
-    const storedEvents = JSON.parse(localStorage.getItem('calendarEvents')) || [];
-    setEvents(storedEvents);
-    const foundEvent = storedEvents.find((e) => e.id === Number(eventId));
-    if (foundEvent) {
-      setEvent(foundEvent);
-      setSelectedEvent(foundEvent);
-    } else {
-      navigate('/managers'); // 이벤트가 없으면 매니저 페이지로 리다이렉트
-    }
-
-    // 교육 과정 정보 가져오기
-    const fetchCurriculums = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get('/managers/calendar/modal');
-        setCurriculums(response.data);
-        console.log('데이터 가져오기:', response.data);
+        // 교육 과정 정보 가져오기
+        const curriculumResponse = await axios.get('/managers/calendar/modal');
+        setCurriculums(curriculumResponse.data);
+
+        // 로컬 스토리지에서 이벤트 데이터를 가져옴
+        const storedEvents = JSON.parse(localStorage.getItem('calendarEvents')) || [];
+        setEvents(storedEvents);
+
+        // 각 이벤트에 대해 색상 할당
+        const initialColorAssignments = {};
+        storedEvents.forEach((e, index) => {
+          initialColorAssignments[e.id] = colors[index % colors.length];
+        });
+        setColorAssignments(initialColorAssignments);
+
+        const foundEvent = storedEvents.find((e) => e.id === Number(eventId));
+        if (foundEvent) {
+          setEvent(foundEvent);
+          setSelectedEvent(foundEvent);
+        } else {
+          navigate('/managers'); // 이벤트가 없으면 매니저 페이지로 리다이렉트
+        }
       } catch (error) {
-        console.error('커리큘럼 정보 가져오기 실패:', error);
+        console.error('데이터 가져오기 실패:', error);
       }
     };
 
-    fetchCurriculums();
+    fetchData();
   }, [eventId, navigate]);
 
   // 특정 날짜에 해당하는 이벤트 가져오기
@@ -47,11 +62,6 @@ const ManagerCalendarDetail = () => {
       new Date(event.startDate).toDateString() === date.toDateString() ||
       (new Date(event.startDate) <= date && new Date(event.endDate) >= date)
     );
-  };
-
-  const getCurriculumColor = (curriculumId) => {
-    const curriculum = curriculums.find(c => String(c.id) === String(curriculumId));
-    return curriculum ? curriculum.color : '#000';
   };
 
   // 이벤트 삭제 핸들러
@@ -151,12 +161,12 @@ const ManagerCalendarDetail = () => {
         <div className="detail-calendar-detail-content">
           <div className="detail-all-events">
             <ul>
-              {getEventsForDate(selectedDate || new Date(event.startDate)).map((evt) => (
+              {getEventsForDate(selectedDate || new Date(event.startDate)).map((evt, index) => (
                 <li key={evt.id} className="detail-event-item">
                   <div className="detail-event-info">
                     <div className="detail-event-title-container">
-                      <div className="detail-event-color" style={{ backgroundColor: getCurriculumColor(evt.curriculumId) }}></div>
-                      <span className="detail-event-title" style={{ color: getCurriculumColor(evt.curriculumId) }}>
+                      <div className="detail-event-color" style={{ backgroundColor: colorAssignments[evt.id] }}></div>
+                      <span className="detail-event-title" style={{ color: colorAssignments[evt.id] }}>
                         {evt.title}
                       </span>
                       <div className="detail-event-actions">
@@ -168,7 +178,6 @@ const ManagerCalendarDetail = () => {
                         </button>
                       </div>
                     </div>
-
                     <div className="detail-event-dates">
                       <p><strong>시작일:</strong> {new Date(evt.startDate).toLocaleDateString()}</p>
                       <p><strong>종료일:</strong> {new Date(evt.endDate).toLocaleDateString()}</p>
@@ -187,7 +196,7 @@ const ManagerCalendarDetail = () => {
                 value={selectedEvent.title}
                 onChange={handleChange}
                 className="detail-event-title-input"
-                style={{ color: getCurriculumColor(selectedEvent.curriculumId) }}
+                style={{ color: colorAssignments[selectedEvent.id] }}
               />
               <input
                 type="date"
