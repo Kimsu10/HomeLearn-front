@@ -295,3 +295,23 @@
 .event-dot-link {
   text-decoration: none;
 }
+
+/* select 요소를 스타일링 */
+.calendar-event-form-edit .date-input-container select {
+  border-radius: 20px;
+  border: 1px solid #757575;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  color: #333;
+}
+
+/* option 요소 스타일 */
+.calendar-event-form-edit .date-input-container select option {
+  padding: 8px;
+  font-size: 16px;
+  background-color: #fff;
+  color: #333;
+}
