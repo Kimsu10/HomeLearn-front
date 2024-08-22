@@ -14,6 +14,7 @@ const ManagerCalendarDetail = () => {
   const [editMode, setEditMode] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [curriculums, setCurriculums] = useState([]);
+  const [colorAssignments, setColorAssignments] = useState({}); // 이벤트 ID와 색상 매핑
 
   // 색상 배열 정의
   const colors = [
@@ -32,6 +33,14 @@ const ManagerCalendarDetail = () => {
         // 로컬 스토리지에서 이벤트 데이터를 가져옴
         const storedEvents = JSON.parse(localStorage.getItem('calendarEvents')) || [];
         setEvents(storedEvents);
+
+        // 각 이벤트에 대해 색상 할당
+        const initialColorAssignments = {};
+        storedEvents.forEach((e, index) => {
+          initialColorAssignments[e.id] = colors[index % colors.length];
+        });
+        setColorAssignments(initialColorAssignments);
+
         const foundEvent = storedEvents.find((e) => e.id === Number(eventId));
         if (foundEvent) {
           setEvent(foundEvent);
@@ -53,11 +62,6 @@ const ManagerCalendarDetail = () => {
       new Date(event.startDate).toDateString() === date.toDateString() ||
       (new Date(event.startDate) <= date && new Date(event.endDate) >= date)
     );
-  };
-
-  // 색상 순차 할당
-  const getSequentialColor = (index) => {
-    return colors[index % colors.length];
   };
 
   // 이벤트 삭제 핸들러
@@ -161,8 +165,8 @@ const ManagerCalendarDetail = () => {
                 <li key={evt.id} className="detail-event-item">
                   <div className="detail-event-info">
                     <div className="detail-event-title-container">
-                      <div className="detail-event-color" style={{ backgroundColor: getSequentialColor(index) }}></div>
-                      <span className="detail-event-title" style={{ color: getSequentialColor(index) }}>
+                      <div className="detail-event-color" style={{ backgroundColor: colorAssignments[evt.id] }}></div>
+                      <span className="detail-event-title" style={{ color: colorAssignments[evt.id] }}>
                         {evt.title}
                       </span>
                       <div className="detail-event-actions">
@@ -192,7 +196,7 @@ const ManagerCalendarDetail = () => {
                 value={selectedEvent.title}
                 onChange={handleChange}
                 className="detail-event-title-input"
-                style={{ color: getSequentialColor(events.findIndex(e => e.id === selectedEvent.id)) }}
+                style={{ color: colorAssignments[selectedEvent.id] }}
               />
               <input
                 type="date"
