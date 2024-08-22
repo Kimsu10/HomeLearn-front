@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // 배포시 기본 URL
-axios.defaults.baseURL = "http://223.130.141.27";
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 // 로컬 테스트시 기본 URL
 // axios.defaults.baseURL = "http://localhost:8080";
 

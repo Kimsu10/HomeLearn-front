@@ -9,7 +9,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./RecentVideo.css";
 
-const RecentVideo = ({ url, onClose, lectureId, username }) => {
+const RecentVideo = ({ url, lectureId, username, token, lastViewPoint }) => {
   const [player, setPlayer] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -25,13 +25,9 @@ const RecentVideo = ({ url, onClose, lectureId, username }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const [isCompleted, setIsCompeleted] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
   const [lastPosition, setLastPosition] = useState(0);
-
-  console.log(lastPosition);
-  console.log(lectureId);
-  console.log(username);
+  const [completeTime, setCompleteTime] = useState("");
 
   useEffect(() => {
     if (url) {
@@ -64,12 +60,36 @@ const RecentVideo = ({ url, onClose, lectureId, username }) => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      localStorage.setItem("lastPosition", duration);
-      localStorage.setItem("lectureId", lectureId);
+      const currentProgress = player
+        ? (player.getCurrentTime() / player.getDuration()) * 100
+        : 0;
+      setProgress(currentProgress);
+      setLastPosition(currentProgress);
+
+      let currentIsCompleted = false;
+      let currentCompleteTime = "";
+
+      if (currentProgress >= 97) {
+        currentIsCompleted = true;
+        currentCompleteTime = new Date().toISOString();
+      }
+
+      setIsCompleted(currentIsCompleted);
+      setCompleteTime(currentCompleteTime);
+
+      const watchData = {
+        lastPosition: Math.round(currentProgress),
+        lectureId,
+        username,
+        isCompleted: currentIsCompleted,
+        completedDate: currentCompleteTime,
+      };
+
+      localStorage.setItem("watchData", JSON.stringify(watchData));
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, [duration, lectureId]);
+  }, [duration, lectureId, username, player]);
 
   useEffect(() => {
     const updateProgress = () => {
@@ -128,6 +148,12 @@ const RecentVideo = ({ url, onClose, lectureId, username }) => {
             setIsMuted(event.target.isMuted());
             const duration = event.target.getDuration();
             setDuration(duration);
+
+            if (lastViewPoint > 0) {
+              const lastViewTime = (lastViewPoint / 100) * duration;
+              event.target.seekTo(lastViewTime, true);
+              setProgress(lastViewPoint);
+            }
           },
           onStateChange: (event) => {
             setIsPlaying(event.data === window.YT.PlayerState.PLAYING);
@@ -221,6 +247,42 @@ const RecentVideo = ({ url, onClose, lectureId, username }) => {
     return match ? match[1] : null;
   };
 
+  const sendLastViewData = async () => {
+    const watchData = JSON.parse(localStorage.getItem("watchData"));
+    console.log(watchData);
+
+    if (watchData) {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/students/lectures/last-view",
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              access: token,
+            },
+            body: JSON.stringify(watchData),
+          }
+        );
+
+        localStorage.removeItem("watchData");
+        window.location.reload();
+
+        if (!response.ok) {
+          throw new Error("Failed to update the last view data");
+        }
+      } catch (error) {
+        console.error("recentLecture error :", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      sendLastViewData();
+    };
+  }, []);
+
   return (
     <div
       ref={playerContainerRef}
@@ -271,9 +333,13 @@ const RecentVideo = ({ url, onClose, lectureId, username }) => {
               onChange={handlePlaybackRateChange}
               className="recent-select-button"
             >
+              <option value="0.25">0.25x</option>
               <option value="0.5">0.5x</option>
+              <option value="0.75">0.75x</option>
               <option value="1">1x</option>
+              <option value="1.25">1.25x</option>
               <option value="1.5">1.5x</option>
+              <option value="1.75">1.75x</option>
               <option value="2">2x</option>
             </select>
             <button onClick={toggleFullscreen} className="recent-full-button">
