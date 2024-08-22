@@ -4,7 +4,7 @@ import ManagerSideBar from "../../components/SideBar/ManagerSideBar";
 import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
 import CalendarDetail from "../../components/Calendar/ManagerCalendar/ManagerCalendarDetail";
 import Lecture from "./Lecture";
-import SettingList from "./Survey";
+import Survey from "./Survey";
 import MessageBox from "./MessageBox";
 import StudentManagement from "./StudentManagement";
 import CurriculumManagement from "./CurriculumManagement";
@@ -29,7 +29,7 @@ function Dashboard() {
           <ManagerCalendar />
         </div>
         <div className="manager-dashboard-divide-box2">
-          <SettingList />
+          <Survey />
           <MessageBox />
         </div>
       </div>
@@ -52,8 +52,8 @@ function ManagerMain() {
             <Route path="manage-curriculums/:id" element={<CurriculumDetail />} />
             <Route path="manage-teachers" element={<TeacherManagement />} />
             <Route path="notice" element={<Notice />} />
-            <Route path="contact-students" element={<StudentInquiryBoard />} />
-            <Route path="contact-teachers" element={<TeacherContact />} />
+            <Route path="inquiry/student" element={<StudentInquiryBoard />} />
+            <Route path="inquiry/teacher" element={<TeacherContact />} />
             <Route path="calendar/:eventId" element={<CalendarDetail />} />
             <Route path="curriculum/:curriculumId/survey/:surveyId/detail" element={<SurveyDetail />} />
             <Route path="curriculum/:curriculumId/survey/detail" element={<SurveyDetail />} />

@@ -30,7 +30,7 @@ const Survey = () => {
             <div className="survey-info">
               <span className="survey-id">{survey.th}기</span>
               <div className="survey-details">
-                <Link to={`/curriculum/${survey.th}/survey/${survey.id}/detail`} className="survey-title-dash">
+                <Link to={`/managers/curriculum/${survey.th}/survey/${survey.id}/detail`} className="survey-title-dash">
                   {survey.title}
                 </Link>
               </div>
