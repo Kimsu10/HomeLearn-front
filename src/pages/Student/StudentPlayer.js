@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import "./StudentPlayer.css";
 import { useNavigate } from "react-router-dom";
-import useGetFetch from "../../hooks/useGetFetch";
 import axios from "../../utils/axios";
 
 const LectureVideo = ({ url, subjectVideos }) => {

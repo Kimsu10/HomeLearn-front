@@ -54,12 +54,13 @@ const ChartDetail = () => {
   const radarOptions = {
     scales: {
       r: {
-        angleLines: { display: true },
+        angleLines: { display: false },
         suggestedMin: 0,
         suggestedMax: 3,
         ticks: {
-          stepSize: 1,
           display: false,
+          stepSize: 1,
+
         },
         pointLabels: {
           font: {
@@ -77,11 +78,14 @@ const ChartDetail = () => {
       tooltip: {
         callbacks: {
           label: function (tooltipItem) {
-            const value = tooltipItem.raw; // 데이터를 가져옵니다.
-            return `${value} 명`; // '명'을 추가하여 반환합니다.
+            const value = tooltipItem.raw;
+            return `${value} 명`;
           },
         },
       },
+       datalabels: {
+        display: false,
+        },
     },
     elements: {
       line: {

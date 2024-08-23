@@ -1,94 +1,245 @@
-.student_inquiry_board_main_container {
+.main_container {
   display: flex;
   flex-direction: column;
   width: 1120px;
   padding: 100px 68px;
-  background-color: hwb(0 100% 0%);
+  background-color: #fff;
 }
 
-.student_inquiry_board_title_box {
-  width: 100%;
+.student_question_detail_page_title_box {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  font-size: 36px;
+  margin-bottom: 75px;
+  position: relative;
 }
 
-.student_inquiry_board_title {
+.student_question_detail_page_title {
+  font-weight: 700;
   font-size: 48px;
 }
 
-.student_inquiry_board_filtering_box {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-}
-.inquiry_board_answer_box,
-.search_type_box {
-  width: 245px;
-  height: 50px;
-  border: 2px solid #5d8d89;
-  border-radius: 20px;
-  padding: 10px;
+.question_three_dot {
+  cursor: pointer;
 }
 
-/* 선택 박스 디자인 */
-.inquiry_board_answer_box,
-.search_type_box {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background: url('data:image/svg+xml;utf8,<svg fill="green" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>')
-    no-repeat right 10px center;
-  padding: 10px 40px 10px 10px;
+.student_question_detail_box {
+  position: absolute;
+  right: -40px;
+  top: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 120px;
+  height: 120px;
+  border: 1px solid var(--studentMainColor);
+  border-radius: 20px;
+  font-size: 20px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.student_question_detail {
+  height: 40px;
+  color: var(--studentMainColor);
+}
+
+.devide_button_border {
+  margin: 0;
+  color: transparent;
+  border-bottom: 2px solid var(--studentMainColor);
+}
+
+/* 조회한 자유 게시판 글 */
+.question_detail_container {
+  color: #000000;
+  border-bottom: 1px solid var(--studentSubColor);
+}
+
+.question_detail_title {
+  margin-bottom: 44px;
+}
+
+.question_detail_content {
+  font-size: 20px;
+}
+
+.question_detail_image {
+  margin-top: 36px;
+  width: 960px;
+}
+
+.question_detail_info_box {
+  margin: 30px 0;
+  color: var(--studentSubColor);
+}
+
+.question_detail_info_box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+}
+
+.question_writer_info_box {
+  color: #000;
+}
+
+.question_writer_date {
+  color: var(--studentSubColor) !important;
+}
+
+/* 댓글 리스트들 */
+.question_writer_comment_box {
+  font-size: 20px;
+  padding: 30px 30px 0 30px;
+}
+
+.question_comment_list_container {
+  padding: 30px;
+  border-bottom: 1px solid var(--studentSubColor);
+}
+
+.question_comment_write_form {
+  padding: 20px;
+  border: 2px solid var(--studentSubColor);
+  border-radius: 10px;
+}
+
+.question_user_info_box {
+  font-size: 20px;
+  color: #000;
+  display: flex;
+  align-items: center;
+}
+
+.question_user_profile {
+  width: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--studentSubColor);
+}
+
+.question_current_write_textarea {
+  margin: 20px 0 4px 0;
+  font-size: 16px;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+}
+
+.question_current_write_setting_box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.textarea_letter_count_box {
+  color: #d9d9d9;
+  padding-right: 20px;
+  margin-bottom: 5px;
   font-size: 16px;
 }
 
-.inquiry_board_answer_box:focus,
-.search_type_box:focus {
-  outline: none;
+.student_submit_btn {
+  background-color: var(--studentMainColor);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 16px;
 }
 
-.select-container {
+/* 댓글 리스트들 */
+.student_question_comment_list {
+  padding: 30px;
+  border-bottom: 1px solid var(--studentSubColor);
+  font-size: 16px;
+}
+
+.question_comment_written_user_info_box {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
   position: relative;
-  display: inline-block;
-  width: 80%;
 }
 
-.select-container::after {
-  content: "";
+.question_comment_user_info_box {
+  font-size: 20px;
+  color: #000;
+  display: flex;
+  align-items: center;
+}
+
+.question_comment_modify_box {
   position: absolute;
-  top: 50%;
-  right: 10px;
-  width: 10px;
-  height: 10px;
-  background: url('data:image/svg+xml;utf8,<svg fill="green" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>')
-    no-repeat center;
-  pointer-events: none;
-  transform: translateY(-50%);
+  right: -40px;
+  top: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100px;
+  height: 80px;
+  border: 1px solid var(--studentMainColor);
+  border-radius: 20px;
+  font-size: 20px;
+  overflow: hidden;
+  background-color: #fff;
 }
 
-/* 테이블  */
-
-.student_inquiry_board_table {
-  margin-top: 100px;
-  font-size: 24px;
-  border-collapse: separate;
-  border-spacing: 0 50px;
-  border-bottom: 2px solid #5d8d89;
+.question_comment_user_profile {
+  width: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--studentSubColor);
 }
 
-.student_inquiry_board_table th,
-.student_inquiry_board_table td {
-  text-align: center;
-  padding: 10px 10px;
+.question_comment_write_textarea {
+  font-size: 16px;
+  margin: 20px 0 4px 0;
+  padding: 10px;
+  width: 100%;
+  resize: none;
+  border: none;
+  outline: none;
+  resize: none;
+  overflow: hidden;
 }
 
-.student_inquiry_board_table tr:first-of-type th {
-  border-bottom: 2px solid #5d8d89;
+.question_comment_writedate_box {
+  display: flex;
+  justify-content: flex-end;
 }
 
-.student_inquiry_board_table tr:not(:first-of-type) th,
-.student_inquiry_board_table tr:not(:first-of-type) td {
-  border-bottom: none;
+.question_comment_written_date {
+  color: #d9d9d9;
 }
 
-/* 테이블 내용 */
+/* 대댓글 리스트 */
+.question_recoment_list {
+  padding: 30px 30px 30px 60px;
+  border-bottom: 1px solid var(--studentSubColor);
+  font-size: 16px;
+  position: relative;
+}
+
+.question_recoment_box {
+  width: 924px;
+  padding: 0 30px;
+}
+
+.question_recomment_modify_box {
+  position: absolute;
+  right: -40px;
+  top: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100px;
+  height: 80px;
+  border: 1px solid var(--studentMainColor);
+  border-radius: 20px;
+  font-size: 20px;
+  overflow: hidden;
+  background-color: #fff;
+}

@@ -18,14 +18,14 @@ import StudentBadge from "./StudentBadge";
 import StudentFreeBoardDetail from "./StudentFreeBoardDetail";
 import SurveyForm from "./SurveyForm";
 import StudentQuestionBoardDetail from "./StudentQuestionBoardDetail";
+import StudentVote from "./StudentVote";
 
 const StudentMain = () => {
-  // const [showSection, setShowSection] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [username, setUsername] = useState("");
 
   const navigate = useNavigate();
-  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const baseUrl = "http://223.130.141.27";
   const token = localStorage.getItem("access-token");
   const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
 
@@ -67,7 +67,9 @@ const StudentMain = () => {
           />
           <Route
             path="assignment"
-            element={<StudentAssignment username={username} />}
+            element={
+              <StudentAssignment username={username} baseUrl={baseUrl} />
+            }
           />
           <Route
             path="/:subjectName/board/list"
@@ -97,12 +99,13 @@ const StudentMain = () => {
             element={<StudentQuestionBoard username={username} />}
           />
           <Route
-            path="/questionBoards/:questionId"
-            element={<StudentQuestionBoardDetail />}
-          />
-          <Route
-            path="/questionBoards/:questionBoardId"
-            element={<StudentQuestionBoardDetail username={username} />}
+            path="/questionBoards/:boardId"
+            element={
+              <StudentQuestionBoardDetail
+                username={username}
+                baseUrl={baseUrl}
+              />
+            }
           />
           <Route
             path="/freeBoard"
@@ -110,7 +113,9 @@ const StudentMain = () => {
           />
           <Route
             path="/assignmentDetail/:homeworkId"
-            element={<StudentAssignmentDetail username={username} />}
+            element={
+              <StudentAssignmentDetail username={username} baseUrl={baseUrl} />
+            }
           />
           <Route
             path="/:studentId/badge"
@@ -128,7 +133,7 @@ const StudentMain = () => {
           {/* 언젠가 들어올 매니저 공지사항 페이지 */}
           {/* <Route path="/teacherNotice" element={< />} /> */}
           {/* 언젠가 들어올 투표 페이지 */}
-          {/* <Route path="/teacherNotice" element={< />} /> */}
+          <Route path="/vote" element={<StudentVote username={username} />} />
           <Route path="/survey/:surveyId" element={<SurveyForm />} />
           {/* 설문조사 */}
         </Routes>

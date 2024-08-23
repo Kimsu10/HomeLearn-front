@@ -1,5 +1,4 @@
-/* 메인 스타일 */
-.teacher_assignment_main_container {
+.teacher_vote_main_container {
     display: flex;
     flex-direction: column;
     width: 1120px;
@@ -7,19 +6,19 @@
     background-color: #fff;
 }
 
-.teacher_assignment_page_title_box {
+.teacher_vote_page_title_box {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 75px;
 }
 
-.teacher_assignment_page_title {
+.teacher_vote_page_title {
     font-size: 4.8rem;
     color: var(--teacherMainColor);
 }
 
-.teacher_assignment_page_enroll_btn {
+.teacher_vote_page_enroll_btn {
     padding: 0.8rem 1.6rem;
     font-size: 2rem;
     font-weight: 700;
@@ -29,13 +28,13 @@
     cursor: pointer;
 }
 
-.teacher_assignment_page_enroll_btn:hover {
+.teacher_vote_page_enroll_btn:hover {
     background-color: var(--teacherMainColor);
     color: #fff;
 }
 
-/* 진행중인 과제  */
-.teacher_current_proceeding_assignment_container {
+/* 진행 중인 투표 */
+.teacher_current_proceeding_vote_container {
     width: 100%;
     height: 500px;
     border: 1px solid var(--teacherMainColor);
@@ -46,13 +45,13 @@
     flex-direction: column;
 }
 
-.teacher_current_proceeding_assignment_title_box {
+.teacher_current_proceeding_vote_title_box {
     display: flex;
     justify-content: space-between;
     margin-bottom: 3.2rem;
 }
 
-.teacher_current_proceeding_assignment_box_name {
+.teacher_current_proceeding_vote_box_name {
     color: var(--teacherMainColor);
     font-size: 3.2rem;
 }
@@ -82,8 +81,8 @@
     opacity: 0.5;
 }
 
-/* 진행 중인 과제 내용 */
-.teacher_current_proceeding_assignment_contents_container {
+/* 진행 중인 투표 내용 */
+.teacher_current_proceeding_vote_contents_container {
     width: 100%;
     height: 460px;
     margin: 0 auto;
@@ -97,31 +96,32 @@
     color: #000;
 }
 
-.teacher_current_proceeding_assignment_contents_title_box {
+.teacher_current_proceeding_vote_contents_title_box {
     display: flex;
     justify-content: space-between;
 }
 
-.teacher_current_proceeding_assignment_contents_title {
+.teacher_current_proceeding_vote_contents_title {
     font-size: 3.6rem;
 }
 
-.teacher_go_to_proceeding_assignment_page {
+.teacher_go_to_proceeding_vote_page {
     color: var(--teacherMainColor);
     font-size: 2.4rem;
     cursor: pointer;
 }
 
-.teacher_current_proceeding_assignment_contents {
+.teacher_current_proceeding_vote_contents {
     font-size: 2.4rem;
     white-space: pre-wrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.teacher_current_proceeding_assignment_contents_additional_data_box {
+.teacher_current_proceeding_vote_contents_additional_date_box {
     display: flex;
     justify-content: space-between;
+    align-items: end;
     font-size: 2.4rem;
 }
 
@@ -129,8 +129,30 @@
     color: var(--teacherMainColor);
 }
 
-/* 마감된 과제 컨테이너 */
-.teacher_closed_assignment_container {
+.teacher_current_proceeding_vote_contents_right_box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.teacher_current_proceeding_vote_contents_endBtn {
+    padding: 0.8rem 1.6rem;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--teacherMainColor);
+    border: 1px solid var(--teacherMainColor);
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+.teacher_current_proceeding_vote_contents_endBtn:hover {
+    background-color: var(--teacherMainColor);
+    color: #fff;
+}
+
+/* 마감된 투표 */
+.teacher_closed_vote_container {
     margin-top: 3.2rem;
     width: 100%;
     gap: 3.2rem;
@@ -142,12 +164,12 @@
     flex-direction: column;
 }
 
-.teacher_closed_assignment_title_box {
+.teacher_closed_vote_title_box {
     display: flex;
     justify-content: space-between;
 }
 
-.teacher_closed_assignment_box_name {
+.teacher_closed_vote_box_name {
     color: var(--teacherMainColor);
     font-size: 32px;
 }
@@ -172,8 +194,7 @@
     font-size: 32px;
 }
 
-/* 마감된 과제 리스트들 */
-.teacher_closed_assignment_contents_container {
+.teacher_closed_vote_contents_container {
     height: 100%;
     border: 3px solid var(--teacherSubColor);
     border-radius: 20px;
@@ -185,22 +206,22 @@
     color: black;
 }
 
-.teacher_closed_assignment_contents_title_box {
+.teacher_closed_vote_contents_title_box {
     display: flex;
     justify-content: space-between;
 }
 
-.teacher_closed_assignment_contents_title {
+.teacher_closed_vote_contents_title {
     font-size: 36px;
 }
 
-.teacher_go_to_closed_assignment_page {
+.teacher_go_to_closed_vote_page {
     color: var(--teacherMainColor);
     font-size: 24px;
     cursor: pointer;
 }
 
-.teacher_closed_assignment_contents {
+.teacher_closed_vote_contents {
     font-size: 24px;
     width: 100%;
     overflow: hidden;
@@ -208,7 +229,7 @@
     margin: 16px 0;
 }
 
-.teacher_closed_assignment_contents_additional_data_box {
+.teacher_closed_vote_contents_additional_data_box {
     display: flex;
     justify-content: space-between;
     font-size: 24px;
@@ -218,11 +239,8 @@
     color: var(--teacherMainColor);
 }
 
-.teacher_empty_assignment_contents_container {
-    font-size: 20px;
-}
-
-.teacher-assignment-register-content{
+/* Modal */
+.teacher_vote_register_content {
     width: 500px;
     height: 700px;
     display: flex;
@@ -232,19 +250,19 @@
     gap: 30px;
 }
 
-.teacher_assignment_modalTitle{
+.teacher_vote_modalTitle {
     font-size: 36px;
     color: var(--teacherMainColor);
 }
 
-.teacher_assignment_input_group{
+.teacher_vote_input_group {
     display: flex;
     flex-direction: column;
     font-size: 20px;
     color: var(--teacherMainColor);
 }
 
-.teacher_assignment_input_group > input{
+.teacher_vote_input_group > input {
     width: 400px;
     height: 50px;
     border-radius: 10px;
@@ -254,37 +272,38 @@
     transition: border-color 0.3s ease;
 }
 
-.teacher_assignment_textarea_group{
+.teacher_vote_textarea_group {
     display: flex;
     flex-direction: column;
     font-size: 20px;
     color: var(--teacherMainColor);
 }
 
-.teacher_assignment_textarea_group > textarea{
+.teacher_vote_textarea_group > textarea {
     width: 400px;
-    height: 200px;
+    height: 50px;
     resize: none;
     border-radius: 10px;
     padding: 10px;
     border: 1px solid var(--teacherMainColor);
     font-size: 18px;
     transition: border-color 0.3s ease;
+    overflow: hidden;
 }
 
-.teacher_assignment_date_group{
+.teacher_vote_date_group {
     display: flex;
     flex-direction: column;
     font-size: 20px;
     color: var(--teacherMainColor);
 }
 
-.date-input-wrapper{
+.date-input-wrapper {
     position: relative;
     display: inline-block;
 }
 
-.teacher-date-input{
+.teacher-date-input {
     width: 400px;
     height: 50px;
     border-radius: 10px;
@@ -316,43 +335,152 @@
     cursor: pointer;
 }
 
-/* 브라우저 기본 date picker 위치 조정 */
-/*::-webkit-calendar-picker-indicator {*/
-/*  position: absolute;*/
-/*  right: 20px;*/
-/*  top: 30%;*/
-/*}*/
-
-.teacher_assignment_file_group{
+.teacher_vote_item_group {
     display: flex;
     flex-direction: column;
     font-size: 20px;
     color: var(--teacherMainColor);
-}
-
-.teacher-assignment-register-file{
     width: 400px;
-    display: flex;
-    justify-content: space-between;
 }
 
-.teacher-assignment-register-file > button{
-    width: 80px;
-    height: 50px;
-    border: 1px solid var(--teacherMainColor);
-    background-color: rgba(210, 218, 255, 0.2);
-    color: var(--teacherMainColor);
+.teacher_vote_item_group > label {
+    width: 400px;
+    text-align: left;
+}
+
+.teacher_vote_item_list {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    width: 100%;
+    padding-right: 15px;
+    box-sizing: content-box;
+    overflow-x: hidden;
+}
+
+.teacher_vote_item_list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.teacher_vote_item_list::-webkit-scrollbar-track {
+    background: rgba(210, 218, 255, 0.25);
     border-radius: 10px;
-    transition: border-color 0.3s ease;
 }
 
-.teacher_assignment_modal_buttons{
+.teacher_vote_item_list::-webkit-scrollbar-thumb {
+    background-color: var(--teacherMainColor);
+    border-radius: 10px;
+}
+
+.teacher_vote_item_list::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(102, 102, 204, 0.8);
+}
+
+.teacher_vote_item {
+    position: relative;
+    width: 400px;
+    margin-bottom: 1rem;
+}
+
+.teacher_vote_item > input {
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    padding: 10px 40px 10px 10px;
+    border: 1px solid var(--teacherMainColor);
+    font-size: 18px;
+    transition: border-color 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.teacher_remove_item_button {
+    position: absolute;
+    top: 47%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--teacherMainColor);
+}
+
+.teacher_remove_item_button i {
+    pointer-events: none;
+}
+
+.teacher_add_item_button {
+    font-size: 18px;
+    width: 400px;
+    border: 1px solid var(--teacherMainColor);
+    border-radius: 1rem;
+    color: var(--teacherMainColor);
+    padding: 10px 0;
+    background: var(--teacherAssistColor);
+    cursor: pointer;
+}
+
+.teacher_add_item_button:hover {
+    background-color: var(--teacherMainColor);
+    color: #fff;
+}
+
+.teacher_vote_checkbox_group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 18px;
+    color: var(--teacherMainColor);
+}
+
+.teacher_checkbox_label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    padding-left: 35px;
+}
+
+.teacher_checkbox_label input[type="checkbox"] {
+    display: none;
+}
+.teacher_custom_checkbox {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    width: 20px;
+    background-color: #fff;
+    border: 2px solid var(--teacherMainColor);
+    border-radius: 50%;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.teacher_checkbox_label input[type="checkbox"]:checked ~ .teacher_custom_checkbox {
+    background-color: var(--teacherMainColor);
+    border-color: var(--teacherMainColor);
+}
+
+.teacher_checkbox_label input[type="checkbox"]:checked ~ .teacher_custom_checkbox::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 6px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.teacher_vote_buttons {
     display: flex;
     justify-content: space-between;
     width: 250px;
 }
 
-.teacher_modal_enrollBtn{
+.teacher_vote_enrollBtn {
     width: 100px;
     height: 30px;
     background-color: var(--teacherMainColor);
@@ -361,11 +489,11 @@
     margin-top: 20px;
 }
 
-.teacher_modal_enrollBtn:hover{
+.teacher_vote_enrollBtn:hover {
     background-color: #a5a6ea;
 }
 
-.teacher_modal_cancelBtn{
+.teacher_vote_cancelBtn {
     width: 100px;
     height: 30px;
     border: 1px solid var(--teacherMainColor);
@@ -375,6 +503,47 @@
     margin-top: 20px;
 }
 
-.teacher_modal_cancelBtn:hover{
+.teacher_vote_cancelBtn:hover {
     background-color: rgba(210, 218, 255, 0.5);
+}
+
+.teacher_close_vote_modal_content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+    padding: 20px;
+    height: 200px;
+}
+
+.teacher_close_vote_message {
+    font-size: 56px;
+    color: var(--teacherMainColor);
+    text-align: center;
+}
+
+.teacher_vote_closedButtons {
+    display: flex;
+    justify-content: space-between;
+    width: 250px;
+
+}
+
+.teacher_vote_endBtn {
+    width: 100px;
+    height: 50px;
+    background-color: var(--teacherMainColor);
+    color: #ffffff;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.teacher_vote_endCancelBtn {
+    width: 100px;
+    height: 50px;
+    border: 1px solid var(--teacherMainColor);
+    background-color: rgba(210, 218, 255, 0.2);
+    color: var(--teacherMainColor);
+    border-radius: 10px;
+    cursor: pointer;
 }

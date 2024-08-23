@@ -20,16 +20,15 @@ const StudentHeader = () => {
 
   const getToken = () => localStorage.getItem("access-token");
   const baseUrl = process.env.REACT_APP_BASE_URL;
-  console.log(baseUrl);
 
   const deleteToken = () => {
     localStorage.removeItem("access-token");
+    localStorage.removeItem("loginedUser");
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-
         const token = getToken();
         const config = {
           headers: { access: token },
@@ -59,7 +58,6 @@ const StudentHeader = () => {
 
     fetchData();
   }, []);
-
 
   const [openDropdown, setOpenDropdown] = useState(null);
   const alarmRef = useRef(null);
@@ -182,7 +180,11 @@ const StudentHeader = () => {
               <div>
                 <img
                   className="student_h-profile_img"
-                  src={student.imagePath ? `${baseUrl}/image/${student.imagePath}` : "/images/StudentProfile.png"}
+                  src={
+                    student.imagePath
+                      ? `${baseUrl}/image/${student.imagePath}`
+                      : "/images/StudentProfile.png"
+                  }
                   alt="프로필"
                 />
               </div>

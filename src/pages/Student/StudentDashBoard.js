@@ -204,7 +204,7 @@ const StudentDashBoard = ({ username, baseUrl, token }) => {
                     className="question_list"
                     key={idx}
                     onClick={() =>
-                      navigate(`/students/inquiryBoardDetail/${el.idx}`)
+                      navigate(`/students/questionBoards/${el.questionId}`)
                     }
                   >
                     <div className="question_box">
@@ -212,7 +212,18 @@ const StudentDashBoard = ({ username, baseUrl, token }) => {
                         {el.lecturName}
                         <span className="question_type_tag">질문</span>
                       </div>
-                      <span className="student_question_title">{el.title}</span>
+                      <span
+                        className="student_question_title"
+                        onClick={() =>
+                          navigate(
+                            navigate(
+                              `/students/questionBoards/${el.questionId}`
+                            )
+                          )
+                        }
+                      >
+                        {el.title}
+                      </span>
                       <span className="">{el.createdDate}</span>
                     </div>
                     <div className="question_type_box">

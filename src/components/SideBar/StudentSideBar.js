@@ -27,6 +27,9 @@ const StudentSideBar = () => {
     fetchData();
   }, []);
 
+  const loginUserName = user.name;
+  localStorage.setItem("loginedUser", loginUserName);
+
   useEffect(() => {
     const path = location.pathname;
     if (path.startsWith("/students/subject")) {
@@ -69,7 +72,11 @@ const StudentSideBar = () => {
               <img
                 className="student_sideBar_profile_img"
                 // 이미지 경로를 baseUrl과 결합하여 사용합니다.
-                src={user.imagePath ? `${baseUrl}/image/${user.imagePath}` : "/images/StudentProfile.png"}
+                src={
+                  user.imagePath
+                    ? `${baseUrl}/image/${user.imagePath}`
+                    : "/images/StudentProfile.png"
+                }
                 alt="프로필"
               />
             </div>
@@ -217,7 +224,7 @@ const StudentSideBar = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/students/questionBoard"
+                    to="/students/questionBoards"
                     className={({ isActive }) =>
                       isActive
                         ? "student_sideBar_link active"

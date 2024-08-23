@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
 import "./StudentModal.css";
-import { useParams } from "react-router-dom";
 
-const StudentModal = ({
+const WriteModal = ({
   isOpen,
   closeModal,
+  formData,
+  setFormData,
   modalName,
   contentTitle,
   contentBody,
@@ -14,53 +15,39 @@ const StudentModal = ({
   submitName,
   cancelName,
 }) => {
-  const { homeworkId } = useParams();
-
-  const [formData, setFormData] = useState({
-    homeworkId: homeworkId,
-    description: "",
-    file: null,
-  });
-
-  const [selectedFileName, setSelectedFileName] = useState("");
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prevState) => ({
+      ...prevState,
       [name]: value,
-    });
+    }));
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setFormData({
-      ...formData,
+    setFormData((prevState) => ({
+      ...prevState,
       file: file,
-    });
-    setSelectedFileName(file ? file.name : "");
+    }));
   };
 
   const handleFileDelete = () => {
-    setFormData({
-      ...formData,
+    setFormData((prevState) => ({
+      ...prevState,
       file: null,
-    });
-    setSelectedFileName("");
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const submissionData = new FormData();
-    submissionData.append("homeworkId", formData.homeworkId);
-    submissionData.append("description", formData.description);
+    submissionData.append("title", formData.title); // 제목 필드 추가
+    submissionData.append("content", formData.content);
 
     if (formData.file) {
       submissionData.append("file", formData.file);
     }
-
-    console.log(formData);
 
     try {
       const response = await axios.post(url, submissionData, {
@@ -81,11 +68,10 @@ const StudentModal = ({
 
   const handleClose = () => {
     setFormData({
-      homeworkId: "",
-      description: "",
+      title: "",
+      content: "",
       file: null,
     });
-    setSelectedFileName("");
     closeModal();
   };
 
@@ -114,8 +100,8 @@ const StudentModal = ({
           <label>
             <p className="student_modal_name_tag">{contentBody}</p>
             <textarea
-              name="description"
-              value={formData.description}
+              name="content"
+              value={formData.content}
               onChange={handleChange}
               className="student_modal_input_content"
             ></textarea>
@@ -126,10 +112,10 @@ const StudentModal = ({
               <input
                 type="text"
                 readOnly
-                value={selectedFileName}
+                value={formData.file ? formData.file.name : ""}
                 className="student_modal_input_file_display"
               />
-              {selectedFileName && (
+              {formData.file && (
                 <span className="delete_submit_file" onClick={handleFileDelete}>
                   <i className="bi bi-x-lg"></i>
                 </span>
@@ -163,4 +149,4 @@ const StudentModal = ({
   );
 };
 
-export default StudentModal;
+export default WriteModal;
