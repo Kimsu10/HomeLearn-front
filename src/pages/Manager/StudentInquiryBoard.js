@@ -74,13 +74,13 @@ const StudentInquiryBoard = () => {
           <h2>학생 문의</h2>
             <div className="filter-container">
               <img
-                src="/"
+                src="/images/curriculum/ncp.png"
                 alt="Naver"
                 className="filter-logo"
                 onClick={() => setCurriculumName("네이버 클라우드 데브옵스 과정")}
               />
               <img
-                src="/"
+                src="/images/curriculum/aws.png"
                 alt="AWS"
                 className="filter-logo"
                 onClick={() => setCurriculumName("AWS 클라우드 자바 웹 개발자 과정")}
