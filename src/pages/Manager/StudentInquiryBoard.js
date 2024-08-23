@@ -228,25 +228,21 @@ const StudentInquiryBoard = () => {
                 </div>
             )}
 
-            {/* 모달 */}
             {isModalOpen && (
-                <div className="modal">
-                    <button className="modal-close"
-                            onClick={closeModal}
-                    >X
-                    </button>
-                    <div className="modal-header">
+                <div className="inquiry-student">
+                    <div className="inquiry-student-content">
+                    <button className="inquiry-student-close" onClick={closeModal}>X</button>
                         <h1>학생 문의 내역</h1>
-                        <div className="modal-header-row">
-                            <p>과정명: {contentInquiry.curriculumName}</p>
-                            <p>기수: {contentInquiry.curriculumTh}</p>
-                            <p>작성자: {contentInquiry.name}</p>
+                        <div className="inquiry-student-header-row">
+                            <p>{contentInquiry.curriculumName}</p>
+                            <p>{contentInquiry.curriculumTh}기</p>
+                            <p>{contentInquiry.name}</p>
                         </div>
-                        <div className="modal-content">
+                        <div className="inquiry-student-content">
                             <h3>{contentInquiry.title}</h3>
-                            <p>문의날짜: {contentInquiry.createdDate}</p>
-                            <div className="modal-content-info">
-                                <p>내용: {contentInquiry.content}</p>
+                            <p>{contentInquiry.createdDate}</p>
+                            <div className="inquiry-student-content-info">
+                                <p>{contentInquiry.content}</p>
                                 {contentInquiry.response ? (
                                     <div>
                                         <p>답변: {contentInquiry.response}</p>
@@ -254,14 +250,13 @@ const StudentInquiryBoard = () => {
                                     </div>
                                 ) : (
                                     <div>
+                                        <h4>매니저 답변</h4>
                                         <textarea
-                                            placeholder="답변을 입력하세요"
+                                            placeholder="내용 입력"
                                             value={answer}
-                                            onChange={(e) =>
-                                                setAnswer(e.target.value)} // 상태 업데이트
+                                            onChange={(e) => setAnswer(e.target.value)}
                                         />
-                                        <button
-                                            onClick={handleSaveAnswer}>답변 저장</button>
+                                        <button onClick={handleSaveAnswer}>답변 등록</button>
                                     </div>
                                 )}
                             </div>
