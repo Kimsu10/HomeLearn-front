@@ -18,6 +18,7 @@ import StudentBadge from "./StudentBadge";
 import StudentFreeBoardDetail from "./StudentFreeBoardDetail";
 import SurveyForm from "./SurveyForm";
 import StudentQuestionBoardDetail from "./StudentQuestionBoardDetail";
+import StudentVote from "./StudentVote";
 
 const StudentMain = () => {
   const [selectedSubject, setSelectedSubject] = useState(null);
@@ -132,7 +133,7 @@ const StudentMain = () => {
           {/* 언젠가 들어올 매니저 공지사항 페이지 */}
           {/* <Route path="/teacherNotice" element={< />} /> */}
           {/* 언젠가 들어올 투표 페이지 */}
-          {/* <Route path="/teacherNotice" element={< />} /> */}
+          <Route path="/vote" element={<StudentVote username={username} />} />
           <Route path="/survey/:surveyId" element={<SurveyForm />} />
           {/* 설문조사 */}
         </Routes>

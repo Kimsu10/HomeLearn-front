@@ -366,7 +366,9 @@ const CurriculumDetail = () => {
                     <span className="curriculum-detail-survey-th">
                       {curriculum.th}기
                     </span>
+
                     <span className="curriculum-detail-survey-count">
+                    <i className="fas fa-user"></i>
                       {survey.completed} / {survey.total}
                     </span>
                   </div>
