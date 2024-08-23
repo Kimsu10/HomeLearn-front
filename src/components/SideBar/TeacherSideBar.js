@@ -1,15 +1,18 @@
-import React, {useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import './TeacherSideBar.css';
-import useGetFetch from "../../hooks/useGetFetch";
-import TeacherLectureRegister from "../../pages/Teacher/TeacherLectureRegister";
 import useAxiosGet from "../../hooks/useAxiosGet";
-import { logDOM } from "@testing-library/react";
+import TeacherLectureRegister from "../../pages/Teacher/TeacherLectureRegister";
+import axios from "axios";
 
 const TeacherSideBar = () => {
-    const [dropdownOpen, setDropdownOpen] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
-    const location = useLocation();
+  const [dropdownOpen, setDropdownOpen] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
+  const [teacher, setTeacher] = useState({}); // Teacher 정보 추가
+  const location = useLocation();
+
+  // REACT_APP_BASE_URL 환경 변수를 통해 기본 URL을 설정합니다.
+  const baseUrl = process.env.REACT_APP_BASE_URL;
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -24,35 +27,47 @@ const TeacherSideBar = () => {
     []
   );
 
-  console.log(subject);
-
-    useEffect(() => {
-        const path = location.pathname;
-        if (path.startsWith('/teachers/subject')) {
-            setDropdownOpen('subject');
-        } else if (path.startsWith('/teachers/notice')) {
-            setDropdownOpen('notice');
-        } else if (path.startsWith('/teachers/contact')) {
-            setDropdownOpen('contact');
-        } else {
-            setDropdownOpen(null);
-        }
-    }, [location]);
-
-    const toggleDropdown = (menu) => {
-        setDropdownOpen(prevState => prevState === menu ? null : menu);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const teacherData = await axios.get(`/header/common`);
+        setTeacher(teacherData.data);
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
     };
+    fetchData();
+  }, []);
 
-    const isActive = (path) => {
-        if (path === '/teachers') {
-            return location.pathname === '/teachers' || location.pathname === '/teachers/';
-        }
-        return location.pathname.startsWith(path);
-    };
-
-    if(subjectError) {
-        return <div>Error loading sidebar data</div>;
+  useEffect(() => {
+    const path = location.pathname;
+    if (path.startsWith('/teachers/subject')) {
+      setDropdownOpen('subject');
+    } else if (path.startsWith('/teachers/notice')) {
+      setDropdownOpen('notice');
+    } else if (path.startsWith('/teachers/contact')) {
+      setDropdownOpen('contact');
+    } else if (path.startsWith('/teachers/vote')) { // 투표 경로 추가
+      setDropdownOpen('vote');
+    } else {
+      setDropdownOpen(null);
     }
+  }, [location]);
+
+  const toggleDropdown = (menu) => {
+    setDropdownOpen(prevState => prevState === menu ? null : menu);
+  };
+
+  const isActive = (path) => {
+    if (path === '/teachers') {
+      return location.pathname === '/teachers' || location.pathname === '/teachers/';
+    }
+    return location.pathname.startsWith(path);
+  };
+
+  if(subjectError) {
+    return <div>Error loading sidebar data</div>;
+  }
 
   return (
     <div className="teacher_sideBar_container">
@@ -61,27 +76,33 @@ const TeacherSideBar = () => {
         <div className="teacher_sideBar_profile_box">
           <div className="teacher_sideBar_profile_left">
             <div className="teacher_sideBar_profile_image">
-              <img className="teacher_sideBar_profile_img" alt="프로필" />
+              <img
+                className="teacher_sideBar_profile_img"
+                src={teacher.imagePath ? `${baseUrl}/image/${teacher.imagePath}` : "/images/TeacherProfile.png"}
+                alt="프로필"
+              />
             </div>
           </div>
           <div className="teacher_sideBar_profile_right">
             <span className="teacher_sideBar_profile_name">
-              {/*{teacher.name}*/}신지원
+              {teacher.name || "신지원"}
             </span>
             <span className="teacher_sideBar_profile_curriculum">
-              {/*{curriculum.name} {curriculum.th}기*/}네이버 클라우드 데브옵스
-              10기
+              {teacher.curriculumFullName || "네이버 클라우드 데브옵스 10기"}
             </span>
             <div className="teacher_sideBar_profile_progress_bar">
-              <div className="teacher_sideBar_profile_progress"></div>
+              <div
+                className="teacher_sideBar_profile_progress"
+                style={{ width: `${teacher.progressRate || 75.2}%` }}
+              ></div>
             </div>
             <span className="teacher_sideBar_profile_progress_text">
-              {/*{curriculum.progress?.toFixed(1)} / 100%*/}75.2 / 100%
+              {teacher.progressRate?.toFixed(1) || "75.2"} / 100%
             </span>
           </div>
         </div>
 
-                <div className="teacher_sideBar_seperate_line"></div>
+        <div className="teacher_sideBar_seperate_line"></div>
 
         <div className="teacher_sideBar_link">
           <ul className="teacher_sideBar_menu">
@@ -121,47 +142,47 @@ const TeacherSideBar = () => {
                 </span>
               </div>
               <ul
-                  className={`teacher_sideBar_subMenu ${
-                      dropdownOpen === "subject" ? "open" : ""
-                  }`}
+                className={`teacher_sideBar_subMenu ${
+                  dropdownOpen === "subject" ? "open" : ""
+                }`}
               >
                 <li>
-                        <span
-                            className="teacher_sideBar_subject_add_btn"
-                            onClick={openModal}  // 클릭 이벤트 추가
-                        >
-                            과목 등록
-                        </span>
+                  <span
+                    className="teacher_sideBar_subject_add_btn"
+                    onClick={openModal}  // 클릭 이벤트 추가
+                  >
+                    과목 등록
+                  </span>
                 </li>
                 <div className="teacher_sideBar_seperate_line"></div>
                 {subject && subject.length > 0 ? (
-                    subject.map((el, idx) => (
-                        <li key={el.subjectId}>
-                          <NavLink
-                              to={`/teachers/${el.subjectId}/board`}
-                              className={({isActive}) =>
-                                  isActive
-                                      ? "teacher_sideBar_link active"
-                                      : "teacher_sideBar_link"
-                              }
-                          >
-                            {el.name}
-                          </NavLink>
-                        </li>
-                    ))
+                  subject.map((el, idx) => (
+                    <li key={el.subjectId}>
+                      <NavLink
+                        to={`/teachers/${el.subjectId}/board`}
+                        className={({isActive}) =>
+                          isActive
+                            ? "teacher_sideBar_link active"
+                            : "teacher_sideBar_link"
+                        }
+                      >
+                        {el.name}
+                      </NavLink>
+                    </li>
+                  ))
                 ) : (
-                    <p>No subjects available</p>
+                  <p>No subjects available</p>
                 )}
               </ul>
             </li>
             {/* 3. Assignment */}
             <li>
               <NavLink
-                  to="/teachers/assignment"
-                  className={({isActive}) =>
-                      isActive
-                          ? "teacher_sideBar_link active"
-                          : "teacher_sideBar_link"
+                to="/teachers/assignment"
+                className={({isActive}) =>
+                  isActive
+                    ? "teacher_sideBar_link active"
+                    : "teacher_sideBar_link"
                 }
               >
                 과제
@@ -183,7 +204,7 @@ const TeacherSideBar = () => {
             {/* 5. Question Board */}
             <li>
               <NavLink
-                to="/teachers/questionBoards"
+                to="/teachers/questionBoard"
                 className={({ isActive }) =>
                   isActive
                     ? "teacher_sideBar_link active"
@@ -303,8 +324,8 @@ const TeacherSideBar = () => {
                 to="/teachers/vote"
                 className={({ isActive }) =>
                   isActive
-                    ? "student_sideBar_link active"
-                    : "student_sideBar_link"
+                    ? "teacher_sideBar_link active"
+                    : "teacher_sideBar_link"
                 }
               >
                 투표
@@ -315,10 +336,10 @@ const TeacherSideBar = () => {
       </div>
       <div className="teacher_sideBar_line"></div>
       {isModalOpen && (
-          <TeacherLectureRegister
-              isOpen={isModalOpen}
-              onClose={closeModal}
-          />
+        <TeacherLectureRegister
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
       )}
     </div>
   );

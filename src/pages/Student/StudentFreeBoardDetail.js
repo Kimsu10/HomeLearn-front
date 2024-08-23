@@ -7,17 +7,25 @@ import useAxiosPost from "../../hooks/useAxiosPost";
 import useAxiosDelete from "../../hooks/useAxiosDelete";
 import axios from "axios";
 
-const StudentFreeBoardDetail = ({ username }) => {
+const StudentFreeBoardDetail = ({ username, baseUrl }) => {
   const { boardId } = useParams();
-  console.log(username);
-  // GET 요청
-  const { data: freeboardDetail } = useAxiosGet(`/students/boards/${boardId}`);
-  console.log(freeboardDetail);
 
+  const [openReModal, setOpenReModal] = useState({});
+
+  const toggleReModal = (index) => {
+    setOpenReModal((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
+
+  // 작성글 GET 요청
+  const { data: freeboardDetail } = useAxiosGet(`/students/boards/${boardId}`);
+
+  // 댓글 GET 요청
   const { data: comments } = useAxiosGet(
     `/students/boards/${boardId}/comments`
   );
-  console.log(comments);
 
   // Post 요청
   const { postRequest } = useAxiosPost(`/students/boards/${boardId}/comments`);
@@ -93,7 +101,6 @@ const StudentFreeBoardDetail = ({ username }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("모달 데이터 : ", formData);
     closeModal();
   };
 
@@ -115,8 +122,8 @@ const StudentFreeBoardDetail = ({ username }) => {
     postRequest(commentData);
   };
 
-  const formatTime = (timeString) => {
-    const date = new Date(timeString);
+  const formatTime = (time) => {
+    const date = new Date(time);
     return date.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
@@ -238,34 +245,41 @@ const StudentFreeBoardDetail = ({ username }) => {
         </div>
       </div>
       {/* 기존 댓글 목록 */}
-      {freeboardDetail?.comments &&
-        freeboardDetail?.comments.map((comment, index) => (
-          <div key={index} className="student_freeboard_comment_list">
-            <div className="freeboard_written_user_info_box">
-              <div className="freeboard_user_info_box">
-                <img
-                  src={comment.userProfileImage}
-                  className="freeboard_user_profile"
-                  alt=""
-                />
-                &nbsp;
-                <span className="freeboard_user_name">{comment.username}</span>
-              </div>
-              <i className="bi bi-three-dots-vertical freeboard_three_dot"></i>
-              <div className="freeboard_comment_modify_box">
+      {comments?.map((el, index) => (
+        <div key={index} className="student_freeboard_comment_list">
+          <div className="freeboard_written_user_info_box">
+            <div className="freeboard_user_info_box">
+              <img
+                src={`${baseUrl}/image/${el.userProfileImage}`}
+                className="freeboard_user_profile"
+                alt=""
+              />
+              &nbsp;
+              <span className="freeboard_user_name">{el.author}</span>
+            </div>
+            <i
+              className="bi bi-three-dots-vertical freeboard_three_dot recomment_btn"
+              onClick={() => toggleReModal(index)}
+            ></i>
+            {openReModal[index] && (
+              <div className="freeboard_recomment_modify_box">
                 <button className="student_freeboard_detail">수정</button>
                 <hr className="devide_button_border" />
                 <button className="student_freeboard_detail">삭제</button>
               </div>
-            </div>
-            <textarea className="freeboard_write_textarea" readOnly>
-              {comment.text}
-            </textarea>
-            <div className="freeboard_writedate_box">
-              <span className="freeboard_written_date">{comment?.date}</span>
-            </div>
+            )}
           </div>
-        ))}
+          <textarea className="freeboard_write_textarea" readOnly>
+            {el.content}
+          </textarea>
+          <div className="freeboard_writedate_box">
+            <span className="freeboard_written_date">
+              {splitDate(el?.createTime)}&nbsp;
+              {formatTime(el?.createTime)}
+            </span>
+          </div>
+        </div>
+      ))}
       {/* 대댓글 목록 */}
       {freeboardDetail?.recomments &&
         freeboardDetail?.recomments.map((recomment, index) => (

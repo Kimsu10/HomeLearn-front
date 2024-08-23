@@ -32,92 +32,43 @@
     height: 40px;
 }
 
-.faq_list_box {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+/* 업로드, 다운로드 */
+.download-link {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
-.faq_list_item {
-    border-bottom: 1px solid #d9d9d9;
-    width: 100%;
+.download-link:hover {
+    color: darkblue;
 }
 
-.faq_list_item_box {
+
+/* Pagination styles */
+.pagination {
+    font-size: 20px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
+    gap: 16px;
     padding: 20px 0;
+}
+
+.pagination button {
+    font-size: 20px;
     cursor: pointer;
 }
 
-.faq_list_item_box_left {
-    display: flex;
-    align-items: center;
+.pagination button:hover {
+    color: var(--teacherMainColor);
 }
 
-.faq_list_item_box_left input[type="checkbox"] {
-    margin-right: 10px;
-}
-
-.faq_list_item_box_notice {
-    background-color: #ff0000;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    margin-right: 10px;
-}
-
-.faq_list_item_box_title {
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.faq_list_item_box_right {
-    display: flex;
-    align-items: center;
-}
-
-.faq_list_item_box_date {
-    margin-right: 20px;
-    color: #666;
-}
-
-.faq_list_item_box_moreBtn {
-    background: none;
-    border: none;
-    cursor: pointer;
+.pagination button.active {
+    font-weight: bold;
+    color: var(--teacherMainColor);
     font-size: 20px;
 }
 
-.faq_list_item_detail {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
-    background-color: #f9f9f9;
-}
-
-.faq_list_item_detail.open {
-    max-height: 1000px;
-    padding: 20px;
-    transition: max-height 0.3s ease-in, padding 0.3s ease-in;
-}
-
-.faq_list_item_detail_content {
-    font-size: 16px;
-    line-height: 1.5;
-    color: #333;
-}
-
-.faq_list_item_attachment {
-    margin-top: 10px;
-}
-
-.faq_list_item_attachment a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.faq_list_item_attachment a:hover {
-    text-decoration: underline;
+.pagination button:disabled {
+    color: gray;
+    cursor: not-allowed;
 }

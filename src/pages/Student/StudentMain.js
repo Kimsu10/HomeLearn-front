@@ -18,9 +18,9 @@ import StudentBadge from "./StudentBadge";
 import StudentFreeBoardDetail from "./StudentFreeBoardDetail";
 import SurveyForm from "./SurveyForm";
 import StudentQuestionBoardDetail from "./StudentQuestionBoardDetail";
+import StudentVote from "./StudentVote";
 
 const StudentMain = () => {
-  // const [showSection, setShowSection] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [username, setUsername] = useState("");
 
@@ -46,7 +46,13 @@ const StudentMain = () => {
         <Routes>
           <Route
             path=""
-            element={<StudentDashBoard username={username} baseUrl={baseUrl} />}
+            element={
+              <StudentDashBoard
+                username={username}
+                baseUrl={baseUrl}
+                token={token}
+              />
+            }
           />
           <Route
             path=":subjectName/board"
@@ -61,7 +67,9 @@ const StudentMain = () => {
           />
           <Route
             path="assignment"
-            element={<StudentAssignment username={username} />}
+            element={
+              <StudentAssignment username={username} baseUrl={baseUrl} />
+            }
           />
           <Route
             path="/:subjectName/board/list"
@@ -91,8 +99,13 @@ const StudentMain = () => {
             element={<StudentQuestionBoard username={username} />}
           />
           <Route
-            path="/questionBoards/:questionBoardId"
-            element={<StudentQuestionBoardDetail username={username} />}
+            path="/questionBoards/:boardId"
+            element={
+              <StudentQuestionBoardDetail
+                username={username}
+                baseUrl={baseUrl}
+              />
+            }
           />
           <Route
             path="/freeBoard"
@@ -100,7 +113,9 @@ const StudentMain = () => {
           />
           <Route
             path="/assignmentDetail/:homeworkId"
-            element={<StudentAssignmentDetail username={username} />}
+            element={
+              <StudentAssignmentDetail username={username} baseUrl={baseUrl} />
+            }
           />
           <Route
             path="/:studentId/badge"
@@ -108,7 +123,9 @@ const StudentMain = () => {
           />
           <Route
             path="/freeboard/:boardId"
-            element={<StudentFreeBoardDetail username={username} />}
+            element={
+              <StudentFreeBoardDetail username={username} baseUrl={baseUrl} />
+            }
           />
           {/* 현재 임시로 선생님 과제 상세 페이지 -> 아래의 페이지가 강사가 봐야할 학생들의 과제제출 페이지 넣을 예정 */}
           {/* 언젠가 들어올 강사 공지사항 페이지 */}
@@ -116,7 +133,7 @@ const StudentMain = () => {
           {/* 언젠가 들어올 매니저 공지사항 페이지 */}
           {/* <Route path="/teacherNotice" element={< />} /> */}
           {/* 언젠가 들어올 투표 페이지 */}
-          {/* <Route path="/teacherNotice" element={< />} /> */}
+          <Route path="/vote" element={<StudentVote username={username} />} />
           <Route path="/survey/:surveyId" element={<SurveyForm />} />
           {/* 설문조사 */}
         </Routes>

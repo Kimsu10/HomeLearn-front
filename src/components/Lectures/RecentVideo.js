@@ -1,6 +1,4 @@
 import {
-  ChevronLeft,
-  ChevronRight,
   Maximize,
   Minimize,
   Pause,
@@ -9,9 +7,9 @@ import {
   VolumeX,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import "./RecentVideo.css";
 
-const RecentVideo = ({ url }) => {
-  console.log(url);
+const RecentVideo = ({ url, lectureId, username, token, lastViewPoint }) => {
   const [player, setPlayer] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -25,17 +23,18 @@ const RecentVideo = ({ url }) => {
   const progressInterval = useRef(null);
   const requestAnimationFrameRef = useRef(null);
   const [currentTime, setCurrentTime] = useState(0);
-  const [links, setLinks] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [lastPosition, setLastPosition] = useState(0);
+  const [completeTime, setCompleteTime] = useState("");
 
   useEffect(() => {
     if (url) {
       const videoId = extractVideoId(url);
-      console.log(videoId);
+
       if (videoId) {
         loadYouTubeAPI(videoId);
-        setLinks(url);
       } else {
         setError(new Error("Invalid video URL"));
       }
@@ -58,6 +57,39 @@ const RecentVideo = ({ url }) => {
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
     };
   }, [url, player]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const currentProgress = player
+        ? (player.getCurrentTime() / player.getDuration()) * 100
+        : 0;
+      setProgress(currentProgress);
+      setLastPosition(currentProgress);
+
+      let currentIsCompleted = false;
+      let currentCompleteTime = "";
+
+      if (currentProgress >= 97) {
+        currentIsCompleted = true;
+        currentCompleteTime = new Date().toISOString();
+      }
+
+      setIsCompleted(currentIsCompleted);
+      setCompleteTime(currentCompleteTime);
+
+      const watchData = {
+        lastPosition: Math.round(currentProgress),
+        lectureId,
+        username,
+        isCompleted: currentIsCompleted,
+        completedDate: currentCompleteTime,
+      };
+
+      localStorage.setItem("watchData", JSON.stringify(watchData));
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [duration, lectureId, username, player]);
 
   useEffect(() => {
     const updateProgress = () => {
@@ -89,7 +121,6 @@ const RecentVideo = ({ url }) => {
   }, [isPlaying, player]);
 
   const loadYouTubeAPI = (videoId) => {
-    console.log(videoId);
     const tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
     const firstScriptTag = document.getElementsByTagName("script")[0];
@@ -115,7 +146,14 @@ const RecentVideo = ({ url }) => {
             setPlayer(event.target);
             setVolume(event.target.getVolume());
             setIsMuted(event.target.isMuted());
-            setDuration(event.target.getDuration());
+            const duration = event.target.getDuration();
+            setDuration(duration);
+
+            if (lastViewPoint > 0) {
+              const lastViewTime = (lastViewPoint / 100) * duration;
+              event.target.seekTo(lastViewTime, true);
+              setProgress(lastViewPoint);
+            }
           },
           onStateChange: (event) => {
             setIsPlaying(event.data === window.YT.PlayerState.PLAYING);
@@ -203,92 +241,115 @@ const RecentVideo = ({ url }) => {
   };
 
   const extractVideoId = (link) => {
-    console.log(link);
     const match = link.match(
       /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
     );
     return match ? match[1] : null;
   };
 
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  const sendLastViewData = async () => {
+    const watchData = JSON.parse(localStorage.getItem("watchData"));
+    console.log(watchData);
+
+    if (watchData) {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/students/lectures/last-view",
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              access: token,
+            },
+            body: JSON.stringify(watchData),
+          }
+        );
+
+        localStorage.removeItem("watchData");
+        window.location.reload();
+
+        if (!response.ok) {
+          throw new Error("Failed to update the last view data");
+        }
+      } catch (error) {
+        console.error("recentLecture error :", error);
+      }
+    }
   };
+
+  useEffect(() => {
+    return () => {
+      sendLastViewData();
+    };
+  }, []);
 
   return (
     <div
       ref={playerContainerRef}
-      className={`custom-youtube-player ${isFullscreen ? "fullscreen" : ""}`}
+      className={`recent-video-player-container ${
+        isFullscreen ? "fullscreen" : ""
+      }`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div id="youtube-player"></div>
-
-      <div className={`controls ${isHovering || !isPlaying ? "visible" : ""}`}>
-        <div className="controls-top">
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={progress}
-            onChange={handleProgressChange}
-            className="progress-slider"
-            style={{ "--value": `${progress}%` }}
-          />
-        </div>
-        <div className="controls-bottom">
-          <div className="controls-bottom-left">
-            <button onClick={togglePlay} className="control-btn">
+      {loading && <div>Loading...</div>}
+      {error && <div>Error: {error.message}</div>}
+      {!loading && !error && (
+        <>
+          <div id="youtube-player" className="recent-youtube-player" />
+          <div
+            className={`recent-video-controls ${
+              isHovering || isPlaying ? "" : "hidden"
+            }`}
+          >
+            <button onClick={togglePlay} className="recent-play-button">
               {isPlaying ? <Pause size={24} /> : <Play size={24} />}
             </button>
-            <button onClick={toggleMute} className="control-btn">
+            <button onClick={toggleMute} className="recent-mute-button">
               {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
             </button>
             <input
+              className="recent-progress-bar"
               type="range"
               min="0"
               max="100"
               value={volume}
               onChange={handleVolumeChange}
-              className="volume-slider"
-              style={{ "--value": `${volume}%` }}
             />
+            <input
+              className="recent-progress-bar-track"
+              type="range"
+              min="0"
+              max="100"
+              value={progress}
+              onChange={handleProgressChange}
+            />
+            <span className="recent-video-time">
+              {Math.floor(currentTime / 60)} : {Math.floor(currentTime % 60)}
+              &nbsp; / {Math.floor(duration / 60)} : {Math.floor(duration % 60)}
+            </span>
+            <select
+              value={playbackRate}
+              onChange={handlePlaybackRateChange}
+              className="recent-select-button"
+            >
+              <option value="0.25">0.25x</option>
+              <option value="0.5">0.5x</option>
+              <option value="0.75">0.75x</option>
+              <option value="1">1x</option>
+              <option value="1.25">1.25x</option>
+              <option value="1.5">1.5x</option>
+              <option value="1.75">1.75x</option>
+              <option value="2">2x</option>
+            </select>
+            <button onClick={toggleFullscreen} className="recent-full-button">
+              {isFullscreen ? <Minimize size={24} /> : <Maximize size={24} />}
+            </button>
           </div>
-          <div
-            style={{
-              display: "flex",
-              height: "50px",
-              alignItems: "center",
-              paddingRight: "10px",
-              color: "white",
-            }}
-          >
-            <div className="time-display">
-              {formatTime(currentTime)} / {formatTime(duration)}
-            </div>
-            <div className="controls-bottom-right">
-              <select
-                value={playbackRate}
-                onChange={handlePlaybackRateChange}
-                className="playback-rate-select"
-              >
-                <option value="0.25">0.25x</option>
-                <option value="0.5">0.5x</option>
-                <option value="0.75">0.75x</option>
-                <option value="1">Normal</option>
-                <option value="1.25">1.25x</option>
-                <option value="1.5">1.5x</option>
-                <option value="2">2x</option>
-              </select>
-              <button onClick={toggleFullscreen} className="control-btn">
-                {isFullscreen ? <Minimize size={24} /> : <Maximize size={24} />}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };
+
 export default RecentVideo;

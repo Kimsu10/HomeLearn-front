@@ -1,24 +1,49 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaCalendarPlus } from "react-icons/fa";
+import axios from "../../../utils/axios";
 import "./ManagerCalendar.css";
 import ManagerModal from "../../Modal/ManagerModal/ManagerModal";
-// import ManagerModal from '../../Modal/ManagerModal/ManagerModal';
 
 const ManagerCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [events, setEvents] = useState([]);
   const [holidays, setHolidays] = useState([]);
+  const [curriculums, setCurriculums] = useState([]);
   const [newEvent, setNewEvent] = useState({
     title: "",
-    start: null,
-    end: null,
-    color: "#FF9999",
-    content: "",
+    startDate: null,
+    endDate: null,
+    curriculumId: "",  // 기수 선택을 위한 필드
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  const getToken = () => localStorage.getItem('access-token');
+
+  // 교육과정 정보 가져오기
+  useEffect(() => {
+    const fetchCurriculums = async () => {
+      try {
+        const token = getToken();
+        // NCP 및 AWS 커리큘럼 정보 가져오기
+        const ncpResponse = await axios.get("/managers/manage-curriculums/NCP", {
+          headers: { access: token },
+        });
+        const awsResponse = await axios.get("/managers/manage-curriculums/AWS", {
+          headers: { access: token },
+        });
+        // 두 커리큘럼 정보를 하나로 합침
+        const combinedCurriculums = [...ncpResponse.data, ...awsResponse.data];
+        setCurriculums(combinedCurriculums); // 상태 업데이트
+      } catch (error) {
+        console.error("커리큘럼 정보 가져오기 실패:", error);
+      }
+    };
+
+    fetchCurriculums(); // 커리큘럼 정보 가져오기 실행
+  }, []);
 
   useEffect(() => {
     const storedEvents =
@@ -30,6 +55,7 @@ const ManagerCalendar = () => {
     localStorage.setItem("calendarEvents", JSON.stringify(events));
   }, [events]);
 
+  // 공휴일 정보
   useEffect(() => {
     const fetchHolidays = async () => {
       const year = currentDate.getFullYear();
@@ -58,7 +84,7 @@ const ManagerCalendar = () => {
               const monthDay = date.substr(4, 4);
               return monthDay !== "0717";
             });
-          setHolidays(holidays);
+          setHolidays(holidays); // 공휴일 상태 업데이트
         } else {
           console.error("공휴일 데이터 가져오기 실패:", response.statusText);
         }
@@ -67,9 +93,10 @@ const ManagerCalendar = () => {
       }
     };
 
-    fetchHolidays();
+    fetchHolidays(); // 공휴일 정보 가져오기 실행
   }, [currentDate]);
 
+  // 현재 달의 날짜 생성
   const daysInMonth = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth() + 1,
@@ -81,6 +108,7 @@ const ManagerCalendar = () => {
     1
   ).getDay();
 
+  // 달력에 표시될 날짜
   const generateCalendarDates = () => {
     const dates = [];
     const prevMonthLastDate = new Date(
@@ -94,6 +122,7 @@ const ManagerCalendar = () => {
       1
     );
 
+    // 이전 달 마지막 날들 추가
     for (let i = firstDayOfMonth - 1; i >= 0; i--) {
       dates.push({
         date: new Date(
@@ -105,6 +134,7 @@ const ManagerCalendar = () => {
       });
     }
 
+    // 현재달 날짜 추가
     for (let i = 1; i <= daysInMonth; i++) {
       dates.push({
         date: new Date(currentDate.getFullYear(), currentDate.getMonth(), i),
@@ -112,6 +142,7 @@ const ManagerCalendar = () => {
       });
     }
 
+    // 다음달 날짜 추가
     const remainingDays = 7 - (dates.length % 7);
     if (remainingDays < 7) {
       for (let i = 0; i < remainingDays; i++) {
@@ -126,9 +157,10 @@ const ManagerCalendar = () => {
       }
     }
 
-    return dates;
+    return dates; // 생성된 날짜 리스트 반환
   };
 
+  // 월 변경
   const handleMonthChange = (direction) => {
     setCurrentDate(
       new Date(currentDate.getFullYear(), currentDate.getMonth() + direction, 1)
@@ -138,51 +170,73 @@ const ManagerCalendar = () => {
   const handleOpenModal = () => {
     setNewEvent({
       title: "",
-      start: selectedDate,
-      end: selectedDate,
-      color: "#FF9999",
-      content: "",
+      startDate: selectedDate,
+      endDate: selectedDate,
+      curriculumId: "", // 기수 필드 초기화
     });
     setIsModalOpen(true);
   };
 
+  // 모달 닫기 핸들러
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setNewEvent({
       title: "",
-      start: null,
-      end: null,
-      color: "#FF9999",
-      content: "",
+      startDate: null,
+      endDate: null,
+      curriculumId: "", // 기수 필드 초기화
     });
   };
 
-  const handleSaveEvent = () => {
-    if (newEvent.title && newEvent.start && newEvent.end) {
-      setEvents([...events, { ...newEvent, id: Date.now() }]);
-      handleCloseModal();
+  // 저장
+  const handleSaveEvent = async () => {
+    if (newEvent.title && newEvent.startDate) {
+      try {
+        const eventToSave = {
+          ...newEvent,
+          startDate: new Date(newEvent.startDate),
+          endDate: newEvent.endDate ? new Date(newEvent.endDate) : null,
+        };
+
+        console.log('일정 데이터 저장:', eventToSave);
+
+        const response = await axios.post("/managers/calendar", eventToSave);
+        if (response.status === 200) {
+          setEvents([...events, { ...eventToSave, id: Date.now() }]);
+          handleCloseModal();
+        } else {
+          console.error("일정 등록 실패:", response.statusText);
+        }
+      } catch (error) {
+        console.error("일정 등록 중 오류 발생:", error);
+      }
     }
   };
 
+  // 날짜 클릭
   const handleDateClick = (date) => {
     const adjustedDate = new Date(
       Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
     );
     setSelectedDate(adjustedDate);
     const eventsForDate = getEventsForDate(date);
+    console.log("선택날짜:", adjustedDate);
+    console.log("선택날짜에서 데이터 전달:", eventsForDate);
     if (eventsForDate.length > 0) {
       navigate(`/managers/calendar/${eventsForDate[0].id}`);
     }
   };
 
+  // 특정 날짜
   const getEventsForDate = (date) => {
     return events.filter(
       (event) =>
-        new Date(event.start).toDateString() === date.toDateString() ||
-        (new Date(event.start) <= date && new Date(event.end) >= date)
+        new Date(event.startDate).toDateString() === date.toDateString() ||
+        (new Date(event.startDate) <= date && new Date(event.endDate) >= date)
     );
   };
 
+  // 오늘 날짜 확인
   const isCurrentDate = (date) => {
     const today = new Date();
     return (
@@ -193,6 +247,7 @@ const ManagerCalendar = () => {
     );
   };
 
+  // 공휴일 확인
   const isHoliday = (date) => {
     return holidays.some((holiday) => {
       const holidayDate = new Date(
@@ -204,9 +259,15 @@ const ManagerCalendar = () => {
     });
   };
 
+  // 주말 확인
   const isWeekend = (date) => {
     const day = date.getDay();
     return { isSunday: day === 0, isSaturday: day === 6 };
+  };
+
+  const getCurriculumColor = (curriculumId) => {
+    const curriculum = curriculums.find(c => String(c.id) === String(curriculumId));
+    return curriculum ? curriculum.color : '#000';
   };
 
   return (
@@ -264,7 +325,7 @@ const ManagerCalendar = () => {
                         to={`/managers/calendar/${event.id}`}
                         className="event-dot-link"
                       >
-                        <div className="event-dot"></div>
+                        <div className="event-dot" style={{ backgroundColor: getCurriculumColor(event.curriculumId) }}></div>
                       </Link>
                     ))}
                 </div>
@@ -292,12 +353,15 @@ const ManagerCalendar = () => {
               <input
                 type="date"
                 value={
-                  newEvent.start
-                    ? newEvent.start.toISOString().substr(0, 10)
+                  newEvent.startDate
+                    ? newEvent.startDate.toISOString().substr(0, 10)
                     : ""
                 }
                 onChange={(e) =>
-                  setNewEvent({ ...newEvent, start: new Date(e.target.value) })
+                  setNewEvent({
+                    ...newEvent,
+                    startDate: new Date(e.target.value),
+                  })
                 }
               />
             </div>
@@ -306,24 +370,31 @@ const ManagerCalendar = () => {
               <input
                 type="date"
                 value={
-                  newEvent.end ? newEvent.end.toISOString().substr(0, 10) : ""
+                  newEvent.endDate ? newEvent.endDate.toISOString().substr(0, 10) : ""
                 }
                 onChange={(e) =>
-                  setNewEvent({ ...newEvent, end: new Date(e.target.value) })
+                  setNewEvent({
+                    ...newEvent,
+                    endDate: new Date(e.target.value),
+                  })
                 }
               />
             </div>
-            <div className="color-picker">
-              {["#FF9999", "#99FF99", "#9999FF"].map((color) => (
-                <div
-                  key={color}
-                  className={`color-option ${
-                    newEvent.color === color ? "selected" : ""
-                  }`}
-                  style={{ backgroundColor: color }}
-                  onClick={() => setNewEvent({ ...newEvent, color })}
-                ></div>
-              ))}
+            <div className="date-input-container">
+              <label>기수 선택</label>
+              <select
+                value={newEvent.curriculumId}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, curriculumId: e.target.value })
+                }
+              >
+                <option value="">기수를 선택하세요</option>
+                {curriculums.map((curriculum) => (
+                  <option key={curriculum.id} value={curriculum.id}>
+                    {curriculum.name} {curriculum.th}기
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="calendar-submit">
               <button onClick={handleSaveEvent}>등록</button>

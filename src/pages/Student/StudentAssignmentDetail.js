@@ -6,12 +6,12 @@ import useAxiosGet from "../../hooks/useAxiosGet";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-const StudentAssignmentDetail = () => {
+const StudentAssignmentDetail = ({ baseUrl }) => {
   const { homeworkId } = useParams();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModifyBoxOpen, setIsModifyBoxOpen] = useState(false); // rename for clarity
-  const [isPatchModalOpen, setIsPatchModalOpen] = useState(false); // new state for patch modal
+  const [isModifyBoxOpen, setIsModifyBoxOpen] = useState(false);
+  const [isPatchModalOpen, setIsPatchModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -60,7 +60,7 @@ const StudentAssignmentDetail = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("모달 데이터:", formData);
+
     closeModal();
   };
 
@@ -84,7 +84,6 @@ const StudentAssignmentDetail = () => {
     try {
       await axios.delete(`/students/homeworks/${assignment.mySubmitId}`);
       window.location.reload();
-      console.log("과제 삭제 성공");
     } catch (err) {
       console.error("과제 삭제 중 오류 발생:", err);
     }
@@ -93,6 +92,27 @@ const StudentAssignmentDetail = () => {
   const splitDate = (date) => {
     return date ? date.slice(0, 10) : "no deadline";
   };
+
+  const downloadFile = async (filePath, fileName) => {
+    try {
+      const response = await axios.get(`${baseUrl}/attach-file/${filePath}`, {
+        responseType: "blob",
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("파일 다운로드 중 오류 발생:", error);
+    }
+  };
+
+  console.log(assignmentDetail);
 
   return (
     <div className="student_assignment_detail_main_container">
@@ -104,11 +124,18 @@ const StudentAssignmentDetail = () => {
           <h3 className="student_assginment_detail_notice_title">
             {assignmentDetail?.title}
           </h3>
-          <a href={assignmentDetail?.uploadFilePath} download>
-            <span className="student_assignment_detail_notice_file">
-              {assignmentDetail?.uploadFileName}
-            </span>
-          </a>
+          <span
+            className="student_assignment_detail_notice_file"
+            onClick={() =>
+              downloadFile(
+                assignmentDetail?.uploadFilePath,
+                assignmentDetail?.uploadFileName
+              )
+            }
+          >
+            {assignmentDetail?.uploadFileName}
+          </span>
+          {/* </a> */}
         </div>
         <p className="student_assignment_detail_notice_content">
           {assignmentDetail?.description}
@@ -158,15 +185,17 @@ const StudentAssignmentDetail = () => {
             <h1 className="student_submit_assignment_detail_title">
               {assignment.description}
             </h1>
-
-            <a
-              href={assignment.uploadFilePath}
-              download={assignment.uploadFileName}
+            <span
+              className="student_submit_assignment_detail_file"
+              onClick={() =>
+                downloadFile(
+                  assignment.uploadFilePath,
+                  assignment.uploadFileName
+                )
+              }
             >
-              <span className="student_submit_assignment_detail_file">
-                {assignment.uploadFileName}
-              </span>
-            </a>
+              {assignment.uploadFileName}
+            </span>
           </div>
           <span className="student_submit_assignment_detail_date">
             <span className="date_color">{assignment.createDate}</span>

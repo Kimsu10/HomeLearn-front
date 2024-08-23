@@ -16,15 +16,11 @@ const StudentModal = ({
 }) => {
   const { homeworkId } = useParams();
 
-  console.log(homeworkId);
-
   const [formData, setFormData] = useState({
     homeworkId: homeworkId,
     description: "",
     file: null,
   });
-
-  console.log(formData);
 
   const [selectedFileName, setSelectedFileName] = useState("");
 
@@ -63,6 +59,8 @@ const StudentModal = ({
     if (formData.file) {
       submissionData.append("file", formData.file);
     }
+
+    console.log(formData);
 
     try {
       const response = await axios.post(url, submissionData, {

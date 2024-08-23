@@ -171,7 +171,7 @@ const ManagerHeader = () => {
               }`}
             >
               <li>
-                <a href="/">마이페이지</a>
+                <a href="/managers">마이페이지</a>
               </li>
               <li>
                 <a href="/" onClick={() => deleteToken()}>

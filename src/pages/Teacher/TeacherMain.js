@@ -158,5 +158,3 @@ const TeacherMain = () => {
     );
 };
 export default TeacherMain;
-
-

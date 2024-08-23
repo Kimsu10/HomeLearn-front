@@ -1,3 +1,21 @@
+.survey-form{
+     display: flex;
+     flex-direction: column;
+     width: 1120px;
+     height:300px;
+     padding: 10px;
+     background-color: #fff;
+}
+.survey-header h2{
+    font-size:24px;
+    color:#5C8D89;
+    margin-bottom:50px;
+}
+.survey-header h3{
+    font-size:24px;
+    color:#5C8D89;
+    margin-bottom:50px;
+}
 .survey-container {
   max-width: 600px;
   margin: 0 auto;
@@ -30,10 +48,17 @@
   margin-top: 10px;
 }
 
+.survey-question p{
+   font-size:24px;
+   margin-bottom:30px;
+}
+.survey-question label{
+   font-size:20px;
+}
+
 .survey-options label {
   display: block;
   text-align: center;
-  width: 18%;
 }
 
 .survey-question textarea {
@@ -50,7 +75,7 @@
   width: 100%;
   padding: 10px;
   margin-top: 20px;
-  background-color: #28a745;
+  background-color: #74B49B;
   color: #fff;
   border: none;
   border-radius: 5px;

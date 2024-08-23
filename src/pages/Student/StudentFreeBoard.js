@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
-import StudentModal from "../../components/Modal/StudentModal/StudentModal";
 import "./StudentFreeBoard.css";
 import { useNavigate } from "react-router-dom";
 import useAxiosGet from "../../hooks/useAxiosGet";
+import WriteModal from "../../components/Modal/StudentModal/WriteModal";
 
 const StudentFreeBoard = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize] = useState(15);
 
-  const {
-    data: freeboardData,
-    loading,
-    error,
-  } = useAxiosGet(`/students/boards?page=${currentPage}&size=${pageSize}`, {});
+  // Get 요청
+  const { data: freeboardData } = useAxiosGet(
+    `/students/boards?page=${currentPage}&size=${pageSize}`,
+    {}
+  );
 
   const freeboard = freeboardData.content || [];
   const totalPages = freeboardData.totalPages || 1;
@@ -33,6 +33,7 @@ const StudentFreeBoard = () => {
     const { name, value, files } = e.target;
     if (name === "file") {
       setFormData((prevState) => ({ ...prevState, [name]: files[0] }));
+      setSelectedFileName(files[0].name);
     } else {
       setFormData((prevState) => ({ ...prevState, [name]: value }));
     }
@@ -40,16 +41,7 @@ const StudentFreeBoard = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("모달 데이터 : ", formData);
     closeModal();
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedFileName(file.name);
-      handleChange(e);
-    }
   };
 
   useEffect(() => {
@@ -64,9 +56,6 @@ const StudentFreeBoard = () => {
     setCurrentPage(newPage);
     window.scrollTo(0, 0);
   };
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div className="main_container">
@@ -146,13 +135,13 @@ const StudentFreeBoard = () => {
         </button>
       </div>
 
-      <StudentModal
+      <WriteModal
         isOpen={isModalOpen}
         closeModal={closeModal}
         formData={formData}
+        setFormData={setFormData}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
-        handleFileChange={handleFileChange}
         selectedFileName={selectedFileName}
         modalName="게시글 등록"
         contentTitle="제목"

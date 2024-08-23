@@ -7,7 +7,7 @@
 }
 
 .detail-calendar-detail-container {
-  width: 400px;
+  width: 600px;
   padding: 20px;
   background-color: #E8E8E9;
   border: 1px solid #757575;
@@ -44,6 +44,7 @@
   max-height: 400px;
   overflow-y: auto;
 }
+
 
 .detail-all-events ul {
   list-style: none;
@@ -177,4 +178,32 @@
 
 .detail-all-events::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.detail-calendar-legend{
+  display:flex;
+  flex-direction:column;
+  margin-top:30px;
+  overflow-y:auto;
+  height:170px;
+  border-radius:20px;
+  border:1px solid #ddd;
+  padding:10px;
+  background:#fff;
+}
+
+.curriculum-color-box {
+    width: 20px;
+    height: 20px;
+    border-radius:20px;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.detail-calendar-legend li{
+   display:flex;
+   align-items:center;
+   margin-top:10px;
+   gap:10px;
+
 }

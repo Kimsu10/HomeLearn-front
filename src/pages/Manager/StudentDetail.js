@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../../utils/axios";
-import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
+import StudentDetailCalendar from "../../components/Calendar/StudentCalendar/StudentDetailCalendar";
 import "./StudentDetail.css";
 import swal from "sweetalert";
 
@@ -213,7 +213,7 @@ const StudentDetail = () => {
           <h3>출석 현황</h3>
           {attendance ? (
             <>
-              <ManagerCalendar events={events} />
+              <StudentDetailCalendar studentId={id} />
               <div className="attendance-legend">
                 <span className="present">출석</span>
                 <span className="absent">결석</span>

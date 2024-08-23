@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAxiosGet from "../../hooks/useAxiosGet";
 import "./StudentQeustionBoard.css";
+import QuestionModal from "../../components/Modal/StudentModal/QuestionModal";
 
 const StudentQuestionBoardDetail = () => {
   const navigate = useNavigate();
@@ -11,8 +12,38 @@ const StudentQuestionBoardDetail = () => {
   const [selectedCommentCount, setSelectedCommentCount] = useState("all");
   const pageSize = 15;
 
+  //
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    content: "",
+    file: null,
+  });
+  const [selectedFileName, setSelectedFileName] = useState("");
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  //
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === "file") {
+      setFormData((prevState) => ({ ...prevState, [name]: files[0] }));
+      setSelectedFileName(files[0].name);
+    } else {
+      setFormData((prevState) => ({ ...prevState, [name]: value }));
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    closeModal();
+  };
+
   const { data: questionBoards } = useAxiosGet(`/students/question-boards`, []);
   const { data: subjects } = useAxiosGet("/side-bar", []);
+
+  console.log(questionBoards);
 
   const boardContent = questionBoards?.content || [];
 
@@ -67,6 +98,8 @@ const StudentQuestionBoardDetail = () => {
     return pages;
   };
 
+  //
+
   return (
     <div className="student_question_board_main_container">
       <div className="student_question_board_title_box">
@@ -98,6 +131,7 @@ const StudentQuestionBoardDetail = () => {
           </select>
         </div>
       </div>
+
       <table className="student_question_board_table">
         <thead>
           <tr>
@@ -115,11 +149,13 @@ const StudentQuestionBoardDetail = () => {
             <tr key={idx}>
               <td className="student_question_board_number">{idx + 1}</td>
               <td className="student_question_board_subject_">
-                {el.subjectName}
+                {el.subjectName || "공통"}
               </td>
               <td
                 className="student_question_board_writed_title"
-                onClick={() => navigate(``)}
+                onClick={() =>
+                  navigate(`/students/questionBoards/${el.questionBoardId}`)
+                }
               >
                 {el.title}
               </td>
@@ -180,6 +216,28 @@ const StudentQuestionBoardDetail = () => {
           <i className="bi bi-chevron-double-right pagenation_btn"></i>
         </button>
       </div>
+      <div className="student_control_box">
+        <button className="student_write_question_button" onClick={openModal}>
+          질문하기
+        </button>
+      </div>
+      <QuestionModal
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        formData={formData}
+        setFormData={setFormData}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        selectedFileName={selectedFileName}
+        modalName="질문 등록"
+        subjects={subjects}
+        contentTitle="제목"
+        contentBody="내용"
+        contentFile="이미지 첨부"
+        url="/students/question-boards"
+        submitName="등록 하기"
+        cancelName="등록 취소"
+      />
     </div>
   );
 };

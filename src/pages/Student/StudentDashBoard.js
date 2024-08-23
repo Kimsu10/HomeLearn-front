@@ -6,13 +6,13 @@ import StudentModal from "../../components/Modal/StudentModal/StudentModal";
 import RecentVideo from "../../components/Lectures/RecentVideo";
 import RecentLectureModal from "../../components/Modal/StudentModal/RecentLectureModal";
 import axios from "axios";
+import StudentCalendar from "../../components/Calendar/StudentCalendar/StudentCalendar";
 import RandomVideo from "../../components/Lectures/RandomVideo";
 import LectureVideo from "../../components/Lectures/LectureVideo";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-// import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
 
-const StudentDashBoard = ({ username, baseUrl }) => {
+const StudentDashBoard = ({ username, baseUrl, token }) => {
   const navigate = useNavigate();
   const [videoDuration, setVideoDuration] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,7 +31,7 @@ const StudentDashBoard = ({ username, baseUrl }) => {
   const [adminNotice, setAdminNotice] = useState([]);
   const [teacherNotice, setTeacherNotice] = useState([]);
 
-  // 임시 변수와 값
+  const lectureId = recentLecture?.lectureId;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -40,41 +40,57 @@ const StudentDashBoard = ({ username, baseUrl }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const recentLectureData = await axios.get(
-          `/students/dash-boards/recent-lecture`
-        );
-        setRecentLecture(recentLectureData?.data);
+        const [
+          recentLectureResult,
+          questionResult,
+          assignmentResult,
+          badgeResult,
+          adminNoticeResult,
+          teacherNoticeResult,
+        ] = await Promise.allSettled([
+          axios.get(`/students/dash-boards/recent-lecture`),
+          axios.get(`/students/dash-boards/questions`),
+          axios.get(`/students/dash-boards/homeworks`),
+          axios.get(`/students/dash-boards/badges`),
+          axios.get(`/students/dash-boards/manager-boards`),
+          axios.get(`/students/dash-boards/teacher-boards`),
+        ]);
 
-        // console.log(recentLectureData);
-        console.log(recentLecture);
+        if (recentLectureResult.status === "fulfilled") {
+          setRecentLecture(recentLectureResult.value.data);
+        } else {
+          console.warn(recentLectureResult.reason);
+        }
 
-        // const calendarManagerData = await axios.get(
-        //   `/students/dash-boards/calendar/manager`
-        // );
-        // setCalendarManager(calendarManagerData.data);
+        if (questionResult.status === "fulfilled") {
+          setQuestion(questionResult.value.data);
+        } else {
+          console.warn(questionResult.reason);
+        }
 
-        const questionData = await axios.get(`/students/dash-boards/questions`);
-        setQuestion(questionData.data);
+        if (assignmentResult.status === "fulfilled") {
+          setAssignment(assignmentResult.value.data);
+        } else {
+          console.warn(assignmentResult.reason);
+        }
 
-        const assignmentData = await axios.get(
-          `/students/dash-boards/homeworks`
-        );
-        setAssignment(assignmentData.data);
+        if (badgeResult.status === "fulfilled") {
+          setBadge(badgeResult.value.data);
+        } else {
+          console.warn(badgeResult.reason);
+        }
 
-        const badgeData = await axios.get(`/students/dash-boards/badges`);
-        setBadge(badgeData.data);
+        if (adminNoticeResult.status === "fulfilled") {
+          setAdminNotice(adminNoticeResult.value.data);
+        } else {
+          console.warn(adminNoticeResult.reason);
+        }
 
-        console.log(badge);
-
-        const adminNoticeData = await axios.get(
-          `/students/dash-boards/manager-boards`
-        );
-        setAdminNotice(adminNoticeData.data);
-
-        const teacherNoticeData = await axios.get(
-          `/students/dash-boards/teacher-boards`
-        );
-        setTeacherNotice(teacherNoticeData.data);
+        if (teacherNoticeResult.status === "fulfilled") {
+          setTeacherNotice(teacherNoticeResult.value.data);
+        } else {
+          console.warn(teacherNoticeResult.reason);
+        }
       } catch (error) {
         console.error("Error fetching data", error);
       }
@@ -87,9 +103,6 @@ const StudentDashBoard = ({ username, baseUrl }) => {
   const closeModal = () => setIsModalOpen(false);
   const openSubmit = () => setSubmitModal(true);
   const closeSubmit = () => setSubmitModal(false);
-
-  console.log(isModalOpen);
-  console.log(submitModal);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -113,70 +126,6 @@ const StudentDashBoard = ({ username, baseUrl }) => {
     }
   };
 
-  // google 403 오류 보류
-
-  // const handleDurationFetched = (duration) => {
-  //   setVideoDuration(duration);
-  // };
-  // const calculateProgress = () => {
-  //   if (videoDuration && recentLecture && recentLecture.lastPosition) {
-  //     const progress = (
-  //       (recentLecture.lastPosition / videoDuration) *
-  //       100
-  //     ).toFixed(2);
-  //     return parseFloat(progress);
-  //   }
-  //   return 0;
-  // };
-  // useEffect(() => {
-  //   if (videoDuration !== null && recentLecture?.lastPosition !== undefined) {
-  //     calculateProgress();
-  //   }
-  //   console.log(videoDuration);
-  // }, [videoDuration, recentLecture?.lastPosition]);
-  // const url = recentLecture?.youtubeUrl;
-  // const YouTubeVideoDuration = ({ youtubeUrl, onDurationFetched }) => {
-  //   useEffect(() => {
-  //     const fetchVideoDuration = async () => {
-  //       if (!youtubeUrl) return;
-  //       try {
-  //         const videoId =
-  //           youtubeUrl.split("v=")[1] || youtubeUrl.split("/").pop();
-  //         const response = await axios.get(
-  //           "https://www.googleapis.com/youtube/v3/videos",
-  //           {
-  //             params: {
-  //               part: "contentDetails",
-  //               id: videoId,
-  //               key: process.env.REACT_APP_YOUTUBE_API_KEY,
-  //             },
-  //           }
-  //         );
-  //         if (response.data.items.length > 0) {
-  //           const isoDuration = response.data.items[0].contentDetails.duration;
-  //           const totalSeconds = parseISODuration(isoDuration);
-  //           onDurationFetched(totalSeconds);
-  //         }
-  //       } catch (error) {
-  //         console.error("Error fetching video duration", error);
-  //       }
-  //     };
-  //     fetchVideoDuration();
-  //   }, [youtubeUrl]);
-  //   const parseISODuration = (isoDuration) => {
-  //     const match = isoDuration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
-  //     if (!match) return 0;
-  //     const hours = parseInt(match[1], 10) || 0;
-  //     const minutes = parseInt(match[2], 10) || 0;
-  //     const seconds = parseInt(match[3], 10) || 0;
-  //     return hours * 3600 + minutes * 60 + seconds;
-  //   };
-
-  //   return null;
-  // };
-
-  console.log(assignment);
-
   return (
     <div className="contents">
       <div className="dashboard_main_container">
@@ -199,12 +148,6 @@ const StudentDashBoard = ({ username, baseUrl }) => {
                 <h3 className="recent_lecture_type">
                   {recentLecture?.subjectName}
                 </h3>
-                {/* 흠.. */}
-                {/* <YouTubeVideoDuration
-                  youtubeUrl={url}
-                  onDurationFetched={handleDurationFetched}
-                  apiKey={apiKey}
-                /> */}
                 <div className="recent_video_box">
                   <i className="bi bi-play-btn play_recent_video_icon"></i>
                   <p className="recent_lecture_video_title">
@@ -212,7 +155,7 @@ const StudentDashBoard = ({ username, baseUrl }) => {
                   </p>
                   <div className="recent_lecture_progress_container">
                     <CircularProgressbar
-                      value={recentLecture?.lastPosition / 100}
+                      value={recentLecture?.lastPosition}
                       styles={buildStyles({
                         pathColor: "#A7D7C5",
                         textColor: "#5C8D89",
@@ -220,13 +163,19 @@ const StudentDashBoard = ({ username, baseUrl }) => {
                       })}
                     />
                     <p className="recent_lecture_percentage">
-                      {recentLecture?.lastPosition / 100}%
+                      {recentLecture?.lastPosition}%
                     </p>
                   </div>
                 </div>
               </div>
               <RecentLectureModal isOpen={isModalOpen} onClose={closeModal}>
-                <RecentVideo url={recentLecture?.youtubeUrl} />
+                <RecentVideo
+                  url={recentLecture?.youtubeUrl}
+                  lectureId={lectureId}
+                  username={username}
+                  token={token}
+                  lastViewPoint={recentLecture?.lastPosition}
+                />
               </RecentLectureModal>
             </div>
             <div className="video_container">
@@ -255,7 +204,7 @@ const StudentDashBoard = ({ username, baseUrl }) => {
                     className="question_list"
                     key={idx}
                     onClick={() =>
-                      navigate(`/students/inquiryBoardDetail/${el.idx}`)
+                      navigate(`/students/questionBoards/${el.questionId}`)
                     }
                   >
                     <div className="question_box">
@@ -263,7 +212,18 @@ const StudentDashBoard = ({ username, baseUrl }) => {
                         {el.lecturName}
                         <span className="question_type_tag">질문</span>
                       </div>
-                      <span className="student_question_title">{el.title}</span>
+                      <span
+                        className="student_question_title"
+                        onClick={() =>
+                          navigate(
+                            navigate(
+                              `/students/questionBoards/${el.questionId}`
+                            )
+                          )
+                        }
+                      >
+                        {el.title}
+                      </span>
                       <span className="">{el.createdDate}</span>
                     </div>
                     <div className="question_type_box">
@@ -301,10 +261,7 @@ const StudentDashBoard = ({ username, baseUrl }) => {
             </div>
           </div>
           <div className="right_container">
-            <div className="calander-container">
-              <h3 className="components_title">캘린더</h3>
-              <div className="calander"></div>
-            </div>
+            <StudentCalendar />
             <div className="subject_container">
               <div className="title_box">
                 <h3 className="components_title">과제 목록</h3>

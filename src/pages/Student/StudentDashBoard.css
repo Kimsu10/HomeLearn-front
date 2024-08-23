@@ -7,6 +7,41 @@
   justify-content: center;
 }
 
+/* 최근 강의 모달*/
+
+.recent-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.recent-modal-content {
+  background: rgba(0, 0, 0);
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.recent-close-button {
+  position: absolute;
+  top: 16px;
+  left: 40px;
+  color: white;
+  font-size: 40px;
+  z-index: 2002;
+  cursor: pointer;
+  font-weight: 700;
+  width: 30px;
+}
+
 /* 메인 스타일 */
 
 .dashboard_main_container {
@@ -46,7 +81,7 @@
 }
 
 .recent_lecture_container {
-  width: 500px; /* 이전 620px */
+  width: 500px;
   height: 370px;
   padding: 0.9375em;
   border: 1px solid var(--studentSubColor);
@@ -111,11 +146,14 @@
 }
 
 .recent_lecture_percentage {
-  font-size: 28px;
+  width: 90px;
+  height: 90px;
+  font-size: 24px;
   font-weight: 700;
   position: absolute;
-  top: 27%;
-  left: 19%;
+  text-align: center;
+  top: 28%;
+  left: 0;
 }
 
 .video_container h3 {
@@ -276,11 +314,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-}
-
-.calander {
-  height: 90%;
-  border: 1px solid var(--studentPrimaryColor);
 }
 
 /*  과제 목록 스타일 */
