@@ -7,7 +7,7 @@ const TeacherLecture = ({ baseUrl }) => {
   const navigate = useNavigate();
   const { "*": subjectId } = useParams();
   const mainSubjectId = subjectId.split("/")[0];
-
+console.log(mainSubjectId);
   const [subjectBoards, setSubjectBoards] = useState([]);
   const [inquiryBoards, setInquiryBoards] = useState([]);
   const [lectures, setLectures] = useState([]);
@@ -50,7 +50,7 @@ const TeacherLecture = ({ baseUrl }) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
   };
-
+console.log(mainLectures.imagePath);
   return (
       <div className="teacher_main_container">
         <div className="teacher_lecture_type_container">
@@ -73,7 +73,7 @@ const TeacherLecture = ({ baseUrl }) => {
               <h3 className="teacher_board_title">과목 게시판</h3>
               <span
                   className="teacher_go_to_show_more_page"
-                  onClick={() => navigate(`/teachers/${mainLectures?.name}/board/list`)}
+                  onClick={() => navigate(`/teachers/${mainLectures?.subjectId}/board/list`)}
               >
               더보기 ⟩
             </span>
@@ -113,7 +113,7 @@ const TeacherLecture = ({ baseUrl }) => {
                   <div
                       className="teacher_inquiry_list"
                       key={idx}
-                      onClick={() => navigate(`/teachers/questionDetail/${el.questionId}`)}
+                      onClick={() => navigate(`/teachers/questionBoards/${el.questionId}`)}
                   >
                     <div className="teacher_inquiry_title_box">
                       <div className="teacher_inquiry_type">질문</div>
