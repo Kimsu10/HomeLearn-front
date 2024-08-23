@@ -231,35 +231,38 @@ const StudentInquiryBoard = () => {
             {isModalOpen && (
                 <div className="inquiry-student">
                     <div className="inquiry-student-content">
-                    <button className="inquiry-student-close" onClick={closeModal}>X</button>
-                        <h1>학생 문의 내역</h1>
+                        <button className="inquiry-student-close" onClick={closeModal}>X</button>
+                        <h1 className="inquiry-student-title">학생 문의 내역</h1>
                         <div className="inquiry-student-header-row">
-                            <p>{contentInquiry.curriculumName}</p>
-                            <p>{contentInquiry.curriculumTh}기</p>
-                            <p>{contentInquiry.name}</p>
+                            <p>{contentInquiry.curriculumName} {contentInquiry.curriculumTh}기</p>
+                            <p><i class="fa-solid fa-user"></i>{contentInquiry.name}</p>
                         </div>
-                        <div className="inquiry-student-content">
-                            <h3>{contentInquiry.title}</h3>
-                            <p>{contentInquiry.createdDate}</p>
-                            <div className="inquiry-student-content-info">
-                                <p>{contentInquiry.content}</p>
-                                {contentInquiry.response ? (
-                                    <div>
-                                        <p>답변: {contentInquiry.response}</p>
-                                        <p>답변날짜: {contentInquiry.responseDate}</p>
+                        <div className="inquiry-student-content-title">
+                            <p>{contentInquiry.title}</p>
+                            <p><i class="fa-solid fa-calendar-days"></i>{contentInquiry.createdDate}</p>
+                        </div>
+                        <div className="inquiry-student-content-info">
+                            <p>{contentInquiry.content}</p>
+                        </div>
+                        <div className="inquiry-student-answer-section">
+                            <h4>매니저 답변</h4>
+                            {contentInquiry.response ? (
+                                <div>
+                                    <p>{contentInquiry.response}</p>
+                                    <p className="inquiry-student-response-date">{contentInquiry.responseDate}</p>
+                                </div>
+                            ) : (
+                                <div>
+                                    <textarea
+                                        placeholder="내용 입력"
+                                        value={answer}
+                                        onChange={(e) => setAnswer(e.target.value)}
+                                    />
+                                    <div className="button-answer">
+                                    <button onClick={handleSaveAnswer}>답변 등록</button>
                                     </div>
-                                ) : (
-                                    <div>
-                                        <h4>매니저 답변</h4>
-                                        <textarea
-                                            placeholder="내용 입력"
-                                            value={answer}
-                                            onChange={(e) => setAnswer(e.target.value)}
-                                        />
-                                        <button onClick={handleSaveAnswer}>답변 등록</button>
-                                    </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

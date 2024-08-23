@@ -173,7 +173,6 @@
     cursor: pointer;
 }
 
-/* Modal -> inquiry-student */
 .inquiry-student {
     position: fixed;
     top: 0;
@@ -193,21 +192,77 @@
     border-radius: 8px;
     max-width: 600px;
     width: 100%;
+    position: relative;
 }
 
 .inquiry-student-close {
-    display:flex;
-    justify-content:flex-end;
-    width:550px;
-    color:#000;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #000;
     border: none;
     font-size: 20px;
     cursor: pointer;
 }
-.inquiry-student-content h1{
-    display:flex;
-    justify-content:center;
-}
-.inquiry-student-header-row{
 
+.inquiry-student-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
 }
+
+.inquiry-student-header-row {
+    display: flex;
+    justify-content: flex-end;
+    gap:20px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #757575;
+     border-bottom: 1px solid #ddd;
+}
+
+.inquiry-student-content-title {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #333;
+}
+.button-answer{
+    display:flex;
+    justify-content:flex-end;
+    margin-right:20px;
+}
+.inquiry-student-content-info {
+    margin-top: 50px;
+    margin-bottom:20px;
+    font-size: 30px;
+    color: #757575;
+    border-bottom: 1px solid #ddd;
+}
+
+.inquiry-student-answer-section h4 {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    margin-bottom: 10px;
+    resize:none;
+}
+
+.inquiry-student-response-date {
+    font-size: 14px;
+    color: #757575;
+    margin-top: 10px;
+    text-align: right;
+}
+
