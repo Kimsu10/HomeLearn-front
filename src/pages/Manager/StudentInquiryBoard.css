@@ -12,7 +12,11 @@
 }
 
 .filter-logo {
-    width: 50px;
+    width: 100px;
+    height: 50px;
+    padding:10px;
+    border: 1px solid #757575;
+    border-radius:20px;
     margin-right: 10px;
     cursor: pointer;
 }
@@ -81,6 +85,14 @@
     padding: 5px 10px;
     border: 1px solid #757575;
 }
+.batch-filter{
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f4f5f7;
+    cursor: pointer;
+}
 
 .inquiry-course {
     font-size: 18px;
@@ -88,6 +100,10 @@
     font-weight: bold;
     flex-grow: 1;
     margin-left: 20px;
+    cursor:pointer;
+}
+.inquiry-course:hover{
+    color:#757575;
 }
 
 .inquiry-instructor,
