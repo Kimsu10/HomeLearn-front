@@ -1,8 +1,16 @@
+.login_page {
+  width: 100vw;
+  height: 76vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:#f0f0f0;
+}
 
 .login-container {
   width: 450px;
   padding: 40px;
-  border: 5px solid #5C8D89;
+  border: 5px solid #5c8d89;
   border-radius: 30px;
   background-color: #f4f9f4;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -20,10 +28,10 @@
 }
 
 .login-input {
-  width:95%;
+  width: 95%;
   height: 40px;
   padding: 10px;
-  border: 2px solid #5C8D89;
+  border: 2px solid #5c8d89;
   border-radius: 20px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
@@ -33,7 +41,7 @@
 }
 
 .login-checkbox-group {
-  color: #74B49B;
+  color: #74b49b;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -45,7 +53,7 @@
 }
 
 .save-id:hover {
-  color: #5C8D89;
+  color: #5c8d89;
 }
 
 .login-checkbox-group input[type="checkbox"] {
@@ -60,7 +68,7 @@
 
 .login-button,
 .login-signup-button {
-  font-size:16px;
+  font-size: 16px;
   width: 48%;
   padding: 10px;
   border: none;
@@ -69,25 +77,25 @@
 }
 
 .login-button {
-  background-color: #A7D7C5;
-  border: 5px solid #74B49B;
+  background-color: #a7d7c5;
+  border: 5px solid #74b49b;
   color: #000000;
 }
 
 .login-signup-button {
-  background-color: #A7D7C5;
-  border: 5px solid #74B49B;
+  background-color: #a7d7c5;
+  border: 5px solid #74b49b;
   color: #000000;
 }
 
 .login-button:hover {
-  background: #5C8D89;
-  border: 5px solid #A7D7C5;
+  background: #5c8d89;
+  border: 5px solid #a7d7c5;
 }
 
 .login-signup-button:hover {
-  background: #5C8D89;
-  border: 5px solid #A7D7C5;
+  background: #5c8d89;
+  border: 5px solid #a7d7c5;
 }
 
 .login-id-title,
@@ -99,15 +107,15 @@
 }
 
 .user-found {
-  color: #74B49B;
+  color: #74b49b;
 }
 
 .user-found-id:hover {
-  color: #5C8D89;
-  cursor:pointer;
+  color: #5c8d89;
+  cursor: pointer;
 }
 
 .user-found-pw:hover {
-  color: #5C8D89;
-  cursor:pointer;
+  color: #5c8d89;
+  cursor: pointer;
 }

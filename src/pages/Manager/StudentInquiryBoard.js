@@ -1,129 +1,266 @@
 import React, { useState, useEffect } from 'react';
 import axios from "../../utils/axios";
-import './InquiryStyle.css';
+import './StudentInquiryBoard.css';  // 스타일 파일 불러오기
 
 const StudentInquiryBoard = () => {
-    const [inquiries, setInquiries] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [inquiries, setInquiries] = useState([]);
+    const [filteredInquiries, setFilteredInquiries] = useState([]);
+    const [curriculumName, setCurriculumName] = useState('');
+    const [curriculumTh, setCurriculumTh] = useState('');
+    const [status, setStatus] = useState('');
+    const [hasSearched, setHasSearched] = useState(false); // 조회 여부 상태 추가
 
-    const [filters, setFilters] = useState({
-        curriculum: '',
-        status: '',
-        batch: null
+    // 문의내역 모달창 요소
+    const [contentInquiry, setContentInquiry] = useState({
+        id: '',
+        title: '',
+        content: '',
+        createdDate: '',
+        userId: '',
+        name: '',
+        curriculumName: '',
+        curriculumTh: '',
+        response: '',
+        responseDate: '',
     });
+    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 초기 상태
+    const [answer, setAnswer] = useState(''); // 매니저 답변 상태
 
-    const handleFilterChange = (name, value) => {
-        setFilters({
-            ...filters,
-            [name]: value,
+    const handleInquiryInfo = (inquiry) => {
+        console.log("문의내역 클릭 이벤트 발생", inquiry);
+        setContentInquiry({
+            id: inquiry.id,
+            title: inquiry.title,
+            content: inquiry.content,
+            createdDate: inquiry.createdDate,
+            userId: inquiry.userId,
+            name: inquiry.name,
+            curriculumName: inquiry.curriculumName,
+            curriculumTh: inquiry.curriculumTh,
+            response: inquiry.response ? inquiry.response : '',
+            responseDate: inquiry.responseDate ? inquiry.responseDate : '',
         });
+        setAnswer('');
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
     };
 
     const fetchInquiries = async () => {
         try {
-            setError(null);
-            setLoading(true);
-
-            const response = await axios.get('/managers/students-inquiries', {
-                params: {
-                    curriculumName: filters.curriculum && filters.curriculum !== "all"
-                        ? filters.curriculum : null,
-                    curriculumTh: filters.batch || null
-                },
-            });
-            setInquiries(response.data || []);
-        } catch (error) {
-            setError("문의 내역을 가져오는데 실패 했습니다");
-            console.error("Error fetching inquiries", error);
+            const response = await axios.get("/managers/students-inquiries");
+            if (Array.isArray(response.data)) {
+                setInquiries(response.data);
+            } else {
+                setInquiries([]);
+            }
+        } catch (e) {
+            console.error("문의내역을 불러올 수 없음", e);
         } finally {
             setLoading(false);
         }
     }
 
+    // FullName 교육과정명 => 변환
+    const transformCurriculumName = (curriculumName) => {
+        switch (curriculumName) {
+            case "네이버 클라우드 데브옵스 과정":
+                return "네이버 데브옵스";
+            case "AWS 클라우드 자바 웹 개발자 과정":
+                return "AWS 자바 웹";
+            default:
+                return "curriculumName";
+        }
+    }
+
     useEffect(() => {
         fetchInquiries();
-    }, [filters]);
+    }, []);
+
+    const handleFilter = () => {
+        const filtered = inquiries.filter((inquiry) => {
+            const curriculumMatches =
+                !curriculumName || inquiry.curriculumName === curriculumName;
+            const curriculumThMatches =
+                !curriculumTh || inquiry.curriculumTh.toString() === curriculumTh;
+            const statusMatches =
+                !status || (status === "답변 완료" && inquiry.response !== null) ||
+                (status === "미답변" && inquiry.response === null);
+
+            return curriculumMatches && curriculumThMatches && statusMatches;
+        });
+        setFilteredInquiries(filtered);
+        setHasSearched(true); // 조회 버튼 클릭 시 조회 상태 변경
+    };
+
+    // 필터링된 문의 내역을 두 개의 컬럼으로 나누는 함수
+    const splitInquiries = (inquiries) => {
+        const midIndex = Math.ceil(inquiries.length / 2);
+        const leftColumn = inquiries.slice(0, midIndex);
+        const rightColumn = inquiries.slice(midIndex);
+        return { leftColumn, rightColumn };
+    };
+
+    const { leftColumn, rightColumn } = splitInquiries(filteredInquiries);
+
+    const handleSaveAnswer = async () => {
+        const response = await axios.post(`managers/inquiries/${contentInquiry.id}/add-response`, {
+            response: answer,
+        });
+
+        if (response.status === 200) {
+            console.log("답변저장 완료", response.data);
+
+            setContentInquiry((prev) => ({
+                ...prev,
+                response: answer,
+                responseDate: new Date().toISOString(),
+            }));
+            setIsModalOpen(true);
+        } else {
+            console.error("저장 실패");
+        }
+    }
 
     return (
-        <div className="inquiry-board-container">
-            <h2>학생 문의</h2>
-            <div className="inquiry-filter-container">
-                <img
-                    src="/images/curriculum/ncp.png"
-                    alt="Naver"
-                    className="inquiry-filter-logo"
-                    onClick={() => handleFilterChange("curriculum", "네이버 데브옵스")}
-                />
-                <img
-                    src="/images/curriculum/aws.png"
-                    alt="AWS"
-                    className="inquiry-filter-logo"
-                    onClick={() => handleFilterChange("curriculum", "AWS")}
-                />
+        <div className="student-contact">
+          <h2>학생 문의</h2>
+            <div className="filter-container">
+              <img
+                src="/images/curriculum/ncp.png"
+                alt="Naver"
+                className="filter-logo"
+                onClick={() => setCurriculumName("네이버 클라우드 데브옵스 과정")}
+              />
+              <img
+                src="/images/curriculum/aws.png"
+                alt="AWS"
+                className="filter-logo"
+                onClick={() => setCurriculumName("AWS 클라우드 자바 웹 개발자 과정")}
+              />
                 <select
-                    className="inquiry-curriculum-filter"
-                    onChange={(e) => handleFilterChange("curriculum", e.target.value)}
+                    className="batch-filter"
+                    value={curriculumTh}
+                    onChange={(e) => setCurriculumTh(e.target.value)}
                 >
-                    <option value="all">모든 과정</option>
-                    <option value="네이버 데브옵스">네이버 데브옵스</option>
-                    <option value="AWS">AWS</option>
+                  <option value="">기수 선택</option>
+                    {Array.from(new Set(inquiries.map(inquiry => inquiry.curriculumTh)))
+                      .map((th, index) => (
+                        <option key={`${th}-${index}`} value={th}>
+                          {th}기
+                        </option>
+                      ))}
                 </select>
                 <select
-                    className="inquiry-status-filter"
-                    onChange={(e) => handleFilterChange("status", e.target.value)}
+                    className="status-filter"
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
                 >
-                    <option value="all">전체</option>
+                    <option value="">전체</option>
                     <option value="답변 완료">답변 완료</option>
-                    <option value="미완료">미답변</option>
+                    <option value="미답변">미답변</option>
                 </select>
+                <button onClick={handleFilter}>조회</button>
             </div>
 
-            {loading ? (
-                <div>로딩중...</div>
-            ) : error ? (
-                <div>{error}</div>
-            ) : (
-                <div className="inquiry-list-border">
-                    <div className="inquiry-list-container">
-                        {inquiries.length > 0 ? (
-                            inquiries.map((inquiry) => (
+            {/* 조회 버튼을 클릭한 이후에만 결과를 표시 */}
+            {hasSearched ? (
+                filteredInquiries.length === 0 ? (
+                    <div className="no-inquiries-message">
+                        문의 내역이 없습니다.
+                    </div>
+                ) : (
+                    <div className="inquiries-grid">
+                        <div className="inquiries-column">
+                            {leftColumn.map((inquiry, index) => (
                                 <div
-                                    key={inquiry.id}
-                                    className={`inquiry-item-card ${
-                                        inquiry.status === "답변 완료" ? "answered" : "unanswered"
-                                    }`}
+                                    key={index}
+                                    className={`inquiry-card ${inquiry.response ? "answered" : "unanswered"}`}
+                                    onClick={() => handleInquiryInfo(inquiry)} // 문의내역 클릭 시 모달 열기
                                 >
-                                    <div className="inquiry-item-header">
-                                        <span className="inquiry-item-batch">{filters.batch || "기수 미지정"}</span>
-                                        <span className="inquiry-item-course">{filters.curriculum}</span>
-                                        <i className="fas fa-user"></i>{" "}
-                                        <span className="inquiry-item-instructor">{inquiry.user.name}</span>
-                                        <i className="fas fa-calendar-alt"></i>{" "}
-                                        <span className="inquiry-item-date">{new Date(inquiry.createdDate).toLocaleDateString()}</span>
+                                    <div className="inquiry-header">
+                                        <span className="inquiry-batch">{inquiry.curriculumTh}기</span>
+                                        <span className="inquiry-course">{transformCurriculumName(inquiry.curriculumName)}</span>
+                                        <span className="inquiry-instructor">{inquiry.name}</span>
+                                        <span className="inquiry-date">{inquiry.createdDate}</span>
                                     </div>
-                                    <div className="inquiry-item-footer">
-                                        <p className="inquiry-item-question">{inquiry.content}</p>
-                                        <span
-                                            className={`inquiry-item-status ${
-                                                inquiry.status === "답변 완료"
-                                                    ? "status-answered"
-                                                    : "status-unanswered"
-                                            }`}
-                                        >
-                                            {inquiry.status}
-                                            <i
-                                                className={`fas fa-${
-                                                    inquiry.status === "답변 완료" ? "check" : "times"
-                                                }`}
-                                            ></i>
+                                    <div className="inquiry-footer">
+                                        <p className="inquiry-question">{inquiry.title}</p>
+                                        <span className={`inquiry-status ${inquiry.response ? "status-answered" : "status-unanswered"}`}>
+                                            {inquiry.response ? "답변 완료" : "미답변"}
                                         </span>
                                     </div>
                                 </div>
-                            ))
-                        ) : (
-                            <div>문의 내역이 없습니다.</div>
-                        )}
+                            ))}
+                        </div>
+
+                        <div className="inquiries-column">
+                            {rightColumn.map((inquiry, index) => (
+                                <div
+                                    key={index}
+                                    className={`inquiry-card ${inquiry.response ? "answered" : "unanswered"}`}
+                                    onClick={() => handleInquiryInfo(inquiry)} // 문의 클릭시 모달 열기
+                                >
+                                    <div className="inquiry-header">
+                                        <span className="inquiry-batch">{inquiry.curriculumTh}기</span>
+                                        <span className="inquiry-course">{transformCurriculumName(inquiry.curriculumName)}</span>
+                                        <span className="inquiry-instructor">{inquiry.name}</span>
+                                        <span className="inquiry-date">{inquiry.createdDate}</span>
+                                    </div>
+                                    <div className="inquiry-footer">
+                                        <p className="inquiry-question">{inquiry.title}</p>
+                                        <span className={`inquiry-status ${inquiry.response ? "status-answered" : "status-unanswered"}`}>
+                                            {inquiry.response ? "답변 완료" : "미답변"}
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )
+            ) : (
+                <div className="no-inquiries-message">
+                    조회할 항목을 선택 후 조회 버튼을 눌러 주세요.
+                </div>
+            )}
+
+            {isModalOpen && (
+                <div className="inquiry-student">
+                    <div className="inquiry-student-content">
+                    <button className="inquiry-student-close" onClick={closeModal}>X</button>
+                        <h1>학생 문의 내역</h1>
+                        <div className="inquiry-student-header-row">
+                            <p>{contentInquiry.curriculumName}</p>
+                            <p>{contentInquiry.curriculumTh}기</p>
+                            <p>{contentInquiry.name}</p>
+                        </div>
+                        <div className="inquiry-student-content">
+                            <h3>{contentInquiry.title}</h3>
+                            <p>{contentInquiry.createdDate}</p>
+                            <div className="inquiry-student-content-info">
+                                <p>{contentInquiry.content}</p>
+                                {contentInquiry.response ? (
+                                    <div>
+                                        <p>답변: {contentInquiry.response}</p>
+                                        <p>답변날짜: {contentInquiry.responseDate}</p>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <h4>매니저 답변</h4>
+                                        <textarea
+                                            placeholder="내용 입력"
+                                            value={answer}
+                                            onChange={(e) => setAnswer(e.target.value)}
+                                        />
+                                        <button onClick={handleSaveAnswer}>답변 등록</button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}
