@@ -25,7 +25,7 @@ const StudentMain = () => {
   const [username, setUsername] = useState("");
 
   const navigate = useNavigate();
-  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const baseUrl = "http://223.130.141.27";
   const token = localStorage.getItem("access-token");
   const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
 

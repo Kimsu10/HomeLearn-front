@@ -194,7 +194,6 @@ const TeacherAssignment = () => {
                                 type="text"
                                 value={selectedDate}
                                 readOnly
-                                placeholder="YYYY-MM-DD"
                                 className="teacher-date-input"
                             />
 
@@ -219,7 +218,7 @@ const TeacherAssignment = () => {
                                 readOnly
                                 placeholder="선택된 파일 없음"
                             />
-                            <button type="button" onClick={handleFileButtonClick}>파일첨부</button>
+                            <button type="button" onClick={handleFileButtonClick}>파일 첨부</button>
                             <input
                                 type="file"
                                 ref={fileInputRef}
