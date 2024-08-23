@@ -8,6 +8,8 @@
 
 .detail-calendar-detail-container {
   width: 600px;
+  height: 710px;
+  overflow-y: auto;
   padding: 20px;
   background-color: #E8E8E9;
   border: 1px solid #757575;
