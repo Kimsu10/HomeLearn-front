@@ -71,7 +71,6 @@ const StudentSideBar = () => {
             <div className="student_sideBar_profile_image">
               <img
                 className="student_sideBar_profile_img"
-                // 이미지 경로를 baseUrl과 결합하여 사용합니다.
                 src={
                   user.imagePath
                     ? `${baseUrl}/image/${user.imagePath}`
