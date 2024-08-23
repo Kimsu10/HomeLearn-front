@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import "./TeacherVote.css";
 import TeacherModal from "../../components/Modal/TeacherModal/TeacherModal";
 import { useNavigate } from "react-router-dom";
@@ -6,14 +6,20 @@ import { useNavigate } from "react-router-dom";
 const TeacherVote = () => {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isClosedVoteModalOpen, setIsClosedVoteModalOpen] = useState(false);
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
+
+    const openClosedVoteModal = () => setIsClosedVoteModalOpen(true);
+    const closeClosedVoteModal = () => setIsClosedVoteModalOpen(false);
 
     const handleVoteDetailView = (voteId) => {
         navigate(`/teachers/voteDetail/${voteId}`);
     };
 
+    const [selectedDate, setSelectedDate] = useState('');
+    const dateInputRef = useRef(null);
     const [items, setItems] = useState(["", ""]); // 초기 항목 2개 (디폴트)
     const [isMultipleChoice, setIsMultipleChoice] = useState(false);
     const [isAnonymousVote, setIsAnonymousVote] = useState(false);
@@ -28,6 +34,19 @@ const TeacherVote = () => {
         const newItems = items.filter((item, i) => i !== index);
         setItems(newItems);
     };
+
+    const handleIconClick = () => {
+        dateInputRef.current.showPicker();
+    };
+
+    const handleDateChange = (event) => {
+        setSelectedDate(event.target.value);
+    };
+
+    const handleVoteClose = () => {
+        console.log("투표 마감 처리");
+        closeClosedVoteModal();
+    }
 
     return (
         <div className="teacher_vote_main_container">
@@ -81,7 +100,7 @@ const TeacherVote = () => {
                                 </span>
                                 &nbsp;명 참여
                             </p>
-                            <span className="teacher_current_proceeding_vote_contents_endBtn">
+                            <span className="teacher_current_proceeding_vote_contents_endBtn" onClick={openClosedVoteModal}>
                                 마감
                             </span>
                         </div>
@@ -165,8 +184,8 @@ const TeacherVote = () => {
             </div>
 
             <TeacherModal isOpen={isModalOpen} onClose={closeModal}>
-                <span className="teacher_vote_modalTitle">투표 등록</span>
-                <div className="teacher_vote_enroll_form">
+                <div className="teacher_vote_register_content">
+                    <span className="teacher_vote_modalTitle">투표 등록</span>
                     <div className="teacher_vote_input_group">
                         <label>제목</label>
                         <input
@@ -177,57 +196,76 @@ const TeacherVote = () => {
 
                     <div className="teacher_vote_textarea_group">
                         <label>내용</label>
-                        <textarea name="description">
+                        <textarea
+                            name="description"
+                            onInput={(e) => {
+                                e.target.style.height = "auto";
+                                e.target.style.height = `${e.target.scrollHeight}px`;
+                            }}
+                        >
                         </textarea>
                     </div>
 
                     <div className="teacher_vote_date_group">
                         <label>마감일</label>
-                        <input
-                            type="date"
-                            name="deadline"
-                        />
+                        <div className="date-input-wrapper">
+                            <input
+                                type="text"
+                                value={selectedDate}
+                                readOnly
+                                className="teacher-date-input"
+                            />
+
+                            <input
+                                type="date"
+                                ref={dateInputRef}
+                                onChange={handleDateChange}
+                                className="hidden-date-input"
+                            />
+                            <i className="fa-solid fa-calendar-days" onClick={handleIconClick}></i>
+
+                        </div>
                     </div>
                     <div className="teacher_vote_item_group">
                         <label>항목</label>
-                        {items.map((item, index) => (
-                            <div key={index} className="teacher_vote_item">
-                                <input
-                                    type="text"
-                                    name={`item-${index}`}
-                                    defaultValue={item}  // 초기값 설정
-                                />
-                                {index > 1 && (
-                                    <button
-                                        type="button"
-                                        onClick={() => handleRemoveItem(index)}
-                                        className="teacher_remove_item_button"
-                                    >
-                                        X
-                                    </button>
-                                )}
-                            </div>
-                        ))}
+                        <div className="teacher_vote_item_list">
+                            {items.map((item, index) => (
+                                <div key={index} className="teacher_vote_item">
+                                    <input
+                                        type="text"
+                                        name={`item-${index}`}
+                                        defaultValue={item}  // 초기값 설정
+                                    />
+                                    {index > 1 && (
+                                        <button type="button" className="teacher_remove_item_button" onClick={() => handleRemoveItem(index)}>
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
                         <button type="button" onClick={handleAddItem} className="teacher_add_item_button">
                             + 항목 추가
                         </button>
                     </div>
 
                     <div className="teacher_vote_checkbox_group">
-                        <label>
+                        <label className="teacher_checkbox_label">
                             <input
                                 type="checkbox"
                                 checked={isMultipleChoice}
                                 onChange={() => setIsMultipleChoice(!isMultipleChoice)}
                             />
+                            <span className="teacher_custom_checkbox"></span>
                             복수 선택
                         </label>
-                        <label>
+                        <label className="teacher_checkbox_label">
                             <input
                                 type="checkbox"
                                 checked={isAnonymousVote}
                                 onChange={() => setIsAnonymousVote(!isAnonymousVote)}
                             />
+                            <span className="teacher_custom_checkbox"></span>
                             익명 투표
                         </label>
                     </div>
@@ -238,6 +276,20 @@ const TeacherVote = () => {
                         </button>
                         <button className="teacher_vote_cancelBtn" onClick={closeModal}>
                             등록 취소
+                        </button>
+                    </div>
+                </div>
+            </TeacherModal>
+
+            <TeacherModal isOpen={isClosedVoteModalOpen} onClose={closeClosedVoteModal}>
+                <div className="teacher_close_vote_modal_content">
+                    <p className="teacher_close_vote_message">투표를 마감하시겠습니까?</p>
+                    <div className="teacher_vote_closedButtons">
+                        <button className="teacher_vote_endBtn" onClick={handleVoteClose}>
+                            투표 마감
+                        </button>
+                        <button className="teacher_vote_endCancelBtn" onClick={closeClosedVoteModal}>
+                            마감 취소
                         </button>
                     </div>
                 </div>
