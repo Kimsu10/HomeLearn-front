@@ -70,7 +70,7 @@
 .teacher_subject_list_container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 40px;
   height: 599px;
   margin-top: 50px;
 }
@@ -156,7 +156,6 @@
 }
 
 .teacher_inquiry_write_date {
-  width: 92px;
   color: var(--teacherMainColor);
 }
 
@@ -174,7 +173,7 @@
 }
 
 .teacher_inquiry_text_content {
-  width: 280px;
+  width: 350px;
   font-size: 15px;
   white-space: nowrap;
   overflow: hidden;
