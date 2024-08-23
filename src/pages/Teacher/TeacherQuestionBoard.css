@@ -109,6 +109,7 @@
 
 .teacher_question_board_writed_title {
   width: 300px;
+  cursor: pointer;
 }
 
 .teacher_question_board_writer_name {

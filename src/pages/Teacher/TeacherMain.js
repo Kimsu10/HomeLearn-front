@@ -28,7 +28,7 @@ import StudentLectureDetail from "../Student/StudentLectureDetail";
 import TeacherQuestionBoard from "./TeacherQuestionBoard";
 import StudentQuestionBoardDetail from "../Student/StudentQuestionBoardDetail";
 import TeacherSubjectBoardList from "./TeacherSubjectBoardList";
-
+import TeacherQuestionBoardDetail from "./TeacherQuestionBoardDetail";
 
 function TeacherDashBoard() {
     return (
@@ -120,10 +120,10 @@ const TeacherMain = () => {
                             path="/questionBoards"
                             element={<TeacherQuestionBoard username={username} />}
                         />
-                        {/*<Route*/}
-                        {/*    path="/questionBoards/:questionBoardId"*/}
-                        {/*    element={<TeacherQuestionBoardDetail username={username} />}*/}
-                        {/*/>*/}
+                        <Route
+                            path="/questionBoards/:boardId"
+                            element={<TeacherQuestionBoardDetail username={username} baseUrl={baseUrl} />}
+                        />
 
                         {/* 공지사항 */}
                         <Route
