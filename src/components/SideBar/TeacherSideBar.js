@@ -321,7 +321,7 @@ const TeacherSideBar = () => {
             {/* 8. Vote */}
             <li>
               <NavLink
-                to="/teachers/vote"
+                to="/teachers/teacherVote"
                 className={({ isActive }) =>
                   isActive
                     ? "teacher_sideBar_link active"

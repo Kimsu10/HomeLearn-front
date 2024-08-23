@@ -28,6 +28,8 @@ import StudentLectureDetail from "../Student/StudentLectureDetail";
 import TeacherQuestionBoard from "./TeacherQuestionBoard";
 import StudentQuestionBoardDetail from "../Student/StudentQuestionBoardDetail";
 import TeacherSubjectBoardList from "./TeacherSubjectBoardList";
+import TeacherVote from "./TeacherVote";
+import TeacherVoteDetail from './TeacherVoteDetail';
 
 
 function TeacherDashBoard() {
@@ -146,10 +148,15 @@ const TeacherMain = () => {
                         {/*/>*/}
 
                         {/* 투표 */}
-                        {/*<Route*/}
-                        {/*    path="/teacherVote"*/}
-                        {/*    element={<TeacherVote username={username} />}*/}
-                        {/*/>*/}
+                        <Route
+                            path="/teacherVote"
+                            element={<TeacherVote username={username} />}
+                        />
+
+                        <Route
+                            path="/voteDetail/:voteId"
+                            element={<TeacherVoteDetail username={username} />}
+                        />
 
                     </Routes>
                 </div>
