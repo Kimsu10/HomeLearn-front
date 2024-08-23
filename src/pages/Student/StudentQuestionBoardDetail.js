@@ -271,9 +271,7 @@ const StudentQuestionBoardDetail = ({ username, baseUrl }) => {
               alt=""
             />
             &nbsp;&nbsp;&nbsp;
-            <span className="question_user_name">
-              {questionBoardDetail?.author}
-            </span>
+            <span className="question_user_name">{loginUserName}</span>
           </div>
           <textarea
             className="question_current_write_textarea"
