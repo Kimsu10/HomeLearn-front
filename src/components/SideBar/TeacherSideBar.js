@@ -11,6 +11,7 @@ const TeacherSideBar = () => {
   const [teacher, setTeacher] = useState({}); // Teacher 정보 추가
   const location = useLocation();
 
+  localStorage.setItem("loginUser", teacher.name);
   // REACT_APP_BASE_URL 환경 변수를 통해 기본 URL을 설정합니다.
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -204,7 +205,7 @@ const TeacherSideBar = () => {
             {/* 5. Question Board */}
             <li>
               <NavLink
-                to="/teachers/questionBoard"
+                to="/teachers/questionBoards"
                 className={({ isActive }) =>
                   isActive
                     ? "teacher_sideBar_link active"
@@ -321,7 +322,7 @@ const TeacherSideBar = () => {
             {/* 8. Vote */}
             <li>
               <NavLink
-                to="/teachers/vote"
+                to="/teachers/teacherVote"
                 className={({ isActive }) =>
                   isActive
                     ? "teacher_sideBar_link active"

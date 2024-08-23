@@ -62,7 +62,7 @@
 }
 
 .teacher_lecture_list_title:hover {
-  color: #5c8d89;
+  color: var(--teacherMainColor);
   font-weight: 700;
 }
 
@@ -78,7 +78,8 @@
 .teacher-select-selected{
   background-color: #fff;
     width: 150px;
-    border: 1px solid var(--studentMainColor);
+    border: 1px solid var(--teacherMainColor);
+  color: var(--teacherMainColor);
     border-radius: 20px;
     cursor: pointer;
     text-align: center;
@@ -90,7 +91,7 @@
   margin-top: 10px;
     position: absolute;
     background-color: #fff;
-    border: 1px solid var(--studentMainColor);
+    border: 1px solid var(--teacherMainColor);
     border-radius: 20px;
     text-align: center;
     z-index: 99;

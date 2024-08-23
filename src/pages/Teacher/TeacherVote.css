@@ -1,108 +1,549 @@
-.teacher-vote-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.teacher_vote_main_container {
+    display: flex;
+    flex-direction: column;
+    width: 1120px;
+    padding: 100px 68px;
+    background-color: #fff;
 }
 
-.teacher-vote-container h2 {
-  font-size: 2rem;
-  color: #6a5acd;
-  margin-bottom: 20px;
+.teacher_vote_page_title_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 75px;
 }
 
-.new-vote-section,
-.ongoing-votes-section,
-.finished-votes-section {
-  margin-bottom: 40px;
-  padding: 20px;
-  background-color: #f0f0ff;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+.teacher_vote_page_title {
+    font-size: 4.8rem;
+    color: var(--teacherMainColor);
 }
 
-.new-vote-section h3,
-.ongoing-votes-section h3,
-.finished-votes-section h3 {
-  font-size: 1.5rem;
-  color: #6a5acd;
-  margin-bottom: 15px;
+.teacher_vote_page_enroll_btn {
+    padding: 0.8rem 1.6rem;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--teacherMainColor);
+    border: 1px solid var(--teacherMainColor);
+    border-radius: 1rem;
+    cursor: pointer;
 }
 
-.new-vote-section input[type="text"],
-.new-vote-section textarea,
-.new-vote-section input[type="datetime-local"] {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
+.teacher_vote_page_enroll_btn:hover {
+    background-color: var(--teacherMainColor);
+    color: #fff;
 }
 
-.new-vote-section button {
-  background-color: #6a5acd;
-  color: #fff;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
+/* 진행 중인 투표 */
+.teacher_current_proceeding_vote_container {
+    width: 100%;
+    height: 500px;
+    border: 1px solid var(--teacherMainColor);
+    border-radius: 2rem;
+    padding: 4rem;
+    background-color: rgba(210, 218, 255, 0.25);
+    display: flex;
+    flex-direction: column;
 }
 
-.new-vote-section button:hover {
-  background-color: #5b4cdb;
+.teacher_current_proceeding_vote_title_box {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3.2rem;
 }
 
-.vote-item {
-  padding: 15px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e3e3ff;
+.teacher_current_proceeding_vote_box_name {
+    color: var(--teacherMainColor);
+    font-size: 3.2rem;
 }
 
-.vote-item h4 {
-  font-size: 1.3rem;
-  color: #333;
-  margin-bottom: 10px;
+.teacher_control_box_with_both_side {
+    display: flex;
+    justify-content: space-between;
+    width: 82px;
+    height: 28px;
+    align-items: center;
+    color: var(--teacherMainColor);
+}
+.teacher_Right_and_left_button,
+.teacher_Right_and_left_button {
+    font-size: 2.8rem;
+    cursor: pointer;
+    border-radius: 50%;
 }
 
-.vote-item p {
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 10px;
+.teacher_Right_and_left_button:hover,
+.teacher_Right_and_left_button:hover {
+    font-size: 32px;
 }
 
-.vote-item button {
-  background-color: #6a5acd;
-  color: #fff;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  margin-right: 10px;
+.teacher_Right_and_left_button.disabled {
+    pointer-events: none;
+    opacity: 0.5;
 }
 
-.vote-item button:hover {
-  background-color: #5b4cdb;
+/* 진행 중인 투표 내용 */
+.teacher_current_proceeding_vote_contents_container {
+    width: 100%;
+    height: 460px;
+    margin: 0 auto;
+    border: 3px solid var(--teacherSubColor);
+    border-radius: 2rem;
+    padding: 3.6rem;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #000;
 }
 
-.vote-item button:last-child {
-  background-color: #dc3545;
+.teacher_current_proceeding_vote_contents_title_box {
+    display: flex;
+    justify-content: space-between;
 }
 
-.vote-item button:last-child:hover {
-  background-color: #c82333;
+.teacher_current_proceeding_vote_contents_title {
+    font-size: 3.6rem;
 }
 
-.ongoing-votes-section p,
-.finished-votes-section p {
-  font-size: 1rem;
-  color: #999;
+.teacher_go_to_proceeding_vote_page {
+    color: var(--teacherMainColor);
+    font-size: 2.4rem;
+    cursor: pointer;
+}
+
+.teacher_current_proceeding_vote_contents {
+    font-size: 2.4rem;
+    white-space: pre-wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.teacher_current_proceeding_vote_contents_additional_date_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    font-size: 2.4rem;
+}
+
+.teacher_geen_text {
+    color: var(--teacherMainColor);
+}
+
+.teacher_current_proceeding_vote_contents_right_box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.teacher_current_proceeding_vote_contents_endBtn {
+    padding: 0.8rem 1.6rem;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--teacherMainColor);
+    border: 1px solid var(--teacherMainColor);
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+.teacher_current_proceeding_vote_contents_endBtn:hover {
+    background-color: var(--teacherMainColor);
+    color: #fff;
+}
+
+/* 마감된 투표 */
+.teacher_closed_vote_container {
+    margin-top: 3.2rem;
+    width: 100%;
+    gap: 3.2rem;
+    border: 1px solid var(--teacherMainColor);
+    border-radius: 2rem;
+    padding: 4.5rem;
+    background-color: rgba(210, 218, 255, 0.25);
+    display: flex;
+    flex-direction: column;
+}
+
+.teacher_closed_vote_title_box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.teacher_closed_vote_box_name {
+    color: var(--teacherMainColor);
+    font-size: 32px;
+}
+
+.teacher_control_box_with_both_side {
+    display: flex;
+    justify-content: space-between;
+    width: 82px;
+    height: 28px;
+    align-items: center;
+    color: var(--teacherMainColor);
+}
+.teacher_Right_and_left_button,
+.teacher_Right_and_left_button {
+    font-size: 28px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.teacher_Right_and_left_button:hover,
+.teacher_Right_and_left_button:hover {
+    font-size: 32px;
+}
+
+.teacher_closed_vote_contents_container {
+    height: 100%;
+    border: 3px solid var(--teacherSubColor);
+    border-radius: 20px;
+    padding: 36px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: black;
+}
+
+.teacher_closed_vote_contents_title_box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.teacher_closed_vote_contents_title {
+    font-size: 36px;
+}
+
+.teacher_go_to_closed_vote_page {
+    color: var(--teacherMainColor);
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.teacher_closed_vote_contents {
+    font-size: 24px;
+    width: 100%;
+    overflow: hidden;
+    white-space: pre;
+    margin: 16px 0;
+}
+
+.teacher_closed_vote_contents_additional_data_box {
+    display: flex;
+    justify-content: space-between;
+    font-size: 24px;
+}
+
+.teacher_geen_text {
+    color: var(--teacherMainColor);
+}
+
+/* Modal */
+.teacher_vote_register_content {
+    width: 500px;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.teacher_vote_modalTitle {
+    font-size: 36px;
+    color: var(--teacherMainColor);
+}
+
+.teacher_vote_input_group {
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    color: var(--teacherMainColor);
+}
+
+.teacher_vote_input_group > input {
+    width: 400px;
+    height: 50px;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid var(--teacherMainColor);
+    font-size: 18px;
+    transition: border-color 0.3s ease;
+}
+
+.teacher_vote_textarea_group {
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    color: var(--teacherMainColor);
+}
+
+.teacher_vote_textarea_group > textarea {
+    width: 400px;
+    height: 50px;
+    resize: none;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid var(--teacherMainColor);
+    font-size: 18px;
+    transition: border-color 0.3s ease;
+    overflow: hidden;
+}
+
+.teacher_vote_date_group {
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    color: var(--teacherMainColor);
+}
+
+.date-input-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.teacher-date-input {
+    width: 400px;
+    height: 50px;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid var(--teacherMainColor);
+    font-size: 18px;
+    transition: border-color 0.3s ease;
+}
+
+.date-input-wrapper input[type="text"] {
+    padding-right: 30px; /* 아이콘을 위한 공간 */
+}
+
+.date-input-wrapper i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.hidden-date-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.teacher_vote_item_group {
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    color: var(--teacherMainColor);
+    width: 400px;
+}
+
+.teacher_vote_item_group > label {
+    width: 400px;
+    text-align: left;
+}
+
+.teacher_vote_item_list {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    width: 100%;
+    padding-right: 15px;
+    box-sizing: content-box;
+    overflow-x: hidden;
+}
+
+.teacher_vote_item_list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.teacher_vote_item_list::-webkit-scrollbar-track {
+    background: rgba(210, 218, 255, 0.25);
+    border-radius: 10px;
+}
+
+.teacher_vote_item_list::-webkit-scrollbar-thumb {
+    background-color: var(--teacherMainColor);
+    border-radius: 10px;
+}
+
+.teacher_vote_item_list::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(102, 102, 204, 0.8);
+}
+
+.teacher_vote_item {
+    position: relative;
+    width: 400px;
+    margin-bottom: 1rem;
+}
+
+.teacher_vote_item > input {
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    padding: 10px 40px 10px 10px;
+    border: 1px solid var(--teacherMainColor);
+    font-size: 18px;
+    transition: border-color 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.teacher_remove_item_button {
+    position: absolute;
+    top: 47%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--teacherMainColor);
+}
+
+.teacher_remove_item_button i {
+    pointer-events: none;
+}
+
+.teacher_add_item_button {
+    font-size: 18px;
+    width: 400px;
+    border: 1px solid var(--teacherMainColor);
+    border-radius: 1rem;
+    color: var(--teacherMainColor);
+    padding: 10px 0;
+    background: var(--teacherAssistColor);
+    cursor: pointer;
+}
+
+.teacher_add_item_button:hover {
+    background-color: var(--teacherMainColor);
+    color: #fff;
+}
+
+.teacher_vote_checkbox_group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 18px;
+    color: var(--teacherMainColor);
+}
+
+.teacher_checkbox_label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    padding-left: 35px;
+}
+
+.teacher_checkbox_label input[type="checkbox"] {
+    display: none;
+}
+.teacher_custom_checkbox {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    width: 20px;
+    background-color: #fff;
+    border: 2px solid var(--teacherMainColor);
+    border-radius: 50%;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.teacher_checkbox_label input[type="checkbox"]:checked ~ .teacher_custom_checkbox {
+    background-color: var(--teacherMainColor);
+    border-color: var(--teacherMainColor);
+}
+
+.teacher_checkbox_label input[type="checkbox"]:checked ~ .teacher_custom_checkbox::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 6px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.teacher_vote_buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 250px;
+}
+
+.teacher_vote_enrollBtn {
+    width: 100px;
+    height: 30px;
+    background-color: var(--teacherMainColor);
+    color: #ffffff;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.teacher_vote_enrollBtn:hover {
+    background-color: #a5a6ea;
+}
+
+.teacher_vote_cancelBtn {
+    width: 100px;
+    height: 30px;
+    border: 1px solid var(--teacherMainColor);
+    background-color: rgba(210, 218, 255, 0.2);
+    color: var(--teacherMainColor);
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.teacher_vote_cancelBtn:hover {
+    background-color: rgba(210, 218, 255, 0.5);
+}
+
+.teacher_close_vote_modal_content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+    padding: 20px;
+    height: 200px;
+}
+
+.teacher_close_vote_message {
+    font-size: 56px;
+    color: var(--teacherMainColor);
+    text-align: center;
+}
+
+.teacher_vote_closedButtons {
+    display: flex;
+    justify-content: space-between;
+    width: 250px;
+
+}
+
+.teacher_vote_endBtn {
+    width: 100px;
+    height: 50px;
+    background-color: var(--teacherMainColor);
+    color: #ffffff;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.teacher_vote_endCancelBtn {
+    width: 100px;
+    height: 50px;
+    border: 1px solid var(--teacherMainColor);
+    background-color: rgba(210, 218, 255, 0.2);
+    color: var(--teacherMainColor);
+    border-radius: 10px;
+    cursor: pointer;
 }

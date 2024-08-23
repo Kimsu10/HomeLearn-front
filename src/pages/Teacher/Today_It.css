@@ -36,4 +36,59 @@
   height: 200px;
   border-radius: 20px;
   background-color: white;
+  padding: 10px;
+}
+
+.teacher-today-list-content > a{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+
+
+/*.teacher-today-list-content {*/
+/*  margin-bottom: 15px;*/
+/*  border-bottom: 1px solid #eee;*/
+/*  padding-bottom: 15px;*/
+/*  display: flex;*/
+/*}*/
+
+
+
+.teacher-today-news-image {
+  width: 30%;
+  height: 100%;
+}
+
+.teacher-today-news-title {
+  font-size: 16px;
+  font-weight: bold;
+  height: 16px;
+}
+
+.teacher-today-news-content-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.teacher-today-news-content {
+  font-size: 14px;
+  color: #666;
+  width: 70%;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 10px; /* 이미지와의 간격 */
+  flex: 1; /* 남은 공간을 모두 차지 */
+  margin-top: 10px;
+}
+
+.teacher-today-list-content a {
+  text-decoration: none;
+  color: inherit;
 }

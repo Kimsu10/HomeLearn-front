@@ -5,6 +5,7 @@ import LectureVideo from "./TeacherPlayer";
 import StudentVideoModal from "../../components/Modal/StudentModal/StudentVideoModal";
 import useGetFetch from "../../hooks/useGetFetch";
 import { useLocation } from "react-router-dom";
+import TeacherLectureEnroll from "./TeacherLectureEnroll";
 
 const TeacherLectureList = () => {
   const [thumbnailUrls, setThumbnailUrls] = useState([]);
@@ -20,7 +21,7 @@ const TeacherLectureList = () => {
   const [subjectNamesError, setSubjectNamesError] = useState(null);
   const [selectedLectureId, setSelectedLectureId] = useState("all");
   const [selectedSubjectName, setSelectedSubjectName] = useState("전체");
-
+  const [isEnrollModalOpen, setIsEnrollModalOpen] = useState(false);
   const { data: subjectData, error: subjectError, loading: subjectLoading } = useGetFetch("/data/student/mainpage/sidebar.json", []);
 
   console.log(subjectVideosData);
@@ -119,6 +120,15 @@ console.log(subjectVideosData);
   }, [setIsModalOpen]);
 
 
+  const openEnrollModal = () => {
+    setIsEnrollModalOpen(true);
+  };
+
+  const closeEnrollModal = () => {
+    setIsEnrollModalOpen(false);
+  };
+
+
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -144,31 +154,36 @@ console.log(subjectName);
             <h1 className="teacher_lecture_list_page_title">강의 영상</h1>
             <div className="teacher-custom-select-container">
               <div className="teacher-custom-selected">
-            <div className="teacher-select-selected" onClick={toggleDropdown}>
-              {selectedSubjectName}
-            </div>
-            <div
-              className={`teacher-select-items ${isDropdownOpen ? "" : "select-hide"}`}
-            >
-              <div
-                data-value="all"
-                onClick={() => handleOptionClick("all", "전체")}
-              >
-                전체
-              </div>
-              {subjectName.map((el) => (
-                <div
-                  data-value={el.subjectId}
-                  key={el.subjectId}
-                  onClick={() => handleOptionClick(el.subjectId, el.name)}
-                >
-                  {el.name}
+                <div className="teacher-select-selected" onClick={toggleDropdown}>
+                  {selectedSubjectName}
                 </div>
+                <div
+                    className={`teacher-select-items ${isDropdownOpen ? "" : "select-hide"}`}
+                >
+                  <div
+                      data-value="all"
+                      onClick={() => handleOptionClick("all", "전체")}
+                  >
+                    전체
+                  </div>
+                  {subjectName.map((el) => (
+                      <div
+                          data-value={el.subjectId}
+                          key={el.subjectId}
+                          onClick={() => handleOptionClick(el.subjectId, el.name)}
+                      >
+                        {el.name}
+                      </div>
                   ))}
-                
+
+                </div>
               </div>
-              </div>
-              <button className="teacher_lecture_register">등록</button>
+              <button
+                  className="teacher_lecture_register"
+                  onClick={openEnrollModal}
+              >등록
+              </button>
+
             </div>
           </div>
           <div className="teacher_lecture_list_container">
@@ -195,6 +210,11 @@ console.log(subjectName);
               subjectVideos={subjectVideosData}
           />
         </StudentVideoModal>
+
+        <TeacherLectureEnroll
+            isOpen={isEnrollModalOpen}
+            onClose={closeEnrollModal}
+        />
       </div>
   );
 };

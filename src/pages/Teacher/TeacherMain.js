@@ -28,6 +28,9 @@ import StudentLectureDetail from "../Student/StudentLectureDetail";
 import TeacherQuestionBoard from "./TeacherQuestionBoard";
 import StudentQuestionBoardDetail from "../Student/StudentQuestionBoardDetail";
 import TeacherSubjectBoardList from "./TeacherSubjectBoardList";
+import TeacherQuestionBoardDetail from "./TeacherQuestionBoardDetail";
+import TeacherVote from "./TeacherVote";
+import TeacherVoteDetail from './TeacherVoteDetail';
 
 
 function TeacherDashBoard() {
@@ -120,10 +123,10 @@ const TeacherMain = () => {
                             path="/questionBoards"
                             element={<TeacherQuestionBoard username={username} />}
                         />
-                        {/*<Route*/}
-                        {/*    path="/questionBoards/:questionBoardId"*/}
-                        {/*    element={<TeacherQuestionBoardDetail username={username} />}*/}
-                        {/*/>*/}
+                        <Route
+                            path="/questionBoards/:boardId"
+                            element={<TeacherQuestionBoardDetail username={username} baseUrl={baseUrl} />}
+                        />
 
                         {/* 공지사항 */}
                         <Route
@@ -146,10 +149,15 @@ const TeacherMain = () => {
                         {/*/>*/}
 
                         {/* 투표 */}
-                        {/*<Route*/}
-                        {/*    path="/teacherVote"*/}
-                        {/*    element={<TeacherVote username={username} />}*/}
-                        {/*/>*/}
+                        <Route
+                            path="/teacherVote"
+                            element={<TeacherVote username={username} />}
+                        />
+
+                        <Route
+                            path="/voteDetail/:voteId"
+                            element={<TeacherVoteDetail username={username} />}
+                        />
 
                     </Routes>
                 </div>
@@ -158,3 +166,5 @@ const TeacherMain = () => {
     );
 };
 export default TeacherMain;
+
+
