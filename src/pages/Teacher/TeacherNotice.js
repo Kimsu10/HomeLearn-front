@@ -111,6 +111,43 @@ const TeacherNotice = () => {
         })); // 현재 공지사항의 파일 정보 초기화
     };
 
+    // 파일 다운로드
+    const handleDownloadFile = (filePath) => {
+        if (!filePath) {
+            console.error("파일 경로가 존재하지 않습니다.");
+            return;
+        }
+        const downloadUrl = `http://localhost:8080/attach-file/${filePath}`;
+
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.setAttribute('download', '');
+        link.style.display = 'none';  // 화면에 보이지 않도록 설정
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    // const handleDownloadFile = async (fileName, filePath) => {
+    //     if (!filePath) {
+    //         console.error("파일 경로를 찾을 수 없음");
+    //         return;
+    //     }
+    //     const downloadUrl = `http://localhost:8080/attach-file/${filePath}`;
+    //
+    //     // 기존 링크가 아닌 명시적으로 파일을 다운로드 하는 동작 처리
+    //     const link = document.createElement('a');
+    //     link.href = downloadUrl;
+    //
+    //     // 다운로드 속성 설정()
+    //     link.setAttribute("download", filePath);
+    //     document.body.appendChild(link);
+    //     link.click();
+    //
+    //     //클린업 작업
+    //     document.body.removeChild(link);
+    // }
+
     // 공지사항 저장 함수 (등록 및 수정)
     const handleSaveNotice = async () => {
         try {
@@ -125,12 +162,13 @@ const TeacherNotice = () => {
                 formData.append("file", selectedFile);
             }
             for (let pair of formData.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
+                console.log(`${pair[0]}: ${pair[1]}`);
             }
 
             if (isBoardEditing) { // 수정
-                const response = await axios.patch(`/teachers/notification-boards/${currentBoard.boardId}`, formData, {
+                const response = await axios.patch(`http://localhost:8080/teachers/notification-boards/${currentBoard.boardId}`, formData, {
                     headers: { "Content-Type": "multipart/form-data" },
+                    withCredentials: true
                 });
                 console.log("수정된 공지사항",response.data);
             } else { // 등록
@@ -223,7 +261,10 @@ const TeacherNotice = () => {
                             <p>{board.content}</p>
                             {board.uploadFileName && (
                                 <div className="notice-footer">
-                                    <span>{board.uploadFileName}</span>
+                                    <span className="download-link"
+                                          onClick={() => handleDownloadFile(board.filePath)}>
+                                        <a href="#">{board.uploadFileName}</a>
+                                    </span>
                                 </div>
                             )}
                         </div>
@@ -282,7 +323,7 @@ const TeacherNotice = () => {
                         <div className="notice-file-upload">
                             <input id="notice-file-upload" type="file" onChange={handleFileChange} style={{ display: 'none' }} />
                             <div className="file-input-container">
-                                <input type="text" value={ selectedFile ? selectedFile.name : currentBoard.boardFile } readOnly />
+                                <input type="text" value={ selectedFile ? selectedFile.name : currentBoard.boardFile || "첨부된 파일 없음"} readOnly />
                                 {(selectedFile || currentBoard.boardFile) && (
                                     <button className="notice-file-delete-button" onClick={handleFileDelete}>
                                         삭제

@@ -37,7 +37,7 @@
 
 .show_modify_box {
   position: absolute;
-  bottom: 18%;
+  top: 51%;
   right: 11%;
   width: 116px;
   height: 92px;
@@ -128,6 +128,14 @@
 .student_submit_assignment_detail_file {
   font-size: 28px;
   border-bottom: 1px solid #5c8d89;
+}
+
+.student_submit_assignment_detail_file:hover {
+  cursor: pointer;
+}
+
+.student_assignment_detail_notice_file:hover {
+  cursor: pointer;
 }
 
 .student_submit_assignment_detail_content {

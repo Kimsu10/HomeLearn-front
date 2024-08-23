@@ -180,25 +180,25 @@ const TeacherManagement = () => {
       <div className="teacher-controls">
         <div className="teacher-program-buttons">
           <button
-            className={
-              selectedCourse === "네이버 클라우드 데브옵스 과정"
-                ? "selected"
-                : ""
-            }
-            onClick={() => handleCourseChange("NCP")}
-          >
-            NCP
-          </button>
-          <button
-            className={
-              selectedCourse === "AWS 클라우드 자바 웹 개발자 과정"
-                ? "selected"
-                : ""
-            }
-            onClick={() => handleCourseChange("AWS")}
-          >
-            AWS
-          </button>
+              className={`teacher-course-button ${selectedCourse === "네이버 클라우드 데브옵스 과정" ? "selected" : ""}`}
+              onClick={() => handleCourseChange("NCP")}
+            >
+              <img
+                src={process.env.PUBLIC_URL + '/images/curriculum/ncp.png'}
+                alt="NCP"
+                className="course-logo"
+              />
+            </button>
+            <button
+              className={`teacher-course-button ${selectedCourse === "AWS 클라우드 자바 웹 개발자 과정" ? "selected" : ""}`}
+              onClick={() => handleCourseChange("AWS")}
+            >
+              <img
+                src={process.env.PUBLIC_URL + '/images/curriculum/aws.png'}
+                alt="AWS"
+                className="course-logo"
+              />
+            </button>
           <select value={selectedGeneration} onChange={handleGenerationChange}>
             <option value="전체">전체</option>
             {filteredGenerations.map((th) => (
