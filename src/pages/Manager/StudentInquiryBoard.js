@@ -12,6 +12,44 @@ const StudentInquiryBoard = () => {
     const [status, setStatus] = useState('');
     const [hasSearched, setHasSearched] = useState(false); // 조회 여부 상태 추가
 
+    // 문의내역 모달창 요소
+    const [contentInquiry, setContentInquiry] = useState({
+        id: '',
+        title: '',
+        content: '',
+        createdDate: '',
+        userId: '',
+        name: '',
+        curriculumName: '',
+        curriculumTh: '',
+        response: '',
+        responseDate: '',
+    });
+    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 초기 상태
+    const [answer, setAnswer] = useState(''); // 매니저 답변 상태
+
+    const handleInquiryInfo = (inquiry) => {
+        console.log("문의내역 클릭 이벤트 발생", inquiry);
+        setContentInquiry({
+            id: inquiry.id,
+            title: inquiry.title,
+            content: inquiry.content,
+            createdDate: inquiry.createdDate,
+            userId: inquiry.userId,
+            name: inquiry.name,
+            curriculumName: inquiry.curriculumName,
+            curriculumTh: inquiry.curriculumTh,
+            response: inquiry.response ? inquiry.response : '',
+            responseDate: inquiry.responseDate ? inquiry.responseDate : '',
+        });
+        setAnswer('');
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     const fetchInquiries = async () => {
         try {
             const response = await axios.get("/managers/students-inquiries");
@@ -69,18 +107,37 @@ const StudentInquiryBoard = () => {
 
     const { leftColumn, rightColumn } = splitInquiries(filteredInquiries);
 
+    const handleSaveAnswer = async () => {
+        const response = await axios.post(`managers/inquiries/${contentInquiry.id}/add-response`, {
+            response: answer,
+        });
+
+        if (response.status === 200) {
+            console.log("답변저장 완료", response.data);
+
+            setContentInquiry((prev) => ({
+                ...prev,
+                response: answer,
+                responseDate: new Date().toISOString(),
+            }));
+            setIsModalOpen(true);
+        } else {
+            console.error("저장 실패");
+        }
+    }
+
     return (
         <div className="student-contact">
           <h2>학생 문의</h2>
             <div className="filter-container">
               <img
-                src="/"
+                src="/images/curriculum/ncp.png"
                 alt="Naver"
                 className="filter-logo"
                 onClick={() => setCurriculumName("네이버 클라우드 데브옵스 과정")}
               />
               <img
-                src="/"
+                src="/images/curriculum/aws.png"
                 alt="AWS"
                 className="filter-logo"
                 onClick={() => setCurriculumName("AWS 클라우드 자바 웹 개발자 과정")}
@@ -123,6 +180,7 @@ const StudentInquiryBoard = () => {
                                 <div
                                     key={index}
                                     className={`inquiry-card ${inquiry.response ? "answered" : "unanswered"}`}
+                                    onClick={() => handleInquiryInfo(inquiry)} // 문의내역 클릭 시 모달 열기
                                 >
                                     <div className="inquiry-header">
                                         <span className="inquiry-batch">{inquiry.curriculumTh}기</span>
@@ -145,6 +203,7 @@ const StudentInquiryBoard = () => {
                                 <div
                                     key={index}
                                     className={`inquiry-card ${inquiry.response ? "answered" : "unanswered"}`}
+                                    onClick={() => handleInquiryInfo(inquiry)} // 문의 클릭시 모달 열기
                                 >
                                     <div className="inquiry-header">
                                         <span className="inquiry-batch">{inquiry.curriculumTh}기</span>
@@ -166,6 +225,43 @@ const StudentInquiryBoard = () => {
             ) : (
                 <div className="no-inquiries-message">
                     조회할 항목을 선택 후 조회 버튼을 눌러 주세요.
+                </div>
+            )}
+
+            {isModalOpen && (
+                <div className="inquiry-student">
+                    <div className="inquiry-student-content">
+                    <button className="inquiry-student-close" onClick={closeModal}>X</button>
+                        <h1>학생 문의 내역</h1>
+                        <div className="inquiry-student-header-row">
+                            <p>{contentInquiry.curriculumName}</p>
+                            <p>{contentInquiry.curriculumTh}기</p>
+                            <p>{contentInquiry.name}</p>
+                        </div>
+                        <div className="inquiry-student-content">
+                            <h3>{contentInquiry.title}</h3>
+                            <p>{contentInquiry.createdDate}</p>
+                            <div className="inquiry-student-content-info">
+                                <p>{contentInquiry.content}</p>
+                                {contentInquiry.response ? (
+                                    <div>
+                                        <p>답변: {contentInquiry.response}</p>
+                                        <p>답변날짜: {contentInquiry.responseDate}</p>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <h4>매니저 답변</h4>
+                                        <textarea
+                                            placeholder="내용 입력"
+                                            value={answer}
+                                            onChange={(e) => setAnswer(e.target.value)}
+                                        />
+                                        <button onClick={handleSaveAnswer}>답변 등록</button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

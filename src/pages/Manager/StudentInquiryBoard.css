@@ -12,7 +12,11 @@
 }
 
 .filter-logo {
-    width: 50px;
+    width: 100px;
+    height: 50px;
+    padding:10px;
+    border: 1px solid #757575;
+    border-radius:20px;
     margin-right: 10px;
     cursor: pointer;
 }
@@ -81,6 +85,14 @@
     padding: 5px 10px;
     border: 1px solid #757575;
 }
+.batch-filter{
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f4f5f7;
+    cursor: pointer;
+}
 
 .inquiry-course {
     font-size: 18px;
@@ -88,6 +100,10 @@
     font-weight: bold;
     flex-grow: 1;
     margin-left: 20px;
+    cursor:pointer;
+}
+.inquiry-course:hover{
+    color:#757575;
 }
 
 .inquiry-instructor,
@@ -123,4 +139,75 @@
 
 .status-unanswered {
     color: red;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* 다른 요소 위에 나타나도록 설정 */
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 100%;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Modal -> inquiry-student */
+.inquiry-student {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* 다른 요소 위에 나타나도록 설정 */
+}
+
+.inquiry-student-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 100%;
+}
+
+.inquiry-student-close {
+    display:flex;
+    justify-content:flex-end;
+    width:550px;
+    color:#000;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+.inquiry-student-content h1{
+    display:flex;
+    justify-content:center;
+}
+.inquiry-student-header-row{
+
 }
