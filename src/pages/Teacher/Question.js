@@ -10,11 +10,11 @@ const Question = () => {
   };
 
   const lectures = [ // 임시 데이터값 넣어서 화면단 생성 - 백연동 필요
-    { id: '질문', title: '오류 문제', date: '2024.08.01', teacher: 'JAVA', th: '오류난다고 개짜증', participants: '답글 달기>' },
-    { id: '질문', title: '오류 문제', date: '2024.08.01', teacher: 'JAVA', th: '오류난다고 개짜증', participants: '답글 달기>' },
-    { id: '질문', title: '오류 문제', date: '2024.08.01', teacher: 'PYTHON', th: '오류', participants: '답글 달기>' },
-    { id: '질문', title: '오류 문제', date: '2024.08.01', teacher: 'JAVA', th: '오류난다고 개짜증', participants: '답글 달기>' },
-    { id: '질문', title: '오류 문제', date: '2024.08.01', teacher: 'JAVA', th: '오류난다고 개짜증', participants: '답글 달기>' }
+    { id: '질문', title: '오류 문제', date: '2024.08.01', teacher: 'JAVA', th: '404오류 뜨는데요', participants: '답글 달기>' },
+    { id: '질문', title: '자바 질문', date: '2024.08.02', teacher: 'JAVA', th: '실행이 안됩니다', participants: '답글 달기>' },
+    { id: '질문', title: '리액트 문제질문', date: '2024.08.10', teacher: 'REACT', th: '값을 불러와야되는데 안돼요', participants: '답글 달기>' },
+    { id: '질문', title: '자바 질문', date: '2024.08.13', teacher: 'JAVA', th: '라이브러리 사용 질문입니다', participants: '답글 달기>' },
+    { id: '질문', title: 'FK 관련 질문', date: '2024.08.15', teacher: 'SQL', th: 'FK 설정이 제대로 안되는것 같습니다', participants: '답글 달기>' }
   ];
 
   return (

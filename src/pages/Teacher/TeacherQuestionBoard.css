@@ -26,9 +26,11 @@
 .teacher_search_type_box {
   width: 245px;
   height: 50px;
-  border: 2px solid var(--teacherMainColor);
+  border: 2px solid;
+  color: var(--teacherMainColor);
   border-radius: 20px;
   padding: 10px;
+  cursor: pointer;
 }
 
 /* 선택 박스 디자인 */
@@ -37,7 +39,7 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: url('data:image/svg+xml;utf8,<svg fill="green" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>')
+  background: url('data:image/svg+xml;utf8,<svg fill="gray" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>')
   no-repeat right 10px center;
   padding: 10px 40px 10px 10px;
   font-size: 16px;
