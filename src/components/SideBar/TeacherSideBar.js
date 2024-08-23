@@ -27,7 +27,7 @@ const TeacherSideBar = () => {
     "/teachers/lectures/subject-select",
     []
   );
-
+console.log(subject);
   useEffect(() => {
     const fetchData = async () => {
       try {

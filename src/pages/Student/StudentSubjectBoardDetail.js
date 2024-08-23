@@ -28,6 +28,8 @@ const StudentSubjectBoardDetail = ({ baseUrl }) => {
     []
   );
 
+  
+
   return (
     <div className="subject_board_detail_main_container">
       <div className="lecutre_type_container">

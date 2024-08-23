@@ -20,8 +20,6 @@
 .subject_board_type_container {
   width: 100%;
   display: flex;
-  border-bottom: 1px solid black;
-  padding-bottom: 75px;
 }
 
 .subject_board_description_box {
