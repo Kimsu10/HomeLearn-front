@@ -121,7 +121,7 @@
     max-height 0.5s ease;
   transform: translateY(-20px);
   max-height: 0;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .student_h-alarm_list.open {
