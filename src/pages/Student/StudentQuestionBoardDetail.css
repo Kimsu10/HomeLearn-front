@@ -58,11 +58,15 @@
 }
 
 .question_detail_title {
-  margin-bottom: 44px;
+  margin-bottom: 50px;
+  padding: 30px;
+  font-size: 30px;
 }
 
 .question_detail_content {
   font-size: 20px;
+  margin-bottom: 80px;
+  padding: 30px;
 }
 
 .question_detail_image {

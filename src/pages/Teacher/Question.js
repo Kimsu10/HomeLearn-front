@@ -1,53 +1,83 @@
-import React, { useState } from 'react'; // useState 훅-*백 연동할때 useEffect 추가 해야될듯*
+import React, { useState, useEffect } from 'react';
 import './Question.css';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useAxiosGet from "../../hooks/useAxiosGet";
 
 const Question = () => {
-  const [activeButton, setActiveButton] = useState('NCP'); //상태 버튼 변수
   const navigate = useNavigate();
-  const handleButtonClick = (buttonName) => {  //버튼 클릭시 상태 업데이트
-    setActiveButton(buttonName);
+  const [questions, setQuestions] = useState([]);
+
+  const { data: questionBoards } = useAxiosGet(`/teachers/question-boards`, []);
+
+  useEffect(() => {
+    if (questionBoards && questionBoards.content) {
+      const recentQuestions = questionBoards.content.slice(0, 5).map(q => ({
+        id: q.questionBoardId,
+        title: truncateTitle(q.title, 30),
+        date: splitDate(q.createDate),
+        teacher: q.subjectName,
+        th: q.content.substring(0, 30) + "...",
+        participants: `답변 ${q.commentCount}`
+      }));
+      setQuestions(recentQuestions);
+    }
+  }, [questionBoards]);
+
+  const splitDate = (date) => {
+    return date ? date.slice(0, 10) : "날짜 없음";
   };
 
-  const lectures = [ // 임시 데이터값 넣어서 화면단 생성 - 백연동 필요
-    { id: '질문', title: '오류 문제', date: '2024.08.01', teacher: 'JAVA', th: '오류난다고 개짜증', participants: '답글 달기>' },
-    { id: '질문', title: '오류 문제', date: '2024.08.01', teacher: 'JAVA', th: '오류난다고 개짜증', participants: '답글 달기>' },
-    { id: '질문', title: '오류 문제', date: '2024.08.01', teacher: 'PYTHON', th: '오류', participants: '답글 달기>' },
-    { id: '질문', title: '오류 문제', date: '2024.08.01', teacher: 'JAVA', th: '오류난다고 개짜증', participants: '답글 달기>' },
-    { id: '질문', title: '오류 문제', date: '2024.08.01', teacher: 'JAVA', th: '오류난다고 개짜증', participants: '답글 달기>' }
-  ];
+  const truncateTitle = (title, maxLength) => {
+    if (title.length > maxLength) {
+      return title.substring(0, maxLength) + "...";
+    }
+    return title;
+  };
+
+  const handleTitleClick = (questionId) => {
+    navigate(`/teachers/questionBoards/${questionId}`);
+  };
 
   return (
-    <div className="question">
-      <div className="question-header">
-        <h2>질문 게시판</h2>
-          <span className="question-view"
-                onClick={() => navigate("/teachers/questionBoards")}>
-            더보기 >
-          </span>
-      </div>
+      <div className="question">
+        <div className="question-header">
+          <h2>질문 게시판</h2>
+          <span className="question-view" onClick={() => navigate("/teachers/questionBoards")}>
+          더보기 >
+        </span>
+        </div>
 
-      <ul className="question-list">
-        {lectures.map((lecture) => (
-          <li key={lecture.id} className="question-item">
-            <div className="question-info">
-              <div className="question-main">
-                <span className="question-id">{lecture.id}</span>
-                <span className="question-title">{lecture.title}</span>
-              </div>
-              <span className="question-date">{lecture.date}</span>
-            </div>
-            <div className="question-details">
-              <div className="question-sub">
-                <span className="question-subject">{lecture.teacher}</span>
-                <span className="question-content">{lecture.th}</span>
-              </div>
-              <button className="question-participants">{lecture.participants}</button>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
+        <ul className="question-list">
+          {questions.map((question) => (
+              <li key={question.id} className="question-item">
+                <div className="question-info">
+                  <div className="question-main">
+                    <span className="question-id">질문</span>
+                    <span
+                        className="question-title"
+                        title={question.title}
+                        onClick={() => handleTitleClick(question.id)}
+                        style={{ cursor: 'pointer' }}
+                    >
+                  {question.title}
+                </span>
+                  </div>
+                  <span className="question-date">{question.date}</span>
+                </div>
+                <div className="question-details">
+                  <div className="question-sub">
+                    <span className="question-subject">{question.teacher}</span>
+                    <span className="question-content">{question.th}</span>
+                  </div>
+                  <button className="question-participants"
+                          onClick={() => handleTitleClick(question.id)}>
+                    {question.participants}
+                  </button>
+                </div>
+              </li>
+          ))}
+        </ul>
+      </div>
   );
 };
 

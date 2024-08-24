@@ -83,6 +83,11 @@
   color: #757575;
   font-size: 15px;
   font-weight: bold;
+  max-width: 250px;
+  text-overflow: ellipsis;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .question-title:hover {
@@ -120,6 +125,11 @@
 
 .question-content {
   font-size: 15px;
+  text-overflow: ellipsis;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 250px;
 }
 
 .question-participants {

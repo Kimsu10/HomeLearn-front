@@ -128,32 +128,32 @@ const StudentInquiryBoard = () => {
 
     return (
         <div className="student-contact">
-            <h2>학생 문의</h2>
+          <h2>학생 문의</h2>
             <div className="filter-container">
-                <img
-                    src="/images/curriculum/ncp.png"
-                    alt="Naver"
-                    className="filter-logo"
-                    onClick={() => setCurriculumName("네이버 클라우드 데브옵스 과정")}
-                />
-                <img
-                    src="/images/curriculum/aws.png"
-                    alt="AWS"
-                    className="filter-logo"
-                    onClick={() => setCurriculumName("AWS 클라우드 자바 웹 개발자 과정")}
-                />
+              <img
+                src="/images/curriculum/ncp.png"
+                alt="Naver"
+                className="filter-logo"
+                onClick={() => setCurriculumName("네이버 클라우드 데브옵스 과정")}
+              />
+              <img
+                src="/images/curriculum/aws.png"
+                alt="AWS"
+                className="filter-logo"
+                onClick={() => setCurriculumName("AWS 클라우드 자바 웹 개발자 과정")}
+              />
                 <select
                     className="batch-filter"
                     value={curriculumTh}
                     onChange={(e) => setCurriculumTh(e.target.value)}
                 >
-                    <option value="">기수 선택</option>
+                  <option value="">기수 선택</option>
                     {Array.from(new Set(inquiries.map(inquiry => inquiry.curriculumTh)))
-                        .map((th, index) => (
-                            <option key={`${th}-${index}`} value={th}>
-                                {th}기
-                            </option>
-                        ))}
+                      .map((th, index) => (
+                        <option key={`${th}-${index}`} value={th}>
+                          {th}기
+                        </option>
+                      ))}
                 </select>
                 <select
                     className="status-filter"
@@ -234,6 +234,7 @@ const StudentInquiryBoard = () => {
                 </div>
             )}
 
+            {/* 모달 */}
             {isModalOpen && (
                 <div className="inquiry-student">
                     <div className="inquiry-student-content">

@@ -28,6 +28,7 @@ import StudentLectureDetail from "../Student/StudentLectureDetail";
 import TeacherQuestionBoard from "./TeacherQuestionBoard";
 import StudentQuestionBoardDetail from "../Student/StudentQuestionBoardDetail";
 import TeacherSubjectBoardList from "./TeacherSubjectBoardList";
+import TeacherQuestionBoardDetail from "./TeacherQuestionBoardDetail";
 import TeacherVote from "./TeacherVote";
 import TeacherVoteDetail from './TeacherVoteDetail';
 
@@ -93,7 +94,7 @@ const TeacherMain = () => {
                         />
                         <Route
                             path="/:subjectName/boardDetail/:id"
-                            element={<TeacherSubjectBoardDetail username={username} />}
+                            element={<TeacherSubjectBoardDetail username={username} baseUrl={baseUrl}/>}
                         />
 
                         {/* 과제 */}
@@ -122,10 +123,10 @@ const TeacherMain = () => {
                             path="/questionBoards"
                             element={<TeacherQuestionBoard username={username} />}
                         />
-                        {/*<Route*/}
-                        {/*    path="/questionBoards/:questionBoardId"*/}
-                        {/*    element={<TeacherQuestionBoardDetail username={username} />}*/}
-                        {/*/>*/}
+                        <Route
+                            path="/questionBoards/:boardId"
+                            element={<TeacherQuestionBoardDetail username={username} baseUrl={baseUrl} />}
+                        />
 
                         {/* 공지사항 */}
                         <Route
@@ -165,3 +166,5 @@ const TeacherMain = () => {
     );
 };
 export default TeacherMain;
+
+
