@@ -164,7 +164,9 @@ const StudentInquiryBoard = () => {
                     <option value="답변 완료">답변 완료</option>
                     <option value="미답변">미답변</option>
                 </select>
+                <div className="filter-buttons">
                 <button onClick={handleFilter}>조회</button>
+                </div>
             </div>
 
             {/* 조회 버튼을 클릭한 이후에만 결과를 표시 */}
@@ -238,7 +240,7 @@ const StudentInquiryBoard = () => {
             {isModalOpen && (
                 <div className="inquiry-student">
                     <div className="inquiry-student-content">
-                        <button className="inquiry-student-close" onClick={closeModal}>X</button>
+                        <button className="inquiry-student-close" onClick={closeModal}>&times;</button>
                         <h1 className="inquiry-student-title">학생 문의 내역</h1>
                         <div className="inquiry-student-header-row">
                             <p>{contentInquiry.curriculumName} {contentInquiry.curriculumTh}기</p>

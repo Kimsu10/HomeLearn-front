@@ -1,28 +1,23 @@
-.inquiry_board_container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+.manager-contact {
     padding: 20px;
-    font-family: Arial, sans-serif;
+    max-width: 1200px;
 }
 
-h1 {
-    font-size: 24px;
-    color: #2C5F2D;
-    text-align: left;
-    margin-bottom: 20px;
-}
-
-.filter-container {
+.manager-filter-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     margin-bottom: 20px;
+    gap: 30px;
 }
 
-.filter-container select {
-    padding: 8px;
+.status-filter {
+    padding: 10px;
     font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f4f5f7;
+    cursor: pointer;
 }
 
 .filter-buttons {
@@ -30,55 +25,82 @@ h1 {
     gap: 10px;
 }
 
-.inquiries-border {
-    border: 1px solid #ccc;
-    padding: 15px;
-    border-radius: 10px;
-    background-color: #f9f9f9;
+.no-inquiries-message {
+    text-align: center;
+    font-size: 18px;
+    color: #757575;
+    margin-top: 20px;
 }
 
-.inquiries-container {
+.inquiries-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.inquiries-column {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
 }
 
 .inquiry-card {
-    display: flex;
-    padding: 15px;
-    border-radius: 8px;
     background-color: #ffffff;
+    border: 3px solid #757575;
+    border-radius: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    width: 100%; /* 전체 너비 사용 */
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.inquiry-card:hover {
-    background-color: #e0f7fa;
+    padding: 15px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .inquiry-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 14px;
     margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ddd;
+    gap: 10px;
+}
+
+.inquiry-batch {
+    font-size: 16px;
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    padding: 5px 10px;
+    border: 1px solid #757575;
+}
+
+.inquiry-course {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+    flex-grow: 1;
+    margin-left: 20px;
+    cursor: pointer;
+}
+.inquiry-course:hover {
+    color: #757575;
+}
+
+.inquiry-instructor,
+.inquiry-date {
+    font-size: 14px;
+    color: #757575;
+}
+
+.inquiry-question {
+    font-size: 15px;
+    color: #333;
+    flex-grow: 1;
 }
 
 .inquiry-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 10px;
-}
-
-.inquiry-footer p {
-    margin: 0;
-    font-size: 16px;
-    font-weight: bold;
 }
 
 .inquiry-status {
@@ -90,106 +112,114 @@ h1 {
     margin-left: auto;
 }
 
-.inquiry-status i {
-    margin-left: 5px;
-}
-
+/* i 태그 색상 설정 */
 .status-answered i {
-    color: #28a745;
+    color: #28a745; /* 초록색 */
 }
 
 .status-unanswered i {
-    color: #dc3545;
+    color: #dc3545; /* 빨간색 */
 }
 
-/* 모달 스타일 */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6);
+
+/* Modal */
+.inquiry-manager-modal {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
 }
 
-.modal-header {
-    background-color: #f9f9f9;
-    padding: 20px;
-    width: 100%;
+.inquiry-manager-content {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
     max-width: 600px;
-    border-radius: 10px;
-    text-align: center;
-    position: relative;
-}
-
-.modal-header h1 {
-    font-size: 22px;
-    color: #333;
-}
-
-.modal-content {
-    padding: 20px;
-    margin-top: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    font-size: 16px;
-    color: #555;
-}
-
-.modal-content label {
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 5px;
-    display: block;
-}
-
-.modal-content input,
-.modal-content textarea {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    font-size: 14px;
-    color: #333;
+    position: relative;
+    z-index: 1010;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.modal-content textarea {
-    height: 100px;
-}
-
-.modal-content button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.modal-content button:hover {
-    background-color: #45a049;
-}
-
-.modal-close {
+.inquiry-manager-close {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #ff6961;
+    top: 20px;
+    right: 20px;
+    background: none;
     border: none;
-    color: white;
-    font-size: 16px;
-    padding: 5px 10px;
-    border-radius: 50%;
+    font-size: 24px;
     cursor: pointer;
 }
 
-.modal-close:hover {
-    background-color: #e64e4e;
+.inquiry-manager-title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.inquiry-manager-title h1 {
+    font-size: 28px;
+    color: #47625b;
+}
+
+.inquiry-manager-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.inquiry-manager-input,
+.inquiry-manager-textarea {
+    border: 1px solid #8c9a94;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box; /* 크기 충돌 방지 */
+}
+
+.inquiry-manager-input {
+    height: 50px;
+}
+
+.inquiry-manager-textarea {
+    height: 150px;
+    resize: none;
+}
+
+.inquiry-manager-button-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.inquiry-manager-submit-button,
+.inquiry-manager-cancel-button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.inquiry-manager-submit-button {
+    background-color: #47625b;
+    color: #ffffff;
+}
+
+.inquiry-manager-cancel-button {
+    background-color: transparent;
+    border: 1px solid #8c9a94;
+    color: #47625b;
+}
+
+.inquiry-manager-submit-button:hover,
+.inquiry-manager-cancel-button:hover {
+    background-color: #61827d;
+    color: #ffffff;
 }

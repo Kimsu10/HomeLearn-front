@@ -133,14 +133,6 @@
     margin-left: auto;
 }
 
-.status-answered i {
-    color: #28a745;
-}
-
-.status-unanswered i {
-    color: #dc3545;
-}
-
 /* Modal */
 .modal {
     position: fixed;

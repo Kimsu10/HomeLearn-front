@@ -110,9 +110,9 @@ const StudentManagerInquiry = () => {
     }
 
     return (
-        <div className="inquiry_board_container">
+        <div className="stu manager-contact">
             <h1>매니저 문의</h1>
-            <div className="filter-container">
+            <div className="stu manager-filter-container">
                 <select
                     className="status-filter"
                     value={status}
@@ -123,16 +123,17 @@ const StudentManagerInquiry = () => {
                     <option value="미답변">미답변</option>
                 </select>
                 <div className="filter-buttons">
-                    <button className="btn btn-secondary"
+                    <button className="inquiry-submit-button"
                             onClick={handleFilter}>조회
                     </button>
-                    <button className="btn btn-secondary"
+                    {' '}
+                    <button className="inquiry-add-button"
                             onClick={handleStudentManagerInquiry}>문의 등록
                     </button>
                 </div>
             </div>
-            <div className="inquiries-border">
-                <div className="inquiries-container">
+            <div className="inquiries-grid">
+                <div className="inquiries-column">
                     {filteredInquiries.length > 0 ? (
                         filteredInquiries.map((inquiry) => (
                             <div
@@ -175,62 +176,85 @@ const StudentManagerInquiry = () => {
 
             {/* 문의 등록 모달 */}
             {isAddModalOpen && (
-                <div className="modal">
-                    <button className="modal-close" onClick={closeModal}>
-                        X
+              <div className="inquiry-manager-modal">
+                <div className="inquriy-manager-content">
+                    <button className="inquriy-manager-close" onClick={closeModal}>
+                        &times;
                     </button>
-                    <div className="modal-header">
+                    <div className="inquriy-manager-title">
                         <h1>학생 문의 등록</h1>
-                        <div className="modal-content">
+                        <div className="inquriy-manager-form">
                             <label>제목</label>
                             <input
+                                className="inquiry-manager-input"
                                 type="text"
                                 value={inquiryInfo.title}
                                 onChange={(e) =>
-                                    setInquiryInfo({ ...inquiryInfo, title: e.target.value })
+                                    setInquiryInfo({...inquiryInfo, title: e.target.value})
                                 }
                             />
                             <label>내용</label>
                             <textarea
+                                className="inquiry-manager-textarea"
                                 value={inquiryInfo.content}
                                 onChange={(e) =>
-                                    setInquiryInfo({ ...inquiryInfo, content: e.target.value })
+                                    setInquiryInfo({...inquiryInfo, content: e.target.value})
                                 }
                             />
-                            <button onClick={fetchSubmitInquiry}>등록</button>
+                            <div className="inquiry-manager-button-container">
+                                <button
+                                    onClick={fetchSubmitInquiry}
+                                    className="inquiry-manager-submit-button"
+                                >
+                                    문의 등록
+                                </button>
+                                <button
+                                    onClick={closeModal}
+                                    className="inquiry-manager-cancel-button"
+                                >
+                                    등록 취소
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
+              </div>
             )}
 
             {/* 문의 내역 상세확인 모달 */}
             {isDetailModalOpen && inquiryInfo.inquiryId && (
-                <div className="modal">
-                    <button className="modal-close" onClick={closeModal}>
-                        X
-                    </button>
-                    <div className="modal-header">
-                        <h1>학생 문의 내역</h1>
-                        <div className="modal-content">
-                            <p>{transformCurriculumName(inquiryInfo.curriculumName)}</p>
-                            <p>{inquiryInfo.curriculumTh}기</p>
-                            <p>{inquiryInfo.name}</p>
-                        </div>
-                        <div className="modal-content">
-                            <h3>{inquiryInfo.title}</h3>
-                            <p>{inquiryInfo.createdDate}</p>
-                            <div className="modal-content-info">
+                <div className="inquiry-manager-modal">
+                    <div className="inquriy-manager-content">
+                        <button className="inquriy-manager-close" onClick={closeModal}>
+                            &times;
+                        </button>
+                        <div className="inquriy-manager-title">
+                            <h1>학생 문의 내역</h1>
+                            <div className="inquriy-manager-header-row">
+                                <p>{transformCurriculumName(inquiryInfo.curriculumName)}</p>
+                                <p>{inquiryInfo.curriculumTh}기</p>
+                                <p>{inquiryInfo.name}</p>
+                            </div>
+                            <div className="inquriy-manager-title">
+                                <h3>{inquiryInfo.title}</h3>
+                                <p>{inquiryInfo.createdDate}</p>
+                                <div className="inquriy-manager-content-info">
                                 <p>{inquiryInfo.content}</p>
                             </div>
-                            {inquiryInfo.response && (
-                                <div>
+                            <div className="inquiry-manager-answer-section">
+                                {inquiryInfo.response && (
+                                    <div className="inquiry-response">
                                     <p>{inquiryInfo.response}</p>
-                                    <p>{inquiryInfo.responseDate}</p>
-                                </div>
-                            )}
+                                        <p className="inquiry-manager-response-date">
+                                            {inquiryInfo.responseDate}
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
+              </div>
             )}
         </div>
     );
