@@ -128,32 +128,32 @@ const StudentInquiryBoard = () => {
 
     return (
         <div className="student-contact">
-          <h2>학생 문의</h2>
+            <h2>학생 문의</h2>
             <div className="filter-container">
-              <img
-                src="/"
-                alt="Naver"
-                className="filter-logo"
-                onClick={() => setCurriculumName("네이버 클라우드 데브옵스 과정")}
-              />
-              <img
-                src="/"
-                alt="AWS"
-                className="filter-logo"
-                onClick={() => setCurriculumName("AWS 클라우드 자바 웹 개발자 과정")}
-              />
+                <img
+                    src="/images/curriculum/ncp.png"
+                    alt="Naver"
+                    className="filter-logo"
+                    onClick={() => setCurriculumName("네이버 클라우드 데브옵스 과정")}
+                />
+                <img
+                    src="/images/curriculum/aws.png"
+                    alt="AWS"
+                    className="filter-logo"
+                    onClick={() => setCurriculumName("AWS 클라우드 자바 웹 개발자 과정")}
+                />
                 <select
                     className="batch-filter"
                     value={curriculumTh}
                     onChange={(e) => setCurriculumTh(e.target.value)}
                 >
-                  <option value="">기수 선택</option>
+                    <option value="">기수 선택</option>
                     {Array.from(new Set(inquiries.map(inquiry => inquiry.curriculumTh)))
-                      .map((th, index) => (
-                        <option key={`${th}-${index}`} value={th}>
-                          {th}기
-                        </option>
-                      ))}
+                        .map((th, index) => (
+                            <option key={`${th}-${index}`} value={th}>
+                                {th}기
+                            </option>
+                        ))}
                 </select>
                 <select
                     className="status-filter"
@@ -185,13 +185,16 @@ const StudentInquiryBoard = () => {
                                     <div className="inquiry-header">
                                         <span className="inquiry-batch">{inquiry.curriculumTh}기</span>
                                         <span className="inquiry-course">{transformCurriculumName(inquiry.curriculumName)}</span>
+                                        <i className="fas fa-user"></i>
                                         <span className="inquiry-instructor">{inquiry.name}</span>
+                                        <i className="fas fa-calendar-alt"></i>
                                         <span className="inquiry-date">{inquiry.createdDate}</span>
                                     </div>
                                     <div className="inquiry-footer">
                                         <p className="inquiry-question">{inquiry.title}</p>
                                         <span className={`inquiry-status ${inquiry.response ? "status-answered" : "status-unanswered"}`}>
-                                            {inquiry.response ? "답변 완료" : "미답변"}
+                                            답변 여부
+                                            <i className={`fas fa-${inquiry.response ? "check-circle" : "times-circle"}`}></i>
                                         </span>
                                     </div>
                                 </div>
@@ -208,13 +211,16 @@ const StudentInquiryBoard = () => {
                                     <div className="inquiry-header">
                                         <span className="inquiry-batch">{inquiry.curriculumTh}기</span>
                                         <span className="inquiry-course">{transformCurriculumName(inquiry.curriculumName)}</span>
+                                        <i className="fas fa-user"></i>
                                         <span className="inquiry-instructor">{inquiry.name}</span>
+                                        <i className="fas fa-calendar-alt"></i>
                                         <span className="inquiry-date">{inquiry.createdDate}</span>
                                     </div>
                                     <div className="inquiry-footer">
                                         <p className="inquiry-question">{inquiry.title}</p>
                                         <span className={`inquiry-status ${inquiry.response ? "status-answered" : "status-unanswered"}`}>
-                                            {inquiry.response ? "답변 완료" : "미답변"}
+                                            답변 여부
+                                            <i className={`fas fa-${inquiry.response ? "check-circle" : "times-circle"}`}></i>
                                         </span>
                                     </div>
                                 </div>
@@ -228,43 +234,41 @@ const StudentInquiryBoard = () => {
                 </div>
             )}
 
-            {/* 모달 */}
             {isModalOpen && (
-                <div className="modal">
-                    <button className="modal-close"
-                            onClick={closeModal}
-                    >X
-                    </button>
-                    <div className="modal-header">
-                        <h1>학생 문의 내역</h1>
-                        <div className="modal-header-row">
-                            <p>과정명: {contentInquiry.curriculumName}</p>
-                            <p>기수: {contentInquiry.curriculumTh}</p>
-                            <p>작성자: {contentInquiry.name}</p>
+                <div className="inquiry-student">
+                    <div className="inquiry-student-content">
+                        <button className="inquiry-student-close" onClick={closeModal}>X</button>
+                        <h1 className="inquiry-student-title">학생 문의 내역</h1>
+                        <div className="inquiry-student-header-row">
+                            <p>{contentInquiry.curriculumName} {contentInquiry.curriculumTh}기</p>
+                            <p><i class="fa-solid fa-user"></i>{contentInquiry.name}</p>
                         </div>
-                        <div className="modal-content">
-                            <h3>{contentInquiry.title}</h3>
-                            <p>문의날짜: {contentInquiry.createdDate}</p>
-                            <div className="modal-content-info">
-                                <p>내용: {contentInquiry.content}</p>
-                                {contentInquiry.response ? (
-                                    <div>
-                                        <p>답변: {contentInquiry.response}</p>
-                                        <p>답변날짜: {contentInquiry.responseDate}</p>
+                        <div className="inquiry-student-content-title">
+                            <p>{contentInquiry.title}</p>
+                            <p><i class="fa-solid fa-calendar-days"></i>{contentInquiry.createdDate}</p>
+                        </div>
+                        <div className="inquiry-student-content-info">
+                            <p>{contentInquiry.content}</p>
+                        </div>
+                        <div className="inquiry-student-answer-section">
+                            <h4>매니저 답변</h4>
+                            {contentInquiry.response ? (
+                                <div>
+                                    <p>{contentInquiry.response}</p>
+                                    <p className="inquiry-student-response-date">{contentInquiry.responseDate}</p>
+                                </div>
+                            ) : (
+                                <div>
+                                    <textarea
+                                        placeholder="내용 입력"
+                                        value={answer}
+                                        onChange={(e) => setAnswer(e.target.value)}
+                                    />
+                                    <div className="button-answer">
+                                        <button onClick={handleSaveAnswer}>답변 등록</button>
                                     </div>
-                                ) : (
-                                    <div>
-                                        <textarea
-                                            placeholder="답변을 입력하세요"
-                                            value={answer}
-                                            onChange={(e) =>
-                                                setAnswer(e.target.value)} // 상태 업데이트
-                                        />
-                                        <button
-                                            onClick={handleSaveAnswer}>답변 저장</button>
-                                    </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

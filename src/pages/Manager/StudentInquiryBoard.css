@@ -97,7 +97,7 @@
 }
 
 .inquiry-question {
-    font-size: 18px;
+    font-size: 15px;
     color: #333;
     flex-grow: 1;
 }
@@ -117,12 +117,12 @@
     margin-left: auto;
 }
 
-.status-answered {
-    color: green;
+.status-answered i {
+    color: #28a745;
 }
 
-.status-unanswered {
-    color: red;
+.status-unanswered i {
+    color: #dc3545;
 }
 
 /* Modal */
