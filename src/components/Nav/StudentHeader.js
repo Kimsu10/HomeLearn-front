@@ -36,9 +36,6 @@ const StudentHeader = () => {
         const commonResponse = await axios.get("/header/common", config);
         setCurriculum(commonResponse.data);
 
-        // 여기서 `imagePath` 값이 올바르게 설정되어 있는지 확인
-        console.log("Received imagePath:", commonResponse.data.imagePath);
-
         // 학생 정보 설정
         setStudent({
           name: commonResponse.data.name,

@@ -72,11 +72,10 @@ const CurriculumDetail = () => {
           config
         );
 
-        console.log('Fetched Curriculum Data:', basicResponse.data); // 데이터 확인용
         setCurriculum({
           ...basicResponse.data,
-          startDate: basicResponse.data.startDate,  // 추가
-          endDate: basicResponse.data.endDate,      // 추가
+          startDate: basicResponse.data.startDate, // 추가
+          endDate: basicResponse.data.endDate, // 추가
         });
 
         // 강사 정보 가져오기
@@ -113,8 +112,6 @@ const CurriculumDetail = () => {
 
     fetchData();
   }, [id]);
-
-
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -166,14 +163,21 @@ const CurriculumDetail = () => {
         );
         setCurriculum(updatedCurriculumResponse.data);
       } else {
-        swal("수정 실패", "교육 과정 수정에 실패했습니다. 다시 시도해주세요.", "error");
+        swal(
+          "수정 실패",
+          "교육 과정 수정에 실패했습니다. 다시 시도해주세요.",
+          "error"
+        );
       }
     } catch (error) {
       console.error("교육 과정 수정 중 오류 발생:", error);
-      swal("수정 실패", "교육 과정 수정 중 오류가 발생했습니다. 다시 시도해주세요.", "error");
+      swal(
+        "수정 실패",
+        "교육 과정 수정 중 오류가 발생했습니다. 다시 시도해주세요.",
+        "error"
+      );
     }
   };
-
 
   const handleDeleteCurriculum = () => {
     setIsDeleteModalOpen(true);
@@ -205,17 +209,33 @@ const CurriculumDetail = () => {
         );
 
         if (deleteResponse.status === 200) {
-          swal("삭제 성공", "교육 과정이 성공적으로 삭제되었습니다.", "success");
+          swal(
+            "삭제 성공",
+            "교육 과정이 성공적으로 삭제되었습니다.",
+            "success"
+          );
           navigate("/managers/manage-curriculums");
         } else {
-          swal("삭제 실패", "교육 과정 삭제에 실패했습니다. 다시 시도해주세요.", "error");
+          swal(
+            "삭제 실패",
+            "교육 과정 삭제에 실패했습니다. 다시 시도해주세요.",
+            "error"
+          );
         }
       } else {
-        swal("비밀번호 오류", "비밀번호가 일치하지 않습니다. 다시 시도해주세요.", "error");
+        swal(
+          "비밀번호 오류",
+          "비밀번호가 일치하지 않습니다. 다시 시도해주세요.",
+          "error"
+        );
       }
     } catch (error) {
       console.error("교육 과정 삭제 중 오류 발생:", error);
-      swal("삭제 실패", "교육 과정 삭제 중 오류가 발생했습니다. 다시 시도해주세요.", "error");
+      swal(
+        "삭제 실패",
+        "교육 과정 삭제 중 오류가 발생했습니다. 다시 시도해주세요.",
+        "error"
+      );
     } finally {
       setIsDeleteModalOpen(false);
     }
@@ -251,7 +271,8 @@ const CurriculumDetail = () => {
       }
 
       if (response.status === 200) {
-        const newStatus = !survey || survey.status === "대기 중" ? "진행 중" : "완료";
+        const newStatus =
+          !survey || survey.status === "대기 중" ? "진행 중" : "완료";
         swal(
           newStatus === "진행 중" ? "설문 등록" : "설문 마감",
           `설문 조사가 등록 되었습니다.`,
@@ -263,7 +284,9 @@ const CurriculumDetail = () => {
       } else {
         swal(
           "설문 작업 실패",
-          `설문 조사 ${!survey || survey.status === "대기 중" ? "시작" : "종료"}에 실패했습니다. 다시 시도해주세요.`,
+          `설문 조사 ${
+            !survey || survey.status === "대기 중" ? "시작" : "종료"
+          }에 실패했습니다. 다시 시도해주세요.`,
           "error"
         );
       }
@@ -271,7 +294,9 @@ const CurriculumDetail = () => {
       console.error("설문 조사 작업 중 오류 발생:", error);
       swal(
         "설문 작업 실패",
-        `설문 조사 ${!survey || survey.status === "대기 중" ? "시작" : "종료"} 중 오류가 발생했습니다. 다시 시도해주세요.`,
+        `설문 조사 ${
+          !survey || survey.status === "대기 중" ? "시작" : "종료"
+        } 중 오류가 발생했습니다. 다시 시도해주세요.`,
         "error"
       );
     }
@@ -286,10 +311,14 @@ const CurriculumDetail = () => {
         <div className="curriculum-detail-title-progress-bar">
           <h2 className="curriculum-detail-title">
             {curriculum.name} {curriculum.th}기
-               <div className="curriculum-detail-dates">
-               <p><strong>시작일:</strong> {curriculum.startDate}</p>
-               <p><strong>종료일:</strong> {curriculum.endDate}</p>
-              </div>
+            <div className="curriculum-detail-dates">
+              <p>
+                <strong>시작일:</strong> {curriculum.startDate}
+              </p>
+              <p>
+                <strong>종료일:</strong> {curriculum.endDate}
+              </p>
+            </div>
           </h2>
 
           <div className="curriculum-detail-progress-container">
@@ -309,7 +338,9 @@ const CurriculumDetail = () => {
           <div className="curriculum-detail-left-container">
             <div className="curriculum-detail-info-box">
               <div className="curriculum-detail-info-box-title">
-                <span className="curriculum-detail-subtitle">학생 출결 현황</span>
+                <span className="curriculum-detail-subtitle">
+                  학생 출결 현황
+                </span>
               </div>
               <div className="curriculum-detail-info-box-content">
                 {isWeekend ? (
@@ -368,11 +399,13 @@ const CurriculumDetail = () => {
                     </span>
 
                     <span className="curriculum-detail-survey-count">
-                    <i className="fas fa-user"></i>
+                      <i className="fas fa-user"></i>
                       {survey.completed} / {survey.total}
                     </span>
                   </div>
-                  <p className="curriculum-detail-survey-name">{survey.title}</p>
+                  <p className="curriculum-detail-survey-name">
+                    {survey.title}
+                  </p>
                   <div className="curriculum-detail-survey-status">
                     <span className="curriculum-detail-survey-status-text">
                       {survey.status}

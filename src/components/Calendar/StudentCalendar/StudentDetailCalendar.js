@@ -1,37 +1,38 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../../utils/axios";
-import './StudentDetailCalendar.css';
+import "./StudentDetailCalendar.css";
 
 const StudentDetailCalendar = ({ studentId }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState([]);
   const [holidays, setHolidays] = useState([]);
 
-  const getToken = () => localStorage.getItem('access-token');
+  const getToken = () => localStorage.getItem("access-token");
 
   // 학생 출석 정보 가져오기
   useEffect(() => {
     const fetchStudentAttendance = async () => {
       try {
         const token = getToken();
-        const response = await axios.get(`/managers/students/attendance/${studentId}`, {
-          headers: { access: token },
-        });
-
-        console.log("Attendance Data:", response.data);
+        const response = await axios.get(
+          `/managers/students/attendance/${studentId}`,
+          {
+            headers: { access: token },
+          }
+        );
 
         if (response.data && response.data.dateAttendanceType) {
-          const eventsData = Object.entries(response.data.dateAttendanceType).map(
-            ([date, type]) => ({
-              id: date,
-              title: type,
-              startDate: new Date(date),
-              endDate: new Date(date),
-              allDay: true,
-              className: type.toLowerCase(),
-            })
-          );
-          console.log("Parsed Events Data:", eventsData);
+          const eventsData = Object.entries(
+            response.data.dateAttendanceType
+          ).map(([date, type]) => ({
+            id: date,
+            title: type,
+            startDate: new Date(date),
+            endDate: new Date(date),
+            allDay: true,
+            className: type.toLowerCase(),
+          }));
+
           setEvents(eventsData);
         }
       } catch (error) {
@@ -62,8 +63,7 @@ const StudentDetailCalendar = ({ studentId }) => {
           );
           const items = xmlDoc.getElementsByTagName("item");
           const holidays = Array.from(items).map((item) => {
-            const locdate =
-              item.getElementsByTagName("locdate")[0].textContent;
+            const locdate = item.getElementsByTagName("locdate")[0].textContent;
             return locdate;
           });
           setHolidays(holidays);

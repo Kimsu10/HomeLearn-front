@@ -72,11 +72,6 @@ const QuestionModal = ({
       submissionData.append("image", formData.file);
     }
 
-    // 확인용 나중에 지우기
-    submissionData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
-
     try {
       const response = await axios.post(url, submissionData);
 

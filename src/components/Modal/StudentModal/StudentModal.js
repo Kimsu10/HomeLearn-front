@@ -60,8 +60,6 @@ const StudentModal = ({
       submissionData.append("file", formData.file);
     }
 
-    console.log(formData);
-
     try {
       const response = await axios.post(url, submissionData, {
         headers: {

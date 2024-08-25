@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import './TeacherSideBar.css';
+import "./TeacherSideBar.css";
 import useAxiosGet from "../../hooks/useAxiosGet";
 import TeacherLectureRegister from "../../pages/Teacher/TeacherLectureRegister";
 import axios from "axios";
@@ -27,7 +27,7 @@ const TeacherSideBar = () => {
     "/teachers/lectures/subject-select",
     []
   );
-console.log(subject);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,31 +42,34 @@ console.log(subject);
 
   useEffect(() => {
     const path = location.pathname;
-    if (path.startsWith('/teachers/subject')) {
-      setDropdownOpen('subject');
-    } else if (path.startsWith('/teachers/notice')) {
-      setDropdownOpen('notice');
-    } else if (path.startsWith('/teachers/contact')) {
-      setDropdownOpen('contact');
-    } else if (path.startsWith('/teachers/vote')) { // 투표 경로 추가
-      setDropdownOpen('vote');
+    if (path.startsWith("/teachers/subject")) {
+      setDropdownOpen("subject");
+    } else if (path.startsWith("/teachers/notice")) {
+      setDropdownOpen("notice");
+    } else if (path.startsWith("/teachers/contact")) {
+      setDropdownOpen("contact");
+    } else if (path.startsWith("/teachers/vote")) {
+      // 투표 경로 추가
+      setDropdownOpen("vote");
     } else {
       setDropdownOpen(null);
     }
   }, [location]);
 
   const toggleDropdown = (menu) => {
-    setDropdownOpen(prevState => prevState === menu ? null : menu);
+    setDropdownOpen((prevState) => (prevState === menu ? null : menu));
   };
 
   const isActive = (path) => {
-    if (path === '/teachers') {
-      return location.pathname === '/teachers' || location.pathname === '/teachers/';
+    if (path === "/teachers") {
+      return (
+        location.pathname === "/teachers" || location.pathname === "/teachers/"
+      );
     }
     return location.pathname.startsWith(path);
   };
 
-  if(subjectError) {
+  if (subjectError) {
     return <div>Error loading sidebar data</div>;
   }
 
@@ -79,7 +82,11 @@ console.log(subject);
             <div className="teacher_sideBar_profile_image">
               <img
                 className="teacher_sideBar_profile_img"
-                src={teacher.imagePath ? `${baseUrl}/image/${teacher.imagePath}` : "/images/TeacherProfile.png"}
+                src={
+                  teacher.imagePath
+                    ? `${baseUrl}/image/${teacher.imagePath}`
+                    : "/images/TeacherProfile.png"
+                }
                 alt="프로필"
               />
             </div>
@@ -150,7 +157,7 @@ console.log(subject);
                 <li>
                   <span
                     className="teacher_sideBar_subject_add_btn"
-                    onClick={openModal}  // 클릭 이벤트 추가
+                    onClick={openModal} // 클릭 이벤트 추가
                   >
                     과목 등록
                   </span>
@@ -161,7 +168,7 @@ console.log(subject);
                     <li key={el.subjectId}>
                       <NavLink
                         to={`/teachers/${el.subjectId}/board`}
-                        className={({isActive}) =>
+                        className={({ isActive }) =>
                           isActive
                             ? "teacher_sideBar_link active"
                             : "teacher_sideBar_link"
@@ -180,7 +187,7 @@ console.log(subject);
             <li>
               <NavLink
                 to="/teachers/assignment"
-                className={({isActive}) =>
+                className={({ isActive }) =>
                   isActive
                     ? "teacher_sideBar_link active"
                     : "teacher_sideBar_link"
@@ -337,10 +344,7 @@ console.log(subject);
       </div>
       <div className="teacher_sideBar_line"></div>
       {isModalOpen && (
-        <TeacherLectureRegister
-          isOpen={isModalOpen}
-          onClose={closeModal}
-        />
+        <TeacherLectureRegister isOpen={isModalOpen} onClose={closeModal} />
       )}
     </div>
   );

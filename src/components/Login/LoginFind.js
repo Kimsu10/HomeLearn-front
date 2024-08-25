@@ -29,8 +29,6 @@ function LoginFind() {
       // 서버로 이메일 전송, 응답 처리
       const response = await axios.post("/account/send-code", { email });
 
-      console.log("Response:", response);
-
       if (response.status === 200) {
         swal(
           "코드 전송 성공",
