@@ -77,6 +77,17 @@ const StudentInquiryBoard = () => {
         }
     }
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2);  // 두 자리 수로 만들기
+        const day = ('0' + date.getDate()).slice(-2);
+        const hours = ('0' + date.getHours()).slice(-2);
+        const minutes = ('0' + date.getMinutes()).slice(-2);
+
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
+    }
+
     useEffect(() => {
         fetchInquiries();
     }, []);
@@ -164,7 +175,7 @@ const StudentInquiryBoard = () => {
                     <option value="답변 완료">답변 완료</option>
                     <option value="미답변">미답변</option>
                 </select>
-                <div className="filter-buttons">
+                <div className="filter-button">
                 <button onClick={handleFilter}>조회</button>
                 </div>
             </div>
@@ -240,15 +251,16 @@ const StudentInquiryBoard = () => {
             {isModalOpen && (
                 <div className="inquiry-student">
                     <div className="inquiry-student-content">
-                        <button className="inquiry-student-close" onClick={closeModal}>&times;</button>
+                        <button className="inquiry-student-close" onClick={closeModal}>X</button>
                         <h1 className="inquiry-student-title">학생 문의 내역</h1>
                         <div className="inquiry-student-header-row">
-                            <p>{contentInquiry.curriculumName} {contentInquiry.curriculumTh}기</p>
+                            <p>{transformCurriculumName(contentInquiry.curriculumName)} {contentInquiry.curriculumTh}기</p>
                             <p><i class="fa-solid fa-user"></i>{contentInquiry.name}</p>
                         </div>
                         <div className="inquiry-student-content-title">
                             <p>{contentInquiry.title}</p>
-                            <p><i class="fa-solid fa-calendar-days"></i>{contentInquiry.createdDate}</p>
+                            <p className="inquiry-student-content-date">
+                                <i class="fa-solid fa-calendar-days"></i>{contentInquiry.createdDate}</p>
                         </div>
                         <div className="inquiry-student-content-info">
                             <p>{contentInquiry.content}</p>
@@ -258,7 +270,9 @@ const StudentInquiryBoard = () => {
                             {contentInquiry.response ? (
                                 <div>
                                     <p>{contentInquiry.response}</p>
-                                    <p className="inquiry-student-response-date">{contentInquiry.responseDate}</p>
+                                    <p className="inquiry-student-response-date">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        {formatDate(contentInquiry.responseDate)}</p>
                                 </div>
                             ) : (
                                 <div>
@@ -268,7 +282,8 @@ const StudentInquiryBoard = () => {
                                         onChange={(e) => setAnswer(e.target.value)}
                                     />
                                     <div className="button-answer">
-                                        <button onClick={handleSaveAnswer}>답변 등록</button>
+                                        <button className="button-answer-btn"
+                                            onClick={handleSaveAnswer}>답변 등록</button>
                                     </div>
                                 </div>
                             )}
