@@ -18,6 +18,16 @@
   width: 1120px;
 }
 
+.manager-dashboard-container {
+  padding: 80px 0 100px 0;
+}
+
+.manager-dashboard-title {
+  font-size: 48px;
+  padding: 0 0 30px 40px;
+  color: var(--managerMainColor);
+}
+
 /* grid 설정 */
 .dashboard-grid {
   display: flex;

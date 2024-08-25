@@ -22,16 +22,18 @@ import StudentInquiryBoard from "./StudentInquiryBoard";
 function Dashboard() {
   return (
       <>
-        <h1>대시보드</h1>
-        <div className="dashboard-grid">
-          <div className="manager-dashboard-divide-box">
-            <Lecture />
-            <ManagerCalendar />
-          </div>
-          <div className="manager-dashboard-divide-box2">
-            <Survey />
-            <MessageBox />
-          </div>
+        <div className="manager-dashboard-container">
+          <div className="manager-dashboard-title">대시보드</div>
+            <div className="dashboard-grid">
+              <div className="manager-dashboard-divide-box">
+                <Lecture />
+                <ManagerCalendar />
+              </div>
+              <div className="manager-dashboard-divide-box2">
+                <Survey />
+                <MessageBox />
+              </div>
+            </div>
         </div>
       </>
   );
