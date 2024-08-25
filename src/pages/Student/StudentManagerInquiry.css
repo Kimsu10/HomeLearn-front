@@ -1,9 +1,9 @@
-.student-contact {
+.manager-contact {
     padding: 20px;
     max-width: 1200px;
 }
 
-.filter-container {
+.manager-filter-container {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -11,17 +11,6 @@
     gap: 30px;
 }
 
-.filter-logo {
-    width: 100px;
-    height: 50px;
-    padding:10px;
-    border: 1px solid #757575;
-    border-radius:20px;
-    margin-right: 10px;
-    cursor: pointer;
-}
-
-.curriculum-filter,
 .status-filter {
     padding: 10px;
     font-size: 16px;
@@ -31,18 +20,16 @@
     cursor: pointer;
 }
 
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+}
+
 .no-inquiries-message {
     text-align: center;
     font-size: 18px;
     color: #757575;
     margin-top: 20px;
-}
-
-.inquiries-border {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 10px;
-    background-color: #f9f9f9;
 }
 
 .inquiries-grid {
@@ -64,7 +51,7 @@
     border-radius: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 15px;
-    width: 100%; /* 전체 너비 사용 */
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -85,14 +72,6 @@
     padding: 5px 10px;
     border: 1px solid #757575;
 }
-.batch-filter{
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f4f5f7;
-    cursor: pointer;
-}
 
 .inquiry-course {
     font-size: 18px;
@@ -100,10 +79,10 @@
     font-weight: bold;
     flex-grow: 1;
     margin-left: 20px;
-    cursor:pointer;
+    cursor: pointer;
 }
-.inquiry-course:hover{
-    color:#757575;
+.inquiry-course:hover {
+    color: #757575;
 }
 
 .inquiry-instructor,
@@ -133,73 +112,114 @@
     margin-left: auto;
 }
 
+/* i 태그 색상 설정 */
+.status-answered i {
+    color: #28a745; /* 초록색 */
+}
+
+.status-unanswered i {
+    color: #dc3545; /* 빨간색 */
+}
+
+
 /* Modal */
-.modal {
+.inquiry-manager-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* 다른 요소 위에 나타나도록 설정 */
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
 }
 
-.modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
+.inquiry-manager-content {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
     max-width: 600px;
     width: 100%;
+    position: relative;
+    z-index: 1010;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.modal-close {
+.inquiry-manager-close {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 20px;
+    right: 20px;
     background: none;
     border: none;
-    font-size: 1.5rem;
+    font-size: 24px;
     cursor: pointer;
 }
 
-/* Modal -> inquiry-student */
-.inquiry-student {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+.inquiry-manager-title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.inquiry-manager-title h1 {
+    font-size: 28px;
+    color: #47625b;
+}
+
+.inquiry-manager-form {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* 다른 요소 위에 나타나도록 설정 */
+    flex-direction: column;
+    gap: 20px;
 }
 
-.inquiry-student-content {
-    background: white;
-    padding: 20px;
+.inquiry-manager-input,
+.inquiry-manager-textarea {
+    border: 1px solid #8c9a94;
     border-radius: 8px;
-    max-width: 600px;
+    padding: 10px;
+    font-size: 16px;
     width: 100%;
+    box-sizing: border-box; /* 크기 충돌 방지 */
 }
 
-.inquiry-student-close {
-    display:flex;
-    justify-content:flex-end;
-    width:550px;
-    color:#000;
+.inquiry-manager-input {
+    height: 50px;
+}
+
+.inquiry-manager-textarea {
+    height: 150px;
+    resize: none;
+}
+
+.inquiry-manager-button-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.inquiry-manager-submit-button,
+.inquiry-manager-cancel-button {
+    padding: 10px 20px;
+    border-radius: 8px;
     border: none;
-    font-size: 20px;
+    font-size: 16px;
     cursor: pointer;
 }
-.inquiry-student-content h1{
-    display:flex;
-    justify-content:center;
-}
-.inquiry-student-header-row{
 
+.inquiry-manager-submit-button {
+    background-color: #47625b;
+    color: #ffffff;
+}
+
+.inquiry-manager-cancel-button {
+    background-color: transparent;
+    border: 1px solid #8c9a94;
+    color: #47625b;
+}
+
+.inquiry-manager-submit-button:hover,
+.inquiry-manager-cancel-button:hover {
+    background-color: #61827d;
+    color: #ffffff;
 }

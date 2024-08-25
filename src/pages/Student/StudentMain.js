@@ -19,6 +19,7 @@ import StudentFreeBoardDetail from "./StudentFreeBoardDetail";
 import SurveyForm from "./SurveyForm";
 import StudentQuestionBoardDetail from "./StudentQuestionBoardDetail";
 import StudentVote from "./StudentVote";
+import StudentManagerInquiry from "./StudentManagerInquiry";
 
 const StudentMain = () => {
   const [selectedSubject, setSelectedSubject] = useState(null);
@@ -127,6 +128,10 @@ const StudentMain = () => {
               <StudentFreeBoardDetail username={username} baseUrl={baseUrl} />
             }
           />
+           <Route
+               path="/contact/managerContact"
+               element={<StudentManagerInquiry username={username} baseUrl={baseUrl} />}
+           />
           {/* 현재 임시로 선생님 과제 상세 페이지 -> 아래의 페이지가 강사가 봐야할 학생들의 과제제출 페이지 넣을 예정 */}
           {/* 언젠가 들어올 강사 공지사항 페이지 */}
           {/* <Route path="/teacherNotice" element={< />} /> */}

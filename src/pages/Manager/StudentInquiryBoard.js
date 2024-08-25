@@ -164,7 +164,9 @@ const StudentInquiryBoard = () => {
                     <option value="답변 완료">답변 완료</option>
                     <option value="미답변">미답변</option>
                 </select>
+                <div className="filter-buttons">
                 <button onClick={handleFilter}>조회</button>
+                </div>
             </div>
 
             {/* 조회 버튼을 클릭한 이후에만 결과를 표시 */}
@@ -185,13 +187,16 @@ const StudentInquiryBoard = () => {
                                     <div className="inquiry-header">
                                         <span className="inquiry-batch">{inquiry.curriculumTh}기</span>
                                         <span className="inquiry-course">{transformCurriculumName(inquiry.curriculumName)}</span>
+                                        <i className="fas fa-user"></i>
                                         <span className="inquiry-instructor">{inquiry.name}</span>
+                                        <i className="fas fa-calendar-alt"></i>
                                         <span className="inquiry-date">{inquiry.createdDate}</span>
                                     </div>
                                     <div className="inquiry-footer">
                                         <p className="inquiry-question">{inquiry.title}</p>
                                         <span className={`inquiry-status ${inquiry.response ? "status-answered" : "status-unanswered"}`}>
-                                            {inquiry.response ? "답변 완료" : "미답변"}
+                                            답변 여부
+                                            <i className={`fas fa-${inquiry.response ? "check-circle" : "times-circle"}`}></i>
                                         </span>
                                     </div>
                                 </div>
@@ -208,13 +213,16 @@ const StudentInquiryBoard = () => {
                                     <div className="inquiry-header">
                                         <span className="inquiry-batch">{inquiry.curriculumTh}기</span>
                                         <span className="inquiry-course">{transformCurriculumName(inquiry.curriculumName)}</span>
+                                        <i className="fas fa-user"></i>
                                         <span className="inquiry-instructor">{inquiry.name}</span>
+                                        <i className="fas fa-calendar-alt"></i>
                                         <span className="inquiry-date">{inquiry.createdDate}</span>
                                     </div>
                                     <div className="inquiry-footer">
                                         <p className="inquiry-question">{inquiry.title}</p>
                                         <span className={`inquiry-status ${inquiry.response ? "status-answered" : "status-unanswered"}`}>
-                                            {inquiry.response ? "답변 완료" : "미답변"}
+                                            답변 여부
+                                            <i className={`fas fa-${inquiry.response ? "check-circle" : "times-circle"}`}></i>
                                         </span>
                                     </div>
                                 </div>
@@ -228,38 +236,42 @@ const StudentInquiryBoard = () => {
                 </div>
             )}
 
+            {/* 모달 */}
             {isModalOpen && (
                 <div className="inquiry-student">
                     <div className="inquiry-student-content">
-                    <button className="inquiry-student-close" onClick={closeModal}>X</button>
-                        <h1>학생 문의 내역</h1>
+                        <button className="inquiry-student-close" onClick={closeModal}>&times;</button>
+                        <h1 className="inquiry-student-title">학생 문의 내역</h1>
                         <div className="inquiry-student-header-row">
-                            <p>{contentInquiry.curriculumName}</p>
-                            <p>{contentInquiry.curriculumTh}기</p>
-                            <p>{contentInquiry.name}</p>
+                            <p>{contentInquiry.curriculumName} {contentInquiry.curriculumTh}기</p>
+                            <p><i class="fa-solid fa-user"></i>{contentInquiry.name}</p>
                         </div>
-                        <div className="inquiry-student-content">
-                            <h3>{contentInquiry.title}</h3>
-                            <p>{contentInquiry.createdDate}</p>
-                            <div className="inquiry-student-content-info">
-                                <p>{contentInquiry.content}</p>
-                                {contentInquiry.response ? (
-                                    <div>
-                                        <p>답변: {contentInquiry.response}</p>
-                                        <p>답변날짜: {contentInquiry.responseDate}</p>
-                                    </div>
-                                ) : (
-                                    <div>
-                                        <h4>매니저 답변</h4>
-                                        <textarea
-                                            placeholder="내용 입력"
-                                            value={answer}
-                                            onChange={(e) => setAnswer(e.target.value)}
-                                        />
+                        <div className="inquiry-student-content-title">
+                            <p>{contentInquiry.title}</p>
+                            <p><i class="fa-solid fa-calendar-days"></i>{contentInquiry.createdDate}</p>
+                        </div>
+                        <div className="inquiry-student-content-info">
+                            <p>{contentInquiry.content}</p>
+                        </div>
+                        <div className="inquiry-student-answer-section">
+                            <h4>매니저 답변</h4>
+                            {contentInquiry.response ? (
+                                <div>
+                                    <p>{contentInquiry.response}</p>
+                                    <p className="inquiry-student-response-date">{contentInquiry.responseDate}</p>
+                                </div>
+                            ) : (
+                                <div>
+                                    <textarea
+                                        placeholder="내용 입력"
+                                        value={answer}
+                                        onChange={(e) => setAnswer(e.target.value)}
+                                    />
+                                    <div className="button-answer">
                                         <button onClick={handleSaveAnswer}>답변 등록</button>
                                     </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
