@@ -62,21 +62,20 @@ const StudentManagerInquiry = () => {
         setIsAddModalOpen(true);
     }
 
-    // 문의 상세내역 모달 요소
+    const fetchInfo = async (inquiryId) => {
+        try {
+            const responseInfo = await axios.get(`/students/managers-inquiries/${inquiryId}`);
+            console.log("문의 내역 상세보기 성공", responseInfo.data);
+            setInquiryInfo(responseInfo.data);
+            setIsDetailSubmitModalOpen(true);
+        } catch (error) {
+            console.error("상세보기 실패", error);
+        }
+    }
+
     const handleInquiryInfo = (inquiry) => {
         console.log("문의내역 클릭 이벤트 발생", inquiry);
-        setInquiryInfo({
-            inquiryId: inquiry.inquiryId,
-            title: inquiry.title,
-            content: inquiry.content,
-            createDate: inquiry.createDate,
-            name: inquiry.name,
-            curriculumName: inquiry.curriculumName,
-            curriculumTh: inquiry.curriculumTh,
-            response: inquiry.response ? inquiry.response : '',
-            responseDate: inquiry.responseDate ? inquiry.responseDate : '',
-        });
-        setIsDetailSubmitModalOpen(true);
+        fetchInfo(inquiry.inquiryId); // 상세보기 함수 호출
     };
 
     // 문의 등록 요청
@@ -109,12 +108,21 @@ const StudentManagerInquiry = () => {
         }
     }
 
+    const formatDateDay = (dateString) => {
+        const dateDay = new Date(dateString);
+        const year = dateDay.getFullYear();
+        const month = ('0' + (dateDay.getMonth() + 1)).slice(-2);  // 두 자리 수로 만들기
+        const day = ('0' + dateDay.getDate()).slice(-2);
+
+        return `${year}-${month}-${day}`;
+    }
+
     return (
         <div className="stu manager-contact">
             <h1>매니저 문의</h1>
             <div className="stu manager-filter-container">
                 <select
-                    className="status-filter"
+                    className="status-filter-student"
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
                 >
@@ -144,12 +152,12 @@ const StudentManagerInquiry = () => {
                                 onClick={() => handleInquiryInfo(inquiry)}
                             >
                                 <div className="inquiry-header">
-                                    <span className="inquiry-batch">{inquiry.curriculumTh}기</span>
+                                    <span className="inquiry-batch-manager">{inquiry.curriculumTh}기</span>
                                     <span className="inquiry-course">{transformCurriculumName(inquiry.curriculumName)}</span>
                                     <i className="fas fa-user"></i>
                                     <span className="inquiry-instructor">{inquiry.name}</span>
                                     <i className="fas fa-calendar-alt"></i>
-                                    <span className="inquiry-date">{inquiry.createDate}</span>
+                                    <span className="inquiry-date">{formatDateDay(inquiry.createDate)}</span>
                                 </div>
                                 <div className="inquiry-footer">
                                     <p className="inquiry-question">{inquiry.title}</p>
@@ -176,17 +184,16 @@ const StudentManagerInquiry = () => {
 
             {/* 문의 등록 모달 */}
             {isAddModalOpen && (
-              <div className="inquiry-manager-modal">
-                <div className="inquriy-manager-content">
-                    <button className="inquriy-manager-close" onClick={closeModal}>
+              <div className="modal-container">
+                    <div className="modal-close" onClick={closeModal}>
                         &times;
-                    </button>
-                    <div className="inquriy-manager-title">
-                        <h1>학생 문의 등록</h1>
-                        <div className="inquriy-manager-form">
+                    </div>
+                    <div className="modal-content">
+                        <div className="modal-title">학생 문의 등록</div>
+                        <div className="modal-form">
                             <label>제목</label>
                             <input
-                                className="inquiry-manager-input"
+                                className="modal-input"
                                 type="text"
                                 value={inquiryInfo.title}
                                 onChange={(e) =>
@@ -195,65 +202,66 @@ const StudentManagerInquiry = () => {
                             />
                             <label>내용</label>
                             <textarea
-                                className="inquiry-manager-textarea"
+                                className="modal-textarea"
                                 value={inquiryInfo.content}
                                 onChange={(e) =>
                                     setInquiryInfo({...inquiryInfo, content: e.target.value})
                                 }
                             />
-                            <div className="inquiry-manager-button-container">
+                            <div className="modal-button-container">
                                 <button
                                     onClick={fetchSubmitInquiry}
-                                    className="inquiry-manager-submit-button"
+                                    className="modal-submit-button"
                                 >
                                     문의 등록
                                 </button>
                                 <button
                                     onClick={closeModal}
-                                    className="inquiry-manager-cancel-button"
+                                    className="modal-cancel-button"
                                 >
                                     등록 취소
                                 </button>
                             </div>
                         </div>
                     </div>
-                </div>
               </div>
             )}
 
             {/* 문의 내역 상세확인 모달 */}
             {isDetailModalOpen && inquiryInfo.inquiryId && (
-                <div className="inquiry-manager-modal">
-                    <div className="inquriy-manager-content">
-                        <button className="inquriy-manager-close" onClick={closeModal}>
+              <div className="modal-container">
+                   <button className="modal-close" onClick={closeModal}>
                             &times;
-                        </button>
-                        <div className="inquriy-manager-title">
-                            <h1>학생 문의 내역</h1>
-                            <div className="inquriy-manager-header-row">
-                                <p>{transformCurriculumName(inquiryInfo.curriculumName)}</p>
-                                <p>{inquiryInfo.curriculumTh}기</p>
-                                <p>{inquiryInfo.name}</p>
-                            </div>
-                            <div className="inquriy-manager-title">
-                                <h3>{inquiryInfo.title}</h3>
-                                <p>{inquiryInfo.createdDate}</p>
-                                <div className="inquriy-manager-content-info">
-                                <p>{inquiryInfo.content}</p>
-                            </div>
-                            <div className="inquiry-manager-answer-section">
-                                {inquiryInfo.response && (
-                                    <div className="inquiry-response">
-                                    <p>{inquiryInfo.response}</p>
-                                        <p className="inquiry-manager-response-date">
-                                            {inquiryInfo.responseDate}
-                                        </p>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                   </button>
+                   <div className="modal-content">
+                       <div className="modal-title">매니저 문의 내역</div>
+                         <div className="modal-info-header">
+                              <p>{transformCurriculumName(inquiryInfo.curriculumName)}</p>
+                              <p>{inquiryInfo.curriculumTh}기</p>
+                              <p><i className="fa-solid fa-user"></i>
+                                    {inquiryInfo.name}</p>
+                         </div>
+                         <div className="modal-info-title">
+                              <h3>{inquiryInfo.title}</h3>
+                                <p className="modal-info-createDate">
+                                    <i className="fas fa-calendar-alt"></i>
+                                    {formatDateDay(inquiryInfo.createDate)}
+                                </p>
+                         </div>
+                         <div className="modal-info-content">
+                             <p>{inquiryInfo.content}</p>
+                         </div>
+                         <div className="modal-info-answer-section">
+                           <h3>매니저 답변</h3>
+                              {inquiryInfo.response ? (
+                                <div className="modal-info-answer">
+                                  <p>{inquiryInfo.response}</p>
+                                </div>
+                              ) : (
+                                  <p>아직 답변이 등록되지 않았습니다.</p>
+                              )}
+                         </div>
+                   </div>
               </div>
             )}
         </div>
