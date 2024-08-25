@@ -77,7 +77,9 @@ const StudentManagement = () => {
 
   const handleCourseChange = (course) => {
     const fullCourseName =
-      course === "NCP" ? "네이버 클라우드 데브옵스 과정" : "AWS 클라우드 자바 웹 개발자 과정";
+      course === "NCP"
+        ? "네이버 클라우드 데브옵스 과정"
+        : "AWS 클라우드 자바 웹 개발자 과정";
     setSelectedCourse(fullCourseName);
     setSelectedGeneration("전체");
     setNewStudent({ ...newStudent, curriculum: fullCourseName });
@@ -199,44 +201,44 @@ const StudentManagement = () => {
   const handleFileChange = (e) => setSelectedFile(e.target.files[0]);
 
   const handleDeleteStudent = async () => {
-      if (selectedStudents.length === 0) {
-          swal({
-              title: "학생 삭제",
-              text: "선택된 학생이 없습니다. 삭제할 학생을 선택하세요.",
-              icon: "warning",
-              button: "확인",
-          });
-          return;
-      }
+    if (selectedStudents.length === 0) {
+      swal({
+        title: "학생 삭제",
+        text: "선택된 학생이 없습니다. 삭제할 학생을 선택하세요.",
+        icon: "warning",
+        button: "확인",
+      });
+      return;
+    }
 
-      try {
-          const token = getToken();
-          const deletePromises = selectedStudents.map((id) =>
-              axios.delete(`/managers/manage-students/${id}`, {
-                  headers: { "access-token": token },
-              })
-          );
-          await Promise.all(deletePromises);
-          console.log("학생 삭제 응답:", deletePromises);
-          fetchStudents();
-          setSelectedStudents([]);
+    try {
+      const token = getToken();
+      const deletePromises = selectedStudents.map((id) =>
+        axios.delete(`/managers/manage-students/${id}`, {
+          headers: { "access-token": token },
+        })
+      );
+      await Promise.all(deletePromises);
 
-          swal({
-              title: "삭제 완료",
-              text: "선택된 학생이 삭제되었습니다.",
-              icon: "success",
-              button: "확인",
-          });
-      } catch (error) {
-          console.error("삭제 에러:", error);
+      fetchStudents();
+      setSelectedStudents([]);
 
-          swal({
-              title: "삭제 실패",
-              text: "학생 삭제 중 오류가 발생했습니다.",
-              icon: "error",
-              button: "확인",
-          });
-      }
+      swal({
+        title: "삭제 완료",
+        text: "선택된 학생이 삭제되었습니다.",
+        icon: "success",
+        button: "확인",
+      });
+    } catch (error) {
+      console.error("삭제 에러:", error);
+
+      swal({
+        title: "삭제 실패",
+        text: "학생 삭제 중 오류가 발생했습니다.",
+        icon: "error",
+        button: "확인",
+      });
+    }
   };
   const handleCheckboxChange = (studentId) =>
     setSelectedStudents(
@@ -271,25 +273,33 @@ const StudentManagement = () => {
           <div className="student-controls">
             <div className="student-program-buttons">
               <button
-                  className={`student-course-button ${selectedCourse === "네이버 클라우드 데브옵스 과정" ? "selected" : ""}`}
-                  onClick={() => handleCourseChange("NCP")}
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + '/images/curriculum/ncp.png'}
-                    alt="NCP"
-                    className="course-logo"
-                  />
-                </button>
-                <button
-                  className={`student-course-button ${selectedCourse === "AWS 클라우드 자바 웹 개발자 과정" ? "selected" : ""}`}
-                  onClick={() => handleCourseChange("AWS")}
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + '/images/curriculum/aws.png'}
-                    alt="AWS"
-                    className="course-logo"
-                  />
-                </button>
+                className={`student-course-button ${
+                  selectedCourse === "네이버 클라우드 데브옵스 과정"
+                    ? "selected"
+                    : ""
+                }`}
+                onClick={() => handleCourseChange("NCP")}
+              >
+                <img
+                  src={process.env.PUBLIC_URL + "/images/curriculum/ncp.png"}
+                  alt="NCP"
+                  className="course-logo"
+                />
+              </button>
+              <button
+                className={`student-course-button ${
+                  selectedCourse === "AWS 클라우드 자바 웹 개발자 과정"
+                    ? "selected"
+                    : ""
+                }`}
+                onClick={() => handleCourseChange("AWS")}
+              >
+                <img
+                  src={process.env.PUBLIC_URL + "/images/curriculum/aws.png"}
+                  alt="AWS"
+                  className="course-logo"
+                />
+              </button>
               <select
                 value={selectedGeneration}
                 onChange={handleGenerationChange}

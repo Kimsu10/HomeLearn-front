@@ -15,12 +15,12 @@ const ManagerCalendar = () => {
     title: "",
     startDate: null,
     endDate: null,
-    curriculumId: "",  // 기수 선택을 위한 필드
+    curriculumId: "", // 기수 선택을 위한 필드
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  const getToken = () => localStorage.getItem('access-token');
+  const getToken = () => localStorage.getItem("access-token");
 
   // 교육과정 정보 가져오기
   useEffect(() => {
@@ -28,12 +28,18 @@ const ManagerCalendar = () => {
       try {
         const token = getToken();
         // NCP 및 AWS 커리큘럼 정보 가져오기
-        const ncpResponse = await axios.get("/managers/manage-curriculums/NCP", {
-          headers: { access: token },
-        });
-        const awsResponse = await axios.get("/managers/manage-curriculums/AWS", {
-          headers: { access: token },
-        });
+        const ncpResponse = await axios.get(
+          "/managers/manage-curriculums/NCP",
+          {
+            headers: { access: token },
+          }
+        );
+        const awsResponse = await axios.get(
+          "/managers/manage-curriculums/AWS",
+          {
+            headers: { access: token },
+          }
+        );
         // 두 커리큘럼 정보를 하나로 합침
         const combinedCurriculums = [...ncpResponse.data, ...awsResponse.data];
         setCurriculums(combinedCurriculums); // 상태 업데이트
@@ -198,8 +204,6 @@ const ManagerCalendar = () => {
           endDate: newEvent.endDate ? new Date(newEvent.endDate) : null,
         };
 
-        console.log('일정 데이터 저장:', eventToSave);
-
         const response = await axios.post("/managers/calendar", eventToSave);
         if (response.status === 200) {
           setEvents([...events, { ...eventToSave, id: Date.now() }]);
@@ -220,8 +224,7 @@ const ManagerCalendar = () => {
     );
     setSelectedDate(adjustedDate);
     const eventsForDate = getEventsForDate(date);
-    console.log("선택날짜:", adjustedDate);
-    console.log("선택날짜에서 데이터 전달:", eventsForDate);
+
     if (eventsForDate.length > 0) {
       navigate(`/managers/calendar/${eventsForDate[0].id}`);
     }
@@ -266,8 +269,10 @@ const ManagerCalendar = () => {
   };
 
   const getCurriculumColor = (curriculumId) => {
-    const curriculum = curriculums.find(c => String(c.id) === String(curriculumId));
-    return curriculum ? curriculum.color : '#000';
+    const curriculum = curriculums.find(
+      (c) => String(c.id) === String(curriculumId)
+    );
+    return curriculum ? curriculum.color : "#000";
   };
 
   return (
@@ -325,7 +330,14 @@ const ManagerCalendar = () => {
                         to={`/managers/calendar/${event.id}`}
                         className="event-dot-link"
                       >
-                        <div className="event-dot" style={{ backgroundColor: getCurriculumColor(event.curriculumId) }}></div>
+                        <div
+                          className="event-dot"
+                          style={{
+                            backgroundColor: getCurriculumColor(
+                              event.curriculumId
+                            ),
+                          }}
+                        ></div>
                       </Link>
                     ))}
                 </div>
@@ -370,7 +382,9 @@ const ManagerCalendar = () => {
               <input
                 type="date"
                 value={
-                  newEvent.endDate ? newEvent.endDate.toISOString().substr(0, 10) : ""
+                  newEvent.endDate
+                    ? newEvent.endDate.toISOString().substr(0, 10)
+                    : ""
                 }
                 onChange={(e) =>
                   setNewEvent({

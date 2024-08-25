@@ -94,7 +94,7 @@ const TeacherMain = () => {
                         />
                         <Route
                             path="/:subjectName/boardDetail/:id"
-                            element={<TeacherSubjectBoardDetail username={username} />}
+                            element={<TeacherSubjectBoardDetail username={username} baseUrl={baseUrl}/>}
                         />
 
                         {/* 과제 */}

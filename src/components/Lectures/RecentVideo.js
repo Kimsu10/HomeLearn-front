@@ -247,39 +247,81 @@ const RecentVideo = ({ url, lectureId, username, token, lastViewPoint }) => {
     return match ? match[1] : null;
   };
 
-  const sendLastViewData = async () => {
-    const watchData = JSON.parse(localStorage.getItem("watchData"));
-    console.log(watchData);
+  // const sendLastViewData = async () => {
+  //   const watchData = JSON.parse(localStorage.getItem("watchData"));
+  //   console.log(watchData);
 
-    if (watchData) {
-      try {
-        const response = await fetch(
-          "http://localhost:8080/students/lectures/last-view",
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              access: token,
-            },
-            body: JSON.stringify(watchData),
-          }
-        );
+  //   if (watchData) {
+  //     try {
+  //       const response = await fetch(
+  //         "http://localhost:8080/students/lectures/last-view",
+  //         {
+  //           method: "PATCH",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             access: token,
+  //           },
+  //           body: JSON.stringify(watchData),
+  //         }
+  //       );
 
-        localStorage.removeItem("watchData");
-        window.location.reload();
+  //       localStorage.removeItem("watchData");
+  //       window.location.reload();
 
-        if (!response.ok) {
-          throw new Error("Failed to update the last view data");
-        }
-      } catch (error) {
-        console.error("recentLecture error :", error);
-      }
-    }
-  };
+  //       if (!response.ok) {
+  //         throw new Error("Failed to update the last view data");
+  //       }
+  //     } catch (error) {
+  //       console.error("recentLecture error :", error);
+  //     }
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   return () => {
+  //     sendLastViewData();
+  //   };
+  // }, []);
 
   useEffect(() => {
+    const sendLastViewData = async () => {
+      const watchData = JSON.parse(localStorage.getItem("watchData"));
+      console.log(watchData);
+
+      if (watchData) {
+        try {
+          const response = await fetch(
+            "http://localhost:8080/students/lectures/last-view",
+            {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+                access: token,
+              },
+              body: JSON.stringify(watchData),
+            }
+          );
+
+          localStorage.removeItem("watchData");
+
+          if (!response.ok) {
+            throw new Error("Failed to update the last view data");
+          }
+        } catch (error) {
+          console.error("recentLecture error :", error);
+        }
+      }
+    };
+
+    const handleBeforeUnload = async (event) => {
+      event.preventDefault();
+      await sendLastViewData();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
     return () => {
-      sendLastViewData();
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
 

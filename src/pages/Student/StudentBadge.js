@@ -6,7 +6,7 @@ const StudentBadge = ({ baseUrl }) => {
   const { data: badges } = useAxiosGet(`/students/badges`);
   const [filteredBadges, setFilteredBadges] = useState([]);
   const [filter, setFilter] = useState("all");
-  const [rotatedBadgeIds, setRotatedBadgeIds] = useState([]); // 배열로 변경
+  const [rotatedBadgeIds, setRotatedBadgeIds] = useState([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

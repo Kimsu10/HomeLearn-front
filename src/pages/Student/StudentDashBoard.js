@@ -40,14 +40,7 @@ const StudentDashBoard = ({ username, baseUrl, token }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [
-          recentLectureResult,
-          questionResult,
-          assignmentResult,
-          badgeResult,
-          adminNoticeResult,
-          teacherNoticeResult,
-        ] = await Promise.allSettled([
+        const results = await Promise.allSettled([
           axios.get(`/students/dash-boards/recent-lecture`),
           axios.get(`/students/dash-boards/questions`),
           axios.get(`/students/dash-boards/homeworks`),
@@ -56,41 +49,22 @@ const StudentDashBoard = ({ username, baseUrl, token }) => {
           axios.get(`/students/dash-boards/teacher-boards`),
         ]);
 
-        if (recentLectureResult.status === "fulfilled") {
-          setRecentLecture(recentLectureResult.value.data);
-        } else {
-          console.warn(recentLectureResult.reason);
-        }
+        const handlers = [
+          setRecentLecture,
+          setQuestion,
+          setAssignment,
+          setBadge,
+          setAdminNotice,
+          setTeacherNotice,
+        ];
 
-        if (questionResult.status === "fulfilled") {
-          setQuestion(questionResult.value.data);
-        } else {
-          console.warn(questionResult.reason);
-        }
-
-        if (assignmentResult.status === "fulfilled") {
-          setAssignment(assignmentResult.value.data);
-        } else {
-          console.warn(assignmentResult.reason);
-        }
-
-        if (badgeResult.status === "fulfilled") {
-          setBadge(badgeResult.value.data);
-        } else {
-          console.warn(badgeResult.reason);
-        }
-
-        if (adminNoticeResult.status === "fulfilled") {
-          setAdminNotice(adminNoticeResult.value.data);
-        } else {
-          console.warn(adminNoticeResult.reason);
-        }
-
-        if (teacherNoticeResult.status === "fulfilled") {
-          setTeacherNotice(teacherNoticeResult.value.data);
-        } else {
-          console.warn(teacherNoticeResult.reason);
-        }
+        results.forEach((result, index) => {
+          if (result.status === "fulfilled") {
+            handlers[index](result.value.data);
+          } else {
+            console.warn(result.reason);
+          }
+        });
       } catch (error) {
         console.error("Error fetching data", error);
       }
@@ -145,28 +119,36 @@ const StudentDashBoard = ({ username, baseUrl, token }) => {
                 </span>
               </div>
               <div className="recent_contents_box" onClick={openModal}>
-                <h3 className="recent_lecture_type">
-                  {recentLecture?.subjectName}
-                </h3>
-                <div className="recent_video_box">
-                  <i className="bi bi-play-btn play_recent_video_icon"></i>
-                  <p className="recent_lecture_video_title">
-                    {recentLecture?.title}
-                  </p>
-                  <div className="recent_lecture_progress_container">
-                    <CircularProgressbar
-                      value={recentLecture?.lastPosition}
-                      styles={buildStyles({
-                        pathColor: "#A7D7C5",
-                        textColor: "#5C8D89",
-                        trailColor: "#d6d6d6",
-                      })}
-                    />
-                    <p className="recent_lecture_percentage">
-                      {recentLecture?.lastPosition}%
-                    </p>
+                {recentLecture ? (
+                  <>
+                    <h3 className="recent_lecture_type">
+                      {recentLecture.subjectName}
+                    </h3>
+                    <div className="recent_video_box">
+                      <i className="bi bi-play-btn play_recent_video_icon"></i>
+                      <p className="recent_lecture_video_title">
+                        {recentLecture.title}
+                      </p>
+                      <div className="recent_lecture_progress_container">
+                        <CircularProgressbar
+                          value={recentLecture.lastPosition}
+                          styles={buildStyles({
+                            pathColor: "#A7D7C5",
+                            textColor: "#5C8D89",
+                            trailColor: "#d6d6d6",
+                          })}
+                        />
+                        <p className="recent_lecture_percentage">
+                          {recentLecture.lastPosition}%
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="no_recent_lecture">
+                    최근 시청한 영상이 없습니다
                   </div>
-                </div>
+                )}
               </div>
               <RecentLectureModal isOpen={isModalOpen} onClose={closeModal}>
                 <RecentVideo
