@@ -7,7 +7,7 @@
 - 국비학원 과정에서 공통된 툴의 필요성을 인식하고, 이를 해결하고 보완한 시스템을 구축해보고자 학습관리 시스템을 개발
 
 ## 팀원
-- 총 7인 (프론트엔드 3, 백엔드 3, 풀스택 1)
+- 총 7인
 ![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FCegvt%2FbtsJtt4lkPl%2FVFafsCSZkWJAIWNB3tvdWk%2Fimg.png)
 
 ## ERD
